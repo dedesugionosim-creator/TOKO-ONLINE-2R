@@ -179,6 +179,28 @@
         <img id="modalPreviewImage" src="" style="width:100%; max-height:70vh; object-fit:contain; border-radius:0 0 12px 12px;">
     </div>
 </div>
+    <!-- ===== BLOK 2.3.3 - MODAL EDIT WILAYAH ===== -->
+<div class="modal-overlay" id="modalEditWilayah">
+    <div class="modal">
+        <div class="modal-header">
+            <h3>Edit Data Wilayah</h3>
+            <button class="modal-close" onclick="tutupModal('modalEditWilayah')">&times;</button>
+        </div>
+        <div class="modal-body">
+            <input type="hidden" id="editWilayahIndex">
+            <div class="form-group"><label>Provinsi</label><input type="text" id="editWilProvinsi" class="form-input"></div>
+            <div class="form-group"><label>Kabupaten</label><input type="text" id="editWilKabupaten" class="form-input"></div>
+            <div class="form-group"><label>Kecamatan</label><input type="text" id="editWilKecamatan" class="form-input"></div>
+            <div class="form-group"><label>Kelurahan</label><input type="text" id="editWilDesa" class="form-input"></div>
+            <div class="form-group"><label>Kode Pos</label><input type="text" id="editWilKodepos" class="form-input"></div>
+        </div>
+        <div class="modal-footer">
+            <button class="button button-danger" onclick="tutupModal('modalEditWilayah')">Batal</button>
+            <button class="button button-primary" onclick="simpanEditWilayah()">Simpan Perubahan</button>
+        </div>
+    </div>
+</div>
+<!-- ===== AKHIR BLOK 2.3.3 ===== -->
 <!-- ===== AKHIR BLOK 2.3 ===== -->
 <!-- ===== AKHIR BAGIAN 2 ===== -->
 <!-- ===== BAGIAN 3 - CSS GLOBAL & RESET ===== -->
@@ -2762,6 +2784,327 @@ function buatSidebarHTML(role) {
     // ===== AKHIR BLOK 8.9.3 =====
 </script>
 <!-- ===== AKHIR BLOK 8.9 ===== -->
-<!-- ===== AKHIR BAGIAN 8 ===== -->                 
+<!-- ===== AKHIR BAGIAN 8 ===== -->
+    <!-- ===== BAGIAN 9 - JAVASCRIPT DATA MASTER & ALUR PENGGUNA ===== -->
+
+<!-- ===== BLOK 9.1 - JS_RENDER_DATA_MASTER (SEMUA AKUN) ===== -->
+<script>
+    // ===== BLOK 9.1.1 - RENDER FORM PENGISIAN DATA MASTER =====
+    function renderFormDataMaster() {
+        var user = JSON.parse(localStorage.getItem('2r_user') || '{}');
+        var areaKonten = document.getElementById('mainContent');
+        var html = '<div class="page-header">';
+        html += '<h2>Lengkapi Data Master Akun</h2>';
+        html += '<p>Data ini akan digunakan sebagai identitas resmi dan alamat pengiriman produk Anda. Pastikan data sesuai dengan KTP.</p>';
+        html += '</div>';
+
+        // Data Registrasi
+        html += '<div class="card"><div class="card-header">Data Registrasi & Kontak</div>';
+        html += '<div class="grid-2">';
+        html += '<div><label class="form-label">Nama Lengkap (Sesuai KTP)</label><input type="text" id="masterNama" class="form-input" value="' + escapeHtml(user.nama || '') + '" placeholder="Nama lengkap"></div>';
+        html += '<div><label class="form-label">Username (Tidak dapat diubah)</label><input type="text" id="masterUsername" class="form-input" value="' + escapeHtml(user.username || '') + '" disabled></div>';
+        html += '<div><label class="form-label">Email (Untuk Notifikasi)</label><input type="email" id="masterEmail" class="form-input" value="' + escapeHtml(user.email || '') + '" placeholder="email@example.com"></div>';
+        html += '<div><label class="form-label">Nomor HP (Untuk Kurir)</label><input type="tel" id="masterHp" class="form-input" value="' + escapeHtml(user.nomorHp || '') + '" placeholder="081234567890"></div>';
+        html += '</div></div>';
+
+        // Alamat Sesuai KTP
+        html += '<div class="card"><div class="card-header">Alamat Sesuai KTP</div>';
+        html += buatAlamatHTMLUniversal('ktp', 'Alamat Sesuai KTP', user);
+        html += '</div>';
+
+        // Alamat Domisili (Pengiriman)
+        html += '<div class="card"><div class="card-header">Alamat Domisili / Alamat Pengiriman</div>';
+        html += '<div class="card" style="background:#fff3cd; border:1px solid #ffc107; margin-bottom:15px; padding:10px;">';
+        html += '<p style="font-size:13px; margin:0; color:#856404;"><i class="fas fa-info-circle"></i> Alamat domisili akan digunakan sebagai alamat pengiriman produk (jika berbeda dengan KTP).</p>';
+        html += '</div>';
+        html += buatAlamatHTMLUniversal('dom', 'Alamat Domisili', user);
+        html += '</div>';
+
+        // Upload KTP
+        html += '<div class="card"><div class="card-header">Upload Foto KTP (Identitas Resmi)</div>';
+        html += '<div class="upload-area" id="uploadKtpMaster"><div id="ktpPreviewMaster">';
+        if (user.ktp) {
+            html += '<img src="' + user.ktp + '" class="preview-image">';
+        } else {
+            html += '<i class="fas fa-cloud-upload-alt"></i><p>Klik untuk upload foto KTP (Format JPG/PNG, Maks. 2MB)</p>';
+        }
+        html += '</div><input type="file" id="inputKtpMaster" accept=".jpg,.jpeg,.png" style="display:none"></div>';
+        if (user.ktp) {
+            html += '<button class="button button-danger margin-top-10" onclick="hapusKTPMaster()"><i class="fas fa-trash"></i> Hapus KTP</button>';
+        }
+        html += '</div>';
+
+        // Tombol Aksi
+        html += '<div style="display:flex; gap:10px;">';
+        html += '<button class="button button-primary" onclick="prosesReviewDataMaster()"><i class="fas fa-eye"></i> Lihat Review Data & Simpan</button>';
+        html += '</div>';
+
+        areaKonten.innerHTML = html;
+
+        // Event listener upload KTP
+        setTimeout(function() {
+            var container = document.getElementById('uploadKtpMaster');
+            var input = document.getElementById('inputKtpMaster');
+            if (container && input) {
+                container.onclick = function() { input.click(); };
+                input.onchange = function(e) {
+                    var file = e.target.files[0];
+                    if (file) {
+                        var reader = new FileReader();
+                        reader.onload = function(ev) {
+                            document.getElementById('ktpPreviewMaster').innerHTML = '<img src="' + ev.target.result + '" class="preview-image">';
+                            localStorage.setItem('2r_ktp_temp_master', ev.target.result);
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                };
+            }
+        }, 300);
+
+        // Isi dropdown wilayah
+        setTimeout(function() {
+            isiDropdownWilayahUniversal('ktp', user);
+            isiDropdownWilayahUniversal('dom', user);
+        }, 500);
+    }
+    // ===== AKHIR BLOK 9.1.1 =====
+
+    // ===== BLOK 9.1.2 - FUNGSI HELPER ALAMAT & DROPDOWN =====
+    function buatAlamatHTMLUniversal(prefix, judul, user) {
+        var html = '<div class="grid-2">';
+        html += '<div><label class="form-label">Dusun / Dukuh</label><input type="text" id="' + prefix + 'Dusun" class="form-input" value="' + escapeHtml(user[prefix + 'Dusun'] || '') + '"></div>';
+        html += '<div><label class="form-label">RT</label><input type="text" id="' + prefix + 'RT" class="form-input" value="' + escapeHtml(user[prefix + 'RT'] || '') + '"></div>';
+        html += '<div><label class="form-label">RW</label><input type="text" id="' + prefix + 'RW" class="form-input" value="' + escapeHtml(user[prefix + 'RW'] || '') + '"></div>';
+        html += '<div><label class="form-label">Jalan / Gang</label><input type="text" id="' + prefix + 'Jalan" class="form-input" value="' + escapeHtml(user[prefix + 'Jalan'] || '') + '"></div>';
+        html += '<div><label class="form-label">Provinsi</label><select id="' + prefix + 'Provinsi" class="form-input" onchange="onChangeProvinsiManual(\'' + prefix + '\')"><option value="">-- Pilih Provinsi --</option></select>';
+        html += '<div style="margin-top:5px;"><input type="text" id="' + prefix + 'ProvinsiManual" class="form-input" placeholder="Ketik manual jika tidak ada di dropdown" value="' + escapeHtml(user[prefix + 'ProvinsiManual'] || '') + '"></div></div>';
+        html += '<div><label class="form-label">Kabupaten / Kota</label><select id="' + prefix + 'Kabupaten" class="form-input" onchange="onChangeKabupatenManual(\'' + prefix + '\')"><option value="">-- Pilih Kabupaten --</option></select>';
+        html += '<div style="margin-top:5px;"><input type="text" id="' + prefix + 'KabupatenManual" class="form-input" placeholder="Ketik manual jika tidak ada di dropdown" value="' + escapeHtml(user[prefix + 'KabupatenManual'] || '') + '"></div></div>';
+        html += '<div><label class="form-label">Kecamatan</label><select id="' + prefix + 'Kecamatan" class="form-input" onchange="onChangeKecamatanManual(\'' + prefix + '\')"><option value="">-- Pilih Kecamatan --</option></select>';
+        html += '<div style="margin-top:5px;"><input type="text" id="' + prefix + 'KecamatanManual" class="form-input" placeholder="Ketik manual jika tidak ada di dropdown" value="' + escapeHtml(user[prefix + 'KecamatanManual'] || '') + '"></div></div>';
+        html += '<div><label class="form-label">Desa / Kelurahan</label><select id="' + prefix + 'Desa" class="form-input" onchange="onChangeDesaManual(\'' + prefix + '\')"><option value="">-- Pilih Kelurahan --</option></select>';
+        html += '<div style="margin-top:5px;"><input type="text" id="' + prefix + 'DesaManual" class="form-input" placeholder="Ketik manual jika tidak ada di dropdown" value="' + escapeHtml(user[prefix + 'DesaManual'] || '') + '"></div></div>';
+        html += '<div><label class="form-label">Kode Pos</label><input type="text" id="' + prefix + 'Kodepos" class="form-input" value="' + escapeHtml(user[prefix + 'Kodepos'] || '') + '"></div>';
+        html += '</div>';
+        return html;
+    }
+
+    function isiDropdownWilayahUniversal(prefix, user) {
+        var provDropdown = document.getElementById(prefix + 'Provinsi');
+        if (!provDropdown) return;
+        var key = prefix === 'ktp' ? 'ktp' : 'dom';
+        var provinsiTersimpan = user[key + 'Provinsi'] || '';
+        var kabupatenTersimpan = user[key + 'Kabupaten'] || '';
+        var kecamatanTersimpan = user[key + 'Kecamatan'] || '';
+        var desaTersimpan = user[key + 'Desa'] || '';
+        
+        var provList = getProvinsiList();
+        provDropdown.innerHTML = '<option value="">-- Pilih Provinsi --</option>';
+        for (var i = 0; i < provList.length; i++) {
+            var selected = (provinsiTersimpan === provList[i]) ? 'selected' : '';
+            provDropdown.innerHTML += '<option value="' + provList[i] + '" ' + selected + '>' + provList[i] + '</option>';
+        }
+        if (provinsiTersimpan) {
+            var kabList = getKabupatenList(provinsiTersimpan);
+            var kabDropdown = document.getElementById(prefix + 'Kabupaten');
+            kabDropdown.innerHTML = '<option value="">-- Pilih Kabupaten --</option>';
+            for (var i = 0; i < kabList.length; i++) {
+                var selected = (kabupatenTersimpan === kabList[i]) ? 'selected' : '';
+                kabDropdown.innerHTML += '<option value="' + kabList[i] + '" ' + selected + '>' + kabList[i] + '</option>';
+            }
+            if (kabupatenTersimpan) {
+                var kecList = getKecamatanList(provinsiTersimpan, kabupatenTersimpan);
+                var kecDropdown = document.getElementById(prefix + 'Kecamatan');
+                kecDropdown.innerHTML = '<option value="">-- Pilih Kecamatan --</option>';
+                for (var i = 0; i < kecList.length; i++) {
+                    var selected = (kecamatanTersimpan === kecList[i]) ? 'selected' : '';
+                    kecDropdown.innerHTML += '<option value="' + kecList[i] + '" ' + selected + '>' + kecList[i] + '</option>';
+                }
+                if (kecamatanTersimpan) {
+                    var desaList = getDesaList(provinsiTersimpan, kabupatenTersimpan, kecamatanTersimpan);
+                    var desaDropdown = document.getElementById(prefix + 'Desa');
+                    desaDropdown.innerHTML = '<option value="">-- Pilih Kelurahan --</option>';
+                    for (var i = 0; i < desaList.length; i++) {
+                        var selected = (desaTersimpan === desaList[i]) ? 'selected' : '';
+                        desaDropdown.innerHTML += '<option value="' + desaList[i] + '" ' + selected + '>' + desaList[i] + '</option>';
+                    }
+                    if (desaTersimpan) {
+                        var kodePos = getKodePos(provinsiTersimpan, kabupatenTersimpan, kecamatanTersimpan, desaTersimpan);
+                        if (kodePos) document.getElementById(prefix + 'Kodepos').value = kodePos;
+                    }
+                }
+            }
+        }
+    }
+
+    function hapusKTPMaster() {
+        if (!confirm('Yakin ingin menghapus foto KTP?')) return;
+        localStorage.removeItem('2r_ktp_temp_master');
+        renderFormDataMaster();
+        tampilkanToast('KTP dihapus dari form', 'info');
+    }
+    // ===== AKHIR BLOK 9.1.2 =====
+</script>
+<!-- ===== AKHIR BLOK 9.1 ===== -->
+
+<!-- ===== BLOK 9.2 - JS_RENDER_REVIEW_DATA_MASTER ===== -->
+<script>
+    // ===== BLOK 9.2.1 - PROSES REVIEW DATA =====
+    function prosesReviewDataMaster() {
+        var user = JSON.parse(localStorage.getItem('2r_user') || '{}');
+        var dataTemp = {};
+
+        dataTemp.nama = document.getElementById('masterNama').value.trim();
+        dataTemp.username = user.username;
+        dataTemp.email = document.getElementById('masterEmail').value.trim();
+        dataTemp.nomorHp = document.getElementById('masterHp').value.trim();
+        dataTemp.role = user.role;
+
+        // Gabungkan Alamat KTP
+        var ktpDusun = document.getElementById('ktpDusun').value.trim();
+        var ktpRT = document.getElementById('ktpRT').value.trim();
+        var ktpRW = document.getElementById('ktpRW').value.trim();
+        var ktpJalan = document.getElementById('ktpJalan').value.trim();
+        var ktpDesa = document.getElementById('ktpDesa').value;
+        var ktpKecamatan = document.getElementById('ktpKecamatan').value;
+        var ktpKabupaten = document.getElementById('ktpKabupaten').value;
+        var ktpProvinsi = document.getElementById('ktpProvinsi').value;
+        var ktpKodepos = document.getElementById('ktpKodepos').value.trim();
+        var gabungKTP = '';
+        if (ktpDusun) gabungKTP += ktpDusun + ', ';
+        if (ktpRT) gabungKTP += 'RT ' + ktpRT + ', ';
+        if (ktpRW) gabungKTP += 'RW ' + ktpRW + ', ';
+        if (ktpJalan) gabungKTP += ktpJalan + ', ';
+        if (ktpDesa) gabungKTP += ktpDesa + ', ';
+        if (ktpKecamatan) gabungKTP += ktpKecamatan + ', ';
+        if (ktpKabupaten) gabungKTP += ktpKabupaten + ', ';
+        if (ktpProvinsi) gabungKTP += ktpProvinsi + ', ';
+        if (ktpKodepos) gabungKTP += ktpKodepos;
+        dataTemp.alamatKTP = gabungKTP;
+
+        // Gabungkan Alamat Domisili
+        var domDusun = document.getElementById('domDusun').value.trim();
+        var domRT = document.getElementById('domRT').value.trim();
+        var domRW = document.getElementById('domRW').value.trim();
+        var domJalan = document.getElementById('domJalan').value.trim();
+        var domDesa = document.getElementById('domDesa').value;
+        var domKecamatan = document.getElementById('domKecamatan').value;
+        var domKabupaten = document.getElementById('domKabupaten').value;
+        var domProvinsi = document.getElementById('domProvinsi').value;
+        var domKodepos = document.getElementById('domKodepos').value.trim();
+        var gabungDom = '';
+        if (domDusun) gabungDom += domDusun + ', ';
+        if (domRT) gabungDom += 'RT ' + domRT + ', ';
+        if (domRW) gabungDom += 'RW ' + domRW + ', ';
+        if (domJalan) gabungDom += domJalan + ', ';
+        if (domDesa) gabungDom += domDesa + ', ';
+        if (domKecamatan) gabungDom += domKecamatan + ', ';
+        if (domKabupaten) gabungDom += domKabupaten + ', ';
+        if (domProvinsi) gabungDom += domProvinsi + ', ';
+        if (domKodepos) gabungDom += domKodepos;
+        dataTemp.alamatDomisili = gabungDom;
+
+        var ktp = localStorage.getItem('2r_ktp_temp_master') || user.ktp || '';
+        dataTemp.ktp = ktp;
+
+        localStorage.setItem('2r_data_master_temp', JSON.stringify(dataTemp));
+        renderReviewDataMaster(dataTemp);
+    }
+    // ===== AKHIR BLOK 9.2.1 =====
+
+    // ===== BLOK 9.2.2 - TAMPILKAN REVIEW DATA =====
+    function renderReviewDataMaster(data) {
+        var areaKonten = document.getElementById('mainContent');
+        var html = '<div class="page-header"><h2>Review Data Master Akun</h2><p>Pastikan seluruh data berikut sudah benar. Data ini akan menjadi Data Master Akun Anda untuk pengiriman produk.</p></div>';
+        
+        html += '<div class="card" style="border-left:5px solid #FF6B00;"><div class="card-header"><span><i class="fas fa-user-circle"></i> Data Pribadi & Kontak</span></div><div class="grid-2">';
+        html += '<div><strong>Nama Lengkap:</strong><br><span style="font-size:16px;">' + escapeHtml(data.nama || '-') + '</span></div>';
+        html += '<div><strong>Username:</strong><br><span>' + escapeHtml(data.username || '-') + '</span></div>';
+        html += '<div><strong>Email:</strong><br><span>' + escapeHtml(data.email || '-') + '</span></div>';
+        html += '<div><strong>Nomor HP:</strong><br><span>' + escapeHtml(data.nomorHp || '-') + '</span></div>';
+        html += '<div><strong>Role:</strong><br><span>' + escapeHtml(data.role || '-') + '</span></div></div></div>';
+
+        html += '<div class="card"><div class="card-header"><span><i class="fas fa-id-card"></i> Alamat Sesuai KTP</span></div><p>' + escapeHtml(data.alamatKTP || 'Belum diisi') + '</p></div>';
+
+        html += '<div class="card" style="border-left:5px solid #4CAF50;"><div class="card-header"><span><i class="fas fa-truck"></i> Alamat Domisili / Pengiriman</span></div><p>' + escapeHtml(data.alamatDomisili || 'Belum diisi') + '</p></div>';
+
+        html += '<div class="card"><div class="card-header"><span><i class="fas fa-image"></i> Foto KTP</span></div>';
+        if (data.ktp) {
+            html += '<div style="display:flex; align-items:center; gap:15px;"><img src="' + data.ktp + '" style="max-width:200px; max-height:150px; border-radius:8px; border:1px solid #ddd;"><span style="font-size:13px; color:#4CAF50;"><i class="fas fa-check-circle"></i> Terupload</span></div>';
+        } else {
+            html += '<span style="color:#d32f2f;">Belum diupload</span>';
+        }
+        html += '</div>';
+
+        html += '<div style="display:flex; gap:15px; margin-top:20px;">';
+        html += '<button class="button button-danger" onclick="renderFormDataMaster()"><i class="fas fa-arrow-left"></i> Kembali (Edit)</button>';
+        html += '<button class="button button-success" style="font-size:16px; padding:12px 24px;" onclick="finalisasiSimpanDataMaster()"><i class="fas fa-check-double"></i> Konfirmasi & Simpan Akhir</button>';
+        html += '</div>';
+
+        areaKonten.innerHTML = html;
+    }
+    // ===== AKHIR BLOK 9.2.2 =====
+
+    // ===== BLOK 9.2.3 - FINALISASI SIMPAN DATA MASTER =====
+    function finalisasiSimpanDataMaster() {
+        var dataTemp = JSON.parse(localStorage.getItem('2r_data_master_temp') || '{}');
+        if (!dataTemp || !dataTemp.nama) {
+            tampilkanToast('Data tidak valid, silakan ulangi!', 'error');
+            return;
+        }
+
+        var user = JSON.parse(localStorage.getItem('2r_user') || '{}');
+        var dataAkun = getDataAkun();
+
+        user.nama = dataTemp.nama;
+        user.email = dataTemp.email;
+        user.nomorHp = dataTemp.nomorHp;
+        user.alamatKTP = dataTemp.alamatKTP;
+        user.alamatDomisili = dataTemp.alamatDomisili;
+        user.alamat = dataTemp.alamatDomisili || dataTemp.alamatKTP;
+        user.ktp = dataTemp.ktp;
+
+        var ditemukan = false;
+        for (var i = 0; i < dataAkun.length; i++) {
+            if (dataAkun[i].id === user.id) {
+                dataAkun[i].nama = user.nama;
+                dataAkun[i].email = user.email;
+                dataAkun[i].nomorHp = user.nomorHp;
+                dataAkun[i].alamatKTP = user.alamatKTP;
+                dataAkun[i].alamatDomisili = user.alamatDomisili;
+                dataAkun[i].alamat = user.alamat;
+                dataAkun[i].ktp = user.ktp;
+                dataAkun[i].dataLengkap = true;
+                ditemukan = true;
+                break;
+            }
+        }
+
+        if (ditemukan) {
+            localStorage.setItem('2r_user', JSON.stringify(user));
+            simpanDataAkun(dataAkun);
+            localStorage.removeItem('2r_data_master_temp');
+            localStorage.removeItem('2r_ktp_temp_master');
+            document.getElementById('userNama').textContent = user.nama;
+            tampilkanToast('Data Master Akun berhasil disimpan!', 'success');
+            renderDashboard();
+        } else {
+            tampilkanToast('Terjadi kesalahan saat menyimpan data!', 'error');
+        }
+    }
+    // ===== AKHIR BLOK 9.2.3 =====
+</script>
+<!-- ===== AKHIR BLOK 9.2 ===== -->
+
+<!-- ===== BLOK 9.3 - JS_SCAN_BARCODE ===== -->
+<script>
+    // ===== BLOK 9.3.1 - SCAN BARCODE =====
+    function scanBarcodeProduk() {
+        tampilkanToast('Fitur scan barcode menggunakan kamera sedang dalam pengembangan.', 'info');
+    }
+    // ===== AKHIR BLOK 9.3.1 =====
+</script>
+<!-- ===== AKHIR BLOK 9.3 ===== -->
+<!-- ===== AKHIR BAGIAN 9 ===== -->
 </body>
 </html>
