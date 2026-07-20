@@ -314,7 +314,6 @@
     .sidebar-menu-item .notif-badge { background:#f44336; color:white; border-radius:50%; padding:2px 8px; font-size:10px; margin-left:8px; display:inline-block; font-weight:700; min-width:20px; text-align:center; line-height:1.4; }
 </style>
 <!-- ===== AKHIR BAGIAN 3 ===== -->
-
 <!-- ===== BAGIAN 4 - JAVASCRIPT UTILITY ===== -->
 <script>
     // ===== BLOK 4.1 - JS_UTILITY_DATA =====
@@ -599,7 +598,6 @@
     // ===== AKHIR BLOK 5.2 =====
     // ===== AKHIR BAGIAN 5 =====
 </script>
-
 <!-- ===== BAGIAN 6 - JAVASCRIPT RENDER CORE ===== -->
 <script>
     // ===== BLOK 6.1 - JS_RENDER_DASHBOARD =====
@@ -935,12 +933,8 @@
         tampilkanToast('Keterangan disimpan!', 'success');
     }
     // ===== AKHIR BLOK 6.2 =====
-    // ===== AKHIR BAGIAN 6 =====
-</script>
 
-<!-- ===== BAGIAN 7 - JAVASCRIPT PROFIL CUSTOMER & UMUM ===== -->
-<script>
-    // ===== BLOK 7.1 - JS_RENDER_PROFIL_CUSTOMER =====
+    // ===== BLOK 6.3 - JS_RENDER_PROFIL_CUSTOMER =====
     function renderProfilCustomer() {
         var user = JSON.parse(localStorage.getItem('2r_user') || '{}');
         var areaKonten = document.getElementById('mainContent');
@@ -1181,9 +1175,9 @@
         tampilkanToast('KTP berhasil dihapus!', 'success');
         renderProfilCustomer();
     }
-    // ===== AKHIR BLOK 7.1 =====
+    // ===== AKHIR BLOK 6.3 =====
 
-    // ===== BLOK 7.2 - JS_RENDER_PROFIL_UMUM =====
+    // ===== BLOK 6.4 - JS_RENDER_PROFIL_UMUM =====
     function renderProfilUmum(user, role) {
         var areaKonten = document.getElementById('mainContent');
         if (!areaKonten) return;
@@ -1269,13 +1263,13 @@
         localStorage.removeItem('2r_ktp_temp');
         tampilkanToast('KTP disimpan!', 'success');
     }
-    // ===== AKHIR BLOK 7.2 =====
-    // ===== AKHIR BAGIAN 7 =====
+    // ===== AKHIR BLOK 6.4 =====
+    // ===== AKHIR BAGIAN 6 =====
 </script>
 
-<!-- ===== BAGIAN 8 - JAVASCRIPT DAFTAR AKUN, PERSETUJUAN, KELOLA AKUN ===== -->
+<!-- ===== BAGIAN 7 - JAVASCRIPT DAFTAR AKUN, PERSETUJUAN, KELOLA AKUN ===== -->
 <script>
-    // ===== BLOK 8.1 - RENDER DAFTAR AKUN =====
+    // ===== BLOK 7.1 - RENDER DAFTAR AKUN =====
     function renderDaftarAkun() {
         var areaKonten = document.getElementById('mainContent');
         var html = '<div class="page-header"><h2>Daftar Akun Baru</h2><p>Form pendaftaran akun oleh SuperAdmin.</p></div>';
@@ -1322,9 +1316,9 @@
         updatePreviewId();
         tampilkanToast('Akun ' + role + ' berhasil dibuat! ID: ' + akunBaru.id, 'success');
     }
-    // ===== AKHIR BLOK 8.1 =====
+    // ===== AKHIR BLOK 7.1 =====
 
-    // ===== BLOK 8.2 - RENDER PERSETUJUAN AKUN =====
+    // ===== BLOK 7.2 - RENDER PERSETUJUAN AKUN =====
     function renderPersetujuanAkun() {
         var areaKonten = document.getElementById('mainContent');
         var dataAkun = getDataAkun();
@@ -1382,9 +1376,9 @@
         renderPersetujuanAkun();
         tampilkanToast('Akun ditolak!', 'success');
     }
-    // ===== AKHIR BLOK 8.2 =====
+    // ===== AKHIR BLOK 7.2 =====
 
-    // ===== BLOK 8.3 - RENDER KELOLA AKUN =====
+    // ===== BLOK 7.3 - RENDER KELOLA AKUN =====
     function renderKelolaAkun() {
         var role = localStorage.getItem('2r_user_role');
         if (role !== 'superadmin' && role !== 'staf_admin') {
@@ -1485,13 +1479,12 @@
         renderKelolaAkun();
         tampilkanToast('Pengajuan penghapusan akun telah dikirim ke SuperAdmin!', 'success');
     }
-    // ===== AKHIR BLOK 8.3 =====
-    // ===== AKHIR BAGIAN 8 =====
+    // ===== AKHIR BLOK 7.3 =====
+    // ===== AKHIR BAGIAN 7 =====
 </script>
-
-<!-- ===== BAGIAN 9 - JAVASCRIPT FITUR LANJUTAN ===== -->
+<!-- ===== BAGIAN 8 - JAVASCRIPT FITUR LANJUTAN ===== -->
 <script>
-    // ===== BLOK 9.1 - SETTING REKENING & IKLAN =====
+    // ===== BLOK 8.1 - SETTING REKENING & IKLAN =====
     function renderSettingRekening() {
         var dataRekening = JSON.parse(localStorage.getItem('2r_rekening') || '{}');
         var areaKonten = document.getElementById('mainContent');
@@ -1607,9 +1600,9 @@
         renderMenuIklan();
         tampilkanToast('Iklan dihapus!', 'success');
     }
-    // ===== AKHIR BLOK 9.1 =====
+    // ===== AKHIR BLOK 8.1 =====
 
-    // ===== BLOK 9.2 - TRANSFER MENU & KELOLA WILAYAH =====
+    // ===== BLOK 8.2 - TRANSFER MENU & KELOLA WILAYAH =====
     function renderTransferMenu() {
         var role = localStorage.getItem('2r_user_role');
         if (role !== 'superadmin') { tampilkanToast('Anda tidak memiliki akses ke halaman ini!', 'error'); return; }
@@ -1804,13 +1797,13 @@
         renderKelolaWilayah();
         tampilkanToast('Wilayah diperbarui!', 'success');
     }
-    // ===== AKHIR BLOK 9.2 =====
-    // ===== AKHIR BAGIAN 9 =====
+    // ===== AKHIR BLOK 8.2 =====
+    // ===== AKHIR BAGIAN 8 =====
 </script>
 
-<!-- ===== BAGIAN 10 - JAVASCRIPT DATA MASTER ===== -->
+<!-- ===== BAGIAN 9 - JAVASCRIPT DATA MASTER ===== -->
 <script>
-    // ===== BLOK 10.1 - JS_RENDER_DATA_MASTER =====
+    // ===== BLOK 9.1 - JS_RENDER_DATA_MASTER =====
     function renderFormDataMaster() {
         var user = JSON.parse(localStorage.getItem('2r_user') || '{}');
         var areaKonten = document.getElementById('mainContent');
@@ -1940,9 +1933,9 @@
         renderFormDataMaster();
         tampilkanToast('KTP dihapus dari form', 'info');
     }
-    // ===== AKHIR BLOK 10.1 =====
+    // ===== AKHIR BLOK 9.1 =====
 
-    // ===== BLOK 10.2 - JS_RENDER_REVIEW_DATA_MASTER =====
+    // ===== BLOK 9.2 - JS_RENDER_REVIEW_DATA_MASTER =====
     function prosesReviewDataMaster() {
         var user = JSON.parse(localStorage.getItem('2r_user') || '{}');
         var dataTemp = {};
@@ -2062,12 +2055,11 @@
             tampilkanToast('Terjadi kesalahan saat menyimpan data!', 'error');
         }
     }
-    // ===== AKHIR BLOK 10.2 =====
-    // ===== AKHIR BAGIAN 10 =====
+    // ===== AKHIR BLOK 9.2 =====
+    // ===== AKHIR BAGIAN 9 =====
 </script>
-<!-- ===== AKHIR BAGIAN 10 ===== -->
 
-<!-- ===== BAGIAN 11 - JS_UTILITY_WILAYAH ===== -->
+<!-- ===== BAGIAN 10 - JS_UTILITY_WILAYAH ===== -->
 <script>
     function getProvinsiList() {
         var dataWilayah = JSON.parse(localStorage.getItem('2r_data_wilayah') || '[]');
@@ -2248,9 +2240,10 @@
             }
         }
     }
-    // ===== AKHIR BLOK 11 =====
+    // ===== AKHIR BLOK 10 =====
 </script>
 
+<!-- ===== BAGIAN 11 - EVENT HANDLERS & INITIALIZATION ===== -->
 <script>
     // ===== EVENT LOGOUT & SIDEBAR =====
     document.getElementById('buttonLogout').addEventListener('click', function() {
@@ -2332,7 +2325,7 @@
         }
     });
 </script>
-
 <!-- ===== AKHIR BAGIAN 11 ===== -->
 </body>
 </html>
+
