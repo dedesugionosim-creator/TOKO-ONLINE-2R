@@ -5697,175 +5697,237 @@ function simpanProfilCustomer() {
     /* ===== AKHIR BLOK 4.7.4 ===== */
 </script>
 <!-- ===== AKHIR BLOK 4.7 ===== -->
-<!-- ===== BLOK 4.8 - JS_RENDER_KELOLA_AKUN (REVISI) ===== -->
-<script>
-    /* ===== BLOK 4.8.1 - RENDER HALAMAN KELOLA SEMUA AKUN ===== */
-    function renderKelolaAkun() {
-        var role = localStorage.getItem('2r_user_role');
-        if (role !== 'superadmin' && role !== 'staf_admin') {
-            tampilkanToast('Anda tidak memiliki akses ke halaman ini!', 'error');
-            return;
-        }
+/* ================================================================
+   BLOK 4.8 - JS_RENDER_KELOLA_AKUN (REVISI)
+   ================================================================ */
 
-        var dataAkun = getDataAkun();
-        var daftarAkun = [];
-        for (var i = 0; i < dataAkun.length; i++) {
-            if (dataAkun[i].role !== 'superadmin') {
-                daftarAkun.push(dataAkun[i]);
+/* ===== 4.8.1 - RENDER HALAMAN KELOLA SEMUA AKUN ===== */
+function renderKelolaAkun() {
+    // 1. Cek akses (hanya SuperAdmin atau Staf Admin)
+    var role = localStorage.getItem('2r_user_role');
+    if (role !== 'superadmin' && role !== 'staf_admin') {
+        tampilkanToast('Anda tidak memiliki akses ke halaman ini!', 'error');
+        return;
+    }
+
+    // 2. Ambil data akun dan user yang sedang login
+    var dataAkun = getDataAkun();
+    var user = JSON.parse(localStorage.getItem('2r_user') || '{}');
+
+    // 3. Tampilkan SEMUA akun (termasuk SuperAdmin) – filter dihapus
+    var daftarAkun = dataAkun;  // ← perubahan utama: tidak lagi memfilter 'superadmin'
+
+    // 4. Siapkan area konten
+    var areaKonten = document.getElementById('mainContent');
+    var html = '';
+
+    // 5. Header
+    html += '<div class="page-header">';
+    html += '<h2>Kelola Semua Akun</h2>';
+    html += '<p>';
+    if (role === 'superadmin') {
+        html += 'Anda dapat mengaktifkan, menonaktifkan (suspen), atau menghapus akun secara permanen. (Akun sendiri tidak dapat diubah.)';
+    } else {
+        html += 'Anda dapat mengaktifkan, menonaktifkan, atau mengajukan penghapusan akun ke SuperAdmin.';
+    }
+    html += '</p>';
+    html += '</div>';
+
+    // 6. Card utama
+    html += '<div class="card">';
+    if (daftarAkun.length === 0) {
+        html += '<div class="empty-state"><i class="fas fa-users-slash"></i><h3>Belum ada akun</h3></div>';
+    } else {
+        // 7. Tabel
+        html += '<div class="table-container"><table class="table"><thead>';
+        html += '<tr><th>Nomor</th><th>ID</th><th>Role</th><th>Username</th><th>Nama</th><th>Status</th><th>Batas Produk</th><th>Aksi</th></tr>';
+        html += '</thead><tbody>';
+
+        for (var i = 0; i < daftarAkun.length; i++) {
+            var akun = daftarAkun[i];
+            var isSelf = (akun.id === user.id);  // cek apakah ini akun yang sedang login
+
+            // 8. Badge status
+            var badgeStatus, teksStatus;
+            if (akun.status === 'AKTIF') {
+                badgeStatus = 'badge-success';
+                teksStatus = 'AKTIF';
+            } else if (akun.status === 'NONAKTIF (Menunggu Verifikasi)') {
+                badgeStatus = 'badge-warning';
+                teksStatus = 'Menunggu';
+            } else {
+                badgeStatus = 'badge-danger';
+                teksStatus = 'Nonaktif';
             }
-        }
-        var areaKonten = document.getElementById('mainContent');
-        var html = '<div class="page-header"><h2>Kelola Semua Akun</h2><p>';
-        if (role === 'superadmin') {
-            html += 'Anda dapat mengaktifkan, menonaktifkan (suspen), atau menghapus akun secara permanen.';
-        } else {
-            html += 'Anda dapat mengaktifkan, menonaktifkan, atau mengajukan penghapusan akun ke SuperAdmin.';
-        }
-        html += '</p></div><div class="card">';
-        if (daftarAkun.length === 0) {
-            html += '<div class="empty-state"><i class="fas fa-users-slash"></i><h3>Belum ada akun</h3></div>';
-        } else {
-            html += '<div class="table-container"><table class="table"><thead><tr><th>Nomor</th><th>ID</th><th>Role</th><th>Username</th><th>Nama</th><th>Status</th><th>Batas Produk</th><th>Aksi</th></tr></thead><tbody>';
-            for (var i = 0; i < daftarAkun.length; i++) {
-                var akun = daftarAkun[i];
-                var badgeStatus = akun.status === 'AKTIF' ? 'badge-success' :
-                                  (akun.status === 'NONAKTIF (Menunggu Verifikasi)' ? 'badge-warning' : 'badge-danger');
-                var teksStatus = akun.status === 'AKTIF' ? 'AKTIF' :
-                                 (akun.status === 'NONAKTIF (Menunggu Verifikasi)' ? 'Menunggu' : 'Nonaktif');
-                html += '<tr><td>' + (i+1) + '</td><td>' + akun.id + '</td><td>' + akun.role + '</td><td>' + akun.username + '</td><td>' + akun.nama + '</td><td><span class="badge ' + badgeStatus + '">' + teksStatus + '</span></td>';
-                html += '<td>' + (akun.maksProdukPublik || 5) + '</td>';
-                html += '<td><div style="display:flex;gap:5px;">';
+
+            html += '<tr>';
+            html += '<td>' + (i + 1) + '</td>';
+            html += '<td>' + akun.id + '</td>';
+            html += '<td>' + akun.role + '</td>';
+            html += '<td>' + akun.username + '</td>';
+            html += '<td>' + akun.nama + '</td>';
+            html += '<td><span class="badge ' + badgeStatus + '">' + teksStatus + '</span></td>';
+            html += '<td>' + (akun.maksProdukPublik || 5) + '</td>';
+
+            // 9. Kolom Aksi
+            html += '<td><div style="display:flex;gap:5px;">';
+
+            if (isSelf) {
+                // Jangan tampilkan tombol apapun untuk akun sendiri
+                html += '<span style="color:#888; font-size:12px;">Akun sendiri</span>';
+            } else {
+                // Tombol Aktifkan / Nonaktifkan
                 if (akun.status !== 'AKTIF') {
                     html += '<button class="button button-success button-extra-small" onclick="aktifkanAkun(\'' + akun.id + '\')">Aktifkan</button>';
                 } else {
                     html += '<button class="button button-warning button-extra-small" onclick="nonaktifkanAkun(\'' + akun.id + '\')">Nonaktifkan (Suspen)</button>';
                 }
+
+                // Tombol Hapus (SuperAdmin) atau Ajukan Hapus (Staf Admin)
                 if (role === 'superadmin') {
                     html += '<button class="button button-danger button-extra-small" onclick="hapusAkun(\'' + akun.id + '\')">Hapus</button>';
                 } else if (role === 'staf_admin') {
                     html += '<button class="button button-danger button-extra-small" style="background:#FF9800;" onclick="ajukanHapusAkunStaf(\'' + akun.id + '\')">Ajukan Hapus</button>';
                 }
-                html += '</div></td></tr>';
             }
-            html += '</tbody></table></div>';
-        }
-        html += '</div>';
-        areaKonten.innerHTML = html;
-    }
-    /* ===== AKHIR BLOK 4.8.1 ===== */
 
-    /* ===== BLOK 4.8.2 - AKTIFKAN AKUN ===== */
-    function aktifkanAkun(idAkun) {
-        var role = localStorage.getItem('2r_user_role');
-        if (role !== 'superadmin' && role !== 'staf_admin') {
-            tampilkanToast('Anda tidak memiliki hak untuk mengaktifkan akun!', 'error');
-            return;
+            html += '</div></td>';
+            html += '</tr>';
         }
-        if (!confirm('Aktifkan akun ini?')) {
-            return;
-        }
-        var dataAkun = getDataAkun();
-        for (var i = 0; i < dataAkun.length; i++) {
-            if (dataAkun[i].id === idAkun) {
-                dataAkun[i].status = 'AKTIF';
-                break;
-            }
-        }
-        simpanDataAkun(dataAkun);
-        renderKelolaAkun();
-        tampilkanToast('Akun diaktifkan!', 'success');
-    }
-    /* ===== AKHIR BLOK 4.8.2 ===== */
 
-    /* ===== BLOK 4.8.3 - NONAKTIFKAN AKUN (SUSPEN) ===== */
-    function nonaktifkanAkun(idAkun) {
-        var role = localStorage.getItem('2r_user_role');
-        if (role !== 'superadmin') {
-            tampilkanToast('Hanya SuperAdmin yang dapat menonaktifkan (suspen) akun!', 'error');
-            return;
-        }
-        if (!confirm('Nonaktifkan (suspen) akun ini?')) {
-            return;
-        }
-        var dataAkun = getDataAkun();
-        for (var i = 0; i < dataAkun.length; i++) {
-            if (dataAkun[i].id === idAkun) {
-                dataAkun[i].status = 'NONAKTIF (Disuspen)';
-                break;
-            }
-        }
-        simpanDataAkun(dataAkun);
-        renderKelolaAkun();
-        tampilkanToast('Akun dinonaktifkan (suspen)!', 'success');
+        html += '</tbody></table></div>';
     }
-    /* ===== AKHIR BLOK 4.8.3 ===== */
+    html += '</div>';
 
-    /* ===== BLOK 4.8.4 - HAPUS AKUN (HANYA SUPERADMIN) ===== */
-    function hapusAkun(idAkun) {
-        var role = localStorage.getItem('2r_user_role');
-        if (role !== 'superadmin') {
-            tampilkanToast('Hanya SuperAdmin yang dapat menghapus akun permanen!', 'error');
-            return;
-        }
-        if (!confirm('HAPUS permanen akun ini?')) {
-            return;
-        }
-        if (!confirm('KONFIRMASI: Yakin hapus?')) {
-            return;
-        }
-        var dataAkun = getDataAkun();
-        var dataAkunBaru = [];
-        for (var i = 0; i < dataAkun.length; i++) {
-            if (dataAkun[i].id !== idAkun) {
-                dataAkunBaru.push(dataAkun[i]);
-            }
-        }
-        simpanDataAkun(dataAkunBaru);
-        renderKelolaAkun();
-        tampilkanToast('Akun dihapus!', 'success');
-    }
-    /* ===== AKHIR BLOK 4.8.4 ===== */
+    // 10. Tampilkan ke layar
+    areaKonten.innerHTML = html;
+}
+/* ===== AKHIR BLOK 4.8.1 ===== */
 
-    /* ===== BLOK 4.8.5 - AJUKAN HAPUS AKUN OLEH STAF ADMIN ===== */
-    function ajukanHapusAkunStaf(idAkun) {
-        var role = localStorage.getItem('2r_user_role');
-        if (role !== 'staf_admin') {
-            tampilkanToast('Anda tidak memiliki hak untuk mengajukan penghapusan!', 'error');
-            return;
-        }
-        if (!confirm('Ajukan penghapusan akun ini ke SuperAdmin?')) {
-            return;
-        }
-        var dataAkun = getDataAkun();
-        var targetAkun = null;
-        for (var i = 0; i < dataAkun.length; i++) {
-            if (dataAkun[i].id === idAkun) {
-                targetAkun = dataAkun[i];
-                break;
-            }
-        }
-        if (!targetAkun) {
-            tampilkanToast('Akun tidak ditemukan!', 'error');
-            return;
-        }
-        var dataPengajuanStaf = JSON.parse(localStorage.getItem('2r_pengajuan_hapus_staf') || '[]');
-        dataPengajuanStaf.push({
-            id: Date.now(),
-            targetId: targetAkun.id,
-            targetUsername: targetAkun.username,
-            targetNama: targetAkun.nama,
-            targetRole: targetAkun.role,
-            diajukanOleh: 'Staf Admin',
-            status: 'MENUNGGU',
-            diajukanPada: new Date().toISOString()
-        });
-        localStorage.setItem('2r_pengajuan_hapus_staf', JSON.stringify(dataPengajuanStaf));
-        renderKelolaAkun();
-        tampilkanToast('Pengajuan penghapusan akun telah dikirim ke SuperAdmin!', 'success');
+
+/* ===== 4.8.2 - AKTIFKAN AKUN ===== */
+function aktifkanAkun(idAkun) {
+    var role = localStorage.getItem('2r_user_role');
+    if (role !== 'superadmin' && role !== 'staf_admin') {
+        tampilkanToast('Anda tidak memiliki hak untuk mengaktifkan akun!', 'error');
+        return;
     }
-    /* ===== AKHIR BLOK 4.8.5 ===== */
-</script>
-<!-- ===== AKHIR BLOK 4.8 ===== -->
+    if (!confirm('Aktifkan akun ini?')) {
+        return;
+    }
+    var dataAkun = getDataAkun();
+    for (var i = 0; i < dataAkun.length; i++) {
+        if (dataAkun[i].id === idAkun) {
+            dataAkun[i].status = 'AKTIF';
+            break;
+        }
+    }
+    simpanDataAkun(dataAkun);
+    renderKelolaAkun();
+    tampilkanToast('Akun diaktifkan!', 'success');
+}
+/* ===== AKHIR BLOK 4.8.2 ===== */
+
+
+/* ===== 4.8.3 - NONAKTIFKAN AKUN (SUSPEN) ===== */
+function nonaktifkanAkun(idAkun) {
+    var role = localStorage.getItem('2r_user_role');
+    if (role !== 'superadmin') {
+        tampilkanToast('Hanya SuperAdmin yang dapat menonaktifkan (suspen) akun!', 'error');
+        return;
+    }
+    if (!confirm('Nonaktifkan (suspen) akun ini?')) {
+        return;
+    }
+    var dataAkun = getDataAkun();
+    for (var i = 0; i < dataAkun.length; i++) {
+        if (dataAkun[i].id === idAkun) {
+            dataAkun[i].status = 'NONAKTIF (Disuspen)';
+            break;
+        }
+    }
+    simpanDataAkun(dataAkun);
+    renderKelolaAkun();
+    tampilkanToast('Akun dinonaktifkan (suspen)!', 'success');
+}
+/* ===== AKHIR BLOK 4.8.3 ===== */
+
+
+/* ===== 4.8.4 - HAPUS AKUN (HANYA SUPERADMIN) ===== */
+function hapusAkun(idAkun) {
+    var role = localStorage.getItem('2r_user_role');
+    if (role !== 'superadmin') {
+        tampilkanToast('Hanya SuperAdmin yang dapat menghapus akun permanen!', 'error');
+        return;
+    }
+    // Cegah menghapus diri sendiri
+    var user = JSON.parse(localStorage.getItem('2r_user') || '{}');
+    if (idAkun === user.id) {
+        tampilkanToast('Anda tidak dapat menghapus akun Anda sendiri!', 'error');
+        return;
+    }
+    if (!confirm('HAPUS permanen akun ini?')) {
+        return;
+    }
+    if (!confirm('KONFIRMASI: Yakin hapus?')) {
+        return;
+    }
+    var dataAkun = getDataAkun();
+    var dataAkunBaru = [];
+    for (var i = 0; i < dataAkun.length; i++) {
+        if (dataAkun[i].id !== idAkun) {
+            dataAkunBaru.push(dataAkun[i]);
+        }
+    }
+    simpanDataAkun(dataAkunBaru);
+    renderKelolaAkun();
+    tampilkanToast('Akun dihapus!', 'success');
+}
+/* ===== AKHIR BLOK 4.8.4 ===== */
+
+
+/* ===== 4.8.5 - AJUKAN HAPUS AKUN OLEH STAF ADMIN ===== */
+function ajukanHapusAkunStaf(idAkun) {
+    var role = localStorage.getItem('2r_user_role');
+    if (role !== 'staf_admin') {
+        tampilkanToast('Anda tidak memiliki hak untuk mengajukan penghapusan!', 'error');
+        return;
+    }
+    if (!confirm('Ajukan penghapusan akun ini ke SuperAdmin?')) {
+        return;
+    }
+    var dataAkun = getDataAkun();
+    var targetAkun = null;
+    for (var i = 0; i < dataAkun.length; i++) {
+        if (dataAkun[i].id === idAkun) {
+            targetAkun = dataAkun[i];
+            break;
+        }
+    }
+    if (!targetAkun) {
+        tampilkanToast('Akun tidak ditemukan!', 'error');
+        return;
+    }
+    var dataPengajuanStaf = JSON.parse(localStorage.getItem('2r_pengajuan_hapus_staf') || '[]');
+    dataPengajuanStaf.push({
+        id: Date.now(),
+        targetId: targetAkun.id,
+        targetUsername: targetAkun.username,
+        targetNama: targetAkun.nama,
+        targetRole: targetAkun.role,
+        diajukanOleh: 'Staf Admin',
+        status: 'MENUNGGU',
+        diajukanPada: new Date().toISOString()
+    });
+    localStorage.setItem('2r_pengajuan_hapus_staf', JSON.stringify(dataPengajuanStaf));
+    renderKelolaAkun();
+    tampilkanToast('Pengajuan penghapusan akun telah dikirim ke SuperAdmin!', 'success');
+}
+/* ===== AKHIR BLOK 4.8.5 ===== */
+
+/* ================================================================
+   AKHIR BLOK 4.8 (REVISI)
+   ================================================================ */
 <!-- ===== BLOK 4.9 - JS_RENDER_SETTING_REKENING ===== -->
 <script>
     /* ===== BLOK 4.9.1 - RENDER HALAMAN SETTING REKENING ===== */
