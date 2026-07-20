@@ -1559,7 +1559,7 @@ function buatSidebarHTML(role) {
             id: generateId(role), role: role, username: username, password: passwordHash, nama: nama,
             email: '', nomorHp: '', alamat: '', namaBank: '', nomorRekening: '', pemilikRekening: '', ktp: '',
             status: status, waktuRegistrasi: new Date().toISOString()
-        };
+        };    
         dataAkun.push(akunBaru);
         simpanDataAkun(dataAkun);
         document.getElementById('daftarUsername').value = '';
@@ -1568,6 +1568,24 @@ function buatSidebarHTML(role) {
         updatePreviewId();
         tampilkanToast('Akun ' + role + ' berhasil dibuat! ID: ' + akunBaru.id, 'success');
     }
+    // Di dalam BLOK 7.5.1, bagian var akunBaru:
+var akunBaru = {
+    id: generateId(role), 
+    role: role, 
+    username: username, 
+    password: passwordHash, 
+    nama: nama,
+    email: '', 
+    nomorHp: '', 
+    alamat: '', 
+    namaBank: '', 
+    nomorRekening: '', 
+    pemilikRekening: '', 
+    ktp: '',
+    status: status, 
+    dataLengkap: false, // <--- TAMBAHKAN INI
+    waktuRegistrasi: new Date().toISOString()
+};
     // ===== AKHIR BLOK 7.5.1 =====
 
     // ===== BLOK 7.5.2 - RENDER PERSETUJUAN AKUN =====
