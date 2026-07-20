@@ -3344,8 +3344,1132 @@
 <!-- ============================================================ -->
 <!-- AKHIR BAGIAN 5                                               -->
 <!-- ============================================================ -->
+<!-- ============================================================ -->
+<!-- ============================================================ -->
+<!-- BAGIAN 6 - JAVASCRIPT DATA MASTER                             -->
+<!-- ============================================================ -->
 
+<!-- ===== BLOK 6.1 - JS_RENDER_DATA_MASTER ===== -->
+<script>
+    // ===== BLOK 6.1.1 - RENDER FORM PENGISIAN DATA MASTER =====
+    function renderFormDataMaster() {
+        // Mengambil data user yang sedang login
+        var user = JSON.parse(localStorage.getItem('2r_user') || '{}');
+        var areaKonten = document.getElementById('mainContent');
 
+        // Header halaman
+        var html = '<div class="page-header">';
+        html += '<h2>Lengkapi Data Master Akun</h2>';
+        html += '<p>Data ini akan digunakan sebagai identitas resmi dan alamat pengiriman produk Anda. Pastikan data sesuai dengan KTP.</p>';
+        html += '</div>';
 
+        // ===== DATA REGISTRASI & KONTAK =====
+        html += '<div class="card"><div class="card-header">Data Registrasi & Kontak</div>';
+        html += '<div class="grid-2">';
+        html += '<div><label class="form-label">Nama Lengkap (Sesuai KTP)</label><input type="text" id="masterNama" class="form-input" value="' + escapeHtml(user.nama || '') + '" placeholder="Nama lengkap"></div>';
+        html += '<div><label class="form-label">Username (Tidak dapat diubah)</label><input type="text" id="masterUsername" class="form-input" value="' + escapeHtml(user.username || '') + '" disabled></div>';
+        html += '<div><label class="form-label">Email (Untuk Notifikasi)</label><input type="email" id="masterEmail" class="form-input" value="' + escapeHtml(user.email || '') + '" placeholder="email@example.com"></div>';
+        html += '<div><label class="form-label">Nomor HP (Untuk Kurir)</label><input type="tel" id="masterHp" class="form-input" value="' + escapeHtml(user.nomorHp || '') + '" placeholder="081234567890"></div>';
+        html += '</div></div>';
+
+        // ===== ALAMAT SESUAI KTP =====
+        html += '<div class="card"><div class="card-header">Alamat Sesuai KTP</div>';
+        html += buatAlamatHTMLUniversal('ktp', 'Alamat Sesuai KTP', user);
+        html += '</div>';
+
+        // ===== ALAMAT DOMISILI / PENGIRIMAN =====
+        html += '<div class="card"><div class="card-header">Alamat Domisili / Alamat Pengiriman</div>';
+        html += '<div class="card" style="background:#fff3cd; border:1px solid #ffc107; margin-bottom:15px; padding:10px;">';
+        html += '<p style="font-size:13px; margin:0; color:#856404;"><i class="fas fa-info-circle"></i> Alamat domisili akan digunakan sebagai alamat pengiriman produk (jika berbeda dengan KTP).</p>';
+        html += '</div>';
+        html += buatAlamatHTMLUniversal('dom', 'Alamat Domisili', user);
+        html += '</div>';
+
+        // ===== UPLOAD FOTO KTP =====
+        html += '<div class="card"><div class="card-header">Upload Foto KTP (Identitas Resmi)</div>';
+        html += '<div class="upload-area" id="uploadKtpMaster"><div id="ktpPreviewMaster">';
+        if (user.ktp) {
+            html += '<img src="' + user.ktp + '" class="preview-image">';
+        } else {
+            html += '<i class="fas fa-cloud-upload-alt"></i><p>Klik untuk upload foto KTP (Format JPG/PNG, Maks. 2MB)</p>';
+        }
+        html += '</div><input type="file" id="inputKtpMaster" accept=".jpg,.jpeg,.png" style="display:none"></div>';
+        if (user.ktp) {
+            html += '<button class="button button-danger margin-top-10" onclick="hapusKTPMaster()"><i class="fas fa-trash"></i> Hapus KTP</button>';
+        }
+        html += '</div>';
+
+        // ===== TOMBOL AKSI =====
+        html += '<div style="display:flex; gap:10px;">';
+        html += '<button class="button button-primary" onclick="prosesReviewDataMaster()"><i class="fas fa-eye"></i> Lihat Review Data & Simpan</button>';
+        html += '</div>';
+
+        areaKonten.innerHTML = html;
+
+        // ===== EVENT LISTENER UPLOAD KTP =====
+        setTimeout(function() {
+            var container = document.getElementById('uploadKtpMaster');
+            var input = document.getElementById('inputKtpMaster');
+            if (container && input) {
+                container.onclick = function() { input.click(); };
+                input.onchange = function(e) {
+                    var file = e.target.files[0];
+                    if (file) {
+                        var reader = new FileReader();
+                        reader.onload = function(ev) {
+                            document.getElementById('ktpPreviewMaster').innerHTML = '<img src="' + ev.target.result + '" class="preview-image">';
+                            localStorage.setItem('2r_ktp_temp_master', ev.target.result);
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                };
+            }
+        }, 300);
+
+        // ===== ISI DROPDOWN WILAYAH =====
+        setTimeout(function() {
+            isiDropdownWilayahUniversal('ktp', user);
+            isiDropdownWilayahUniversal('dom', user);
+        }, 500);
+    }
+    // ===== AKHIR BLOK 6.1.1 =====
+
+    // ===== BLOK 6.1.2 - BUAT ALAMAT HTML UNIVERSAL =====
+    function buatAlamatHTMLUniversal(prefix, judul, user) {
+        var html = '<div class="grid-2">';
+        html += '<div><label class="form-label">Dusun / Dukuh</label><input type="text" id="' + prefix + 'Dusun" class="form-input" value="' + escapeHtml(user[prefix + 'Dusun'] || '') + '"></div>';
+        html += '<div><label class="form-label">RT</label><input type="text" id="' + prefix + 'RT" class="form-input" value="' + escapeHtml(user[prefix + 'RT'] || '') + '"></div>';
+        html += '<div><label class="form-label">RW</label><input type="text" id="' + prefix + 'RW" class="form-input" value="' + escapeHtml(user[prefix + 'RW'] || '') + '"></div>';
+        html += '<div><label class="form-label">Jalan / Gang</label><input type="text" id="' + prefix + 'Jalan" class="form-input" value="' + escapeHtml(user[prefix + 'Jalan'] || '') + '"></div>';
+        html += '<div><label class="form-label">Provinsi</label><select id="' + prefix + 'Provinsi" class="form-input" onchange="onChangeProvinsiManual(\'' + prefix + '\')"><option value="">-- Pilih Provinsi --</option></select>';
+        html += '<div style="margin-top:5px;"><input type="text" id="' + prefix + 'ProvinsiManual" class="form-input" placeholder="Ketik manual jika tidak ada di dropdown" value="' + escapeHtml(user[prefix + 'ProvinsiManual'] || '') + '"></div></div>';
+        html += '<div><label class="form-label">Kabupaten / Kota</label><select id="' + prefix + 'Kabupaten" class="form-input" onchange="onChangeKabupatenManual(\'' + prefix + '\')"><option value="">-- Pilih Kabupaten --</option></select>';
+        html += '<div style="margin-top:5px;"><input type="text" id="' + prefix + 'KabupatenManual" class="form-input" placeholder="Ketik manual jika tidak ada di dropdown" value="' + escapeHtml(user[prefix + 'KabupatenManual'] || '') + '"></div></div>';
+        html += '<div><label class="form-label">Kecamatan</label><select id="' + prefix + 'Kecamatan" class="form-input" onchange="onChangeKecamatanManual(\'' + prefix + '\')"><option value="">-- Pilih Kecamatan --</option></select>';
+        html += '<div style="margin-top:5px;"><input type="text" id="' + prefix + 'KecamatanManual" class="form-input" placeholder="Ketik manual jika tidak ada di dropdown" value="' + escapeHtml(user[prefix + 'KecamatanManual'] || '') + '"></div></div>';
+        html += '<div><label class="form-label">Desa / Kelurahan</label><select id="' + prefix + 'Desa" class="form-input" onchange="onChangeDesaManual(\'' + prefix + '\')"><option value="">-- Pilih Kelurahan --</option></select>';
+        html += '<div style="margin-top:5px;"><input type="text" id="' + prefix + 'DesaManual" class="form-input" placeholder="Ketik manual jika tidak ada di dropdown" value="' + escapeHtml(user[prefix + 'DesaManual'] || '') + '"></div></div>';
+        html += '<div><label class="form-label">Kode Pos</label><input type="text" id="' + prefix + 'Kodepos" class="form-input" value="' + escapeHtml(user[prefix + 'Kodepos'] || '') + '"></div>';
+        html += '</div>';
+        return html;
+    }
+    // ===== AKHIR BLOK 6.1.2 =====
+
+    // ===== BLOK 6.1.3 - ISI DROPDOWN WILAYAH UNIVERSAL =====
+    function isiDropdownWilayahUniversal(prefix, user) {
+        var provDropdown = document.getElementById(prefix + 'Provinsi');
+        if (!provDropdown) return;
+        var key = prefix === 'ktp' ? 'ktp' : 'dom';
+        var provinsiTersimpan = user[key + 'Provinsi'] || '';
+        var kabupatenTersimpan = user[key + 'Kabupaten'] || '';
+        var kecamatanTersimpan = user[key + 'Kecamatan'] || '';
+        var desaTersimpan = user[key + 'Desa'] || '';
+        
+        var provList = getProvinsiList();
+        provDropdown.innerHTML = '<option value="">-- Pilih Provinsi --</option>';
+        for (var i = 0; i < provList.length; i++) {
+            var selected = (provinsiTersimpan === provList[i]) ? 'selected' : '';
+            provDropdown.innerHTML += '<option value="' + provList[i] + '" ' + selected + '>' + provList[i] + '</option>';
+        }
+        if (provinsiTersimpan) {
+            var kabList = getKabupatenList(provinsiTersimpan);
+            var kabDropdown = document.getElementById(prefix + 'Kabupaten');
+            kabDropdown.innerHTML = '<option value="">-- Pilih Kabupaten --</option>';
+            for (var i = 0; i < kabList.length; i++) {
+                var selected = (kabupatenTersimpan === kabList[i]) ? 'selected' : '';
+                kabDropdown.innerHTML += '<option value="' + kabList[i] + '" ' + selected + '>' + kabList[i] + '</option>';
+            }
+            if (kabupatenTersimpan) {
+                var kecList = getKecamatanList(provinsiTersimpan, kabupatenTersimpan);
+                var kecDropdown = document.getElementById(prefix + 'Kecamatan');
+                kecDropdown.innerHTML = '<option value="">-- Pilih Kecamatan --</option>';
+                for (var i = 0; i < kecList.length; i++) {
+                    var selected = (kecamatanTersimpan === kecList[i]) ? 'selected' : '';
+                    kecDropdown.innerHTML += '<option value="' + kecList[i] + '" ' + selected + '>' + kecList[i] + '</option>';
+                }
+                if (kecamatanTersimpan) {
+                    var desaList = getDesaList(provinsiTersimpan, kabupatenTersimpan, kecamatanTersimpan);
+                    var desaDropdown = document.getElementById(prefix + 'Desa');
+                    desaDropdown.innerHTML = '<option value="">-- Pilih Kelurahan --</option>';
+                    for (var i = 0; i < desaList.length; i++) {
+                        var selected = (desaTersimpan === desaList[i]) ? 'selected' : '';
+                        desaDropdown.innerHTML += '<option value="' + desaList[i] + '" ' + selected + '>' + desaList[i] + '</option>';
+                    }
+                    if (desaTersimpan) {
+                        var kodePos = getKodePos(provinsiTersimpan, kabupatenTersimpan, kecamatanTersimpan, desaTersimpan);
+                        if (kodePos) {
+                            document.getElementById(prefix + 'Kodepos').value = kodePos;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    // ===== AKHIR BLOK 6.1.3 =====
+
+    // ===== BLOK 6.1.4 - HAPUS KTP MASTER =====
+    function hapusKTPMaster() {
+        if (!confirm('Yakin ingin menghapus foto KTP?')) return;
+        localStorage.removeItem('2r_ktp_temp_master');
+        renderFormDataMaster();
+        tampilkanToast('KTP dihapus dari form', 'info');
+    }
+    // ===== AKHIR BLOK 6.1.4 =====
+</script>
+<!-- ===== AKHIR BLOK 6.1 ===== -->
+
+<!-- ===== BLOK 6.2 - JS_RENDER_REVIEW_DATA_MASTER ===== -->
+<script>
+    // ===== BLOK 6.2.1 - PROSES REVIEW DATA =====
+    function prosesReviewDataMaster() {
+        var user = JSON.parse(localStorage.getItem('2r_user') || '{}');
+        var dataTemp = {};
+
+        // Ambil data dari form
+        dataTemp.nama = document.getElementById('masterNama').value.trim();
+        dataTemp.username = user.username;
+        dataTemp.email = document.getElementById('masterEmail').value.trim();
+        dataTemp.nomorHp = document.getElementById('masterHp').value.trim();
+        dataTemp.role = user.role;
+
+        // ===== GABUNGKAN ALAMAT KTP =====
+        var ktpDusun = document.getElementById('ktpDusun').value.trim();
+        var ktpRT = document.getElementById('ktpRT').value.trim();
+        var ktpRW = document.getElementById('ktpRW').value.trim();
+        var ktpJalan = document.getElementById('ktpJalan').value.trim();
+        var ktpDesa = document.getElementById('ktpDesa').value;
+        var ktpKecamatan = document.getElementById('ktpKecamatan').value;
+        var ktpKabupaten = document.getElementById('ktpKabupaten').value;
+        var ktpProvinsi = document.getElementById('ktpProvinsi').value;
+        var ktpKodepos = document.getElementById('ktpKodepos').value.trim();
+        var gabungKTP = '';
+        if (ktpDusun) gabungKTP += ktpDusun + ', ';
+        if (ktpRT) gabungKTP += 'RT ' + ktpRT + ', ';
+        if (ktpRW) gabungKTP += 'RW ' + ktpRW + ', ';
+        if (ktpJalan) gabungKTP += ktpJalan + ', ';
+        if (ktpDesa) gabungKTP += ktpDesa + ', ';
+        if (ktpKecamatan) gabungKTP += ktpKecamatan + ', ';
+        if (ktpKabupaten) gabungKTP += ktpKabupaten + ', ';
+        if (ktpProvinsi) gabungKTP += ktpProvinsi + ', ';
+        if (ktpKodepos) gabungKTP += ktpKodepos;
+        dataTemp.alamatKTP = gabungKTP;
+
+        // ===== GABUNGKAN ALAMAT DOMISILI =====
+        var domDusun = document.getElementById('domDusun').value.trim();
+        var domRT = document.getElementById('domRT').value.trim();
+        var domRW = document.getElementById('domRW').value.trim();
+        var domJalan = document.getElementById('domJalan').value.trim();
+        var domDesa = document.getElementById('domDesa').value;
+        var domKecamatan = document.getElementById('domKecamatan').value;
+        var domKabupaten = document.getElementById('domKabupaten').value;
+        var domProvinsi = document.getElementById('domProvinsi').value;
+        var domKodepos = document.getElementById('domKodepos').value.trim();
+        var gabungDom = '';
+        if (domDusun) gabungDom += domDusun + ', ';
+        if (domRT) gabungDom += 'RT ' + domRT + ', ';
+        if (domRW) gabungDom += 'RW ' + domRW + ', ';
+        if (domJalan) gabungDom += domJalan + ', ';
+        if (domDesa) gabungDom += domDesa + ', ';
+        if (domKecamatan) gabungDom += domKecamatan + ', ';
+        if (domKabupaten) gabungDom += domKabupaten + ', ';
+        if (domProvinsi) gabungDom += domProvinsi + ', ';
+        if (domKodepos) gabungDom += domKodepos;
+        dataTemp.alamatDomisili = gabungDom;
+
+        // ===== FOTO KTP =====
+        var ktp = localStorage.getItem('2r_ktp_temp_master') || user.ktp || '';
+        dataTemp.ktp = ktp;
+
+        // Simpan data sementara ke localStorage
+        localStorage.setItem('2r_data_master_temp', JSON.stringify(dataTemp));
+
+        // Panggil halaman review
+        renderReviewDataMaster(dataTemp);
+    }
+    // ===== AKHIR BLOK 6.2.1 =====
+
+    // ===== BLOK 6.2.2 - TAMPILKAN REVIEW DATA =====
+    function renderReviewDataMaster(data) {
+        var areaKonten = document.getElementById('mainContent');
+        var html = '<div class="page-header"><h2>Review Data Master Akun</h2><p>Pastikan seluruh data berikut sudah benar. Data ini akan menjadi Data Master Akun Anda untuk pengiriman produk.</p></div>';
+        
+        // Kartu Data Pribadi
+        html += '<div class="card" style="border-left:5px solid #FF6B00;"><div class="card-header"><span><i class="fas fa-user-circle"></i> Data Pribadi & Kontak</span></div><div class="grid-2">';
+        html += '<div><strong>Nama Lengkap:</strong><br><span style="font-size:16px;">' + escapeHtml(data.nama || '-') + '</span></div>';
+        html += '<div><strong>Username:</strong><br><span>' + escapeHtml(data.username || '-') + '</span></div>';
+        html += '<div><strong>Email:</strong><br><span>' + escapeHtml(data.email || '-') + '</span></div>';
+        html += '<div><strong>Nomor HP:</strong><br><span>' + escapeHtml(data.nomorHp || '-') + '</span></div>';
+        html += '<div><strong>Role:</strong><br><span>' + escapeHtml(data.role || '-') + '</span></div></div></div>';
+
+        // Kartu Alamat KTP
+        html += '<div class="card"><div class="card-header"><span><i class="fas fa-id-card"></i> Alamat Sesuai KTP</span></div><p>' + escapeHtml(data.alamatKTP || 'Belum diisi') + '</p></div>';
+
+        // Kartu Alamat Domisili
+        html += '<div class="card" style="border-left:5px solid #4CAF50;"><div class="card-header"><span><i class="fas fa-truck"></i> Alamat Domisili / Pengiriman</span></div><p>' + escapeHtml(data.alamatDomisili || 'Belum diisi') + '</p></div>';
+
+        // Kartu Foto KTP
+        html += '<div class="card"><div class="card-header"><span><i class="fas fa-image"></i> Foto KTP</span></div>';
+        if (data.ktp) {
+            html += '<div style="display:flex; align-items:center; gap:15px;"><img src="' + data.ktp + '" style="max-width:200px; max-height:150px; border-radius:8px; border:1px solid #ddd;"><span style="font-size:13px; color:#4CAF50;"><i class="fas fa-check-circle"></i> Terupload</span></div>';
+        } else {
+            html += '<span style="color:#d32f2f;">Belum diupload</span>';
+        }
+        html += '</div>';
+
+        // Tombol aksi
+        html += '<div style="display:flex; gap:15px; margin-top:20px;">';
+        html += '<button class="button button-danger" onclick="renderFormDataMaster()"><i class="fas fa-arrow-left"></i> Kembali (Edit)</button>';
+        html += '<button class="button button-success" style="font-size:16px; padding:12px 24px;" onclick="finalisasiSimpanDataMaster()"><i class="fas fa-check-double"></i> Konfirmasi & Simpan Akhir</button>';
+        html += '</div>';
+
+        areaKonten.innerHTML = html;
+    }
+    // ===== AKHIR BLOK 6.2.2 =====
+
+    // ===== BLOK 6.2.3 - FINALISASI SIMPAN DATA MASTER =====
+    function finalisasiSimpanDataMaster() {
+        // Ambil data sementara
+        var dataTemp = JSON.parse(localStorage.getItem('2r_data_master_temp') || '{}');
+        if (!dataTemp || !dataTemp.nama) {
+            tampilkanToast('Data tidak valid, silakan ulangi!', 'error');
+            return;
+        }
+
+        var user = JSON.parse(localStorage.getItem('2r_user') || '{}');
+        var dataAkun = getDataAkun();
+
+        // Update data user
+        user.nama = dataTemp.nama;
+        user.email = dataTemp.email;
+        user.nomorHp = dataTemp.nomorHp;
+        user.alamatKTP = dataTemp.alamatKTP;
+        user.alamatDomisili = dataTemp.alamatDomisili;
+        user.alamat = dataTemp.alamatDomisili || dataTemp.alamatKTP;
+        user.ktp = dataTemp.ktp;
+
+        // Cari dan update di database akun
+        var ditemukan = false;
+        for (var i = 0; i < dataAkun.length; i++) {
+            if (dataAkun[i].id === user.id) {
+                dataAkun[i].nama = user.nama;
+                dataAkun[i].email = user.email;
+                dataAkun[i].nomorHp = user.nomorHp;
+                dataAkun[i].alamatKTP = user.alamatKTP;
+                dataAkun[i].alamatDomisili = user.alamatDomisili;
+                dataAkun[i].alamat = user.alamat;
+                dataAkun[i].ktp = user.ktp;
+                dataAkun[i].dataLengkap = true;
+                ditemukan = true;
+                break;
+            }
+        }
+
+        if (ditemukan) {
+            localStorage.setItem('2r_user', JSON.stringify(user));
+            simpanDataAkun(dataAkun);
+            localStorage.removeItem('2r_data_master_temp');
+            localStorage.removeItem('2r_ktp_temp_master');
+            document.getElementById('userNama').textContent = user.nama;
+            tampilkanToast('Data Master Akun berhasil disimpan!', 'success');
+            renderDashboard();
+        } else {
+            tampilkanToast('Terjadi kesalahan saat menyimpan data!', 'error');
+        }
+    }
+    // ===== AKHIR BLOK 6.2.3 =====
+</script>
+<!-- ===== AKHIR BLOK 6.2 ===== -->
+
+<!-- ============================================================ -->
+<!-- AKHIR BAGIAN 6                                               -->
+<!-- ============================================================ -->
+<!-- ============================================================ -->
+<!-- BAGIAN 7 - JAVASCRIPT MANAJEMEN STOK GUDANG & KELOLA PRODUK   -->
+<!-- ============================================================ -->
+
+<!-- ===== BLOK 7.1 - JS_RENDER_MANAJEMEN_STOK_GUDANG ===== -->
+<script>
+    // ===== BLOK 7.1.1 - RENDER HALAMAN MANAJEMEN STOK GUDANG =====
+    function renderManajemenStokGudang() {
+        // Mengambil data user yang sedang login
+        var user = JSON.parse(localStorage.getItem('2r_user') || '{}');
+        var areaKonten = document.getElementById('mainContent');
+        // Mengambil semua produk gudang dari localStorage
+        var semuaProdukGudang = JSON.parse(localStorage.getItem('2r_produk_gudang') || '[]');
+        // Filter produk milik toko yang sedang login
+        var produkSaya = semuaProdukGudang.filter(function(p) { return p.tokoId === user.id; });
+        // Menghitung total stok
+        var totalStok = 0;
+        for (var i = 0; i < produkSaya.length; i++) {
+            totalStok += produkSaya[i].jumlahStok;
+        }
+        // Membangun HTML header
+        var html = '<div class="page-header"><h2>Manajemen Stok Gudang</h2><p>Total Produk: <strong>' + produkSaya.length + '</strong> | Total Stok: <strong>' + totalStok + '</strong></p></div>';
+        // Tombol aksi
+        html += '<div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:15px;">';
+        html += '<button class="button button-primary" onclick="bukaFormTambahProdukGudang()"><i class="fas fa-plus"></i> Tambah Produk Baru</button>';
+        html += '<button class="button button-success" onclick="downloadExcelStokGudang()"><i class="fas fa-file-excel"></i> Download Excel</button></div>';
+        // Filter buttons
+        html += '<div style="display:flex; gap:10px; margin-bottom:15px; flex-wrap:wrap;">';
+        html += '<button class="button button-primary button-small" onclick="tampilkanProdukGudang(\'semua\')">Semua</button>';
+        html += '<button class="button button-success button-small" onclick="tampilkanProdukGudang(\'terlaris\')">Terlaris</button>';
+        html += '<button class="button button-warning button-small" onclick="tampilkanProdukGudang(\'tidakLaku\')">Tidak Laku</button>';
+        html += '<button class="button button-danger button-small" onclick="tampilkanProdukGudang(\'kadaluarsa\')">Mendekati Kadaluarsa</button></div>';
+        // Tabel produk
+        html += '<div id="tabelProdukGudang">' + tampilkanTabelProdukGudang(produkSaya, 'semua') + '</div>';
+        // Form tambah produk (tersembunyi)
+        html += '<div id="formTambahProdukGudang" class="hidden" style="margin-top:20px;">' + renderFormTambahProdukGudang() + '</div>';
+        // Tampilkan ke area konten
+        areaKonten.innerHTML = html;
+    }
+    // ===== AKHIR BLOK 7.1.1 =====
+
+    // ===== BLOK 7.1.2 - RENDER FORM TAMBAH PRODUK GUDANG =====
+    function renderFormTambahProdukGudang() {
+        // Membangun HTML form tambah produk
+        var html = '<div class="card"><div class="card-header">Tambah Produk Baru <button class="button button-danger button-small" onclick="tutupFormTambahProdukGudang()"><i class="fas fa-times"></i> Tutup</button></div>';
+        html += '<div class="grid-2"><div><label class="form-label">Nama Produk</label><input type="text" id="gudangNamaProduk" class="form-input" placeholder="Nama produk"></div>';
+        html += '<div><label class="form-label">Kode Produk (Barcode)</label><div style="display:flex; gap:5px;"><input type="text" id="gudangKodeProduk" class="form-input" placeholder="Scan atau input manual"><button class="button button-primary button-small" onclick="scanBarcodeProduk()"><i class="fas fa-camera"></i> Scan</button></div></div>';
+        html += '<div><label class="form-label">Harga Beli (Modal)</label><input type="number" id="gudangHargaBeli" class="form-input" placeholder="Harga modal"></div>';
+        html += '<div><label class="form-label">Harga Jual</label><input type="number" id="gudangHargaJual" class="form-input" placeholder="Harga jual"></div>';
+        html += '<div><label class="form-label">Jumlah Stok</label><input type="number" id="gudangJumlahStok" class="form-input" placeholder="Jumlah stok"></div>';
+        html += '<div><label class="form-label">Jenis Produk</label><select id="gudangJenis" class="form-input"><option value="Makanan">Makanan</option><option value="Minuman">Minuman</option><option value="Obat-Obatan">Obat-Obatan</option><option value="Pakaian">Pakaian</option><option value="Elektronik">Elektronik</option><option value="Lainnya">Lainnya</option></select></div>';
+        html += '<div><label class="form-label">Satuan</label><select id="gudangSatuan" class="form-input"><option value="Pcs">Pcs</option><option value="Liter">Liter</option><option value="Kg">Kg</option><option value="Box">Box</option><option value="Kardus">Kardus</option><option value="Lusin">Lusin</option></select></div>';
+        html += '<div><label class="form-label">Tanggal Kadaluarsa</label><input type="date" id="gudangTanggalKadaluarsa" class="form-input"></div>';
+        html += '<div><label class="form-label">Upload Foto Produk</label><input type="file" id="gudangFotoProduk" multiple accept=".jpg,.jpeg,.png" style="display:none;"><button class="button button-primary button-small" onclick="document.getElementById(\'gudangFotoProduk\').click();">Pilih Foto</button><span id="gudangNamaFoto" style="font-size:12px; color:#888; margin-left:10px;">Belum ada foto</span></div></div>';
+        html += '<div class="grid-2" style="margin-top:10px;"><div><label class="form-label">Tanggal Input</label><input type="date" id="gudangTanggalInput" class="form-input"></div>';
+        html += '<div><label class="form-label">Penginput</label><input type="text" id="gudangPenginput" class="form-input" placeholder="Nama penginput"></div></div>';
+        html += '<button class="button button-primary margin-top-10" onclick="simpanProdukGudang()"><i class="fas fa-save"></i> Simpan Produk</button></div>';
+        return html;
+    }
+    // ===== AKHIR BLOK 7.1.2 =====
+
+    // ===== BLOK 7.1.3 - BUKA & TUTUP FORM TAMBAH PRODUK =====
+    function bukaFormTambahProdukGudang() {
+        var form = document.getElementById('formTambahProdukGudang');
+        if (form) {
+            form.classList.remove('hidden');
+            form.scrollIntoView({ behavior: 'smooth' });
+            // Pasang event listener foto setiap kali form dibuka
+            setTimeout(function() { pasangEventListenerFotoGudang(); }, 100);
+        }
+    }
+    function tutupFormTambahProdukGudang() {
+        var form = document.getElementById('formTambahProdukGudang');
+        if (form) form.classList.add('hidden');
+    }
+    // ===== AKHIR BLOK 7.1.3 =====
+
+    // ===== BLOK 7.1.4 - PASANG EVENT LISTENER FOTO UPLOAD =====
+    function pasangEventListenerFotoGudang() {
+        var input = document.getElementById('gudangFotoProduk');
+        if (input) {
+            // Hapus listener lama jika ada (untuk mencegah dobel)
+            var listener = function(e) {
+                var file = e.target.files[0];
+                if (file) {
+                    document.getElementById('gudangNamaFoto').textContent = file.name;
+                    var reader = new FileReader();
+                    reader.onload = function(ev) {
+                        localStorage.setItem('2r_produk_gudang_foto_temp', ev.target.result);
+                    };
+                    reader.readAsDataURL(file);
+                }
+            };
+            input.removeEventListener('change', listener);
+            input.addEventListener('change', listener);
+        }
+    }
+    // ===== AKHIR BLOK 7.1.4 =====
+
+    // ===== BLOK 7.1.5 - SIMPAN PRODUK GUDANG =====
+    function simpanProdukGudang() {
+        // Ambil data user
+        var user = JSON.parse(localStorage.getItem('2r_user') || '{}');
+        // Ambil nilai dari form
+        var nama = document.getElementById('gudangNamaProduk').value.trim();
+        var kode = document.getElementById('gudangKodeProduk').value.trim();
+        var hargaBeli = document.getElementById('gudangHargaBeli').value.trim();
+        var hargaJual = document.getElementById('gudangHargaJual').value.trim();
+        var stok = document.getElementById('gudangJumlahStok').value.trim();
+        var jenis = document.getElementById('gudangJenis').value;
+        var satuan = document.getElementById('gudangSatuan').value;
+        var kadaluarsa = document.getElementById('gudangTanggalKadaluarsa').value;
+        var foto = localStorage.getItem('2r_produk_gudang_foto_temp') || '';
+        var tanggalInput = document.getElementById('gudangTanggalInput').value;
+        var penginput = document.getElementById('gudangPenginput').value.trim();
+
+        // Validasi data wajib
+        if (!nama || !hargaBeli || !hargaJual || !stok || !kadaluarsa || !tanggalInput || !penginput) {
+            tampilkanToast('Semua data wajib diisi!', 'warning');
+            return;
+        }
+        // Validasi harga dan stok harus positif
+        if (parseInt(hargaBeli) <= 0 || parseInt(hargaJual) <= 0 || parseInt(stok) < 0) {
+            tampilkanToast('Harga dan stok harus bernilai positif!', 'warning');
+            return;
+        }
+        // Validasi tanggal kadaluarsa tidak boleh kurang dari hari ini
+        var hariIni = new Date();
+        hariIni.setHours(0, 0, 0, 0);
+        if (new Date(kadaluarsa) < hariIni) {
+            tampilkanToast('Tanggal kadaluarsa tidak boleh kurang dari hari ini!', 'warning');
+            return;
+        }
+        // Persiapkan foto
+        var arrayFoto = foto ? [foto] : [];
+
+        // Buat objek produk baru dengan data input manual
+        var produkBaru = {
+            id: Date.now(),
+            tokoId: user.id,
+            namaProduk: nama,
+            kodeProduk: kode || '-',
+            hargaBeli: parseInt(hargaBeli),
+            hargaJual: parseInt(hargaJual),
+            jumlahStok: parseInt(stok),
+            jenis: jenis,
+            satuan: satuan,
+            tanggalKadaluarsa: kadaluarsa,
+            fotoProduk: arrayFoto,
+            tanggalInput: tanggalInput,
+            namaPenginput: penginput,
+            tanggalMasuk: new Date().toISOString(),
+            status: 'Aktif',
+            totalTerjual: 0
+        };
+
+        // Ambil data produk yang sudah ada, lalu tambahkan produk baru
+        var semuaProdukGudang = JSON.parse(localStorage.getItem('2r_produk_gudang') || '[]');
+        semuaProdukGudang.push(produkBaru);
+        localStorage.setItem('2r_produk_gudang', JSON.stringify(semuaProdukGudang));
+        // Hapus foto sementara dari localStorage
+        localStorage.removeItem('2r_produk_gudang_foto_temp');
+
+        // Reset semua field form
+        document.getElementById('gudangNamaProduk').value = '';
+        document.getElementById('gudangKodeProduk').value = '';
+        document.getElementById('gudangHargaBeli').value = '';
+        document.getElementById('gudangHargaJual').value = '';
+        document.getElementById('gudangJumlahStok').value = '';
+        document.getElementById('gudangTanggalKadaluarsa').value = '';
+        document.getElementById('gudangTanggalInput').value = '';
+        document.getElementById('gudangPenginput').value = '';
+        document.getElementById('gudangNamaFoto').textContent = 'Belum ada foto';
+
+        // Tutup form tambah produk dan refresh halaman
+        tutupFormTambahProdukGudang();
+        renderManajemenStokGudang();
+        tampilkanToast('Produk berhasil ditambahkan ke gudang!', 'success');
+    }
+    // ===== AKHIR BLOK 7.1.5 =====
+</script>
+<!-- ===== AKHIR BLOK 7.1 ===== -->
+
+<!-- ===== BLOK 7.2 - JS_TABEL_PRODUK_GUDANG & FILTER ===== -->
+<script>
+    // ===== BLOK 7.2.1 - TAMPILKAN TABEL PRODUK GUDANG (DENGAN BARIS TOTAL) =====
+    function tampilkanTabelProdukGudang(dataProduk, filter) {
+        var dataFilter = [];
+        // Logika filter
+        if (filter === 'semua') {
+            dataFilter = dataProduk;
+        } else if (filter === 'terlaris') {
+            // Urutkan berdasarkan total terjual descending, ambil 10 teratas
+            dataFilter = dataProduk.slice().sort(function(a, b) {
+                return b.totalTerjual - a.totalTerjual;
+            }).slice(0, 10);
+        } else if (filter === 'tidakLaku') {
+            // Produk yang tidak pernah terjual dan stok lebih dari 10
+            dataFilter = dataProduk.filter(function(p) {
+                return p.totalTerjual === 0 && p.jumlahStok > 10;
+            });
+        } else if (filter === 'kadaluarsa') {
+            // Produk yang kadaluarsanya dalam 30 hari ke depan
+            var hariIni = new Date();
+            dataFilter = dataProduk.filter(function(p) {
+                var kad = new Date(p.tanggalKadaluarsa);
+                var selisih = Math.ceil((kad - hariIni) / (1000 * 60 * 60 * 24));
+                return selisih <= 30 && selisih >= 0;
+            });
+        }
+
+        // Jika data kosong setelah filter
+        if (dataFilter.length === 0) {
+            return '<div class="empty-state"><i class="fas fa-box-open"></i><h3>Tidak ada produk</h3></div>';
+        }
+
+        // Hitung total untuk baris bawah
+        var totalStok = 0, totalBeli = 0, totalJual = 0;
+        for (var i = 0; i < dataFilter.length; i++) {
+            totalStok += dataFilter[i].jumlahStok;
+            totalBeli += dataFilter[i].hargaBeli * dataFilter[i].jumlahStok;
+            totalJual += dataFilter[i].hargaJual * dataFilter[i].jumlahStok;
+        }
+        var totalKeuntungan = totalJual - totalBeli;
+
+        // Bangun HTML tabel
+        var html = '<div class="table-container"><table class="table"><thead><tr><th>Nama Produk</th><th>Kode</th><th>Harga Beli</th><th>Harga Jual</th><th>Stok</th><th>Jenis</th><th>Satuan</th><th>Kadaluarsa</th><th>Tanggal Input</th><th>Penginput</th><th>Terjual</th><th>Aksi</th></tr></thead><tbody>';
+        for (var i = 0; i < dataFilter.length; i++) {
+            var p = dataFilter[i];
+            // Tentukan badge status kadaluarsa
+            var badge = 'badge-success';
+            var kad = new Date(p.tanggalKadaluarsa);
+            var selisih = Math.ceil((kad - new Date()) / (1000 * 60 * 60 * 24));
+            if (selisih <= 30 && selisih >= 0) {
+                badge = 'badge-warning';
+            } else if (selisih < 0) {
+                badge = 'badge-danger';
+            }
+            html += '<tr><td>' + escapeHtml(p.namaProduk) + '</td><td>' + escapeHtml(p.kodeProduk) + '</td><td>Rp ' + p.hargaBeli + '</td><td>Rp ' + p.hargaJual + '</td><td>' + p.jumlahStok + '</td><td>' + escapeHtml(p.jenis) + '</td><td>' + escapeHtml(p.satuan) + '</td><td><span class="badge ' + badge + '">' + p.tanggalKadaluarsa + '</span></td><td>' + (p.tanggalInput || '-') + '</td><td>' + escapeHtml(p.namaPenginput || '-') + '</td><td>' + p.totalTerjual + '</td><td>';
+            html += '<button class="button button-primary button-extra-small" onclick="renderEditProdukGudang(' + p.id + ')"><i class="fas fa-edit"></i> Edit</button>';
+            html += '<button class="button button-danger button-extra-small" onclick="hapusProdukGudang(' + p.id + ')"><i class="fas fa-trash"></i> Hapus</button></td></tr>';
+        }
+        // Baris total
+        html += '<tr style="background:#f0fdf4; font-weight:700; border-top:3px solid #2e7d32;"><td colspan="2" style="text-align:right;">TOTAL</td><td style="color:#d32f2f;">Rp ' + totalBeli.toLocaleString('id-ID') + '</td><td style="color:#1976d2;">Rp ' + totalJual.toLocaleString('id-ID') + '</td><td>' + totalStok + '</td><td colspan="2"></td><td colspan="2"></td><td></td><td></td><td><span style="color:#2e7d32;">Keuntungan: Rp ' + totalKeuntungan.toLocaleString('id-ID') + '</span></td></tr>';
+        html += '</tbody></table></div>';
+        return html;
+    }
+    // ===== AKHIR BLOK 7.2.1 =====
+
+    // ===== BLOK 7.2.2 - TAMPILKAN PRODUK GUDANG DENGAN FILTER =====
+    function tampilkanProdukGudang(filter) {
+        var user = JSON.parse(localStorage.getItem('2r_user') || '{}');
+        var semua = JSON.parse(localStorage.getItem('2r_produk_gudang') || '[]');
+        var saya = semua.filter(function(p) { return p.tokoId === user.id; });
+        var tabel = document.getElementById('tabelProdukGudang');
+        if (tabel) {
+            tabel.innerHTML = tampilkanTabelProdukGudang(saya, filter);
+        }
+    }
+    // ===== AKHIR BLOK 7.2.2 =====
+
+    // ===== BLOK 7.2.3 - HAPUS PRODUK GUDANG =====
+    function hapusProdukGudang(id) {
+        if (!confirm('Yakin ingin menghapus produk ini secara permanen?')) return;
+        var semua = JSON.parse(localStorage.getItem('2r_produk_gudang') || '[]');
+        var baru = [];
+        for (var i = 0; i < semua.length; i++) {
+            if (semua[i].id !== id) baru.push(semua[i]);
+        }
+        localStorage.setItem('2r_produk_gudang', JSON.stringify(baru));
+        renderManajemenStokGudang();
+        tampilkanToast('Produk berhasil dihapus!', 'success');
+    }
+    // ===== AKHIR BLOK 7.2.3 =====
+</script>
+<!-- ===== AKHIR BLOK 7.2 ===== -->
+
+<!-- ===== BLOK 7.3 - JS_EDIT_PRODUK_GUDANG ===== -->
+<script>
+    // ===== BLOK 7.3.1 - RENDER FORM EDIT PRODUK GUDANG =====
+    function renderEditProdukGudang(id) {
+        // Ambil data produk yang akan diedit
+        var semua = JSON.parse(localStorage.getItem('2r_produk_gudang') || '[]');
+        var target = null;
+        for (var i = 0; i < semua.length; i++) {
+            if (semua[i].id === id) {
+                target = semua[i];
+                break;
+            }
+        }
+        if (!target) {
+            tampilkanToast('Produk tidak ditemukan!', 'error');
+            return;
+        }
+        var areaKonten = document.getElementById('mainContent');
+        var html = '<div class="page-header"><h2>Edit Produk Gudang</h2><p>Ubah data produk yang sudah ada.</p></div>';
+        html += '<div class="card"><div class="card-header">Form Edit Produk <button class="button button-danger button-small" onclick="renderKelolaProduk()"><i class="fas fa-times"></i> Batal</button></div>';
+        html += '<div class="grid-2"><div><label class="form-label">Nama Produk</label><input type="text" id="editGudangNamaProduk" class="form-input" value="' + escapeHtml(target.namaProduk) + '"></div>';
+        html += '<div><label class="form-label">Kode Produk</label><input type="text" id="editGudangKodeProduk" class="form-input" value="' + escapeHtml(target.kodeProduk) + '"></div>';
+        html += '<div><label class="form-label">Harga Beli</label><input type="number" id="editGudangHargaBeli" class="form-input" value="' + target.hargaBeli + '"></div>';
+        html += '<div><label class="form-label">Harga Jual</label><input type="number" id="editGudangHargaJual" class="form-input" value="' + target.hargaJual + '"></div>';
+        html += '<div><label class="form-label">Jumlah Stok</label><input type="number" id="editGudangJumlahStok" class="form-input" value="' + target.jumlahStok + '"></div>';
+        html += '<div><label class="form-label">Jenis</label><select id="editGudangJenis" class="form-input">';
+        var jenisList = ['Makanan', 'Minuman', 'Obat-Obatan', 'Pakaian', 'Elektronik', 'Lainnya'];
+        for (var i = 0; i < jenisList.length; i++) {
+            var selected = jenisList[i] === target.jenis ? 'selected' : '';
+            html += '<option value="' + jenisList[i] + '" ' + selected + '>' + jenisList[i] + '</option>';
+        }
+        html += '</select></div><div><label class="form-label">Satuan</label><select id="editGudangSatuan" class="form-input">';
+        var satuanList = ['Pcs', 'Liter', 'Kg', 'Box', 'Kardus', 'Lusin'];
+        for (var i = 0; i < satuanList.length; i++) {
+            var selected = satuanList[i] === target.satuan ? 'selected' : '';
+            html += '<option value="' + satuanList[i] + '" ' + selected + '>' + satuanList[i] + '</option>';
+        }
+        html += '</select></div><div><label class="form-label">Tanggal Kadaluarsa</label><input type="date" id="editGudangTanggalKadaluarsa" class="form-input" value="' + target.tanggalKadaluarsa + '"></div>';
+        html += '<div><label class="form-label">Tanggal Input</label><input type="date" id="editGudangTanggalInput" class="form-input" value="' + (target.tanggalInput || '') + '"></div>';
+        html += '<div><label class="form-label">Penginput</label><input type="text" id="editGudangPenginput" class="form-input" value="' + escapeHtml(target.namaPenginput || '') + '"></div>';
+        html += '<div style="grid-column:1/-1;"><label class="form-label">Foto Produk</label>';
+        if (target.fotoProduk && target.fotoProduk.length > 0) {
+            html += '<div style="margin-bottom:10px;"><img src="' + target.fotoProduk[0] + '" style="width:100px;height:100px;object-fit:cover;border-radius:6px;"></div>';
+        } else {
+            html += '<p style="color:#888;font-size:13px;">Belum ada foto</p>';
+        }
+        html += '<input type="file" id="editGudangFotoProduk" accept=".jpg,.jpeg,.png" style="display:none;">';
+        html += '<button class="button button-primary button-small" onclick="document.getElementById(\'editGudangFotoProduk\').click();">Pilih Foto Baru</button>';
+        html += '<span id="editGudangNamaFoto" style="font-size:12px;color:#888;margin-left:10px;">Kosongkan jika tidak ganti</span></div></div>';
+        html += '<button class="button button-primary margin-top-10" onclick="simpanEditProdukGudang(' + target.id + ')"><i class="fas fa-save"></i> Simpan Perubahan</button></div>';
+        areaKonten.innerHTML = html;
+        setTimeout(function() { pasangEventListenerFotoEdit(); }, 300);
+    }
+    // ===== AKHIR BLOK 7.3.1 =====
+
+    // ===== BLOK 7.3.2 - PASANG EVENT LISTENER FOTO EDIT =====
+    function pasangEventListenerFotoEdit() {
+        var input = document.getElementById('editGudangFotoProduk');
+        if (input) {
+            var listener = function(e) {
+                var file = e.target.files[0];
+                if (file) {
+                    document.getElementById('editGudangNamaFoto').textContent = file.name;
+                    var reader = new FileReader();
+                    reader.onload = function(ev) {
+                        localStorage.setItem('2r_edit_produk_gudang_foto_temp', ev.target.result);
+                    };
+                    reader.readAsDataURL(file);
+                }
+            };
+            input.removeEventListener('change', listener);
+            input.addEventListener('change', listener);
+        }
+    }
+    // ===== AKHIR BLOK 7.3.2 =====
+
+    // ===== BLOK 7.3.3 - SIMPAN EDIT PRODUK GUDANG =====
+    function simpanEditProdukGudang(id) {
+        var semua = JSON.parse(localStorage.getItem('2r_produk_gudang') || '[]');
+        var index = -1;
+        for (var i = 0; i < semua.length; i++) {
+            if (semua[i].id === id) {
+                index = i;
+                break;
+            }
+        }
+        if (index === -1) {
+            tampilkanToast('Produk tidak ditemukan!', 'error');
+            return;
+        }
+        var nama = document.getElementById('editGudangNamaProduk').value.trim();
+        var kode = document.getElementById('editGudangKodeProduk').value.trim();
+        var hargaBeli = document.getElementById('editGudangHargaBeli').value.trim();
+        var hargaJual = document.getElementById('editGudangHargaJual').value.trim();
+        var stok = document.getElementById('editGudangJumlahStok').value.trim();
+        var jenis = document.getElementById('editGudangJenis').value;
+        var satuan = document.getElementById('editGudangSatuan').value;
+        var kadaluarsa = document.getElementById('editGudangTanggalKadaluarsa').value;
+        var fotoBaru = localStorage.getItem('2r_edit_produk_gudang_foto_temp') || '';
+        var tanggalInput = document.getElementById('editGudangTanggalInput').value;
+        var penginput = document.getElementById('editGudangPenginput').value.trim();
+
+        if (!nama || !hargaBeli || !hargaJual || !stok || !kadaluarsa || !tanggalInput || !penginput) {
+            tampilkanToast('Semua data wajib diisi!', 'warning');
+            return;
+        }
+        semua[index].namaProduk = nama;
+        semua[index].kodeProduk = kode || '-';
+        semua[index].hargaBeli = parseInt(hargaBeli);
+        semua[index].hargaJual = parseInt(hargaJual);
+        semua[index].jumlahStok = parseInt(stok);
+        semua[index].jenis = jenis;
+        semua[index].satuan = satuan;
+        semua[index].tanggalKadaluarsa = kadaluarsa;
+        semua[index].tanggalInput = tanggalInput;
+        semua[index].namaPenginput = penginput;
+        if (fotoBaru) {
+            semua[index].fotoProduk = [fotoBaru];
+            localStorage.removeItem('2r_edit_produk_gudang_foto_temp');
+        }
+        localStorage.setItem('2r_produk_gudang', JSON.stringify(semua));
+        renderKelolaProduk();
+        tampilkanToast('Produk berhasil diperbarui!', 'success');
+    }
+    // ===== AKHIR BLOK 7.3.3 =====
+</script>
+<!-- ===== AKHIR BLOK 7.3 ===== -->
+
+<!-- ===== BLOK 7.4 - JS_DOWNLOAD_EXCEL ===== -->
+<script>
+    // ===== BLOK 7.4.1 - DOWNLOAD EXCEL STOK GUDANG =====
+    function downloadExcelStokGudang() {
+        var user = JSON.parse(localStorage.getItem('2r_user') || '{}');
+        var semua = JSON.parse(localStorage.getItem('2r_produk_gudang') || '[]');
+        var produkSaya = semua.filter(function(p) { return p.tokoId === user.id; });
+        if (produkSaya.length === 0) {
+            tampilkanToast('Belum ada produk untuk di-download!', 'warning');
+            return;
+        }
+        var totalStok = 0, totalBeli = 0, totalJual = 0;
+        for (var i = 0; i < produkSaya.length; i++) {
+            totalStok += produkSaya[i].jumlahStok;
+            totalBeli += produkSaya[i].hargaBeli * produkSaya[i].jumlahStok;
+            totalJual += produkSaya[i].hargaJual * produkSaya[i].jumlahStok;
+        }
+        var totalKeuntungan = totalJual - totalBeli;
+        var csv = "Nama Produk;Kode Produk;Harga Beli;Harga Jual;Stok;Jenis;Satuan;Tanggal Kadaluarsa;Tanggal Input;Penginput;Total Terjual\n";
+        for (var i = 0; i < produkSaya.length; i++) {
+            var p = produkSaya[i];
+            csv += '"' + p.namaProduk + '";"' + p.kodeProduk + '";' + p.hargaBeli + ';' + p.hargaJual + ';' + p.jumlahStok + ';"' + p.jenis + '";"' + p.satuan + '";"' + p.tanggalKadaluarsa + '";"' + (p.tanggalInput || '-') + '";"' + (p.namaPenginput || '-') + '";' + p.totalTerjual + '\n';
+        }
+        csv += ';TOTAL;' + totalBeli + ';' + totalJual + ';' + totalStok + ';;;;;;' + totalKeuntungan + '\n';
+        var blob = new Blob(["\uFEFF" + csv], { type: 'text/csv;charset=utf-8;' });
+        var link = document.createElement('a');
+        var url = URL.createObjectURL(blob);
+        link.href = url;
+        link.download = 'Laporan_Stok_Gudang_' + new Date().toISOString().slice(0, 10) + '.csv';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+        tampilkanToast('Data berhasil didownload sebagai CSV/Excel!', 'success');
+    }
+    // ===== AKHIR BLOK 7.4.1 =====
+</script>
+<!-- ===== AKHIR BLOK 7.4 ===== -->
+
+<!-- ===== BLOK 7.5 - JS_RENDER_KELOLA_PRODUK ===== -->
+<script>
+    // ===== BLOK 7.5.1 - RENDER HALAMAN KELOLA PRODUK (CARD VIEW) =====
+    function renderKelolaProduk() {
+        var user = JSON.parse(localStorage.getItem('2r_user') || '{}');
+        var areaKonten = document.getElementById('mainContent');
+        var semua = JSON.parse(localStorage.getItem('2r_produk_gudang') || '[]');
+        var saya = semua.filter(function(p) { return p.tokoId === user.id; });
+        var html = '<div class="page-header"><h2>Kelola Produk</h2><p>Daftar produk yang tersimpan di gudang Anda. (Foto, Nama, Harga, Stok)</p></div>';
+        if (saya.length === 0) {
+            html += '<div class="card"><div class="empty-state"><i class="fas fa-box-open"></i><h3>Belum ada produk</h3><p>Silakan tambahkan produk baru melalui menu Manajemen Stok Gudang.</p></div></div>';
+        } else {
+            html += '<div style="display:flex; gap:10px; margin-bottom:15px; flex-wrap:wrap;">';
+            html += '<button class="button button-primary button-small" onclick="tampilkanProdukKelola(\'semua\')">Semua</button>';
+            html += '<button class="button button-success button-small" onclick="tampilkanProdukKelola(\'terlaris\')">Terlaris</button>';
+            html += '<button class="button button-warning button-small" onclick="tampilkanProdukKelola(\'tidakLaku\')">Tidak Laku</button>';
+            html += '<button class="button button-danger button-small" onclick="tampilkanProdukKelola(\'kadaluarsa\')">Mendekati Kadaluarsa</button></div>';
+            html += '<div id="gridProdukKelola">' + tampilkanGridProdukKelola(saya, 'semua') + '</div>';
+        }
+        areaKonten.innerHTML = html;
+    }
+    // ===== AKHIR BLOK 7.5.1 =====
+
+    // ===== BLOK 7.5.2 - TAMPILKAN PRODUK KELOLA (FILTER) =====
+    function tampilkanProdukKelola(filter) {
+        var user = JSON.parse(localStorage.getItem('2r_user') || '{}');
+        var semua = JSON.parse(localStorage.getItem('2r_produk_gudang') || '[]');
+        var saya = semua.filter(function(p) { return p.tokoId === user.id; });
+        var grid = document.getElementById('gridProdukKelola');
+        if (grid) {
+            grid.innerHTML = tampilkanGridProdukKelola(saya, filter);
+        }
+    }
+    // ===== AKHIR BLOK 7.5.2 =====
+
+    // ===== BLOK 7.5.3 - TAMPILKAN GRID PRODUK KELOLA =====
+    function tampilkanGridProdukKelola(dataProduk, filter) {
+        var dataFilter = [];
+        // Logika filter sama seperti tabel
+        if (filter === 'semua') {
+            dataFilter = dataProduk;
+        } else if (filter === 'terlaris') {
+            dataFilter = dataProduk.slice().sort(function(a, b) { return b.totalTerjual - a.totalTerjual; }).slice(0, 10);
+        } else if (filter === 'tidakLaku') {
+            dataFilter = dataProduk.filter(function(p) { return p.totalTerjual === 0 && p.jumlahStok > 10; });
+        } else if (filter === 'kadaluarsa') {
+            var hariIni = new Date();
+            dataFilter = dataProduk.filter(function(p) {
+                var kad = new Date(p.tanggalKadaluarsa);
+                var selisih = Math.ceil((kad - hariIni) / (1000 * 60 * 60 * 24));
+                return selisih <= 30 && selisih >= 0;
+            });
+        }
+        if (dataFilter.length === 0) {
+            return '<div class="empty-state"><i class="fas fa-box-open"></i><h3>Tidak ada produk</h3></div>';
+        }
+        var html = '<div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(200px, 1fr)); gap:20px; padding:5px;">';
+        for (var i = 0; i < dataFilter.length; i++) {
+            var p = dataFilter[i];
+            var fotoHtml = '';
+            if (p.fotoProduk && p.fotoProduk.length > 0) {
+                fotoHtml = '<img src="' + p.fotoProduk[0] + '" style="width:100%; height:180px; object-fit:cover; border-radius:8px; margin-bottom:10px;">';
+            } else {
+                fotoHtml = '<div style="width:100%; height:180px; background:#f0f0f0; border-radius:8px; display:flex; align-items:center; justify-content:center; color:#aaa; margin-bottom:10px;"><i class="fas fa-image" style="font-size:40px;"></i></div>';
+            }
+            html += '<div style="border:1px solid #eee; border-radius:10px; padding:15px; background:white; box-shadow:0 2px 4px rgba(0,0,0,0.05); display:flex; flex-direction:column; justify-content:space-between;">';
+            html += '<div>' + fotoHtml + '<h4 style="font-size:15px; font-weight:600; margin:0 0 5px 0; color:#333; text-align:center;">' + escapeHtml(p.namaProduk) + '</h4>';
+            html += '<p style="font-size:14px; font-weight:600; color:#FF6B00; margin:0 0 3px 0; text-align:center;">Rp ' + p.hargaJual + '</p>';
+            html += '<p style="font-size:13px; color:#888; margin:0; text-align:center;">Stok: ' + p.jumlahStok + ' ' + escapeHtml(p.satuan) + '</p></div>';
+            html += '<div style="display:flex; gap:8px; margin-top:15px; border-top:1px solid #f5f5f5; padding-top:12px;">';
+            html += '<button class="button button-primary button-small" style="flex:1;" onclick="renderEditProdukGudang(' + p.id + ')"><i class="fas fa-edit"></i> Edit</button>';
+            html += '<button class="button button-danger button-small" style="flex:1;" onclick="hapusProdukGudang(' + p.id + ')"><i class="fas fa-trash"></i> Hapus</button></div></div>';
+        }
+        html += '</div>';
+        return html;
+    }
+    // ===== AKHIR BLOK 7.5.3 =====
+</script>
+<!-- ===== AKHIR BLOK 7.5 ===== -->
+
+<!-- ============================================================ -->
+<!-- AKHIR BAGIAN 7                                               -->
+<!-- ============================================================ -->
+<!-- ============================================================ -->
+<!-- BAGIAN 8 - JAVASCRIPT PLACEHOLDER, EVENT HANDLERS & INIT      -->
+<!-- ============================================================ -->
+
+<!-- ===== BLOK 8.1 - JS_PLACEHOLDER_CUSTOMER ===== -->
+<script>
+    // ===== BLOK 8.1.1 - HELLOFRIENDS =====
+    function renderHelloFriends() {
+        var areaKonten = document.getElementById('mainContent');
+        var html = '<div class="page-header"><h2>HelloFriends</h2><p>Platform Live Streaming & Live Selling.</p></div>';
+        html += '<div class="card" style="background:#fff3cd; border:1px solid #ffc107; text-align:center; padding:50px;">';
+        html += '<i class="fas fa-video" style="font-size:60px; color:#FF6B00; margin-bottom:20px;"></i>';
+        html += '<h3 style="color:#856404;">Fitur Sedang Dalam Pengembangan</h3>';
+        html += '<p style="color:#856404; font-size:14px;">HelloFriends akan segera hadir! Nikmati fitur live streaming, live selling, dan interaksi real-time antara penjual dan pembeli.</p>';
+        html += '<p style="color:#888; font-size:13px; margin-top:10px;">Estimasi rilis: Segera</p>';
+        html += '</div>';
+        areaKonten.innerHTML = html;
+    }
+    // ===== AKHIR BLOK 8.1.1 =====
+
+    // ===== BLOK 8.1.2 - DASHBOARD CUSTOMER =====
+    function renderDashboardCustomer() {
+        var user = JSON.parse(localStorage.getItem('2r_user') || '{}');
+        var areaKonten = document.getElementById('mainContent');
+        var html = '<div class="page-header"><h2>Dasbor Customer</h2><p>Selamat datang, <strong>' + escapeHtml(user.nama) + '</strong>! Berikut ringkasan aktivitas Anda.</p></div>';
+        html += '<div class="widget-grid">';
+        html += '<div class="widget-card"><div class="widget-icon" style="color:#FF6B00;"><i class="fas fa-shopping-bag"></i></div><div class="widget-number">0</div><div class="widget-label">Total Belanja</div></div>';
+        html += '<div class="widget-card"><div class="widget-icon" style="color:#2196F3;"><i class="fas fa-coins"></i></div><div class="widget-number">Rp 0</div><div class="widget-label">Saldo</div></div>';
+        html += '<div class="widget-card"><div class="widget-icon" style="color:#4CAF50;"><i class="fas fa-star"></i></div><div class="widget-number">0</div><div class="widget-label">Poin</div></div>';
+        html += '</div>';
+        html += '<div class="card"><div class="card-header">Aktivitas Terbaru</div><div class="empty-state" style="padding:15px;"><p style="color:#888;">Belum ada aktivitas belanja.</p></div></div>';
+        areaKonten.innerHTML = html;
+    }
+    // ===== AKHIR BLOK 8.1.2 =====
+
+    // ===== BLOK 8.1.3 - FITUR PLACEHOLDER CUSTOMER =====
+    function renderLihatTokoTerdekat() {
+        renderPlaceholder('Lihat Toko Terdekat');
+    }
+    function renderLihatOjekTerdekat() {
+        renderPlaceholder('Lihat Ojek Terdekat');
+    }
+    function renderLihatProduk() {
+        renderPlaceholder('Lihat Produk');
+    }
+    function renderKeranjang() {
+        renderPlaceholder('Keranjang');
+    }
+    function renderChat() {
+        renderPlaceholder('Chat');
+    }
+    function renderPapanInformasi() {
+        renderPlaceholder('Papan Informasi');
+    }
+    function renderDaftarBelanja() {
+        renderPlaceholder('Daftar Belanja');
+    }
+    function renderRiwayatBelanja() {
+        renderPlaceholder('Riwayat Belanja');
+    }
+    function renderPembayaran() {
+        renderPlaceholder('Pembayaran');
+    }
+    function renderUlasanRating() {
+        renderPlaceholder('Ulasan & Rating');
+    }
+    function renderBantuanFAQ() {
+        renderPlaceholder('Bantuan & FAQ');
+    }
+    function renderNotifikasi() {
+        renderPlaceholder('Notifikasi');
+    }
+    function renderEditAkun() {
+        renderPlaceholder('Edit / Hapus Akun');
+    }
+    function renderBelanja() {
+        renderPlaceholder('Belanja');
+    }
+    function renderPesananSaya() {
+        renderPlaceholder('Pesanan Saya');
+    }
+    function renderPengajuanHapusAkun() {
+        renderPlaceholder('Pengajuan Hapus Akun');
+    }
+    function renderUploadProdukPublik() {
+        renderPlaceholder('Upload Produk Publik');
+    }
+    function renderScanBarcodeProduk() {
+        tampilkanToast('Fitur scan barcode menggunakan kamera sedang dalam pengembangan.', 'info');
+    }
+    // ===== AKHIR BLOK 8.1.3 =====
+</script>
+<!-- ===== AKHIR BLOK 8.1 ===== -->
+
+<!-- ===== BLOK 8.2 - JS_EVENT_HANDLERS ===== -->
+<script>
+    // ===== BLOK 8.2.1 - EVENT LOGOUT =====
+    document.getElementById('buttonLogout').addEventListener('click', function() {
+        if (confirm('Keluar dari aplikasi?')) {
+            localStorage.removeItem('2r_user');
+            localStorage.removeItem('2r_user_role');
+            location.reload();
+        }
+    });
+    // ===== AKHIR BLOK 8.2.1 =====
+
+    // ===== BLOK 8.2.2 - SIDEBAR RESPONSIVE (HAMBURGER & OVERLAY) =====
+    var tombolMenu = document.getElementById('menuToggle');
+    var sidebar = document.querySelector('.sidebar');
+    var overlay = document.getElementById('sidebarOverlay');
+
+    if (tombolMenu && sidebar && overlay) {
+        // Fungsi membuka sidebar
+        function bukaSidebar() {
+            sidebar.classList.add('open');
+            overlay.classList.add('active');
+        }
+        // Fungsi menutup sidebar
+        function tutupSidebar() {
+            sidebar.classList.remove('open');
+            overlay.classList.remove('active');
+        }
+
+        // Saat tombol hamburger diklik
+        tombolMenu.addEventListener('click', function(e) {
+            e.stopPropagation();
+            if (sidebar.classList.contains('open')) {
+                tutupSidebar();
+            } else {
+                bukaSidebar();
+            }
+        });
+
+        // Saat overlay diklik, sidebar menutup
+        overlay.addEventListener('click', function() {
+            tutupSidebar();
+        });
+
+        // Saat menu sidebar diklik di HP, sidebar otomatis menutup
+        document.querySelectorAll('.sidebar-menu-item').forEach(function(item) {
+            item.addEventListener('click', function() {
+                if (window.innerWidth <= 767) {
+                    tutupSidebar();
+                }
+            });
+        });
+    }
+
+    // Event resize window: jika layar berubah dari HP ke PC, sidebar dipaksa terbuka dan overlay hilang
+    window.addEventListener('resize', function() {
+        if (window.innerWidth > 767) {
+            var s = document.querySelector('.sidebar');
+            var o = document.getElementById('sidebarOverlay');
+            if (s && o) {
+                s.classList.remove('open');
+                o.classList.remove('active');
+            }
+        }
+    });
+    // ===== AKHIR BLOK 8.2.2 =====
+
+    // ===== BLOK 8.2.3 - TOGGLE FORM LOGIN / REGISTER =====
+    function toggleForm(tipe) {
+        var error = document.getElementById('authenticationError');
+        if (error) error.style.display = 'none';
+        var login = document.getElementById('loginForm');
+        var register = document.getElementById('registerForm');
+        if (tipe === 'register') {
+            login.classList.add('hidden-form');
+            register.classList.remove('hidden-form');
+        } else {
+            register.classList.add('hidden-form');
+            login.classList.remove('hidden-form');
+        }
+    }
+    // ===== AKHIR BLOK 8.2.3 =====
+
+    // ===== BLOK 8.2.4 - MODAL CLICK OUTSIDE =====
+    var semuaModal = document.querySelectorAll('.modal-overlay');
+    for (var i = 0; i < semuaModal.length; i++) {
+        semuaModal[i].onclick = function(e) {
+            if (e.target === this) {
+                this.classList.remove('active');
+            }
+        };
+    }
+    // ===== AKHIR BLOK 8.2.4 =====
+</script>
+<!-- ===== AKHIR BLOK 8.2 ===== -->
+
+<!-- ===== BLOK 8.3 - JS_INITIALIZATION ===== -->
+<script>
+    // ===== BLOK 8.3.1 - TAMPILKAN DASHBOARD SETELAH LOGIN =====
+    function tampilkanDashboard(user) {
+        // Validasi data user
+        if (!user || !user.nama) {
+            localStorage.removeItem('2r_user');
+            localStorage.removeItem('2r_user_role');
+            location.reload();
+            return;
+        }
+
+        // Sembunyikan halaman auth, tampilkan dashboard
+        document.getElementById('pageAuthentication').style.display = 'none';
+        document.getElementById('pageDashboard').style.display = 'block';
+
+        // Tampilkan nama user di navbar
+        document.getElementById('userNama').textContent = user.nama;
+
+        // Tampilkan role badge
+        var daftarRole = {
+            superadmin: 'SuperAdmin',
+            customer: 'Customer',
+            toko: 'Toko',
+            ojek: 'Ojek',
+            pedagang: 'Pedagang Pasar',
+            staf_admin: 'Staf Admin',
+            customer_service: 'Customer Service',
+            staf_owner_toko: 'Staf Owner Toko',
+            staf_owner_ojek: 'Staf Owner Ojek',
+            sponsor: 'Sponsor'
+        };
+        document.getElementById('roleBadge').textContent = daftarRole[user.role] || user.role;
+
+        // Bangun sidebar
+        document.getElementById('sidebarContainer').innerHTML = buatSidebarHTML(user.role);
+
+        // Setup navigasi sidebar (event listener)
+        setupNavigasiSidebar();
+
+        // CEK APAKAH DATA MASTER LENGKAP (Fitur Baru)
+        // Jika role selain SuperAdmin dan belum lengkap, arahkan ke form Data Master
+        if (!user.dataLengkap && user.role !== 'superadmin') {
+            navigasiKeHalaman('lengkapiDataMaster');
+            return;
+        }
+
+        // Tampilkan dashboard awal
+        renderDashboard();
+    }
+    // ===== AKHIR BLOK 8.3.1 =====
+
+    // ===== BLOK 8.3.2 - DOMContentLoaded =====
+    document.addEventListener('DOMContentLoaded', async function() {
+        // Pastikan SuperAdmin selalu ada
+        await inisialisasiSuperAdmin();
+
+        // Cek apakah user sudah login
+        var dataUser = localStorage.getItem('2r_user');
+        if (dataUser) {
+            var user = JSON.parse(dataUser);
+            tampilkanDashboard(user);
+        }
+    });
+    // ===== AKHIR BLOK 8.3.2 =====
+</script>
+<!-- ===== AKHIR BLOK 8.3 ===== -->
+
+<!-- ============================================================ -->
+<!-- AKHIR BAGIAN 8                                               -->
+<!-- ============================================================ -->
 </body>
 </html>
