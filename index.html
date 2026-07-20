@@ -12,30 +12,31 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-<!-- ===== BAGIAN 1 ===== -->
-<!-- ===== BAGIAN 2 - HTML LOGIN/REGISTER & DASHBOARD ===== -->
+<!-- ============================================================ -->
+<!-- BAGIAN 1 - HTML LENGKAP & CSS GLOBAL                           -->
+<!-- ============================================================ -->
 
-<!-- ===== BLOK 2.1 - HTML_LOGIN_REGISTER ===== -->
+<!-- ===== BLOK 1.1 - HTML LOGIN/REGISTER ===== -->
 <div id="pageAuthentication">
     <div class="authentication-wrapper">
         <div class="authentication-box">
             
-            <!-- ===== BLOK 2.1.1 - LOGO & JUDUL ===== -->
+            <!-- ===== BLOK 1.1.1 - LOGO & JUDUL ===== -->
             <div class="authentication-logo">
                 <i class="fas fa-store-alt"></i>
                 <h1>Toko Online <span style="color:#FF6B00;">2R</span></h1>
                 <p>Platform Belanja & Layanan Serba Ada</p>
             </div>
-            <!-- ===== AKHIR BLOK 2.1.1 ===== -->
+            <!-- ===== AKHIR BLOK 1.1.1 ===== -->
 
-            <!-- ===== BLOK 2.1.2 - AREA PESAN ERROR ===== -->
+            <!-- ===== BLOK 1.1.2 - AREA PESAN ERROR ===== -->
             <div class="authentication-error" id="authenticationError">
                 <i class="fas fa-exclamation-circle"></i> 
                 <span id="authenticationErrorText"></span>
             </div>
-            <!-- ===== AKHIR BLOK 2.1.2 ===== -->
+            <!-- ===== AKHIR BLOK 1.1.2 ===== -->
 
-            <!-- ===== BLOK 2.1.3 - FORM LOGIN ===== -->
+            <!-- ===== BLOK 1.1.3 - FORM LOGIN ===== -->
             <form class="authentication-form" id="loginForm">
                 <div class="form-group">
                     <label>Username</label>
@@ -62,9 +63,9 @@
                     <a onclick="toggleForm('register')">Daftar di sini</a>
                 </div>
             </form>
-            <!-- ===== AKHIR BLOK 2.1.3 ===== -->
+            <!-- ===== AKHIR BLOK 1.1.3 ===== -->
 
-            <!-- ===== BLOK 2.1.4 - FORM REGISTER ===== -->
+            <!-- ===== BLOK 1.1.4 - FORM REGISTER ===== -->
             <form class="authentication-form hidden-form" id="registerForm">
                 <div class="form-group">
                     <label>Pilih Role</label>
@@ -115,16 +116,16 @@
                     <a onclick="toggleForm('login')">Login di sini</a>
                 </div>
             </form>
-            <!-- ===== AKHIR BLOK 2.1.4 ===== -->
+            <!-- ===== AKHIR BLOK 1.1.4 ===== -->
         </div>
     </div>
 </div>
-<!-- ===== AKHIR BLOK 2.1 ===== -->
+<!-- ===== AKHIR BLOK 1.1 ===== -->
 
-<!-- ===== BLOK 2.2 - HTML_DASHBOARD_UTAMA ===== -->
+<!-- ===== BLOK 1.2 - HTML DASHBOARD UTAMA ===== -->
 <div id="pageDashboard" class="page-dashboard">
     
-    <!-- ===== BLOK 2.2.1 - NAVBAR ===== -->
+    <!-- ===== BLOK 1.2.1 - NAVBAR ===== -->
     <nav class="navbar">
         <div class="navbar-brand">
             <button id="menuToggle"><i class="fas fa-bars"></i></button>
@@ -136,23 +137,23 @@
             <button class="button-logout" id="buttonLogout"><i class="fas fa-sign-out-alt"></i> Keluar</button>
         </div>
     </nav>
-    <!-- ===== AKHIR BLOK 2.2.1 ===== -->
+    <!-- ===== AKHIR BLOK 1.2.1 ===== -->
 
-    <!-- ===== BLOK 2.2.2 - SIDEBAR ===== -->
+    <!-- ===== BLOK 1.2.2 - SIDEBAR ===== -->
     <aside class="sidebar" id="sidebarContainer"></aside>
-    <!-- ===== AKHIR BLOK 2.2.2 ===== -->
+    <!-- ===== AKHIR BLOK 1.2.2 ===== -->
 
-    <!-- ===== BLOK 2.2.3 - OVERLAY ===== -->
+    <!-- ===== BLOK 1.2.3 - OVERLAY ===== -->
     <div id="sidebarOverlay" class="sidebar-overlay"></div>
-    <!-- ===== AKHIR BLOK 2.2.3 ===== -->
+    <!-- ===== AKHIR BLOK 1.2.3 ===== -->
 
-    <!-- ===== BLOK 2.2.4 - KONTEN UTAMA ===== -->
+    <!-- ===== BLOK 1.2.4 - KONTEN UTAMA ===== -->
     <main class="content" id="mainContent"></main>
-    <!-- ===== AKHIR BLOK 2.2.4 ===== -->
+    <!-- ===== AKHIR BLOK 1.2.4 ===== -->
 </div>
-<!-- ===== AKHIR BLOK 2.2 ===== -->
+<!-- ===== AKHIR BLOK 1.2 ===== -->
 
-<!-- ===== BLOK 2.3 - HTML_MODALS ===== -->
+<!-- ===== BLOK 1.3 - HTML MODALS ===== -->
 <div class="modal-overlay" id="modalTolakAkun">
     <div class="modal">
         <div class="modal-header">
@@ -180,7 +181,7 @@
     </div>
 </div>
 
-<!-- ===== BLOK 2.3.3 - MODAL EDIT WILAYAH ===== -->
+<!-- ===== BLOK 1.3.3 - MODAL EDIT WILAYAH ===== -->
 <div class="modal-overlay" id="modalEditWilayah">
     <div class="modal">
         <div class="modal-header">
@@ -201,132 +202,732 @@
         </div>
     </div>
 </div>
-<!-- ===== AKHIR BLOK 2.3.3 ===== -->
-<!-- ===== AKHIR BLOK 2.3 ===== -->
-<!-- ===== AKHIR BAGIAN 2 ===== -->
+<!-- ===== AKHIR BLOK 1.3.3 ===== -->
+<!-- ===== AKHIR BLOK 1.3 ===== -->
 
-<!-- ===== BAGIAN 3 - CSS GLOBAL & RESET ===== -->
+<!-- ============================================================ -->
+<!-- BAGIAN 1.4 - CSS LENGKAP                                      -->
+<!-- ============================================================ -->
+
 <style>
-    /* ===== BLOK 3.1 - CSS_RESET_GLOBAL ===== */
-    * { margin:0; padding:0; box-sizing:border-box; }
-    body { font-family:'Poppins', sans-serif; background:#f5f7fa; min-height:100vh; }
-    .page-dashboard { display:none; }
-    .page-content { display:none; }
-    .page-content.active { display:block; }
-    .hidden { display:none !important; }
-    .hidden-form { display:none !important; }
-    .margin-top-10 { margin-top:10px; }
-    #toastContainer { position:fixed; top:20px; right:20px; z-index:99999; display:flex; flex-direction:column; gap:10px; }
-    .toast { padding:12px 20px; border-radius:8px; color:white; font-size:14px; font-weight:500; box-shadow:0 4px 12px rgba(0,0,0,0.15); animation:slideInRight 0.4s ease; min-width:250px; display:flex; align-items:center; gap:12px; }
-    .toast.success { background:#4CAF50; }
-    .toast.error { background:#F44336; }
-    .toast.warning { background:#FF9800; }
-    .toast.info { background:#2196F3; }
-    @keyframes slideInRight { from { transform:translateX(100%); opacity:0; } to { transform:translateX(0); opacity:1; } }
-    .empty-state { text-align:center; padding:30px 20px; color:#888; }
-    .empty-state i { font-size:40px; color:#ddd; display:block; margin-bottom:10px; }
-    #pageAuthentication { display:flex; justify-content:center; align-items:center; min-height:100vh; background:linear-gradient(135deg, #fff5f0, #ffe0cc); }
-    @keyframes fadeInOut { 0% { opacity:0; transform:translateY(-20px); } 20% { opacity:1; transform:translateY(0); } 80% { opacity:1; transform:translateY(0); } 100% { opacity:0; transform:translateY(-20px); } }
-    @keyframes blink { 0% { opacity:1; } 50% { opacity:0.5; } 100% { opacity:1; } }
-    .notif-berkedip { animation:blink 0.5s ease-in-out 3; }
-    .authentication-wrapper { width:100%; max-width:450px; padding:20px; }
-    .authentication-box { background:white; border-radius:15px; padding:35px; box-shadow:0 15px 40px rgba(0,0,0,0.1); }
-    .authentication-logo { text-align:center; margin-bottom:25px; }
-    .authentication-logo i { font-size:45px; color:#FF6B00; margin-bottom:10px; }
-    .authentication-logo h1 { font-size:26px; color:#333; }
-    .authentication-logo p { color:#888; font-size:14px; }
-    .authentication-error { display:none; background:#ffebee; color:#d32f2f; padding:12px; border-radius:8px; margin-bottom:15px; font-size:14px; }
-    .form-group { margin-bottom:15px; }
-    .form-group label { display:block; font-weight:600; font-size:13px; color:#555; margin-bottom:5px; }
-    .input-group { display:flex; align-items:center; background:#f8f9fa; border-radius:8px; padding:0 14px; border:2px solid transparent; transition:border-color 0.3s ease, background 0.3s ease; }
-    .input-group:focus-within { border-color:#FF6B00; background:white; }
-    .input-group i { color:#aaa; font-size:16px; width:30px; text-align:center; }
-    .input-group input, .input-group select { border:none; background:transparent; padding:13px 0; font-size:14px; width:100%; outline:none; font-family:'Poppins', sans-serif; }
-    .button-submit { width:100%; padding:14px; background:#FF6B00; color:white; border:none; border-radius:8px; font-size:16px; font-weight:700; cursor:pointer; transition:background 0.3s ease; }
-    .button-submit:hover { background:#e65c00; }
-    .authentication-footer { text-align:center; margin-top:18px; font-size:14px; color:#888; }
-    .authentication-footer a { color:#FF6B00; cursor:pointer; font-weight:600; text-decoration:none; }
-    .authentication-footer a:hover { text-decoration:underline; }
-    .navbar { background:white; padding:12px 30px; display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid #FF6B00; position:fixed; top:0; left:0; right:0; z-index:1000; }
-    .navbar-brand { font-size:20px; font-weight:700; color:#FF6B00; display:flex; align-items:center; gap:10px; }
-    .navbar-user { display:flex; align-items:center; gap:15px; }
-    .navbar-user .role-badge { background:#fff0e5; color:#FF6B00; padding:4px 12px; border-radius:15px; font-size:12px; font-weight:600; }
-    .button-logout { background:#f44336; color:white; border:none; padding:8px 16px; border-radius:6px; cursor:pointer; font-weight:600; font-size:13px; transition:background 0.3s ease; }
-    .button-logout:hover { background:#d32f2f; }
-    .sidebar { position:fixed; top:60px; left:0; bottom:0; width:250px; background:white; border-right:1px solid #eeeeee; padding-top:15px; overflow-y:auto; z-index:999; }
-    .sidebar-menu-title { font-size:10px; text-transform:uppercase; color:#bbbbbb; padding:15px 25px 8px; font-weight:700; letter-spacing:1.5px; }
-    .sidebar-menu-item { padding:11px 25px; cursor:pointer; color:#666666; font-weight:500; display:flex; align-items:center; gap:12px; font-size:14px; border-left:3px solid transparent; transition:background 0.2s ease, color 0.2s ease; }
-    .sidebar-menu-item:hover { background:#fdf6f0; color:#FF6B00; }
-    .sidebar-menu-item.active { background:#fff0e5; color:#FF6B00; border-left-color:#FF6B00; font-weight:600; }
-    .content { margin-left:250px; margin-top:60px; padding:25px; min-height:calc(100vh - 60px); background:#f8f9fa; }
-    .page-header { margin-bottom:20px; }
-    .page-header h2 { font-size:22px; color:#333333; }
-    .page-header p { color:#888888; font-size:14px; }
+    /* ========================================================== */
+    /* 1.4.1 - RESET DASAR & FONT                                  */
+    /* ========================================================== */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    body {
+        font-family: 'Poppins', sans-serif;
+        background: #f5f7fa;
+        min-height: 100vh;
+    }
 
-    .card { background:white; border-radius:10px; box-shadow:0 2px 8px rgba(0,0,0,0.04); margin-bottom:20px; padding:20px; border:1px solid #f0f0f0; }
-    .card-header { font-weight:600; font-size:15px; border-bottom:1px solid #f0f0f0; padding-bottom:12px; margin-bottom:15px; display:flex; justify-content:space-between; align-items:center; }
-    .widget-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:15px; margin-bottom:25px; }
-    .widget-card { background:white; border-radius:12px; padding:20px; box-shadow:0 2px 8px rgba(0,0,0,0.04); border:1px solid #f0f0f0; text-align:center; }
-    .widget-card .widget-icon { font-size:35px; margin-bottom:10px; }
-    .widget-card .widget-number { font-size:28px; font-weight:700; color:#333; }
-    .widget-card .widget-label { font-size:13px; color:#888; margin-top:5px; }
-    .grid-2 { display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:15px; }
-    .table-container { overflow-x:auto; }
-    .table { width:100%; border-collapse:collapse; font-size:13px; }
-    .table thead { background:#f8f9fa; }
-    .table thead th { padding:12px 14px; text-align:left; font-weight:600; color:#555; border-bottom:2px solid #eee; }
-    .table tbody td { padding:10px 14px; border-bottom:1px solid #f5f5f5; }
-    .badge { display:inline-block; padding:4px 12px; border-radius:12px; font-size:11px; font-weight:600; }
-    .badge-success { background:#e8f5e9; color:#2e7d32; }
-    .badge-warning { background:#fff3e0; color:#e65100; }
-    .badge-danger { background:#ffebee; color:#c62828; }
-    .form-input { width:100%; padding:10px 14px; border:1px solid #dddddd; border-radius:6px; font-size:14px; font-family:'Poppins', sans-serif; transition:border-color 0.3s ease; }
-    .form-input:focus { border-color:#FF6B00; outline:none; }
-    .form-label { font-size:12px; color:#888888; margin-bottom:4px; display:block; }
-    .button { padding:8px 18px; border-radius:6px; cursor:pointer; font-weight:600; font-size:13px; border:none; font-family:'Poppins', sans-serif; display:inline-flex; align-items:center; gap:6px; transition:background 0.3s ease; }
-    .button-primary { background:#FF6B00; color:white; }
-    .button-primary:hover { background:#e65c00; }
-    .button-success { background:#4CAF50; color:white; }
-    .button-success:hover { background:#388E3C; }
-    .button-danger { background:#F44336; color:white; }
-    .button-danger:hover { background:#D32F2F; }
-    .button-warning { background:#FF9800; color:white; }
-    .button-extra-small { padding:4px 10px; font-size:11px; }
-    .button-small { padding:6px 14px; font-size:12px; }
-    .modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:9999; display:none; justify-content:center; align-items:center; }
-    .modal-overlay.active { display:flex; }
-    .modal { background:white; border-radius:12px; max-width:500px; width:90%; padding:25px; }
-    .modal-header { display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #eeeeee; padding-bottom:12px; margin-bottom:15px; }
-    .modal-header h3 { font-size:18px; }
-    .modal-close { background:none; border:none; font-size:22px; cursor:pointer; color:#aaaaaa; transition:color 0.3s ease; }
-    .modal-close:hover { color:#333333; }
-    .modal-footer { display:flex; justify-content:flex-end; gap:10px; border-top:1px solid #eeeeee; padding-top:15px; margin-top:15px; }
-    .upload-area { border:2px dashed #dddddd; border-radius:10px; padding:25px; text-align:center; background:#fafafa; cursor:pointer; transition:border-color 0.3s ease, background 0.3s ease; }
-    .upload-area:hover { border-color:#FF6B00; background:#fff5f0; }
-    .upload-area i { font-size:45px; color:#dddddd; display:block; margin-bottom:10px; }
-    .preview-image { max-width:100%; max-height:300px; border-radius:8px; margin-top:10px; object-fit:contain; }
-    @media (min-width:768px) and (max-width:1024px) { .navbar { padding:10px 20px; } .navbar-brand { font-size:18px; } .sidebar { width:220px; } .content { margin-left:220px; padding:20px; } .widget-grid { grid-template-columns:repeat(auto-fit, minmax(160px, 1fr)); } .grid-2 { grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); } }
-    @media (max-width:767px) { .navbar { padding:10px 15px; position:fixed; top:0; left:0; right:0; z-index:1001; } .navbar-brand { font-size:16px; gap:8px; } .navbar-user .role-badge { font-size:10px; padding:2px 8px; } .navbar-user span { font-size:13px; } .button-logout { padding:6px 12px; font-size:12px; } #menuToggle { display:block; } .sidebar { left:-100%; width:80%; transition:left 0.3s ease; top:60px; bottom:0; z-index:999; } .sidebar.open { left:0; } .sidebar-overlay { top:60px; z-index:998; } .content { margin-left:0; padding:15px; margin-top:60px; } .widget-grid { grid-template-columns:repeat(auto-fit, minmax(140px, 1fr)); gap:10px; } .widget-card .widget-number { font-size:22px; } .grid-2 { grid-template-columns:1fr; } .table { font-size:12px; } .modal { width:95%; padding:15px; } .authentication-wrapper { padding:10px; } .authentication-box { padding:20px; } }
-    #menuToggle { display:none; background:none; border:none; font-size:22px; cursor:pointer; color:#FF6B00; padding:0; margin-right:10px; transition:transform 0.3s ease; }
-    #menuToggle:active { transform:scale(0.9); }
-    .sidebar-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:998; }
-    .sidebar-overlay.active { display:block; }
-    .sidebar-menu-item .notif-badge { background:#f44336; color:white; border-radius:50%; padding:2px 8px; font-size:10px; margin-left:8px; display:inline-block; font-weight:700; min-width:20px; text-align:center; line-height:1.4; }
+    /* ========================================================== */
+    /* 1.4.2 - KELAS TAMPILAN HALAMAN                              */
+    /* ========================================================== */
+    .page-dashboard { display: none; }
+    .page-content { display: none; }
+    .page-content.active { display: block; }
+    .hidden { display: none !important; }
+    .hidden-form { display: none !important; }
+    .margin-top-10 { margin-top: 10px; }
+
+    /* ========================================================== */
+    /* 1.4.3 - TOAST NOTIFICATION                                  */
+    /* ========================================================== */
+    #toastContainer {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 99999;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+    .toast {
+        padding: 12px 20px;
+        border-radius: 8px;
+        color: white;
+        font-size: 14px;
+        font-weight: 500;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        animation: slideInRight 0.4s ease;
+        min-width: 250px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+    .toast.success { background: #4CAF50; }
+    .toast.error { background: #F44336; }
+    .toast.warning { background: #FF9800; }
+    .toast.info { background: #2196F3; }
+    @keyframes slideInRight {
+        from { transform: translateX(100%); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+    }
+
+    /* ========================================================== */
+    /* 1.4.4 - EMPTY STATE                                         */
+    /* ========================================================== */
+    .empty-state {
+        text-align: center;
+        padding: 30px 20px;
+        color: #888;
+    }
+    .empty-state i {
+        font-size: 40px;
+        color: #ddd;
+        display: block;
+        margin-bottom: 10px;
+    }
+
+    /* ========================================================== */
+    /* 1.4.5 - HALAMAN LOGIN/REGISTER                              */
+    /* ========================================================== */
+    #pageAuthentication {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        background: linear-gradient(135deg, #fff5f0, #ffe0cc);
+    }
+    .authentication-wrapper {
+        width: 100%;
+        max-width: 450px;
+        padding: 20px;
+    }
+    .authentication-box {
+        background: white;
+        border-radius: 15px;
+        padding: 35px;
+        box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+    }
+    .authentication-logo {
+        text-align: center;
+        margin-bottom: 25px;
+    }
+    .authentication-logo i {
+        font-size: 45px;
+        color: #FF6B00;
+        margin-bottom: 10px;
+    }
+    .authentication-logo h1 {
+        font-size: 26px;
+        color: #333;
+    }
+    .authentication-logo p {
+        color: #888;
+        font-size: 14px;
+    }
+    .authentication-error {
+        display: none;
+        background: #ffebee;
+        color: #d32f2f;
+        padding: 12px;
+        border-radius: 8px;
+        margin-bottom: 15px;
+        font-size: 14px;
+    }
+    .form-group {
+        margin-bottom: 15px;
+    }
+    .form-group label {
+        display: block;
+        font-weight: 600;
+        font-size: 13px;
+        color: #555;
+        margin-bottom: 5px;
+    }
+    .input-group {
+        display: flex;
+        align-items: center;
+        background: #f8f9fa;
+        border-radius: 8px;
+        padding: 0 14px;
+        border: 2px solid transparent;
+        transition: border-color 0.3s ease, background 0.3s ease;
+    }
+    .input-group:focus-within {
+        border-color: #FF6B00;
+        background: white;
+    }
+    .input-group i {
+        color: #aaa;
+        font-size: 16px;
+        width: 30px;
+        text-align: center;
+    }
+    .input-group input,
+    .input-group select {
+        border: none;
+        background: transparent;
+        padding: 13px 0;
+        font-size: 14px;
+        width: 100%;
+        outline: none;
+        font-family: 'Poppins', sans-serif;
+    }
+    .button-submit {
+        width: 100%;
+        padding: 14px;
+        background: #FF6B00;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: background 0.3s ease;
+    }
+    .button-submit:hover {
+        background: #e65c00;
+    }
+    .authentication-footer {
+        text-align: center;
+        margin-top: 18px;
+        font-size: 14px;
+        color: #888;
+    }
+    .authentication-footer a {
+        color: #FF6B00;
+        cursor: pointer;
+        font-weight: 600;
+        text-decoration: none;
+    }
+    .authentication-footer a:hover {
+        text-decoration: underline;
+    }
+
+    /* ========================================================== */
+    /* 1.4.6 - NAVBAR                                              */
+    /* ========================================================== */
+    .navbar {
+        background: white;
+        padding: 12px 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 2px solid #FF6B00;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+    }
+    .navbar-brand {
+        font-size: 20px;
+        font-weight: 700;
+        color: #FF6B00;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    .navbar-user {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+    .navbar-user .role-badge {
+        background: #fff0e5;
+        color: #FF6B00;
+        padding: 4px 12px;
+        border-radius: 15px;
+        font-size: 12px;
+        font-weight: 600;
+    }
+    .button-logout {
+        background: #f44336;
+        color: white;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 13px;
+        transition: background 0.3s ease;
+    }
+    .button-logout:hover {
+        background: #d32f2f;
+    }
+
+    /* ========================================================== */
+    /* 1.4.7 - SIDEBAR                                             */
+    /* ========================================================== */
+    .sidebar {
+        position: fixed;
+        top: 60px;
+        left: 0;
+        bottom: 0;
+        width: 250px;
+        background: white;
+        border-right: 1px solid #eeeeee;
+        padding-top: 15px;
+        overflow-y: auto;
+        z-index: 999;
+    }
+    .sidebar-menu-title {
+        font-size: 10px;
+        text-transform: uppercase;
+        color: #bbbbbb;
+        padding: 15px 25px 8px;
+        font-weight: 700;
+        letter-spacing: 1.5px;
+    }
+    .sidebar-menu-item {
+        padding: 11px 25px;
+        cursor: pointer;
+        color: #666666;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 14px;
+        border-left: 3px solid transparent;
+        transition: background 0.2s ease, color 0.2s ease;
+    }
+    .sidebar-menu-item:hover {
+        background: #fdf6f0;
+        color: #FF6B00;
+    }
+    .sidebar-menu-item.active {
+        background: #fff0e5;
+        color: #FF6B00;
+        border-left-color: #FF6B00;
+        font-weight: 600;
+    }
+
+    /* ========================================================== */
+    /* 1.4.8 - KONTEN UTAMA                                        */
+    /* ========================================================== */
+    .content {
+        margin-left: 250px;
+        margin-top: 60px;
+        padding: 25px;
+        min-height: calc(100vh - 60px);
+        background: #f8f9fa;
+    }
+    .page-header {
+        margin-bottom: 20px;
+    }
+    .page-header h2 {
+        font-size: 22px;
+        color: #333333;
+    }
+    .page-header p {
+        color: #888888;
+        font-size: 14px;
+    }
+
+    /* ========================================================== */
+    /* 1.4.9 - CARD & WIDGET                                       */
+    /* ========================================================== */
+    .card {
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        margin-bottom: 20px;
+        padding: 20px;
+        border: 1px solid #f0f0f0;
+    }
+    .card-header {
+        font-weight: 600;
+        font-size: 15px;
+        border-bottom: 1px solid #f0f0f0;
+        padding-bottom: 12px;
+        margin-bottom: 15px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .widget-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 15px;
+        margin-bottom: 25px;
+    }
+    .widget-card {
+        background: white;
+        border-radius: 12px;
+        padding: 20px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        border: 1px solid #f0f0f0;
+        text-align: center;
+    }
+    .widget-card .widget-icon {
+        font-size: 35px;
+        margin-bottom: 10px;
+    }
+    .widget-card .widget-number {
+        font-size: 28px;
+        font-weight: 700;
+        color: #333;
+    }
+    .widget-card .widget-label {
+        font-size: 13px;
+        color: #888;
+        margin-top: 5px;
+    }
+    .grid-2 {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 15px;
+    }
+
+    /* ========================================================== */
+    /* 1.4.10 - TABEL                                              */
+    /* ========================================================== */
+    .table-container {
+        overflow-x: auto;
+    }
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 13px;
+    }
+    .table thead {
+        background: #f8f9fa;
+    }
+    .table thead th {
+        padding: 12px 14px;
+        text-align: left;
+        font-weight: 600;
+        color: #555;
+        border-bottom: 2px solid #eee;
+    }
+    .table tbody td {
+        padding: 10px 14px;
+        border-bottom: 1px solid #f5f5f5;
+    }
+
+    /* ========================================================== */
+    /* 1.4.11 - BADGE                                              */
+    /* ========================================================== */
+    .badge {
+        display: inline-block;
+        padding: 4px 12px;
+        border-radius: 12px;
+        font-size: 11px;
+        font-weight: 600;
+    }
+    .badge-success {
+        background: #e8f5e9;
+        color: #2e7d32;
+    }
+    .badge-warning {
+        background: #fff3e0;
+        color: #e65100;
+    }
+    .badge-danger {
+        background: #ffebee;
+        color: #c62828;
+    }
+
+    /* ========================================================== */
+    /* 1.4.12 - FORM & BUTTON                                      */
+    /* ========================================================== */
+    .form-input {
+        width: 100%;
+        padding: 10px 14px;
+        border: 1px solid #dddddd;
+        border-radius: 6px;
+        font-size: 14px;
+        font-family: 'Poppins', sans-serif;
+        transition: border-color 0.3s ease;
+    }
+    .form-input:focus {
+        border-color: #FF6B00;
+        outline: none;
+    }
+    .form-label {
+        font-size: 12px;
+        color: #888888;
+        margin-bottom: 4px;
+        display: block;
+    }
+    .button {
+        padding: 8px 18px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 13px;
+        border: none;
+        font-family: 'Poppins', sans-serif;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        transition: background 0.3s ease;
+    }
+    .button-primary {
+        background: #FF6B00;
+        color: white;
+    }
+    .button-primary:hover {
+        background: #e65c00;
+    }
+    .button-success {
+        background: #4CAF50;
+        color: white;
+    }
+    .button-success:hover {
+        background: #388E3C;
+    }
+    .button-danger {
+        background: #F44336;
+        color: white;
+    }
+    .button-danger:hover {
+        background: #D32F2F;
+    }
+    .button-warning {
+        background: #FF9800;
+        color: white;
+    }
+    .button-extra-small {
+        padding: 4px 10px;
+        font-size: 11px;
+    }
+    .button-small {
+        padding: 6px 14px;
+        font-size: 12px;
+    }
+
+    /* ========================================================== */
+    /* 1.4.13 - MODAL                                              */
+    /* ========================================================== */
+    .modal-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.5);
+        z-index: 9999;
+        display: none;
+        justify-content: center;
+        align-items: center;
+    }
+    .modal-overlay.active {
+        display: flex;
+    }
+    .modal {
+        background: white;
+        border-radius: 12px;
+        max-width: 500px;
+        width: 90%;
+        padding: 25px;
+    }
+    .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid #eeeeee;
+        padding-bottom: 12px;
+        margin-bottom: 15px;
+    }
+    .modal-header h3 {
+        font-size: 18px;
+    }
+    .modal-close {
+        background: none;
+        border: none;
+        font-size: 22px;
+        cursor: pointer;
+        color: #aaaaaa;
+        transition: color 0.3s ease;
+    }
+    .modal-close:hover {
+        color: #333333;
+    }
+    .modal-footer {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        border-top: 1px solid #eeeeee;
+        padding-top: 15px;
+        margin-top: 15px;
+    }
+
+    /* ========================================================== */
+    /* 1.4.14 - UPLOAD AREA & PREVIEW                              */
+    /* ========================================================== */
+    .upload-area {
+        border: 2px dashed #dddddd;
+        border-radius: 10px;
+        padding: 25px;
+        text-align: center;
+        background: #fafafa;
+        cursor: pointer;
+        transition: border-color 0.3s ease, background 0.3s ease;
+    }
+    .upload-area:hover {
+        border-color: #FF6B00;
+        background: #fff5f0;
+    }
+    .upload-area i {
+        font-size: 45px;
+        color: #dddddd;
+        display: block;
+        margin-bottom: 10px;
+    }
+    .preview-image {
+        max-width: 100%;
+        max-height: 300px;
+        border-radius: 8px;
+        margin-top: 10px;
+        object-fit: contain;
+    }
+
+    /* ========================================================== */
+    /* 1.4.15 - RESPONSIVE                                         */
+    /* ========================================================== */
+    /* Tablet */
+    @media (min-width: 768px) and (max-width: 1024px) {
+        .navbar { padding: 10px 20px; }
+        .navbar-brand { font-size: 18px; }
+        .sidebar { width: 220px; }
+        .content { margin-left: 220px; padding: 20px; }
+        .widget-grid { grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); }
+        .grid-2 { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
+    }
+    /* Handphone */
+    @media (max-width: 767px) {
+        .navbar {
+            padding: 10px 15px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1001;
+        }
+        .navbar-brand { font-size: 16px; gap: 8px; }
+        .navbar-user .role-badge { font-size: 10px; padding: 2px 8px; }
+        .navbar-user span { font-size: 13px; }
+        .button-logout { padding: 6px 12px; font-size: 12px; }
+        #menuToggle { display: block; }
+        .sidebar {
+            left: -100%;
+            width: 80%;
+            transition: left 0.3s ease;
+            top: 60px;
+            bottom: 0;
+            z-index: 999;
+        }
+        .sidebar.open { left: 0; }
+        .sidebar-overlay { top: 60px; z-index: 998; }
+        .content {
+            margin-left: 0;
+            padding: 15px;
+            margin-top: 60px;
+        }
+        .widget-grid {
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 10px;
+        }
+        .widget-card .widget-number { font-size: 22px; }
+        .grid-2 { grid-template-columns: 1fr; }
+        .table { font-size: 12px; }
+        .modal { width: 95%; padding: 15px; }
+        .authentication-wrapper { padding: 10px; }
+        .authentication-box { padding: 20px; }
+    }
+
+    /* ========================================================== */
+    /* 1.4.16 - HAMBURGER & OVERLAY                                */
+    /* ========================================================== */
+    #menuToggle {
+        display: none;
+        background: none;
+        border: none;
+        font-size: 22px;
+        cursor: pointer;
+        color: #FF6B00;
+        padding: 0;
+        margin-right: 10px;
+        transition: transform 0.3s ease;
+    }
+    #menuToggle:active {
+        transform: scale(0.9);
+    }
+    .sidebar-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.5);
+        z-index: 998;
+    }
+    .sidebar-overlay.active {
+        display: block;
+    }
+
+    /* ========================================================== */
+    /* 1.4.17 - BADGE NOTIFIKASI DI SIDEBAR                        */
+    /* ========================================================== */
+    .sidebar-menu-item .notif-badge {
+        background: #f44336;
+        color: white;
+        border-radius: 50%;
+        padding: 2px 8px;
+        font-size: 10px;
+        margin-left: 8px;
+        display: inline-block;
+        font-weight: 700;
+        min-width: 20px;
+        text-align: center;
+        line-height: 1.4;
+    }
+
+    /* ========================================================== */
+    /* 1.4.18 - ANIMASI NOTIFIKASI TERSIMPAN                       */
+    /* ========================================================== */
+    @keyframes fadeInOut {
+        0% { opacity: 0; transform: translateY(-20px); }
+        20% { opacity: 1; transform: translateY(0); }
+        80% { opacity: 1; transform: translateY(0); }
+        100% { opacity: 0; transform: translateY(-20px); }
+    }
+    @keyframes blink {
+        0% { opacity: 1; }
+        50% { opacity: 0.5; }
+        100% { opacity: 1; }
+    }
+    .notif-berkedip {
+        animation: blink 0.5s ease-in-out 3;
+    }
 </style>
-<!-- ===== AKHIR BAGIAN 3 ===== -->
-<!-- ===== BAGIAN 4 - JAVASCRIPT UTILITY ===== -->
+<!-- ============================================================ -->
+<!-- AKHIR BAGIAN 1.4 - CSS LENGKAP                               -->
+<!-- ============================================================ -->
+
+<!-- ============================================================ -->
+<!-- BAGIAN 1.5 - JAVASCRIPT UTILITY (AWAL)                       -->
+<!-- ============================================================ -->
 <script>
-    // ===== BLOK 4.1 - JS_UTILITY_DATA =====
+    // ===== BLOK 1.5.1 - GET DATA AKUN =====
     function getDataAkun() {
         var dataAkun = localStorage.getItem('2r_akun');
         return dataAkun ? JSON.parse(dataAkun) : [];
     }
+    // ===== AKHIR BLOK 1.5.1 =====
+
+    // ===== BLOK 1.5.2 - SIMPAN DATA AKUN =====
     function simpanDataAkun(akun) {
         localStorage.setItem('2r_akun', JSON.stringify(akun));
     }
-    // ===== AKHIR BLOK 4.1 =====
+    // ===== AKHIR BLOK 1.5.2 =====
+</script>
+<!-- ============================================================ -->
+<!-- AKHIR BAGIAN 1.5 - JAVASCRIPT UTILITY (AWAL)                 -->
+<!-- ============================================================ -->
 
-    // ===== BLOK 4.2 - JS_UTILITY_HASH (SHA-256) =====
+<!-- ============================================================ -->
+<!-- AKHIR BAGIAN 1                                               -->
+<!-- ============================================================ -->
+<!-- ============================================================ -->
+<!-- BAGIAN 2 - JAVASCRIPT UTILITY & NAVIGASI                      -->
+<!-- ============================================================ -->
+
+<!-- ===== BLOK 2.1 - JS_UTILITY_HASH_SHA256 ===== -->
+<script>
+    // ===== BLOK 2.1.1 - HASH PASSWORD DENGAN SHA-256 =====
     async function hashPassword(password) {
         var encoder = new TextEncoder();
         var data = encoder.encode(password);
@@ -334,10 +935,16 @@
         var hashArray = Array.from(new Uint8Array(hashBuffer));
         return hashArray.map(function(b) { return b.toString(16).padStart(2, '0'); }).join('');
     }
+    // ===== AKHIR BLOK 2.1.1 =====
+
+    // ===== BLOK 2.1.2 - VERIFIKASI PASSWORD =====
     async function verifikasiPassword(password, storedHash) {
         var hashInput = await hashPassword(password);
         return hashInput === storedHash;
     }
+    // ===== AKHIR BLOK 2.1.2 =====
+
+    // ===== BLOK 2.1.3 - MIGRASI PASSWORD BASE64 KE SHA-256 =====
     async function migrasiPasswordJikaPerlu(username, passwordPlain) {
         var dataAkun = getDataAkun();
         var ditemukan = false;
@@ -357,9 +964,13 @@
         }
         return ditemukan;
     }
-    // ===== AKHIR BLOK 4.2 =====
+    // ===== AKHIR BLOK 2.1.3 =====
+</script>
+<!-- ===== AKHIR BLOK 2.1 ===== -->
 
-    // ===== BLOK 4.3 - JS_TOAST_MODAL =====
+<!-- ===== BLOK 2.2 - JS_TOAST_MODAL ===== -->
+<script>
+    // ===== BLOK 2.2.1 - TAMPILKAN TOAST NOTIFICATION =====
     function tampilkanToast(pesan, tipe) {
         if (!tipe) tipe = 'success';
         var container = document.getElementById('toastContainer');
@@ -377,14 +988,23 @@
             setTimeout(function() { toast.remove(); }, 300);
         }, 3500);
     }
+    // ===== AKHIR BLOK 2.2.1 =====
+
+    // ===== BLOK 2.2.2 - BUKA MODAL =====
     function bukaModal(idModal) {
         var modal = document.getElementById(idModal);
         if (modal) modal.classList.add('active');
     }
+    // ===== AKHIR BLOK 2.2.2 =====
+
+    // ===== BLOK 2.2.3 - TUTUP MODAL =====
     function tutupModal(idModal) {
         var modal = document.getElementById(idModal);
         if (modal) modal.classList.remove('active');
     }
+    // ===== AKHIR BLOK 2.2.3 =====
+
+    // ===== BLOK 2.2.4 - SIMPAN NOTIFIKASI =====
     function simpanNotifikasi(userId, judul, pesan, tipe) {
         var dataNotifikasi = JSON.parse(localStorage.getItem('2r_notifikasi') || '[]');
         var notifBaru = {
@@ -400,9 +1020,13 @@
         localStorage.setItem('2r_notifikasi', JSON.stringify(dataNotifikasi));
         tampilkanToast('Notifikasi baru: ' + judul, 'info');
     }
-    // ===== AKHIR BLOK 4.3 =====
+    // ===== AKHIR BLOK 2.2.4 =====
+</script>
+<!-- ===== AKHIR BLOK 2.2 ===== -->
 
-    // ===== BLOK 4.4 - JS_INIT_SUPERADMIN =====
+<!-- ===== BLOK 2.3 - JS_INIT_SUPERADMIN ===== -->
+<script>
+    // ===== BLOK 2.3.1 - INISIALISASI SUPERADMIN PERTAMA KALI =====
     async function inisialisasiSuperAdmin() {
         var dataAkun = getDataAkun();
         var sudahAda = false;
@@ -433,6 +1057,9 @@
             simpanDataAkun(dataAkun);
         }
     }
+    // ===== AKHIR BLOK 2.3.1 =====
+
+    // ===== BLOK 2.3.2 - GENERATE ID OTOMATIS UNTUK ROLE =====
     function generateId(role) {
         var dataAkun = getDataAkun();
         var daftar = [];
@@ -462,64 +1089,216 @@
         else prefix = 'USR';
         return prefix + '-' + String(nomorUrut).padStart(3, '0');
     }
-    // ===== AKHIR BLOK 4.4 =====
-    // ===== AKHIR BAGIAN 4 =====
+    // ===== AKHIR BLOK 2.3.2 =====
 </script>
+<!-- ===== AKHIR BLOK 2.3 ===== -->
 
-<!-- ===== BAGIAN 5 - JAVASCRIPT SIDEBAR & NAVIGASI ===== -->
+<!-- ===== BLOK 2.4 - JS_SIDEBAR_BUILDER ===== -->
 <script>
-    // ===== BLOK 5.1 - JS_SIDEBAR_BUILDER =====
+    // ===== BLOK 2.4.1 - BUAT SIDEBAR HTML =====
     function buatSidebarHTML(role) {
         if (!role) role = 'customer';
+
         var menuRole = {
             'superadmin': [
-                { judul: 'Menu Utama', items: [ { halaman: 'dashboard', icon: 'fa-th-large', label: 'Dasbor' }, { halaman: 'profile', icon: 'fa-user-circle', label: 'Profil' }, { halaman: 'helloFriends', icon: 'fa-video', label: 'HelloFriends (Coming Soon)' } ] },
-                { judul: 'Menu Admin', items: [ { halaman: 'daftarAkun', icon: 'fa-user-plus', label: 'Daftar Akun Baru' }, { halaman: 'persetujuan', icon: 'fa-check-double', label: 'Persetujuan Akun' }, { halaman: 'kelolaAkun', icon: 'fa-users-cog', label: 'Kelola Semua Akun' }, { halaman: 'transferMenu', icon: 'fa-exchange-alt', label: 'Transfer Menu' }, { halaman: 'settingRekening', icon: 'fa-university', label: 'Setting Rekening' }, { halaman: 'kelolaIklan', icon: 'fa-ad', label: 'Kelola Iklan' }, { halaman: 'pengajuanHapus', icon: 'fa-trash-alt', label: 'Pengajuan Hapus Akun' }, { halaman: 'kelolaWilayah', icon: 'fa-map-marked-alt', label: 'Kelola Wilayah' } ] }
+                {
+                    judul: 'Menu Utama',
+                    items: [
+                        { halaman: 'dashboard', icon: 'fa-th-large', label: 'Dasbor' },
+                        { halaman: 'profile', icon: 'fa-user-circle', label: 'Profil' },
+                        { halaman: 'helloFriends', icon: 'fa-video', label: 'HelloFriends (Coming Soon)' }
+                    ]
+                },
+                {
+                    judul: 'Menu Admin',
+                    items: [
+                        { halaman: 'daftarAkun', icon: 'fa-user-plus', label: 'Daftar Akun Baru' },
+                        { halaman: 'persetujuan', icon: 'fa-check-double', label: 'Persetujuan Akun' },
+                        { halaman: 'kelolaAkun', icon: 'fa-users-cog', label: 'Kelola Semua Akun' },
+                        { halaman: 'transferMenu', icon: 'fa-exchange-alt', label: 'Transfer Menu' },
+                        { halaman: 'settingRekening', icon: 'fa-university', label: 'Setting Rekening' },
+                        { halaman: 'kelolaIklan', icon: 'fa-ad', label: 'Kelola Iklan' },
+                        { halaman: 'pengajuanHapus', icon: 'fa-trash-alt', label: 'Pengajuan Hapus Akun' },
+                        { halaman: 'kelolaWilayah', icon: 'fa-map-marked-alt', label: 'Kelola Wilayah' }
+                    ]
+                }
             ],
             'customer': [
-                { judul: 'Menu Belanja', items: [ { halaman: 'dashboardCustomer', icon: 'fa-th-large', label: 'Dasbor' }, { halaman: 'profilCustomer', icon: 'fa-user-circle', label: 'Profil' }, { halaman: 'lihatTokoTerdekat', icon: 'fa-store', label: 'Lihat Toko Terdekat' }, { halaman: 'lihatOjekTerdekat', icon: 'fa-motorcycle', label: 'Lihat Ojek Terdekat' }, { halaman: 'lihatProduk', icon: 'fa-box', label: 'Lihat Produk' }, { halaman: 'keranjang', icon: 'fa-shopping-cart', label: 'Keranjang' }, { halaman: 'chat', icon: 'fa-comments', label: 'Chat' }, { halaman: 'papanInformasi', icon: 'fa-bullhorn', label: 'Papan Informasi' }, { halaman: 'menuIklan', icon: 'fa-ad', label: 'Menu Iklan' } ] },
-                { judul: 'Transaksi', items: [ { halaman: 'daftarBelanja', icon: 'fa-clipboard-list', label: 'Daftar Belanja' }, { halaman: 'riwayatBelanja', icon: 'fa-history', label: 'Riwayat Belanja' }, { halaman: 'pembayaran', icon: 'fa-credit-card', label: 'Pembayaran' }, { halaman: 'ulasanRating', icon: 'fa-star', label: 'Ulasan & Rating' } ] },
-                { judul: 'Lainnya', items: [ { halaman: 'bantuanFAQ', icon: 'fa-question-circle', label: 'Bantuan & FAQ' }, { halaman: 'notifikasi', icon: 'fa-bell', label: 'Notifikasi' }, { halaman: 'editAkun', icon: 'fa-user-edit', label: 'Edit / Hapus Akun' }, { halaman: 'helloFriends', icon: 'fa-video', label: 'HelloFriends (Coming Soon)' } ] }
+                {
+                    judul: 'Menu Belanja',
+                    items: [
+                        { halaman: 'dashboardCustomer', icon: 'fa-th-large', label: 'Dasbor' },
+                        { halaman: 'profilCustomer', icon: 'fa-user-circle', label: 'Profil' },
+                        { halaman: 'lihatTokoTerdekat', icon: 'fa-store', label: 'Lihat Toko Terdekat' },
+                        { halaman: 'lihatOjekTerdekat', icon: 'fa-motorcycle', label: 'Lihat Ojek Terdekat' },
+                        { halaman: 'lihatProduk', icon: 'fa-box', label: 'Lihat Produk' },
+                        { halaman: 'keranjang', icon: 'fa-shopping-cart', label: 'Keranjang' },
+                        { halaman: 'chat', icon: 'fa-comments', label: 'Chat' },
+                        { halaman: 'papanInformasi', icon: 'fa-bullhorn', label: 'Papan Informasi' },
+                        { halaman: 'menuIklan', icon: 'fa-ad', label: 'Menu Iklan' }
+                    ]
+                },
+                {
+                    judul: 'Transaksi',
+                    items: [
+                        { halaman: 'daftarBelanja', icon: 'fa-clipboard-list', label: 'Daftar Belanja' },
+                        { halaman: 'riwayatBelanja', icon: 'fa-history', label: 'Riwayat Belanja' },
+                        { halaman: 'pembayaran', icon: 'fa-credit-card', label: 'Pembayaran' },
+                        { halaman: 'ulasanRating', icon: 'fa-star', label: 'Ulasan & Rating' }
+                    ]
+                },
+                {
+                    judul: 'Lainnya',
+                    items: [
+                        { halaman: 'bantuanFAQ', icon: 'fa-question-circle', label: 'Bantuan & FAQ' },
+                        { halaman: 'notifikasi', icon: 'fa-bell', label: 'Notifikasi' },
+                        { halaman: 'editAkun', icon: 'fa-user-edit', label: 'Edit / Hapus Akun' },
+                        { halaman: 'helloFriends', icon: 'fa-video', label: 'HelloFriends (Coming Soon)' }
+                    ]
+                }
             ],
             'toko': [
-                { judul: 'Menu Utama', items: [ { halaman: 'dashboard', icon: 'fa-th-large', label: 'Dasbor' }, { halaman: 'profile', icon: 'fa-user-circle', label: 'Profil' }, { halaman: 'helloFriends', icon: 'fa-video', label: 'HelloFriends (Coming Soon)' } ] },
-                { judul: 'Menu Toko', items: [ { halaman: 'transaksi', icon: 'fa-cash-register', label: 'Transaksi' }, { halaman: 'kelolaProduk', icon: 'fa-box', label: 'Kelola Produk' }, { halaman: 'uploadProdukPublik', icon: 'fa-upload', label: 'Upload Produk Publik' }, { halaman: 'manajemenStokGudang', icon: 'fa-warehouse', label: 'Manajemen Stok Gudang' }, { halaman: 'pesananMasuk', icon: 'fa-shopping-cart', label: 'Pesanan Masuk' }, { halaman: 'laporanPenjualan', icon: 'fa-chart-line', label: 'Laporan Penjualan' }, { halaman: 'settingToko', icon: 'fa-store', label: 'Setting Toko' } ] }
+                {
+                    judul: 'Menu Utama',
+                    items: [
+                        { halaman: 'dashboard', icon: 'fa-th-large', label: 'Dasbor' },
+                        { halaman: 'profile', icon: 'fa-user-circle', label: 'Profil' },
+                        { halaman: 'helloFriends', icon: 'fa-video', label: 'HelloFriends (Coming Soon)' }
+                    ]
+                },
+                {
+                    judul: 'Menu Toko',
+                    items: [
+                        { halaman: 'transaksi', icon: 'fa-cash-register', label: 'Transaksi' },
+                        { halaman: 'kelolaProduk', icon: 'fa-box', label: 'Kelola Produk' },
+                        { halaman: 'uploadProdukPublik', icon: 'fa-upload', label: 'Upload Produk Publik' },
+                        { halaman: 'manajemenStokGudang', icon: 'fa-warehouse', label: 'Manajemen Stok Gudang' },
+                        { halaman: 'pesananMasuk', icon: 'fa-shopping-cart', label: 'Pesanan Masuk' },
+                        { halaman: 'laporanPenjualan', icon: 'fa-chart-line', label: 'Laporan Penjualan' },
+                        { halaman: 'settingToko', icon: 'fa-store', label: 'Setting Toko' }
+                    ]
+                }
             ],
             'ojek': [
-                { judul: 'Menu Utama', items: [ { halaman: 'dashboard', icon: 'fa-th-large', label: 'Dasbor' }, { halaman: 'profile', icon: 'fa-user-circle', label: 'Profil' }, { halaman: 'helloFriends', icon: 'fa-video', label: 'HelloFriends (Coming Soon)' } ] },
-                { judul: 'Menu Ojek', items: [ { halaman: 'orderMasuk', icon: 'fa-motorcycle', label: 'Order Masuk' }, { halaman: 'riwayatOrder', icon: 'fa-history', label: 'Riwayat Order' }, { halaman: 'laporanOjek', icon: 'fa-chart-bar', label: 'Laporan' }, { halaman: 'settingOjek', icon: 'fa-cog', label: 'Setting Ojek' } ] }
+                {
+                    judul: 'Menu Utama',
+                    items: [
+                        { halaman: 'dashboard', icon: 'fa-th-large', label: 'Dasbor' },
+                        { halaman: 'profile', icon: 'fa-user-circle', label: 'Profil' },
+                        { halaman: 'helloFriends', icon: 'fa-video', label: 'HelloFriends (Coming Soon)' }
+                    ]
+                },
+                {
+                    judul: 'Menu Ojek',
+                    items: [
+                        { halaman: 'orderMasuk', icon: 'fa-motorcycle', label: 'Order Masuk' },
+                        { halaman: 'riwayatOrder', icon: 'fa-history', label: 'Riwayat Order' },
+                        { halaman: 'laporanOjek', icon: 'fa-chart-bar', label: 'Laporan' },
+                        { halaman: 'settingOjek', icon: 'fa-cog', label: 'Setting Ojek' }
+                    ]
+                }
             ],
             'pedagang': [
-                { judul: 'Menu Utama', items: [ { halaman: 'dashboard', icon: 'fa-th-large', label: 'Dasbor' }, { halaman: 'profile', icon: 'fa-user-circle', label: 'Profil' }, { halaman: 'helloFriends', icon: 'fa-video', label: 'HelloFriends (Coming Soon)' } ] }
+                {
+                    judul: 'Menu Utama',
+                    items: [
+                        { halaman: 'dashboard', icon: 'fa-th-large', label: 'Dasbor' },
+                        { halaman: 'profile', icon: 'fa-user-circle', label: 'Profil' },
+                        { halaman: 'helloFriends', icon: 'fa-video', label: 'HelloFriends (Coming Soon)' }
+                    ]
+                }
             ],
             'staf_admin': [
-                { judul: 'Menu Utama', items: [ { halaman: 'dashboard', icon: 'fa-th-large', label: 'Dasbor' }, { halaman: 'persetujuan', icon: 'fa-check-double', label: 'Persetujuan Akun' }, { halaman: 'kelolaAkun', icon: 'fa-users-cog', label: 'Kelola Akun' }, { halaman: 'profile', icon: 'fa-user-circle', label: 'Profil' }, { halaman: 'pengajuanHapus', icon: 'fa-trash-alt', label: 'Pengajuan Hapus Akun' }, { halaman: 'helloFriends', icon: 'fa-video', label: 'HelloFriends (Coming Soon)' } ] }
+                {
+                    judul: 'Menu Utama',
+                    items: [
+                        { halaman: 'dashboard', icon: 'fa-th-large', label: 'Dasbor' },
+                        { halaman: 'persetujuan', icon: 'fa-check-double', label: 'Persetujuan Akun' },
+                        { halaman: 'kelolaAkun', icon: 'fa-users-cog', label: 'Kelola Akun' },
+                        { halaman: 'profile', icon: 'fa-user-circle', label: 'Profil' },
+                        { halaman: 'pengajuanHapus', icon: 'fa-trash-alt', label: 'Pengajuan Hapus Akun' },
+                        { halaman: 'helloFriends', icon: 'fa-video', label: 'HelloFriends (Coming Soon)' }
+                    ]
+                }
             ],
             'customer_service': [
-                { judul: 'Menu Utama', items: [ { halaman: 'dashboard', icon: 'fa-th-large', label: 'Dasbor' }, { halaman: 'tiketBantuan', icon: 'fa-ticket-alt', label: 'Tiket Bantuan' }, { halaman: 'liveChat', icon: 'fa-comments', label: 'Live Chat' }, { halaman: 'profile', icon: 'fa-user-circle', label: 'Profil' }, { halaman: 'helloFriends', icon: 'fa-video', label: 'HelloFriends (Coming Soon)' } ] }
+                {
+                    judul: 'Menu Utama',
+                    items: [
+                        { halaman: 'dashboard', icon: 'fa-th-large', label: 'Dasbor' },
+                        { halaman: 'tiketBantuan', icon: 'fa-ticket-alt', label: 'Tiket Bantuan' },
+                        { halaman: 'liveChat', icon: 'fa-comments', label: 'Live Chat' },
+                        { halaman: 'profile', icon: 'fa-user-circle', label: 'Profil' },
+                        { halaman: 'helloFriends', icon: 'fa-video', label: 'HelloFriends (Coming Soon)' }
+                    ]
+                }
             ],
             'staf_owner_toko': [
-                { judul: 'Menu Utama', items: [ { halaman: 'dashboard', icon: 'fa-th-large', label: 'Dasbor' }, { halaman: 'kelolaProduk', icon: 'fa-box', label: 'Kelola Produk' }, { halaman: 'uploadProdukPublik', icon: 'fa-upload', label: 'Upload Produk Publik' }, { halaman: 'manajemenStokGudang', icon: 'fa-warehouse', label: 'Manajemen Stok Gudang' }, { halaman: 'pesananMasuk', icon: 'fa-shopping-cart', label: 'Pesanan Masuk' }, { halaman: 'laporanPenjualan', icon: 'fa-chart-line', label: 'Laporan' }, { halaman: 'profile', icon: 'fa-user-circle', label: 'Profil' }, { halaman: 'helloFriends', icon: 'fa-video', label: 'HelloFriends (Coming Soon)' } ] }
+                {
+                    judul: 'Menu Utama',
+                    items: [
+                        { halaman: 'dashboard', icon: 'fa-th-large', label: 'Dasbor' },
+                        { halaman: 'kelolaProduk', icon: 'fa-box', label: 'Kelola Produk' },
+                        { halaman: 'uploadProdukPublik', icon: 'fa-upload', label: 'Upload Produk Publik' },
+                        { halaman: 'manajemenStokGudang', icon: 'fa-warehouse', label: 'Manajemen Stok Gudang' },
+                        { halaman: 'pesananMasuk', icon: 'fa-shopping-cart', label: 'Pesanan Masuk' },
+                        { halaman: 'laporanPenjualan', icon: 'fa-chart-line', label: 'Laporan' },
+                        { halaman: 'profile', icon: 'fa-user-circle', label: 'Profil' },
+                        { halaman: 'helloFriends', icon: 'fa-video', label: 'HelloFriends (Coming Soon)' }
+                    ]
+                }
             ],
             'staf_owner_ojek': [
-                { judul: 'Menu Utama', items: [ { halaman: 'dashboard', icon: 'fa-th-large', label: 'Dasbor' }, { halaman: 'orderMasuk', icon: 'fa-motorcycle', label: 'Order Masuk' }, { halaman: 'riwayatOrder', icon: 'fa-history', label: 'Riwayat Order' }, { halaman: 'laporanOjek', icon: 'fa-chart-bar', label: 'Laporan' }, { halaman: 'profile', icon: 'fa-user-circle', label: 'Profil' }, { halaman: 'helloFriends', icon: 'fa-video', label: 'HelloFriends (Coming Soon)' } ] }
+                {
+                    judul: 'Menu Utama',
+                    items: [
+                        { halaman: 'dashboard', icon: 'fa-th-large', label: 'Dasbor' },
+                        { halaman: 'orderMasuk', icon: 'fa-motorcycle', label: 'Order Masuk' },
+                        { halaman: 'riwayatOrder', icon: 'fa-history', label: 'Riwayat Order' },
+                        { halaman: 'laporanOjek', icon: 'fa-chart-bar', label: 'Laporan' },
+                        { halaman: 'profile', icon: 'fa-user-circle', label: 'Profil' },
+                        { halaman: 'helloFriends', icon: 'fa-video', label: 'HelloFriends (Coming Soon)' }
+                    ]
+                }
             ],
             'sponsor': [
-                { judul: 'Menu Utama', items: [ { halaman: 'dashboard', icon: 'fa-th-large', label: 'Dasbor' }, { halaman: 'iklanSaya', icon: 'fa-ad', label: 'Iklan Saya' }, { halaman: 'statistik', icon: 'fa-chart-pie', label: 'Statistik' }, { halaman: 'pembayaran', icon: 'fa-credit-card', label: 'Pembayaran' }, { halaman: 'profile', icon: 'fa-user-circle', label: 'Profil' }, { halaman: 'helloFriends', icon: 'fa-video', label: 'HelloFriends (Coming Soon)' } ] }
+                {
+                    judul: 'Menu Utama',
+                    items: [
+                        { halaman: 'dashboard', icon: 'fa-th-large', label: 'Dasbor' },
+                        { halaman: 'iklanSaya', icon: 'fa-ad', label: 'Iklan Saya' },
+                        { halaman: 'statistik', icon: 'fa-chart-pie', label: 'Statistik' },
+                        { halaman: 'pembayaran', icon: 'fa-credit-card', label: 'Pembayaran' },
+                        { halaman: 'profile', icon: 'fa-user-circle', label: 'Profil' },
+                        { halaman: 'helloFriends', icon: 'fa-video', label: 'HelloFriends (Coming Soon)' }
+                    ]
+                }
             ],
             'codseller': [
-                { judul: 'Menu Utama', items: [ { halaman: 'dashboard', icon: 'fa-th-large', label: 'Dasbor' }, { halaman: 'profile', icon: 'fa-user-circle', label: 'Profil' }, { halaman: 'helloFriends', icon: 'fa-video', label: 'HelloFriends (Coming Soon)' } ] }
+                {
+                    judul: 'Menu Utama',
+                    items: [
+                        { halaman: 'dashboard', icon: 'fa-th-large', label: 'Dasbor' },
+                        { halaman: 'profile', icon: 'fa-user-circle', label: 'Profil' },
+                        { halaman: 'helloFriends', icon: 'fa-video', label: 'HelloFriends (Coming Soon)' }
+                    ]
+                }
             ]
         };
+
         var daftarMenu = menuRole[role];
         if (!daftarMenu) {
             daftarMenu = [
-                { judul: 'Menu Dasar', items: [
-                    { halaman: 'dashboard', icon: 'fa-th-large', label: 'Dasbor' },
-                    { halaman: 'profile', icon: 'fa-user-circle', label: 'Profil' }
-                ]}
+                {
+                    judul: 'Menu Dasar',
+                    items: [
+                        { halaman: 'dashboard', icon: 'fa-th-large', label: 'Dasbor' },
+                        { halaman: 'profile', icon: 'fa-user-circle', label: 'Profil' }
+                    ]
+                }
             ];
         }
+
         var html = '';
         for (var i = 0; i < daftarMenu.length; i++) {
             var bagian = daftarMenu[i];
@@ -533,6 +1312,9 @@
         }
         return html;
     }
+    // ===== AKHIR BLOK 2.4.1 =====
+
+    // ===== BLOK 2.4.2 - SETUP NAVIGASI SIDEBAR =====
     function setupNavigasiSidebar() {
         var items = document.querySelectorAll('.sidebar-menu-item');
         items.forEach(function(item) {
@@ -545,13 +1327,18 @@
             };
         });
     }
-    // ===== AKHIR BLOK 5.1 =====
+    // ===== AKHIR BLOK 2.4.2 =====
+</script>
+<!-- ===== AKHIR BLOK 2.4 ===== -->
 
-    // ===== BLOK 5.2 - JS_NAVIGASI_HALAMAN =====
+<!-- ===== BLOK 2.5 - JS_NAVIGASI_HALAMAN ===== -->
+<script>
+    // ===== BLOK 2.5.1 - NAVIGASI KE HALAMAN (ROUTING) =====
     function navigasiKeHalaman(namaHalaman) {
         var areaKonten = document.getElementById('mainContent');
         if (!areaKonten) return;
 
+        // ===== ROUTING UNTUK SEMUA HALAMAN =====
         if (namaHalaman === 'dashboard') renderDashboard();
         else if (namaHalaman === 'profile') renderProfil();
         else if (namaHalaman === 'daftarAkun') renderDaftarAkun();
@@ -584,28 +1371,57 @@
         else if (namaHalaman === 'bantuanFAQ') renderBantuanFAQ();
         else if (namaHalaman === 'notifikasi') renderNotifikasi();
         else if (namaHalaman === 'editAkun') renderEditAkun();
+        // ===== ROUTING KHUSUS UNTUK DATA MASTER =====
         else if (namaHalaman === 'lengkapiDataMaster') {
             renderFormDataMaster();
         }
-        else renderPlaceholder(namaHalaman);
+        else {
+            renderPlaceholder(namaHalaman);
+        }
     }
+    // ===== AKHIR BLOK 2.5.1 =====
+
+    // ===== BLOK 2.5.2 - RENDER PLACEHOLDER (HALAMAN BELUM SIAP) =====
     function renderPlaceholder(judul) {
         var areaKonten = document.getElementById('mainContent');
         var html = '<div class="page-header"><h2>' + judul + '</h2><p>Halaman ini sedang dalam pengembangan.</p></div>';
         html += '<div class="card"><div class="empty-state"><i class="fas fa-tools" style="color:#FF9800;"></i><h3>Fitur Sedang Dikembangkan</h3></div></div>';
         areaKonten.innerHTML = html;
     }
-    // ===== AKHIR BLOK 5.2 =====
-    // ===== AKHIR BAGIAN 5 =====
+    // ===== AKHIR BLOK 2.5.2 =====
 </script>
-<!-- ===== BAGIAN 6 - JAVASCRIPT RENDER CORE ===== -->
+<!-- ===== AKHIR BLOK 2.5 ===== -->
+
+<!-- ===== BLOK 2.6 - JS_ESCAPE_HTML (ANTI-XSS) ===== -->
 <script>
-    // ===== BLOK 6.1 - JS_RENDER_DASHBOARD =====
+    // ===== BLOK 2.6.1 - ESCAPE HTML =====
+    function escapeHtml(text) {
+        if (!text) return '';
+        var div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+    // ===== AKHIR BLOK 2.6.1 =====
+</script>
+<!-- ===== AKHIR BLOK 2.6 ===== -->
+
+<!-- ============================================================ -->
+<!-- AKHIR BAGIAN 2                                               -->
+<!-- ============================================================ -->
+<!-- ============================================================ -->
+<!-- BAGIAN 3 - JAVASCRIPT RENDER CORE                             -->
+<!-- ============================================================ -->
+
+<!-- ===== BLOK 3.1 - JS_RENDER_DASHBOARD ===== -->
+<script>
+    // ===== BLOK 3.1.1 - RENDER DASHBOARD UTAMA =====
     function renderDashboard() {
         var role = localStorage.getItem('2r_user_role');
         var user = JSON.parse(localStorage.getItem('2r_user') || '{}');
         var areaKonten = document.getElementById('mainContent');
         var html = '';
+
+        // ===== DASHBOARD SUPERADMIN =====
         if (role === 'superadmin') {
             var dataAkun = getDataAkun();
             var total = dataAkun.length;
@@ -617,7 +1433,8 @@
             }
             var pengajuanStaf = JSON.parse(localStorage.getItem('2r_pengajuan_hapus_staf') || '[]');
             var diteruskan = pengajuanStaf.filter(function(p) { return p.status === 'MENUNGGU'; }).length;
-            html += '<div class="page-header"><h2>Dasbor SuperAdmin</h2><p>Selamat datang, <strong>' + (user.nama || 'SuperAdmin') + '</strong>!</p></div>';
+
+            html += '<div class="page-header"><h2>Dasbor SuperAdmin</h2><p>Selamat datang, <strong>' + escapeHtml(user.nama || 'SuperAdmin') + '</strong>!</p></div>';
             html += '<div class="widget-grid">';
             html += '<div class="widget-card"><div class="widget-icon" style="color:#2196F3;"><i class="fas fa-users"></i></div><div class="widget-number">' + total + '</div><div class="widget-label">Total Akun</div></div>';
             html += '<div class="widget-card"><div class="widget-icon" style="color:#4CAF50;"><i class="fas fa-check-circle"></i></div><div class="widget-number">' + aktif + '</div><div class="widget-label">Akun Aktif</div></div>';
@@ -625,12 +1442,13 @@
             html += '<div class="widget-card"><div class="widget-icon" style="color:#F44336;"><i class="fas fa-ban"></i></div><div class="widget-number">' + nonaktif + '</div><div class="widget-label">Dinonaktifkan</div></div>';
             html += '<div class="widget-card"><div class="widget-icon" style="color:#FF9800;"><i class="fas fa-trash-alt"></i></div><div class="widget-number">' + diteruskan + '</div><div class="widget-label">Pengajuan Hapus</div></div>';
             html += '</div>';
+
             if (diteruskan > 0) {
                 html += '<div class="card"><div class="card-header">Pengajuan Hapus dari Staf Admin</div><div class="table-container"><table class="table"><thead><tr><th>No</th><th>Username</th><th>Nama</th><th>Role</th><th>Aksi</th></tr></thead><tbody>';
                 for (var i = 0; i < pengajuanStaf.length; i++) {
                     if (pengajuanStaf[i].status === 'MENUNGGU') {
                         var p = pengajuanStaf[i];
-                        html += '<tr><td>' + (i+1) + '</td><td>' + p.targetUsername + '</td><td>' + p.targetNama + '</td><td>' + p.targetRole + '</td><td>';
+                        html += '<tr><td>' + (i+1) + '</td><td>' + escapeHtml(p.targetUsername) + '</td><td>' + escapeHtml(p.targetNama) + '</td><td>' + escapeHtml(p.targetRole) + '</td><td>';
                         html += '<button class="button button-success button-extra-small" onclick="setujuiPengajuanStaf(' + i + ')">Setujui & Hapus</button>';
                         html += '<button class="button button-danger button-extra-small" onclick="tolakPengajuanStaf(' + i + ')">Tolak</button>';
                         html += '</td></tr>';
@@ -638,7 +1456,9 @@
                 }
                 html += '</tbody></table></div></div>';
             }
-        } else if (role === 'staf_admin') {
+        }
+        // ===== DASHBOARD STAF ADMIN =====
+        else if (role === 'staf_admin') {
             var dataAkun = getDataAkun();
             var menungguVerif = 0;
             for (var i = 0; i < dataAkun.length; i++) {
@@ -646,57 +1466,74 @@
             }
             var pengajuanCustomer = JSON.parse(localStorage.getItem('2r_pengajuan_hapus') || '[]');
             var pengajuanMenunggu = pengajuanCustomer.filter(function(p) { return p.status === 'MENUNGGU'; });
-            html += '<div class="page-header"><h2>Dasbor Staf Admin</h2><p>Selamat datang, <strong>' + (user.nama || 'Staf Admin') + '</strong>!</p></div>';
+            html += '<div class="page-header"><h2>Dasbor Staf Admin</h2><p>Selamat datang, <strong>' + escapeHtml(user.nama || 'Staf Admin') + '</strong>!</p></div>';
             html += '<div class="widget-grid">';
             html += '<div class="widget-card"><div class="widget-icon" style="color:#FF9800;"><i class="fas fa-clock"></i></div><div class="widget-number">' + menungguVerif + '</div><div class="widget-label">Menunggu Verifikasi</div></div>';
             html += '<div class="widget-card"><div class="widget-icon" style="color:#2196F3;"><i class="fas fa-users"></i></div><div class="widget-number">' + dataAkun.length + '</div><div class="widget-label">Total Akun</div></div>';
             html += '<div class="widget-card"><div class="widget-icon" style="color:#f44336;"><i class="fas fa-trash-alt"></i></div><div class="widget-number">' + pengajuanMenunggu.length + '</div><div class="widget-label">Pengajuan Hapus</div></div>';
             html += '</div>';
+
             if (pengajuanMenunggu.length > 0) {
                 html += '<div class="card"><div class="card-header">Pengajuan Hapus dari Customer</div><div class="table-container"><table class="table"><thead><tr><th>No</th><th>Nama</th><th>Username</th><th>Email</th><th>Aksi</th></tr></thead><tbody>';
                 for (var i = 0; i < pengajuanMenunggu.length; i++) {
                     var p = pengajuanMenunggu[i];
-                    html += '<tr><td>' + (i+1) + '</td><td>' + p.nama + '</td><td>' + p.username + '</td><td>' + p.email + '</td><td>';
+                    html += '<tr><td>' + (i+1) + '</td><td>' + escapeHtml(p.nama) + '</td><td>' + escapeHtml(p.username) + '</td><td>' + escapeHtml(p.email) + '</td><td>';
                     html += '<button class="button button-warning button-extra-small" onclick="teruskanPengajuanHapus(' + i + ')">Teruskan ke SuperAdmin</button>';
                     html += '<button class="button button-danger button-extra-small" onclick="tolakPengajuanHapusStaf(' + i + ')">Tolak</button>';
                     html += '</td></tr>';
                 }
                 html += '</tbody></table></div></div>';
             }
-        } else if (role === 'toko' || role === 'staf_owner_toko') {
-            html += '<div class="page-header"><h2>Dasbor Toko</h2><p>Selamat datang, <strong>' + (user.nama || 'Toko') + '</strong>!</p></div>';
+        }
+        // ===== DASHBOARD TOKO =====
+        else if (role === 'toko' || role === 'staf_owner_toko') {
+            html += '<div class="page-header"><h2>Dasbor Toko</h2><p>Selamat datang, <strong>' + escapeHtml(user.nama || 'Toko') + '</strong>!</p></div>';
             html += '<div class="widget-grid">';
             html += '<div class="widget-card"><div class="widget-icon" style="color:#FF6B00;"><i class="fas fa-box"></i></div><div class="widget-number">0</div><div class="widget-label">Total Produk</div></div>';
             html += '<div class="widget-card"><div class="widget-icon" style="color:#2196F3;"><i class="fas fa-shopping-cart"></i></div><div class="widget-number">0</div><div class="widget-label">Pesanan Baru</div></div>';
             html += '<div class="widget-card"><div class="widget-icon" style="color:#4CAF50;"><i class="fas fa-money-bill-wave"></i></div><div class="widget-number">Rp 0</div><div class="widget-label">Pendapatan</div></div>';
             html += '</div>';
-        } else if (role === 'ojek' || role === 'staf_owner_ojek') {
-            html += '<div class="page-header"><h2>Dasbor Ojek</h2><p>Selamat datang, <strong>' + (user.nama || 'Ojek') + '</strong>!</p></div>';
+        }
+        // ===== DASHBOARD OJEK =====
+        else if (role === 'ojek' || role === 'staf_owner_ojek') {
+            html += '<div class="page-header"><h2>Dasbor Ojek</h2><p>Selamat datang, <strong>' + escapeHtml(user.nama || 'Ojek') + '</strong>!</p></div>';
             html += '<div class="widget-grid">';
             html += '<div class="widget-card"><div class="widget-icon" style="color:#FF6B00;"><i class="fas fa-motorcycle"></i></div><div class="widget-number">0</div><div class="widget-label">Order Aktif</div></div>';
             html += '<div class="widget-card"><div class="widget-icon" style="color:#4CAF50;"><i class="fas fa-check-circle"></i></div><div class="widget-number">0</div><div class="widget-label">Order Selesai</div></div>';
             html += '<div class="widget-card"><div class="widget-icon" style="color:#2196F3;"><i class="fas fa-money-bill-wave"></i></div><div class="widget-number">Rp 0</div><div class="widget-label">Pendapatan</div></div>';
             html += '</div>';
-        } else if (role === 'pedagang') {
-            html += '<div class="page-header"><h2>Dasbor Pedagang Pasar</h2><p>Selamat datang, <strong>' + (user.nama || 'Pedagang') + '</strong>!</p></div>';
+        }
+        // ===== DASHBOARD PEDAGANG PASAR =====
+        else if (role === 'pedagang') {
+            html += '<div class="page-header"><h2>Dasbor Pedagang Pasar</h2><p>Selamat datang, <strong>' + escapeHtml(user.nama || 'Pedagang') + '</strong>!</p></div>';
             html += '<div class="card"><p>Selamat bergabung di Toko Online 2R! Lengkapi profil Anda.</p><button class="button button-primary margin-top-10" onclick="navigasiKeHalaman(\'profile\')">Lengkapi Profil</button></div>';
-        } else if (role === 'customer_service') {
-            html += '<div class="page-header"><h2>Dasbor Customer Service</h2><p>Selamat datang, <strong>' + (user.nama || 'Customer Service') + '</strong>!</p></div>';
+        }
+        // ===== DASHBOARD CUSTOMER SERVICE =====
+        else if (role === 'customer_service') {
+            html += '<div class="page-header"><h2>Dasbor Customer Service</h2><p>Selamat datang, <strong>' + escapeHtml(user.nama || 'Customer Service') + '</strong>!</p></div>';
             html += '<div class="widget-grid">';
             html += '<div class="widget-card"><div class="widget-icon" style="color:#FF9800;"><i class="fas fa-ticket-alt"></i></div><div class="widget-number">0</div><div class="widget-label">Tiket Masuk</div></div>';
             html += '<div class="widget-card"><div class="widget-icon" style="color:#4CAF50;"><i class="fas fa-check-circle"></i></div><div class="widget-number">0</div><div class="widget-label">Tiket Selesai</div></div>';
             html += '</div>';
-        } else if (role === 'sponsor') {
-            html += '<div class="page-header"><h2>Dasbor Sponsor</h2><p>Selamat datang, <strong>' + (user.nama || 'Sponsor') + '</strong>!</p></div>';
+        }
+        // ===== DASHBOARD SPONSOR =====
+        else if (role === 'sponsor') {
+            html += '<div class="page-header"><h2>Dasbor Sponsor</h2><p>Selamat datang, <strong>' + escapeHtml(user.nama || 'Sponsor') + '</strong>!</p></div>';
             html += '<div class="widget-grid">';
             html += '<div class="widget-card"><div class="widget-icon" style="color:#FF6B00;"><i class="fas fa-ad"></i></div><div class="widget-number">0</div><div class="widget-label">Iklan Aktif</div></div>';
             html += '<div class="widget-card"><div class="widget-icon" style="color:#2196F3;"><i class="fas fa-eye"></i></div><div class="widget-number">0</div><div class="widget-label">Total Impresi</div></div>';
             html += '</div>';
-        } else {
-            html += '<div class="page-header"><h2>Dasbor</h2><p>Selamat datang, <strong>' + (user.nama || 'User') + '</strong>!</p></div>';
         }
+        // ===== FALLBACK (ROLE TIDAK DIKENALI) =====
+        else {
+            html += '<div class="page-header"><h2>Dasbor</h2><p>Selamat datang, <strong>' + escapeHtml(user.nama || 'User') + '</strong>!</p></div>';
+        }
+
         areaKonten.innerHTML = html;
     }
+    // ===== AKHIR BLOK 3.1.1 =====
+
+    // ===== BLOK 3.1.2 - RENDER PROFIL (PEMILIH ROLE) =====
     function renderProfil() {
         var role = localStorage.getItem('2r_user_role');
         var user = JSON.parse(localStorage.getItem('2r_user') || '{}');
@@ -708,14 +1545,21 @@
             renderProfilUmum(user, role);
         }
     }
-    // ===== AKHIR BLOK 6.1 =====
+    // ===== AKHIR BLOK 3.1.2 =====
+</script>
+<!-- ===== AKHIR BLOK 3.1 ===== -->
 
-    // ===== BLOK 6.2 - JS_RENDER_PROFIL_SUPERADMIN =====
+<!-- ===== BLOK 3.2 - JS_RENDER_PROFIL_SUPERADMIN ===== -->
+<script>
+    // ===== BLOK 3.2.1 - RENDER PROFIL SUPERADMIN =====
     function renderProfilSuperAdmin(user) {
         var areaKonten = document.getElementById('mainContent');
         if (!areaKonten) return;
         if (!user) user = JSON.parse(localStorage.getItem('2r_user') || '{}');
-        var html = '<div class="page-header"><h2>Profil SuperAdmin</h2><p>Kelola data aplikasi, keamanan akun, data pribadi, dan dokumen perusahaan.</p></div>';
+        var html = '';
+        html += '<div class="page-header"><h2>Profil SuperAdmin</h2><p>Kelola data aplikasi, keamanan akun, data pribadi, dan dokumen perusahaan.</p></div>';
+
+        // ===== DATA APLIKASI =====
         var dataAplikasi = JSON.parse(localStorage.getItem('2r_data_aplikasi') || '{}');
         html += '<div class="card"><div class="card-header"><span><i class="fas fa-building" style="color:#FF6B00;"></i> Data Aplikasi</span><button class="button button-primary button-small" onclick="simpanDataAplikasi()"><i class="fas fa-save"></i> Simpan</button></div>';
         html += '<div class="grid-2">';
@@ -724,12 +1568,16 @@
         html += '<div><label class="form-label">Pemilik</label><input type="text" id="appPemilik" class="form-input" value="' + escapeHtml(dataAplikasi.pemilik || '') + '"></div>';
         html += '<div><label class="form-label">Pengelola</label><input type="text" id="appPengelola" class="form-input" value="' + escapeHtml(dataAplikasi.pengelola || '') + '"></div>';
         html += '</div></div>';
+
+        // ===== KEAMANAN AKUN =====
         html += '<div class="card"><div class="card-header"><span><i class="fas fa-shield-alt" style="color:#FF6B00;"></i> Keamanan Akun</span><button class="button button-primary button-small" onclick="ubahPasswordSA()"><i class="fas fa-key"></i> Simpan</button></div>';
         html += '<div class="grid-2">';
         html += '<div><label class="form-label">Username</label><input type="text" id="saUsername" class="form-input" value="' + escapeHtml(user.username || '') + '"></div>';
         html += '<div><label class="form-label">Password Baru</label><input type="password" id="saPassword" class="form-input" placeholder="Kosongkan jika tidak diubah"></div>';
         html += '<div><label class="form-label">Konfirmasi Password</label><input type="password" id="saPasswordKonfirmasi" class="form-input" placeholder="Konfirmasi password"></div>';
         html += '</div></div>';
+
+        // ===== DATA PRIBADI & REKENING =====
         html += '<div class="card"><div class="card-header"><span><i class="fas fa-user-circle" style="color:#FF6B00;"></i> Data Pribadi & Rekening</span><button class="button button-primary button-small" onclick="simpanDataPribadiSA()"><i class="fas fa-save"></i> Simpan</button></div>';
         html += '<div class="grid-2">';
         html += '<div><label class="form-label">Nama Lengkap</label><input type="text" id="saNama" class="form-input" value="' + escapeHtml(user.nama || '') + '"></div>';
@@ -742,15 +1590,21 @@
         html += '<div><label class="form-label">Nomor Rekening</label><input type="text" id="saRekening" class="form-input" value="' + escapeHtml(user.nomorRekening || '') + '"></div>';
         html += '<div><label class="form-label">Nama Pemilik Rekening</label><input type="text" id="saPemilikRek" class="form-input" value="' + escapeHtml(user.pemilikRekening || '') + '"></div>';
         html += '</div></div>';
+
+        // ===== DOKUMEN PERUSAHAAN =====
         html += '<div class="card"><div class="card-header"><span><i class="fas fa-folder-open" style="color:#FF6B00;"></i> Dokumen Perusahaan</span>';
         html += '<button class="button button-primary button-small" id="btnUploadDokumen"><i class="fas fa-upload"></i> Unggah</button>';
         html += '<input type="file" id="inputDokumen" multiple accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" style="display:none"></div>';
         html += '<div id="daftarDokumen"><div class="empty-state"><i class="fas fa-cloud-upload-alt"></i><h3>Belum ada dokumen</h3></div></div></div>';
+
+        // ===== KETERANGAN =====
         html += '<div class="card"><div class="card-header"><span><i class="fas fa-sticky-note" style="color:#FF6B00;"></i> Keterangan</span></div>';
         html += '<textarea id="textKeterangan" rows="4" class="form-input" placeholder="Isi keterangan...">' + escapeHtml(localStorage.getItem('2r_keterangan_sa') || '') + '</textarea>';
         html += '<button class="button button-primary margin-top-10" onclick="simpanKeteranganSA()"><i class="fas fa-save"></i> Simpan</button>';
         html += '</div>';
+
         areaKonten.innerHTML = html;
+
         setTimeout(function() {
             var tombolUpload = document.getElementById('btnUploadDokumen');
             var inputUpload = document.getElementById('inputDokumen');
@@ -761,11 +1615,22 @@
             loadDokumenSA();
         }, 300);
     }
+    // ===== AKHIR BLOK 3.2.1 =====
+
+    // ===== BLOK 3.2.2 - SIMPAN DATA APLIKASI =====
     function simpanDataAplikasi() {
-        var data = { nama: document.getElementById('appNama').value, penerbit: document.getElementById('appPenerbit').value, pemilik: document.getElementById('appPemilik').value, pengelola: document.getElementById('appPengelola').value };
+        var data = {
+            nama: document.getElementById('appNama').value,
+            penerbit: document.getElementById('appPenerbit').value,
+            pemilik: document.getElementById('appPemilik').value,
+            pengelola: document.getElementById('appPengelola').value
+        };
         localStorage.setItem('2r_data_aplikasi', JSON.stringify(data));
         tampilkanToast('Data aplikasi disimpan!', 'success');
     }
+    // ===== AKHIR BLOK 3.2.2 =====
+
+    // ===== BLOK 3.2.3 - UBAH PASSWORD SA =====
     async function ubahPasswordSA() {
         var usernameBaru = document.getElementById('saUsername').value.trim();
         var passwordBaru = document.getElementById('saPassword').value.trim();
@@ -790,6 +1655,9 @@
         document.getElementById('saPasswordKonfirmasi').value = '';
         tampilkanToast('Keamanan akun diperbarui!', 'success');
     }
+    // ===== AKHIR BLOK 3.2.3 =====
+
+    // ===== BLOK 3.2.4 - SIMPAN DATA PRIBADI SA =====
     function simpanDataPribadiSA() {
         var user = JSON.parse(localStorage.getItem('2r_user'));
         var dataAkun = getDataAkun();
@@ -817,6 +1685,9 @@
         document.getElementById('userNama').textContent = user.nama;
         tampilkanToast('Data pribadi dan rekening disimpan!', 'success');
     }
+    // ===== AKHIR BLOK 3.2.4 =====
+
+    // ===== BLOK 3.2.5 - DOKUMEN SA (UPLOAD, LOAD, DOWNLOAD, DLL) =====
     function uploadDokumenSA(files) {
         var dataDokumen = JSON.parse(localStorage.getItem('2r_dokumen_sa') || '[]');
         var total = files.length;
@@ -923,23 +1794,36 @@
         loadDokumenSA();
         tampilkanToast('Dokumen dihapus!', 'success');
     }
+    // ===== AKHIR BLOK 3.2.5 =====
+
+    // ===== BLOK 3.2.6 - PREVIEW GAMBAR =====
     function previewGambar(src, title) {
         document.getElementById('modalPreviewImage').src = src;
         document.getElementById('modalPreviewTitle').textContent = title || 'Preview';
         bukaModal('modalPreviewGambar');
     }
+    // ===== AKHIR BLOK 3.2.6 =====
+
+    // ===== BLOK 3.2.7 - SIMPAN KETERANGAN SA =====
     function simpanKeteranganSA() {
         localStorage.setItem('2r_keterangan_sa', document.getElementById('textKeterangan').value);
         tampilkanToast('Keterangan disimpan!', 'success');
     }
-    // ===== AKHIR BLOK 6.2 =====
+    // ===== AKHIR BLOK 3.2.7 =====
+</script>
+<!-- ===== AKHIR BLOK 3.2 ===== -->
 
-    // ===== BLOK 6.3 - JS_RENDER_PROFIL_CUSTOMER =====
+<!-- ===== BLOK 3.3 - JS_RENDER_PROFIL_CUSTOMER ===== -->
+<script>
+    // ===== BLOK 3.3.1 - RENDER PROFIL CUSTOMER =====
     function renderProfilCustomer() {
         var user = JSON.parse(localStorage.getItem('2r_user') || '{}');
         var areaKonten = document.getElementById('mainContent');
-        var html = '<div class="page-header"><h2>Profil Customer</h2><p>ID Akun: <strong>' + (user.id || '-') + '</strong> &nbsp;|&nbsp; Role: <strong>' + (user.role || '-') + '</strong></p></div>';
+        var html = '';
+        html += '<div class="page-header"><h2>Profil Customer</h2><p>ID Akun: <strong>' + escapeHtml(user.id || '-') + '</strong> &nbsp;|&nbsp; Role: <strong>' + escapeHtml(user.role || '-') + '</strong></p></div>';
         html += '<div id="notifikasiSimpanProfil" style="display:none; background:#4CAF50; color:white; padding:12px 20px; border-radius:8px; margin-bottom:15px; text-align:center; font-weight:600; font-size:15px; animation: fadeInOut 1.5s ease-in-out;"><i class="fas fa-check-circle"></i> Profil berhasil disimpan!</div>';
+
+        // ===== RINGKASAN PROFIL =====
         html += '<div class="card" style="background:#f8f9fa; border:2px solid #FF6B00;">';
         html += '<div class="card-header" style="color:#FF6B00; font-weight:700;"><span><i class="fas fa-user-circle"></i> Ringkasan Profil Anda</span>';
         html += '<span style="font-weight:normal; font-size:13px; color:#888;">Terakhir diperbarui: ' + (user.waktuRegistrasi ? new Date(user.waktuRegistrasi).toLocaleDateString('id-ID') : '-') + '</span></div>';
@@ -963,17 +1847,26 @@
             html += '<span>Belum diupload</span>';
         }
         html += '</div></div>';
+
+        // ===== DATA REGISTRASI =====
         html += '<div class="card"><div class="card-header">Data Registrasi <button class="button button-primary button-small" onclick="simpanProfilCustomer()"><i class="fas fa-save"></i> Simpan Profil</button></div>';
         html += '<div class="grid-2"><div><label class="form-label">Nama Lengkap (Sesuai KTP)</label><input type="text" id="editNamaCustomer" class="form-input" value="' + escapeHtml(user.nama || '') + '"></div>';
         html += '<div><label class="form-label">Username</label><input type="text" id="editUsernameCustomer" class="form-input" value="' + escapeHtml(user.username || '') + '" disabled></div>';
         html += '<div><label class="form-label">Email</label><input type="email" id="editEmailCustomer" class="form-input" value="' + escapeHtml(user.email || '') + '"></div>';
         html += '<div><label class="form-label">Nomor HP</label><input type="tel" id="editHpCustomer" class="form-input" value="' + escapeHtml(user.nomorHp || '') + '"></div></div></div>';
+
+        // ===== ALAMAT KTP =====
         html += buatAlamatHTML('ktp', 'Alamat Sesuai KTP', user);
+        // ===== ALAMAT DOMISILI =====
         html += buatAlamatHTML('dom', 'Alamat Domisili / Sekarang', user);
+
+        // ===== DATA REKENING =====
         html += '<div class="card"><div class="card-header">Data Rekening <button class="button button-primary button-small" onclick="simpanRekeningCustomer()"><i class="fas fa-save"></i> Simpan Rekening</button></div>';
         html += '<div class="grid-2"><div><label class="form-label">Nama Bank</label><input type="text" id="profilBankCustomer" class="form-input" value="' + escapeHtml(user.namaBank || '') + '"></div>';
         html += '<div><label class="form-label">Nomor Rekening</label><input type="text" id="profilRekeningCustomer" class="form-input" value="' + escapeHtml(user.nomorRekening || '') + '"></div>';
         html += '<div><label class="form-label">Nama Pemilik Rekening</label><input type="text" id="profilPemilikRekCustomer" class="form-input" value="' + escapeHtml(user.pemilikRekening || '') + '"></div></div></div>';
+
+        // ===== DOKUMEN KTP =====
         html += '<div class="card"><div class="card-header">Dokumen KTP & Domisili</div>';
         html += '<div class="upload-area" id="uploadKtpContainerCustomer"><div id="ktpPreviewCustomer">';
         if (user.ktp) {
@@ -985,7 +1878,9 @@
         html += '<button class="button button-primary margin-top-10" onclick="simpanKTPCustomer()"><i class="fas fa-save"></i> Simpan KTP</button>';
         if (user.ktp) html += '<button class="button button-danger margin-top-10" onclick="hapusKTPCustomer()" style="margin-left:10px;"><i class="fas fa-trash"></i> Hapus KTP</button>';
         html += '</div>';
+
         areaKonten.innerHTML = html;
+
         setTimeout(function() {
             loadDataWilayahTersimpan('ktp', user);
             loadDataWilayahTersimpan('dom', user);
@@ -1001,6 +1896,9 @@
             }
         }, 300);
     }
+    // ===== AKHIR BLOK 3.3.1 =====
+
+    // ===== BLOK 3.3.2 - BUAT ALAMAT HTML =====
     function buatAlamatHTML(prefix, judul, user) {
         var html = '<div class="card"><div class="card-header">' + judul + ' <button class="button button-primary button-small" onclick="simpanProfilCustomer()"><i class="fas fa-save"></i> Simpan</button></div><div class="grid-2">';
         html += '<div><label class="form-label">Dusun / Dukuh</label><input type="text" id="' + prefix + 'Dusun" class="form-input" value="' + escapeHtml(user[prefix + 'Dusun'] || '') + '"></div>';
@@ -1019,6 +1917,9 @@
         html += '</div></div>';
         return html;
     }
+    // ===== AKHIR BLOK 3.3.2 =====
+
+    // ===== BLOK 3.3.3 - SIMPAN PROFIL CUSTOMER =====
     function simpanProfilCustomer() {
         var user = JSON.parse(localStorage.getItem('2r_user'));
         var dataAkun = getDataAkun();
@@ -1115,6 +2016,9 @@
         }
         tampilkanToast('Profil berhasil disimpan!', 'success');
     }
+    // ===== AKHIR BLOK 3.3.3 =====
+
+    // ===== BLOK 3.3.4 - SIMPAN REKENING CUSTOMER =====
     function simpanRekeningCustomer() {
         var user = JSON.parse(localStorage.getItem('2r_user'));
         var dataAkun = getDataAkun();
@@ -1133,6 +2037,9 @@
         simpanDataAkun(dataAkun);
         tampilkanToast('Rekening disimpan!', 'success');
     }
+    // ===== AKHIR BLOK 3.3.4 =====
+
+    // ===== BLOK 3.3.5 - PREVIEW & SIMPAN KTP CUSTOMER =====
     function previewKTPCustomer(file) {
         if (!file) return;
         var pembaca = new FileReader();
@@ -1175,13 +2082,27 @@
         tampilkanToast('KTP berhasil dihapus!', 'success');
         renderProfilCustomer();
     }
-    // ===== AKHIR BLOK 6.3 =====
+    // ===== AKHIR BLOK 3.3.5 =====
+</script>
+<!-- ===== AKHIR BLOK 3.3 ===== -->
 
-    // ===== BLOK 6.4 - JS_RENDER_PROFIL_UMUM =====
+<!-- ===== BLOK 3.4 - JS_RENDER_PROFIL_UMUM ===== -->
+<script>
+    // ===== BLOK 3.4.1 - RENDER PROFIL UMUM =====
     function renderProfilUmum(user, role) {
         var areaKonten = document.getElementById('mainContent');
         if (!areaKonten) return;
-        var namaRole = { customer: 'Customer', toko: 'Toko', ojek: 'Ojek', pedagang: 'Pedagang Pasar', staf_admin: 'Staf Admin', customer_service: 'Customer Service', staf_owner_toko: 'Staf Owner Toko', staf_owner_ojek: 'Staf Owner Ojek', sponsor: 'Sponsor' };
+        var namaRole = {
+            customer: 'Customer',
+            toko: 'Toko',
+            ojek: 'Ojek',
+            pedagang: 'Pedagang Pasar',
+            staf_admin: 'Staf Admin',
+            customer_service: 'Customer Service',
+            staf_owner_toko: 'Staf Owner Toko',
+            staf_owner_ojek: 'Staf Owner Ojek',
+            sponsor: 'Sponsor'
+        };
         var html = '<div class="page-header"><h2>Profil ' + (namaRole[role] || role) + '</h2><p>Kelola data pribadi, rekening, dan dokumen KTP Anda.</p></div>';
         html += '<div class="card"><div class="card-header"><span><i class="fas fa-user-circle" style="color:#FF6B00;"></i> Data Pribadi & Rekening</span><button class="button button-primary button-small" onclick="simpanDataPribadiUmum()"><i class="fas fa-save"></i> Simpan</button></div>';
         html += '<div class="grid-2"><div><label class="form-label">Nama Lengkap</label><input type="text" id="profilNama" class="form-input" value="' + escapeHtml(user.nama || '') + '"></div>';
@@ -1210,6 +2131,9 @@
             }
         }, 300);
     }
+    // ===== AKHIR BLOK 3.4.1 =====
+
+    // ===== BLOK 3.4.2 - SIMPAN DATA PRIBADI UMUM =====
     function simpanDataPribadiUmum() {
         var user = JSON.parse(localStorage.getItem('2r_user'));
         var dataAkun = getDataAkun();
@@ -1237,6 +2161,9 @@
         document.getElementById('userNama').textContent = user.nama;
         tampilkanToast('Data pribadi dan rekening disimpan!', 'success');
     }
+    // ===== AKHIR BLOK 3.4.2 =====
+
+    // ===== BLOK 3.4.3 - PREVIEW & SIMPAN KTP UMUM =====
     function previewKTP(file) {
         if (!file) return;
         var pembaca = new FileReader();
@@ -1263,13 +2190,20 @@
         localStorage.removeItem('2r_ktp_temp');
         tampilkanToast('KTP disimpan!', 'success');
     }
-    // ===== AKHIR BLOK 6.4 =====
-    // ===== AKHIR BAGIAN 6 =====
+    // ===== AKHIR BLOK 3.4.3 =====
 </script>
+<!-- ===== AKHIR BLOK 3.4 ===== -->
 
-<!-- ===== BAGIAN 7 - JAVASCRIPT DAFTAR AKUN, PERSETUJUAN, KELOLA AKUN ===== -->
+<!-- ============================================================ -->
+<!-- AKHIR BAGIAN 3                                               -->
+<!-- ============================================================ -->
+<!-- ============================================================ -->
+<!-- BAGIAN 4 - JAVASCRIPT DAFTAR AKUN & KELOLA AKUN               -->
+<!-- ============================================================ -->
+
+<!-- ===== BLOK 4.1 - JS_RENDER_DAFTAR_AKUN ===== -->
 <script>
-    // ===== BLOK 7.1 - RENDER DAFTAR AKUN =====
+    // ===== BLOK 4.1.1 - RENDER FORM DAFTAR AKUN BARU =====
     function renderDaftarAkun() {
         var areaKonten = document.getElementById('mainContent');
         var html = '<div class="page-header"><h2>Daftar Akun Baru</h2><p>Form pendaftaran akun oleh SuperAdmin.</p></div>';
@@ -1285,46 +2219,89 @@
         html += '<button class="button button-primary" style="width:100%;" onclick="prosesDaftarAkun()"><i class="fas fa-user-plus"></i> Buat Akun Baru</button></div>';
         areaKonten.innerHTML = html;
     }
+    // ===== AKHIR BLOK 4.1.1 =====
+
+    // ===== BLOK 4.1.2 - UPDATE PREVIEW ID OTOMATIS =====
     function updatePreviewId() {
         var role = document.getElementById('daftarRole').value;
         document.getElementById('daftarIdPreview').textContent = generateId(role);
     }
+    // ===== AKHIR BLOK 4.1.2 =====
+
+    // ===== BLOK 4.1.3 - PROSES DAFTAR AKUN BARU =====
     async function prosesDaftarAkun() {
         var role = document.getElementById('daftarRole').value;
         var username = document.getElementById('daftarUsername').value.trim();
         var password = document.getElementById('daftarPassword').value.trim();
         var nama = document.getElementById('daftarNama').value.trim();
-        if (!role || !username || !password || !nama) { tampilkanToast('Data belum lengkap!', 'warning'); return; }
-        if (username.length < 4) { tampilkanToast('Username minimal 4 karakter!', 'warning'); return; }
-        if (password.length < 6) { tampilkanToast('Password minimal 6 karakter!', 'warning'); return; }
+        
+        if (!role || !username || !password || !nama) { 
+            tampilkanToast('Data belum lengkap!', 'warning'); 
+            return; 
+        }
+        if (username.length < 4) { 
+            tampilkanToast('Username minimal 4 karakter!', 'warning'); 
+            return; 
+        }
+        if (password.length < 6) { 
+            tampilkanToast('Password minimal 6 karakter!', 'warning'); 
+            return; 
+        }
+        
         var dataAkun = getDataAkun();
         for (var i = 0; i < dataAkun.length; i++) {
-            if (dataAkun[i].username === username) { tampilkanToast('Username sudah digunakan!', 'error'); return; }
+            if (dataAkun[i].username === username) { 
+                tampilkanToast('Username sudah digunakan!', 'error'); 
+                return; 
+            }
         }
+        
         var status = (role === 'toko' || role === 'ojek') ? 'NONAKTIF (Menunggu Verifikasi)' : 'AKTIF';
         var passwordHash = await hashPassword(password);
+        
         var akunBaru = {
-            id: generateId(role), role: role, username: username, password: passwordHash, nama: nama,
-            email: '', nomorHp: '', alamat: '', namaBank: '', nomorRekening: '', pemilikRekening: '', ktp: '',
-            status: status, dataLengkap: false, waktuRegistrasi: new Date().toISOString()
+            id: generateId(role), 
+            role: role, 
+            username: username, 
+            password: passwordHash, 
+            nama: nama,
+            email: '', 
+            nomorHp: '', 
+            alamat: '', 
+            namaBank: '', 
+            nomorRekening: '', 
+            pemilikRekening: '', 
+            ktp: '',
+            status: status, 
+            dataLengkap: false, 
+            waktuRegistrasi: new Date().toISOString()
         };
+        
         dataAkun.push(akunBaru);
         simpanDataAkun(dataAkun);
+        
         document.getElementById('daftarUsername').value = '';
         document.getElementById('daftarPassword').value = '';
         document.getElementById('daftarNama').value = '';
         updatePreviewId();
+        
         tampilkanToast('Akun ' + role + ' berhasil dibuat! ID: ' + akunBaru.id, 'success');
     }
-    // ===== AKHIR BLOK 7.1 =====
+    // ===== AKHIR BLOK 4.1.3 =====
+</script>
+<!-- ===== AKHIR BLOK 4.1 ===== -->
 
-    // ===== BLOK 7.2 - RENDER PERSETUJUAN AKUN =====
+<!-- ===== BLOK 4.2 - JS_RENDER_PERSETUJUAN_AKUN ===== -->
+<script>
+    // ===== BLOK 4.2.1 - RENDER HALAMAN PERSETUJUAN AKUN =====
     function renderPersetujuanAkun() {
         var areaKonten = document.getElementById('mainContent');
         var dataAkun = getDataAkun();
         var daftar = [];
         for (var i = 0; i < dataAkun.length; i++) {
-            if (dataAkun[i].role !== 'superadmin' && dataAkun[i].role !== 'customer') daftar.push(dataAkun[i]);
+            if (dataAkun[i].role !== 'superadmin' && dataAkun[i].role !== 'customer') {
+                daftar.push(dataAkun[i]);
+            }
         }
         var html = '<div class="page-header"><h2>Persetujuan Akun</h2><p>Daftar akun yang membutuhkan persetujuan.</p></div>';
         html += '<div class="card"><div class="card-header"><span>Daftar Permintaan</span><span>Total: ' + daftar.length + ' akun</span></div>';
@@ -1350,6 +2327,9 @@
         html += '</div>';
         areaKonten.innerHTML = html;
     }
+    // ===== AKHIR BLOK 4.2.1 =====
+
+    // ===== BLOK 4.2.2 - SETUJUI AKUN =====
     function setujuiAkun(id) {
         if (!confirm('Setujui akun ini?')) return;
         var dataAkun = getDataAkun();
@@ -1360,10 +2340,16 @@
         renderPersetujuanAkun();
         tampilkanToast('Akun diaktifkan!', 'success');
     }
+    // ===== AKHIR BLOK 4.2.2 =====
+
+    // ===== BLOK 4.2.3 - BUKA MODAL TOLAK AKUN =====
     function bukaTolakAkun(id) {
         document.getElementById('tolakIdAkun').value = id;
         bukaModal('modalTolakAkun');
     }
+    // ===== AKHIR BLOK 4.2.3 =====
+
+    // ===== BLOK 4.2.4 - EKSEKUSI TOLAK AKUN =====
     function eksekusiTolakAkun() {
         var id = document.getElementById('tolakIdAkun').value;
         var dataAkun = getDataAkun();
@@ -1376,9 +2362,13 @@
         renderPersetujuanAkun();
         tampilkanToast('Akun ditolak!', 'success');
     }
-    // ===== AKHIR BLOK 7.2 =====
+    // ===== AKHIR BLOK 4.2.4 =====
+</script>
+<!-- ===== AKHIR BLOK 4.2 ===== -->
 
-    // ===== BLOK 7.3 - RENDER KELOLA AKUN =====
+<!-- ===== BLOK 4.3 - JS_RENDER_KELOLA_AKUN ===== -->
+<script>
+    // ===== BLOK 4.3.1 - RENDER HALAMAN KELOLA SEMUA AKUN =====
     function renderKelolaAkun() {
         var role = localStorage.getItem('2r_user_role');
         if (role !== 'superadmin' && role !== 'staf_admin') {
@@ -1389,8 +2379,11 @@
         var user = JSON.parse(localStorage.getItem('2r_user') || '{}');
         var areaKonten = document.getElementById('mainContent');
         var html = '<div class="page-header"><h2>Kelola Semua Akun</h2><p>';
-        if (role === 'superadmin') html += 'Anda dapat mengaktifkan, menonaktifkan (suspen), atau menghapus akun secara permanen. (Akun sendiri tidak dapat diubah.)';
-        else html += 'Anda dapat mengaktifkan, menonaktifkan, atau mengajukan penghapusan akun ke SuperAdmin.';
+        if (role === 'superadmin') {
+            html += 'Anda dapat mengaktifkan, menonaktifkan (suspen), atau menghapus akun secara permanen. (Akun sendiri tidak dapat diubah.)';
+        } else {
+            html += 'Anda dapat mengaktifkan, menonaktifkan, atau mengajukan penghapusan akun ke SuperAdmin.';
+        }
         html += '</p></div><div class="card">';
         if (dataAkun.length === 0) {
             html += '<div class="empty-state"><i class="fas fa-users-slash"></i><h3>Belum ada akun</h3></div>';
@@ -1407,10 +2400,16 @@
                 if (isSelf) {
                     html += '<span style="color:#888; font-size:12px;">Akun sendiri</span>';
                 } else {
-                    if (a.status !== 'AKTIF') html += '<button class="button button-success button-extra-small" onclick="aktifkanAkun(\'' + a.id + '\')">Aktifkan</button>';
-                    else html += '<button class="button button-warning button-extra-small" onclick="nonaktifkanAkun(\'' + a.id + '\')">Nonaktifkan (Suspen)</button>';
-                    if (role === 'superadmin') html += '<button class="button button-danger button-extra-small" onclick="hapusAkun(\'' + a.id + '\')">Hapus</button>';
-                    else if (role === 'staf_admin') html += '<button class="button button-danger button-extra-small" style="background:#FF9800;" onclick="ajukanHapusAkunStaf(\'' + a.id + '\')">Ajukan Hapus</button>';
+                    if (a.status !== 'AKTIF') {
+                        html += '<button class="button button-success button-extra-small" onclick="aktifkanAkun(\'' + a.id + '\')">Aktifkan</button>';
+                    } else {
+                        html += '<button class="button button-warning button-extra-small" onclick="nonaktifkanAkun(\'' + a.id + '\')">Nonaktifkan (Suspen)</button>';
+                    }
+                    if (role === 'superadmin') {
+                        html += '<button class="button button-danger button-extra-small" onclick="hapusAkun(\'' + a.id + '\')">Hapus</button>';
+                    } else if (role === 'staf_admin') {
+                        html += '<button class="button button-danger button-extra-small" style="background:#FF9800;" onclick="ajukanHapusAkunStaf(\'' + a.id + '\')">Ajukan Hapus</button>';
+                    }
                 }
                 html += '</div></td></tr>';
             }
@@ -1419,9 +2418,15 @@
         html += '</div>';
         areaKonten.innerHTML = html;
     }
+    // ===== AKHIR BLOK 4.3.1 =====
+
+    // ===== BLOK 4.3.2 - AKTIFKAN AKUN =====
     function aktifkanAkun(id) {
         var role = localStorage.getItem('2r_user_role');
-        if (role !== 'superadmin' && role !== 'staf_admin') { tampilkanToast('Anda tidak memiliki hak untuk mengaktifkan akun!', 'error'); return; }
+        if (role !== 'superadmin' && role !== 'staf_admin') {
+            tampilkanToast('Anda tidak memiliki hak untuk mengaktifkan akun!', 'error');
+            return;
+        }
         if (!confirm('Aktifkan akun ini?')) return;
         var dataAkun = getDataAkun();
         for (var i = 0; i < dataAkun.length; i++) {
@@ -1431,9 +2436,15 @@
         renderKelolaAkun();
         tampilkanToast('Akun diaktifkan!', 'success');
     }
+    // ===== AKHIR BLOK 4.3.2 =====
+
+    // ===== BLOK 4.3.3 - NONAKTIFKAN AKUN (SUSPEN) =====
     function nonaktifkanAkun(id) {
         var role = localStorage.getItem('2r_user_role');
-        if (role !== 'superadmin') { tampilkanToast('Hanya SuperAdmin yang dapat menonaktifkan (suspen) akun!', 'error'); return; }
+        if (role !== 'superadmin') {
+            tampilkanToast('Hanya SuperAdmin yang dapat menonaktifkan (suspen) akun!', 'error');
+            return;
+        }
         if (!confirm('Nonaktifkan (suspen) akun ini?')) return;
         var dataAkun = getDataAkun();
         for (var i = 0; i < dataAkun.length; i++) {
@@ -1443,11 +2454,20 @@
         renderKelolaAkun();
         tampilkanToast('Akun dinonaktifkan (suspen)!', 'success');
     }
+    // ===== AKHIR BLOK 4.3.3 =====
+
+    // ===== BLOK 4.3.4 - HAPUS AKUN (HANYA SUPERADMIN) =====
     function hapusAkun(id) {
         var role = localStorage.getItem('2r_user_role');
-        if (role !== 'superadmin') { tampilkanToast('Hanya SuperAdmin yang dapat menghapus akun permanen!', 'error'); return; }
+        if (role !== 'superadmin') {
+            tampilkanToast('Hanya SuperAdmin yang dapat menghapus akun permanen!', 'error');
+            return;
+        }
         var user = JSON.parse(localStorage.getItem('2r_user') || '{}');
-        if (id === user.id) { tampilkanToast('Anda tidak dapat menghapus akun Anda sendiri!', 'error'); return; }
+        if (id === user.id) {
+            tampilkanToast('Anda tidak dapat menghapus akun Anda sendiri!', 'error');
+            return;
+        }
         if (!confirm('HAPUS permanen akun ini?')) return;
         if (!confirm('KONFIRMASI: Yakin hapus?')) return;
         var dataAkun = getDataAkun();
@@ -1459,32 +2479,184 @@
         renderKelolaAkun();
         tampilkanToast('Akun dihapus!', 'success');
     }
+    // ===== AKHIR BLOK 4.3.4 =====
+
+    // ===== BLOK 4.3.5 - AJUKAN HAPUS AKUN OLEH STAF ADMIN =====
     function ajukanHapusAkunStaf(id) {
         var role = localStorage.getItem('2r_user_role');
-        if (role !== 'staf_admin') { tampilkanToast('Anda tidak memiliki hak untuk mengajukan penghapusan!', 'error'); return; }
+        if (role !== 'staf_admin') {
+            tampilkanToast('Anda tidak memiliki hak untuk mengajukan penghapusan!', 'error');
+            return;
+        }
         if (!confirm('Ajukan penghapusan akun ini ke SuperAdmin?')) return;
         var dataAkun = getDataAkun();
         var target = null;
         for (var i = 0; i < dataAkun.length; i++) {
             if (dataAkun[i].id === id) { target = dataAkun[i]; break; }
         }
-        if (!target) { tampilkanToast('Akun tidak ditemukan!', 'error'); return; }
+        if (!target) {
+            tampilkanToast('Akun tidak ditemukan!', 'error');
+            return;
+        }
         var dataPengajuanStaf = JSON.parse(localStorage.getItem('2r_pengajuan_hapus_staf') || '[]');
         dataPengajuanStaf.push({
-            id: Date.now(), targetId: target.id, targetUsername: target.username,
-            targetNama: target.nama, targetRole: target.role, diajukanOleh: 'Staf Admin',
-            status: 'MENUNGGU', diajukanPada: new Date().toISOString()
+            id: Date.now(),
+            targetId: target.id,
+            targetUsername: target.username,
+            targetNama: target.nama,
+            targetRole: target.role,
+            diajukanOleh: 'Staf Admin',
+            status: 'MENUNGGU',
+            diajukanPada: new Date().toISOString()
         });
         localStorage.setItem('2r_pengajuan_hapus_staf', JSON.stringify(dataPengajuanStaf));
         renderKelolaAkun();
         tampilkanToast('Pengajuan penghapusan akun telah dikirim ke SuperAdmin!', 'success');
     }
-    // ===== AKHIR BLOK 7.3 =====
-    // ===== AKHIR BAGIAN 7 =====
+    // ===== AKHIR BLOK 4.3.5 =====
 </script>
-<!-- ===== BAGIAN 8 - JAVASCRIPT FITUR LANJUTAN ===== -->
+<!-- ===== AKHIR BLOK 4.3 ===== -->
+
+<!-- ===== BLOK 4.4 - JS_PENGAJUAN_HAPUS_STAF_SUPERADMIN ===== -->
 <script>
-    // ===== BLOK 8.1 - SETTING REKENING & IKLAN =====
+    // ===== BLOK 4.4.1 - TERUSKAN PENGAJUAN DARI STAF ADMIN KE SUPERADMIN =====
+    function teruskanPengajuanHapus(index) {
+        var dataPengajuan = JSON.parse(localStorage.getItem('2r_pengajuan_hapus') || '[]');
+        if (index < 0 || index >= dataPengajuan.length) {
+            tampilkanToast('Data tidak ditemukan!', 'error');
+            return;
+        }
+        if (!confirm('Teruskan pengajuan ini ke SuperAdmin?')) {
+            return;
+        }
+        dataPengajuan[index].status = 'DITERUSKAN';
+        localStorage.setItem('2r_pengajuan_hapus', JSON.stringify(dataPengajuan));
+        var pengajuanTerpilih = dataPengajuan[index];
+        var dataPengajuanStaf = JSON.parse(localStorage.getItem('2r_pengajuan_hapus_staf') || '[]');
+        dataPengajuanStaf.push({
+            id: Date.now(),
+            targetId: pengajuanTerpilih.userId,
+            targetUsername: pengajuanTerpilih.username,
+            targetNama: pengajuanTerpilih.nama,
+            targetRole: pengajuanTerpilih.role,
+            diajukanOleh: 'Staf Admin',
+            status: 'MENUNGGU',
+            diajukanPada: new Date().toISOString()
+        });
+        localStorage.setItem('2r_pengajuan_hapus_staf', JSON.stringify(dataPengajuanStaf));
+        if (typeof simpanNotifikasi === 'function') {
+            simpanNotifikasi('ALL', 'Pengajuan Diteruskan ke SuperAdmin', 
+                'Staf Admin meneruskan pengajuan hapus akun dari Customer ' + pengajuanTerpilih.username + ' (' + pengajuanTerpilih.nama + ') ke SuperAdmin.', 
+                'account');
+        }
+        renderDashboard();
+        tampilkanToast('Pengajuan diteruskan ke SuperAdmin!', 'success');
+    }
+    // ===== AKHIR BLOK 4.4.1 =====
+
+    // ===== BLOK 4.4.2 - TOLAK PENGAJUAN OLEH STAF ADMIN =====
+    function tolakPengajuanHapusStaf(index) {
+        var dataPengajuan = JSON.parse(localStorage.getItem('2r_pengajuan_hapus') || '[]');
+        if (index < 0 || index >= dataPengajuan.length) {
+            tampilkanToast('Data tidak ditemukan!', 'error');
+            return;
+        }
+        if (!confirm('Tolak pengajuan ini?')) {
+            return;
+        }
+        dataPengajuan[index].status = 'DITOLAK';
+        localStorage.setItem('2r_pengajuan_hapus', JSON.stringify(dataPengajuan));
+        if (typeof simpanNotifikasi === 'function') {
+            simpanNotifikasi(dataPengajuan[index].userId, 'Pengajuan Hapus Akun Ditolak', 
+                'Pengajuan hapus akun Anda telah ditolak oleh Staf Admin.', 
+                'account');
+        }
+        renderDashboard();
+        tampilkanToast('Pengajuan ditolak.', 'success');
+    }
+    // ===== AKHIR BLOK 4.4.2 =====
+
+    // ===== BLOK 4.4.3 - SETUJUI PENGAJUAN OLEH SUPERADMIN =====
+    function setujuiPengajuanStaf(index) {
+        var dataPengajuanStaf = JSON.parse(localStorage.getItem('2r_pengajuan_hapus_staf') || '[]');
+        if (index < 0 || index >= dataPengajuanStaf.length) {
+            tampilkanToast('Data tidak ditemukan!', 'error');
+            return;
+        }
+        if (!confirm('Setujui dan hapus akun ini secara permanen?')) {
+            return;
+        }
+        var pengajuanTerpilih = dataPengajuanStaf[index];
+        var dataAkun = getDataAkun();
+        var dataAkunBaru = [];
+        for (var i = 0; i < dataAkun.length; i++) {
+            if (dataAkun[i].id !== pengajuanTerpilih.targetId) {
+                dataAkunBaru.push(dataAkun[i]);
+            }
+        }
+        simpanDataAkun(dataAkunBaru);
+        dataPengajuanStaf[index].status = 'DISETUJUI';
+        localStorage.setItem('2r_pengajuan_hapus_staf', JSON.stringify(dataPengajuanStaf));
+        var dataPengajuanCustomer = JSON.parse(localStorage.getItem('2r_pengajuan_hapus') || '[]');
+        for (var i = 0; i < dataPengajuanCustomer.length; i++) {
+            if (dataPengajuanCustomer[i].userId === pengajuanTerpilih.targetId && dataPengajuanCustomer[i].status === 'DITERUSKAN') {
+                dataPengajuanCustomer[i].status = 'DISETUJUI';
+                break;
+            }
+        }
+        localStorage.setItem('2r_pengajuan_hapus', JSON.stringify(dataPengajuanCustomer));
+        if (typeof simpanNotifikasi === 'function') {
+            simpanNotifikasi(pengajuanTerpilih.targetId, 'Pengajuan Hapus Akun Disetujui', 
+                'Pengajuan hapus akun Anda telah disetujui oleh SuperAdmin. Akun Anda telah dihapus permanen.', 
+                'account');
+        }
+        renderDashboard();
+        tampilkanToast('Akun berhasil dihapus permanen!', 'success');
+    }
+    // ===== AKHIR BLOK 4.4.3 =====
+
+    // ===== BLOK 4.4.4 - TOLAK PENGAJUAN OLEH SUPERADMIN =====
+    function tolakPengajuanStaf(index) {
+        var dataPengajuanStaf = JSON.parse(localStorage.getItem('2r_pengajuan_hapus_staf') || '[]');
+        if (index < 0 || index >= dataPengajuanStaf.length) {
+            tampilkanToast('Data tidak ditemukan!', 'error');
+            return;
+        }
+        if (!confirm('Tolak pengajuan ini?')) {
+            return;
+        }
+        dataPengajuanStaf[index].status = 'DITOLAK';
+        localStorage.setItem('2r_pengajuan_hapus_staf', JSON.stringify(dataPengajuanStaf));
+        var dataPengajuanCustomer = JSON.parse(localStorage.getItem('2r_pengajuan_hapus') || '[]');
+        for (var i = 0; i < dataPengajuanCustomer.length; i++) {
+            if (dataPengajuanCustomer[i].userId === dataPengajuanStaf[index].targetId && dataPengajuanCustomer[i].status === 'DITERUSKAN') {
+                dataPengajuanCustomer[i].status = 'DITOLAK';
+                break;
+            }
+        }
+        localStorage.setItem('2r_pengajuan_hapus', JSON.stringify(dataPengajuanCustomer));
+        if (typeof simpanNotifikasi === 'function') {
+            simpanNotifikasi(dataPengajuanStaf[index].targetId, 'Pengajuan Hapus Akun Ditolak', 
+                'Pengajuan hapus akun Anda telah ditolak oleh SuperAdmin.', 
+                'account');
+        }
+        renderDashboard();
+        tampilkanToast('Pengajuan ditolak.', 'success');
+    }
+    // ===== AKHIR BLOK 4.4.4 =====
+</script>
+<!-- ===== AKHIR BLOK 4.4 ===== -->
+
+<!-- ============================================================ -->
+<!-- AKHIR BAGIAN 4                                               -->
+<!-- ============================================================ -->
+<!-- ============================================================ -->
+<!-- BAGIAN 5 - JAVASCRIPT FITUR LANJUTAN & UTILITY WILAYAH        -->
+<!-- ============================================================ -->
+
+<!-- ===== BLOK 5.1 - SETTING REKENING ===== -->
+<script>
+    // ===== BLOK 5.1.1 - RENDER SETTING REKENING MASTER =====
     function renderSettingRekening() {
         var dataRekening = JSON.parse(localStorage.getItem('2r_rekening') || '{}');
         var areaKonten = document.getElementById('mainContent');
@@ -1495,11 +2667,25 @@
         html += '<div class="form-group"><label>Nomor Rekening</label><input type="text" id="rekNomor" class="form-input" value="' + escapeHtml(dataRekening.nomor || '') + '"></div></div>';
         areaKonten.innerHTML = html;
     }
+    // ===== AKHIR BLOK 5.1.1 =====
+
+    // ===== BLOK 5.1.2 - SIMPAN REKENING MASTER =====
     function simpanRekening() {
-        var data = { namaBank: document.getElementById('rekBank').value, namaPemilik: document.getElementById('rekPemilik').value, nomor: document.getElementById('rekNomor').value };
+        var data = {
+            namaBank: document.getElementById('rekBank').value,
+            namaPemilik: document.getElementById('rekPemilik').value,
+            nomor: document.getElementById('rekNomor').value
+        };
         localStorage.setItem('2r_rekening', JSON.stringify(data));
         tampilkanToast('Rekening disimpan!', 'success');
     }
+    // ===== AKHIR BLOK 5.1.2 =====
+</script>
+<!-- ===== AKHIR BLOK 5.1 ===== -->
+
+<!-- ===== BLOK 5.2 - KELOLA IKLAN ===== -->
+<script>
+    // ===== BLOK 5.2.1 - RENDER MENU IKLAN =====
     function renderMenuIklan() {
         var areaKonten = document.getElementById('mainContent');
         var dataIklan = JSON.parse(localStorage.getItem('2r_iklan') || '[]');
@@ -1512,8 +2698,11 @@
             for (var i = 0; i < dataIklan.length; i++) {
                 var iklan = dataIklan[i];
                 html += '<tr><td>' + (i+1) + '</td><td>' + escapeHtml(iklan.judul) + '</td><td>' + escapeHtml(iklan.deskripsi) + '</td><td><span style="display:inline-block;width:30px;height:30px;background:' + (iklan.warna || '#FF6B00') + ';border-radius:4px;"></span></td><td>';
-                if (iklan.gambar) html += '<img src="' + iklan.gambar + '" style="width:50px;height:50px;object-fit:cover;border-radius:4px;cursor:pointer;" onclick="previewGambar(\'' + iklan.gambar + '\',\'Preview Iklan\')">';
-                else html += '-';
+                if (iklan.gambar) {
+                    html += '<img src="' + iklan.gambar + '" style="width:50px;height:50px;object-fit:cover;border-radius:4px;cursor:pointer;" onclick="previewGambar(\'' + iklan.gambar + '\',\'Preview Iklan\')">';
+                } else {
+                    html += '-';
+                }
                 html += '</td><td><button class="button button-primary button-extra-small" onclick="editIklan(' + i + ')"><i class="fas fa-edit"></i> Edit</button><button class="button button-danger button-extra-small" onclick="hapusIklan(' + i + ')"><i class="fas fa-trash"></i> Hapus</button></td></tr>';
             }
             html += '</tbody></table></div></div>';
@@ -1543,6 +2732,9 @@
             }
         }, 300);
     }
+    // ===== AKHIR BLOK 5.2.1 =====
+
+    // ===== BLOK 5.2.2 - BUKA FORM TAMBAH/EDIT IKLAN =====
     function bukaFormIklan() {
         document.getElementById('formIklanContainer').classList.remove('hidden');
         document.getElementById('formIklanTitle').textContent = 'Tambah Iklan Baru';
@@ -1554,23 +2746,42 @@
         localStorage.removeItem('2r_iklan_gambar_temp');
         document.getElementById('formIklanContainer').scrollIntoView({ behavior: 'smooth' });
     }
-    function tutupFormIklan() { document.getElementById('formIklanContainer').classList.add('hidden'); }
+    // ===== AKHIR BLOK 5.2.2 =====
+
+    // ===== BLOK 5.2.3 - TUTUP FORM IKLAN =====
+    function tutupFormIklan() {
+        document.getElementById('formIklanContainer').classList.add('hidden');
+    }
+    // ===== AKHIR BLOK 5.2.3 =====
+
+    // ===== BLOK 5.2.4 - SIMPAN IKLAN =====
     function simpanIklan() {
         var judul = document.getElementById('iklanJudul').value.trim();
         var deskripsi = document.getElementById('iklanDeskripsi').value.trim();
         var warna = document.getElementById('iklanWarna').value;
         var gambarTemp = localStorage.getItem('2r_iklan_gambar_temp') || '';
         var editIndex = parseInt(document.getElementById('iklanEditIndex').value);
-        if (!judul || !deskripsi) { tampilkanToast('Judul dan deskripsi wajib diisi!', 'warning'); return; }
+        if (!judul || !deskripsi) {
+            tampilkanToast('Judul dan deskripsi wajib diisi!', 'warning');
+            return;
+        }
         var dataIklan = JSON.parse(localStorage.getItem('2r_iklan') || '[]');
         if (editIndex === -1) {
-            dataIklan.push({ id: Date.now(), judul: judul, deskripsi: deskripsi, warna: warna, gambar: gambarTemp || '' });
+            dataIklan.push({
+                id: Date.now(),
+                judul: judul,
+                deskripsi: deskripsi,
+                warna: warna,
+                gambar: gambarTemp || ''
+            });
             tampilkanToast('Iklan berhasil ditambahkan!', 'success');
         } else {
             dataIklan[editIndex].judul = judul;
             dataIklan[editIndex].deskripsi = deskripsi;
             dataIklan[editIndex].warna = warna;
-            if (gambarTemp) dataIklan[editIndex].gambar = gambarTemp;
+            if (gambarTemp) {
+                dataIklan[editIndex].gambar = gambarTemp;
+            }
             tampilkanToast('Iklan berhasil diperbarui!', 'success');
         }
         localStorage.setItem('2r_iklan', JSON.stringify(dataIklan));
@@ -1578,9 +2789,15 @@
         tutupFormIklan();
         renderMenuIklan();
     }
+    // ===== AKHIR BLOK 5.2.4 =====
+
+    // ===== BLOK 5.2.5 - EDIT IKLAN =====
     function editIklan(index) {
         var dataIklan = JSON.parse(localStorage.getItem('2r_iklan') || '[]');
-        if (index < 0 || index >= dataIklan.length) { tampilkanToast('Iklan tidak ditemukan!', 'error'); return; }
+        if (index < 0 || index >= dataIklan.length) {
+            tampilkanToast('Iklan tidak ditemukan!', 'error');
+            return;
+        }
         var iklan = dataIklan[index];
         document.getElementById('formIklanContainer').classList.remove('hidden');
         document.getElementById('formIklanTitle').textContent = 'Edit Iklan';
@@ -1592,6 +2809,9 @@
         localStorage.removeItem('2r_iklan_gambar_temp');
         document.getElementById('formIklanContainer').scrollIntoView({ behavior: 'smooth' });
     }
+    // ===== AKHIR BLOK 5.2.5 =====
+
+    // ===== BLOK 5.2.6 - HAPUS IKLAN =====
     function hapusIklan(index) {
         if (!confirm('Yakin ingin menghapus iklan ini?')) return;
         var dataIklan = JSON.parse(localStorage.getItem('2r_iklan') || '[]');
@@ -1600,12 +2820,19 @@
         renderMenuIklan();
         tampilkanToast('Iklan dihapus!', 'success');
     }
-    // ===== AKHIR BLOK 8.1 =====
+    // ===== AKHIR BLOK 5.2.6 =====
+</script>
+<!-- ===== AKHIR BLOK 5.2 ===== -->
 
-    // ===== BLOK 8.2 - TRANSFER MENU & KELOLA WILAYAH =====
+<!-- ===== BLOK 5.3 - TRANSFER MENU ===== -->
+<script>
+    // ===== BLOK 5.3.1 - RENDER HALAMAN TRANSFER MENU =====
     function renderTransferMenu() {
         var role = localStorage.getItem('2r_user_role');
-        if (role !== 'superadmin') { tampilkanToast('Anda tidak memiliki akses ke halaman ini!', 'error'); return; }
+        if (role !== 'superadmin') {
+            tampilkanToast('Anda tidak memiliki akses ke halaman ini!', 'error');
+            return;
+        }
         var areaKonten = document.getElementById('mainContent');
         var html = '<div class="page-header"><h2>Transfer Menu</h2><p>Pilih kategori menu yang ingin Anda transfer ke akun target.</p></div>';
         html += '<div class="widget-grid">';
@@ -1615,14 +2842,22 @@
         html += '</div>';
         areaKonten.innerHTML = html;
     }
+    // ===== AKHIR BLOK 5.3.1 =====
+
+    // ===== BLOK 5.3.2 - TRANSFER UPLOAD PRODUK PUBLIK =====
     function renderTransferUploadProduk() {
         var role = localStorage.getItem('2r_user_role');
-        if (role !== 'superadmin') { tampilkanToast('Anda tidak memiliki akses!', 'error'); return; }
+        if (role !== 'superadmin') {
+            tampilkanToast('Anda tidak memiliki akses!', 'error');
+            return;
+        }
         var areaKonten = document.getElementById('mainContent');
         var dataAkun = getDataAkun();
         var daftarToko = [];
         for (var i = 0; i < dataAkun.length; i++) {
-            if (dataAkun[i].role === 'toko') daftarToko.push(dataAkun[i]);
+            if (dataAkun[i].role === 'toko') {
+                daftarToko.push(dataAkun[i]);
+            }
         }
         var html = '<div class="page-header"><h2>Transfer Upload Produk Publik</h2><p>Pilih toko yang ingin Anda aktifkan/nonaktifkan fitur upload produk publik.</p>';
         html += '<button class="button button-primary button-small" onclick="renderTransferMenu()"><i class="fas fa-arrow-left"></i> Kembali</button></div>';
@@ -1636,8 +2871,11 @@
                 var statusUpload = toko.fitur && toko.fitur.uploadProdukPublik ? 'Aktif' : 'Nonaktif';
                 var badge = statusUpload === 'Aktif' ? 'badge-success' : 'badge-danger';
                 html += '<tr><td>' + (i+1) + '</td><td>' + toko.id + '</td><td>' + toko.username + '</td><td>' + toko.nama + '</td><td><span class="badge ' + badge + '">' + statusUpload + '</span></td><td>';
-                if (statusUpload === 'Aktif') html += '<button class="button button-danger button-extra-small" onclick="nonaktifkanUploadPublik(\'' + toko.id + '\')">Nonaktifkan</button>';
-                else html += '<button class="button button-success button-extra-small" onclick="aktifkanUploadPublik(\'' + toko.id + '\')">Aktifkan</button>';
+                if (statusUpload === 'Aktif') {
+                    html += '<button class="button button-danger button-extra-small" onclick="nonaktifkanUploadPublik(\'' + toko.id + '\')">Nonaktifkan</button>';
+                } else {
+                    html += '<button class="button button-success button-extra-small" onclick="aktifkanUploadPublik(\'' + toko.id + '\')">Aktifkan</button>';
+                }
                 html += '</td></tr>';
             }
             html += '</tbody></table></div>';
@@ -1645,6 +2883,9 @@
         html += '</div>';
         areaKonten.innerHTML = html;
     }
+    // ===== AKHIR BLOK 5.3.2 =====
+
+    // ===== BLOK 5.3.3 - AKTIFKAN UPLOAD PRODUK PUBLIK =====
     function aktifkanUploadPublik(id) {
         if (!confirm('Aktifkan fitur Upload Produk Publik untuk toko ini?')) return;
         var dataAkun = getDataAkun();
@@ -1659,12 +2900,17 @@
         renderTransferUploadProduk();
         tampilkanToast('Fitur Upload Produk Publik telah diaktifkan!', 'success');
     }
+    // ===== AKHIR BLOK 5.3.3 =====
+
+    // ===== BLOK 5.3.4 - NONAKTIFKAN UPLOAD PRODUK PUBLIK =====
     function nonaktifkanUploadPublik(id) {
         if (!confirm('Nonaktifkan fitur Upload Produk Publik untuk toko ini?')) return;
         var dataAkun = getDataAkun();
         for (var i = 0; i < dataAkun.length; i++) {
             if (dataAkun[i].id === id) {
-                if (dataAkun[i].fitur) dataAkun[i].fitur.uploadProdukPublik = false;
+                if (dataAkun[i].fitur) {
+                    dataAkun[i].fitur.uploadProdukPublik = false;
+                }
                 break;
             }
         }
@@ -1672,8 +2918,22 @@
         renderTransferUploadProduk();
         tampilkanToast('Fitur Upload Produk Publik telah dinonaktifkan!', 'success');
     }
-    function renderTransferTransaksi() { renderPlaceholder('Transfer Transaksi'); }
-    function renderTransferLainnya() { renderPlaceholder('Transfer Menu Lainnya'); }
+    // ===== AKHIR BLOK 5.3.4 =====
+
+    // ===== BLOK 5.3.5 - TRANSFER TRANSAKSI & LAINNYA (PLACEHOLDER) =====
+    function renderTransferTransaksi() {
+        renderPlaceholder('Transfer Transaksi');
+    }
+    function renderTransferLainnya() {
+        renderPlaceholder('Transfer Menu Lainnya');
+    }
+    // ===== AKHIR BLOK 5.3.5 =====
+</script>
+<!-- ===== AKHIR BLOK 5.3 ===== -->
+
+<!-- ===== BLOK 5.4 - KELOLA WILAYAH ===== -->
+<script>
+    // ===== BLOK 5.4.1 - RENDER HALAMAN KELOLA WILAYAH =====
     function renderKelolaWilayah() {
         var areaKonten = document.getElementById('mainContent');
         var dataWilayah = JSON.parse(localStorage.getItem('2r_data_wilayah') || '[]');
@@ -1703,9 +2963,91 @@
         html += '</div>';
         areaKonten.innerHTML = html;
     }
+    // ===== AKHIR BLOK 5.4.1 =====
+
+    // ===== BLOK 5.4.2 - TAMBAH WILAYAH =====
+    function tambahWilayah() {
+        var provinsi = document.getElementById('wilProvinsi').value.trim();
+        var kabupaten = document.getElementById('wilKabupaten').value.trim();
+        var kecamatan = document.getElementById('wilKecamatan').value.trim();
+        var desa = document.getElementById('wilDesa').value.trim();
+        var kodepos = document.getElementById('wilKodepos').value.trim();
+        if (!provinsi || !kabupaten || !kecamatan || !desa || !kodepos) {
+            tampilkanToast('Semua data wajib diisi!', 'warning');
+            return;
+        }
+        var dataWilayah = JSON.parse(localStorage.getItem('2r_data_wilayah') || '[]');
+        for (var i = 0; i < dataWilayah.length; i++) {
+            if (dataWilayah[i].provinsi.toLowerCase() === provinsi.toLowerCase() &&
+                dataWilayah[i].kabupaten.toLowerCase() === kabupaten.toLowerCase() &&
+                dataWilayah[i].kecamatan.toLowerCase() === kecamatan.toLowerCase() &&
+                dataWilayah[i].desa.toLowerCase() === desa.toLowerCase()) {
+                tampilkanToast('Data wilayah sudah ada!', 'warning');
+                return;
+            }
+        }
+        dataWilayah.push({
+            id: Date.now(),
+            provinsi: provinsi,
+            kabupaten: kabupaten,
+            kecamatan: kecamatan,
+            desa: desa,
+            kodepos: kodepos
+        });
+        localStorage.setItem('2r_data_wilayah', JSON.stringify(dataWilayah));
+        document.getElementById('wilProvinsi').value = '';
+        document.getElementById('wilKabupaten').value = '';
+        document.getElementById('wilKecamatan').value = '';
+        document.getElementById('wilDesa').value = '';
+        document.getElementById('wilKodepos').value = '';
+        renderKelolaWilayah();
+        tampilkanToast('Wilayah berhasil ditambahkan!', 'success');
+    }
+    // ===== AKHIR BLOK 5.4.2 =====
+
+    // ===== BLOK 5.4.3 - HAPUS WILAYAH =====
+    function hapusWilayah(index) {
+        if (!confirm('Yakin ingin menghapus data wilayah ini?')) return;
+        var dataWilayah = JSON.parse(localStorage.getItem('2r_data_wilayah') || '[]');
+        dataWilayah.splice(index, 1);
+        localStorage.setItem('2r_data_wilayah', JSON.stringify(dataWilayah));
+        renderKelolaWilayah();
+        tampilkanToast('Wilayah dihapus!', 'success');
+    }
+    // ===== AKHIR BLOK 5.4.3 =====
+
+    // ===== BLOK 5.4.4 - EDIT WILAYAH (PROMPT) =====
+    function editWilayah(index) {
+        var dataWilayah = JSON.parse(localStorage.getItem('2r_data_wilayah') || '[]');
+        var w = dataWilayah[index];
+        var provinsiBaru = prompt('Provinsi:', w.provinsi);
+        if (provinsiBaru === null) return;
+        var kabupatenBaru = prompt('Kabupaten/Kota:', w.kabupaten);
+        if (kabupatenBaru === null) return;
+        var kecamatanBaru = prompt('Kecamatan:', w.kecamatan);
+        if (kecamatanBaru === null) return;
+        var desaBaru = prompt('Kelurahan/Desa:', w.desa);
+        if (desaBaru === null) return;
+        var kodeposBaru = prompt('Kode Pos:', w.kodepos);
+        if (kodeposBaru === null) return;
+        dataWilayah[index].provinsi = provinsiBaru.trim();
+        dataWilayah[index].kabupaten = kabupatenBaru.trim();
+        dataWilayah[index].kecamatan = kecamatanBaru.trim();
+        dataWilayah[index].desa = desaBaru.trim();
+        dataWilayah[index].kodepos = kodeposBaru.trim();
+        localStorage.setItem('2r_data_wilayah', JSON.stringify(dataWilayah));
+        renderKelolaWilayah();
+        tampilkanToast('Wilayah diperbarui!', 'success');
+    }
+    // ===== AKHIR BLOK 5.4.4 =====
+
+    // ===== BLOK 5.4.5 - BUKA MODAL EDIT WILAYAH =====
     function bukaModalEditWilayah(index) {
         var dataWilayah = JSON.parse(localStorage.getItem('2r_data_wilayah') || '[]');
-        if (index < 0 || index >= dataWilayah.length) { tampilkanToast('Data tidak ditemukan!', 'error'); return; }
+        if (index < 0 || index >= dataWilayah.length) {
+            tampilkanToast('Data tidak ditemukan!', 'error');
+            return;
+        }
         var w = dataWilayah[index];
         document.getElementById('editWilayahIndex').value = index;
         document.getElementById('editWilProvinsi').value = w.provinsi;
@@ -1715,10 +3057,16 @@
         document.getElementById('editWilKodepos').value = w.kodepos;
         bukaModal('modalEditWilayah');
     }
+    // ===== AKHIR BLOK 5.4.5 =====
+
+    // ===== BLOK 5.4.6 - SIMPAN EDIT WILAYAH (DARI MODAL) =====
     function simpanEditWilayah() {
         var index = parseInt(document.getElementById('editWilayahIndex').value);
         var dataWilayah = JSON.parse(localStorage.getItem('2r_data_wilayah') || '[]');
-        if (index < 0 || index >= dataWilayah.length) { tampilkanToast('Data tidak ditemukan!', 'error'); return; }
+        if (index < 0 || index >= dataWilayah.length) {
+            tampilkanToast('Data tidak ditemukan!', 'error');
+            return;
+        }
         dataWilayah[index].provinsi = document.getElementById('editWilProvinsi').value.trim();
         dataWilayah[index].kabupaten = document.getElementById('editWilKabupaten').value.trim();
         dataWilayah[index].kecamatan = document.getElementById('editWilKecamatan').value.trim();
@@ -1729,377 +3077,103 @@
         renderKelolaWilayah();
         tampilkanToast('Data wilayah berhasil diperbarui!', 'success');
     }
+    // ===== AKHIR BLOK 5.4.6 =====
+
+    // ===== BLOK 5.4.7 - ISI PROFIL DARI WILAYAH (SUPERADMIN) =====
     function isiProfilDariWilayah(index) {
         var dataWilayah = JSON.parse(localStorage.getItem('2r_data_wilayah') || '[]');
-        if (index < 0 || index >= dataWilayah.length) { tampilkanToast('Data tidak ditemukan!', 'error'); return; }
+        if (index < 0 || index >= dataWilayah.length) {
+            tampilkanToast('Data tidak ditemukan!', 'error');
+            return;
+        }
         var user = JSON.parse(localStorage.getItem('2r_user') || '{}');
-        if (user.role !== 'superadmin') { tampilkanToast('Fitur ini hanya untuk SuperAdmin!', 'error'); return; }
+        if (user.role !== 'superadmin') {
+            tampilkanToast('Fitur ini hanya untuk SuperAdmin!', 'error');
+            return;
+        }
         var w = dataWilayah[index];
         var alamatLengkap = w.desa + ', ' + w.kecamatan + ', ' + w.kabupaten + ', ' + w.provinsi + ' - Kode Pos: ' + w.kodepos;
         user.alamat = alamatLengkap;
         var dataAkun = getDataAkun();
         for (var i = 0; i < dataAkun.length; i++) {
-            if (dataAkun[i].id === user.id) { dataAkun[i].alamat = alamatLengkap; break; }
+            if (dataAkun[i].id === user.id) {
+                dataAkun[i].alamat = alamatLengkap;
+                break;
+            }
         }
         localStorage.setItem('2r_user', JSON.stringify(user));
         simpanDataAkun(dataAkun);
         document.getElementById('userNama').textContent = user.nama;
         tampilkanToast('Alamat profil SuperAdmin berhasil diperbarui!', 'success');
     }
-    function tambahWilayah() {
-        var provinsi = document.getElementById('wilProvinsi').value.trim();
-        var kabupaten = document.getElementById('wilKabupaten').value.trim();
-        var kecamatan = document.getElementById('wilKecamatan').value.trim();
-        var desa = document.getElementById('wilDesa').value.trim();
-        var kodepos = document.getElementById('wilKodepos').value.trim();
-        if (!provinsi || !kabupaten || !kecamatan || !desa || !kodepos) { tampilkanToast('Semua data wajib diisi!', 'warning'); return; }
-        var dataWilayah = JSON.parse(localStorage.getItem('2r_data_wilayah') || '[]');
-        for (var i = 0; i < dataWilayah.length; i++) {
-            if (dataWilayah[i].provinsi.toLowerCase() === provinsi.toLowerCase() &&
-                dataWilayah[i].kabupaten.toLowerCase() === kabupaten.toLowerCase() &&
-                dataWilayah[i].kecamatan.toLowerCase() === kecamatan.toLowerCase() &&
-                dataWilayah[i].desa.toLowerCase() === desa.toLowerCase()) {
-                tampilkanToast('Data wilayah sudah ada!', 'warning'); return;
-            }
-        }
-        dataWilayah.push({ id: Date.now(), provinsi: provinsi, kabupaten: kabupaten, kecamatan: kecamatan, desa: desa, kodepos: kodepos });
-        localStorage.setItem('2r_data_wilayah', JSON.stringify(dataWilayah));
-        document.getElementById('wilProvinsi').value = '';
-        document.getElementById('wilKabupaten').value = '';
-        document.getElementById('wilKecamatan').value = '';
-        document.getElementById('wilDesa').value = '';
-        document.getElementById('wilKodepos').value = '';
-        renderKelolaWilayah();
-        tampilkanToast('Wilayah berhasil ditambahkan!', 'success');
-    }
-    function hapusWilayah(index) {
-        if (!confirm('Yakin ingin menghapus data wilayah ini?')) return;
-        var dataWilayah = JSON.parse(localStorage.getItem('2r_data_wilayah') || '[]');
-        dataWilayah.splice(index, 1);
-        localStorage.setItem('2r_data_wilayah', JSON.stringify(dataWilayah));
-        renderKelolaWilayah();
-        tampilkanToast('Wilayah dihapus!', 'success');
-    }
-    function editWilayah(index) {
-        var dataWilayah = JSON.parse(localStorage.getItem('2r_data_wilayah') || '[]');
-        var w = dataWilayah[index];
-        var provinsiBaru = prompt('Provinsi:', w.provinsi); if (provinsiBaru === null) return;
-        var kabupatenBaru = prompt('Kabupaten/Kota:', w.kabupaten); if (kabupatenBaru === null) return;
-        var kecamatanBaru = prompt('Kecamatan:', w.kecamatan); if (kecamatanBaru === null) return;
-        var desaBaru = prompt('Kelurahan/Desa:', w.desa); if (desaBaru === null) return;
-        var kodeposBaru = prompt('Kode Pos:', w.kodepos); if (kodeposBaru === null) return;
-        dataWilayah[index].provinsi = provinsiBaru.trim();
-        dataWilayah[index].kabupaten = kabupatenBaru.trim();
-        dataWilayah[index].kecamatan = kecamatanBaru.trim();
-        dataWilayah[index].desa = desaBaru.trim();
-        dataWilayah[index].kodepos = kodeposBaru.trim();
-        localStorage.setItem('2r_data_wilayah', JSON.stringify(dataWilayah));
-        renderKelolaWilayah();
-        tampilkanToast('Wilayah diperbarui!', 'success');
-    }
-    // ===== AKHIR BLOK 8.2 =====
-    // ===== AKHIR BAGIAN 8 =====
+    // ===== AKHIR BLOK 5.4.7 =====
 </script>
+<!-- ===== AKHIR BLOK 5.4 ===== -->
 
-<!-- ===== BAGIAN 9 - JAVASCRIPT DATA MASTER ===== -->
+<!-- ===== BLOK 5.5 - UTILITY WILAYAH ===== -->
 <script>
-    // ===== BLOK 9.1 - JS_RENDER_DATA_MASTER =====
-    function renderFormDataMaster() {
-        var user = JSON.parse(localStorage.getItem('2r_user') || '{}');
-        var areaKonten = document.getElementById('mainContent');
-        var html = '<div class="page-header"><h2>Lengkapi Data Master Akun</h2><p>Data ini akan digunakan sebagai identitas resmi dan alamat pengiriman produk Anda. Pastikan data sesuai dengan KTP.</p></div>';
-        html += '<div class="card"><div class="card-header">Data Registrasi & Kontak</div>';
-        html += '<div class="grid-2">';
-        html += '<div><label class="form-label">Nama Lengkap (Sesuai KTP)</label><input type="text" id="masterNama" class="form-input" value="' + escapeHtml(user.nama || '') + '" placeholder="Nama lengkap"></div>';
-        html += '<div><label class="form-label">Username (Tidak dapat diubah)</label><input type="text" id="masterUsername" class="form-input" value="' + escapeHtml(user.username || '') + '" disabled></div>';
-        html += '<div><label class="form-label">Email (Untuk Notifikasi)</label><input type="email" id="masterEmail" class="form-input" value="' + escapeHtml(user.email || '') + '" placeholder="email@example.com"></div>';
-        html += '<div><label class="form-label">Nomor HP (Untuk Kurir)</label><input type="tel" id="masterHp" class="form-input" value="' + escapeHtml(user.nomorHp || '') + '" placeholder="081234567890"></div>';
-        html += '</div></div>';
-        html += '<div class="card"><div class="card-header">Alamat Sesuai KTP</div>';
-        html += buatAlamatHTMLUniversal('ktp', 'Alamat Sesuai KTP', user);
-        html += '</div>';
-        html += '<div class="card"><div class="card-header">Alamat Domisili / Alamat Pengiriman</div>';
-        html += '<div class="card" style="background:#fff3cd; border:1px solid #ffc107; margin-bottom:15px; padding:10px;">';
-        html += '<p style="font-size:13px; margin:0; color:#856404;"><i class="fas fa-info-circle"></i> Alamat domisili akan digunakan sebagai alamat pengiriman produk (jika berbeda dengan KTP).</p>';
-        html += '</div>';
-        html += buatAlamatHTMLUniversal('dom', 'Alamat Domisili', user);
-        html += '</div>';
-        html += '<div class="card"><div class="card-header">Upload Foto KTP (Identitas Resmi)</div>';
-        html += '<div class="upload-area" id="uploadKtpMaster"><div id="ktpPreviewMaster">';
-        if (user.ktp) {
-            html += '<img src="' + user.ktp + '" class="preview-image">';
-        } else {
-            html += '<i class="fas fa-cloud-upload-alt"></i><p>Klik untuk upload foto KTP (Format JPG/PNG, Maks. 2MB)</p>';
-        }
-        html += '</div><input type="file" id="inputKtpMaster" accept=".jpg,.jpeg,.png" style="display:none"></div>';
-        if (user.ktp) {
-            html += '<button class="button button-danger margin-top-10" onclick="hapusKTPMaster()"><i class="fas fa-trash"></i> Hapus KTP</button>';
-        }
-        html += '</div>';
-        html += '<div style="display:flex; gap:10px;">';
-        html += '<button class="button button-primary" onclick="prosesReviewDataMaster()"><i class="fas fa-eye"></i> Lihat Review Data & Simpan</button>';
-        html += '</div>';
-        areaKonten.innerHTML = html;
-        setTimeout(function() {
-            var container = document.getElementById('uploadKtpMaster');
-            var input = document.getElementById('inputKtpMaster');
-            if (container && input) {
-                container.onclick = function() { input.click(); };
-                input.onchange = function(e) {
-                    var file = e.target.files[0];
-                    if (file) {
-                        var reader = new FileReader();
-                        reader.onload = function(ev) {
-                            document.getElementById('ktpPreviewMaster').innerHTML = '<img src="' + ev.target.result + '" class="preview-image">';
-                            localStorage.setItem('2r_ktp_temp_master', ev.target.result);
-                        };
-                        reader.readAsDataURL(file);
-                    }
-                };
-            }
-        }, 300);
-        setTimeout(function() {
-            isiDropdownWilayahUniversal('ktp', user);
-            isiDropdownWilayahUniversal('dom', user);
-        }, 500);
-    }
-    function buatAlamatHTMLUniversal(prefix, judul, user) {
-        var html = '<div class="grid-2">';
-        html += '<div><label class="form-label">Dusun / Dukuh</label><input type="text" id="' + prefix + 'Dusun" class="form-input" value="' + escapeHtml(user[prefix + 'Dusun'] || '') + '"></div>';
-        html += '<div><label class="form-label">RT</label><input type="text" id="' + prefix + 'RT" class="form-input" value="' + escapeHtml(user[prefix + 'RT'] || '') + '"></div>';
-        html += '<div><label class="form-label">RW</label><input type="text" id="' + prefix + 'RW" class="form-input" value="' + escapeHtml(user[prefix + 'RW'] || '') + '"></div>';
-        html += '<div><label class="form-label">Jalan / Gang</label><input type="text" id="' + prefix + 'Jalan" class="form-input" value="' + escapeHtml(user[prefix + 'Jalan'] || '') + '"></div>';
-        html += '<div><label class="form-label">Provinsi</label><select id="' + prefix + 'Provinsi" class="form-input" onchange="onChangeProvinsiManual(\'' + prefix + '\')"><option value="">-- Pilih Provinsi --</option></select>';
-        html += '<div style="margin-top:5px;"><input type="text" id="' + prefix + 'ProvinsiManual" class="form-input" placeholder="Ketik manual jika tidak ada di dropdown" value="' + escapeHtml(user[prefix + 'ProvinsiManual'] || '') + '"></div></div>';
-        html += '<div><label class="form-label">Kabupaten / Kota</label><select id="' + prefix + 'Kabupaten" class="form-input" onchange="onChangeKabupatenManual(\'' + prefix + '\')"><option value="">-- Pilih Kabupaten --</option></select>';
-        html += '<div style="margin-top:5px;"><input type="text" id="' + prefix + 'KabupatenManual" class="form-input" placeholder="Ketik manual jika tidak ada di dropdown" value="' + escapeHtml(user[prefix + 'KabupatenManual'] || '') + '"></div></div>';
-        html += '<div><label class="form-label">Kecamatan</label><select id="' + prefix + 'Kecamatan" class="form-input" onchange="onChangeKecamatanManual(\'' + prefix + '\')"><option value="">-- Pilih Kecamatan --</option></select>';
-        html += '<div style="margin-top:5px;"><input type="text" id="' + prefix + 'KecamatanManual" class="form-input" placeholder="Ketik manual jika tidak ada di dropdown" value="' + escapeHtml(user[prefix + 'KecamatanManual'] || '') + '"></div></div>';
-        html += '<div><label class="form-label">Desa / Kelurahan</label><select id="' + prefix + 'Desa" class="form-input" onchange="onChangeDesaManual(\'' + prefix + '\')"><option value="">-- Pilih Kelurahan --</option></select>';
-        html += '<div style="margin-top:5px;"><input type="text" id="' + prefix + 'DesaManual" class="form-input" placeholder="Ketik manual jika tidak ada di dropdown" value="' + escapeHtml(user[prefix + 'DesaManual'] || '') + '"></div></div>';
-        html += '<div><label class="form-label">Kode Pos</label><input type="text" id="' + prefix + 'Kodepos" class="form-input" value="' + escapeHtml(user[prefix + 'Kodepos'] || '') + '"></div>';
-        html += '</div>';
-        return html;
-    }
-    function isiDropdownWilayahUniversal(prefix, user) {
-        var provDropdown = document.getElementById(prefix + 'Provinsi');
-        if (!provDropdown) return;
-        var key = prefix === 'ktp' ? 'ktp' : 'dom';
-        var provinsiTersimpan = user[key + 'Provinsi'] || '';
-        var kabupatenTersimpan = user[key + 'Kabupaten'] || '';
-        var kecamatanTersimpan = user[key + 'Kecamatan'] || '';
-        var desaTersimpan = user[key + 'Desa'] || '';
-        var provList = getProvinsiList();
-        provDropdown.innerHTML = '<option value="">-- Pilih Provinsi --</option>';
-        for (var i = 0; i < provList.length; i++) {
-            var selected = (provinsiTersimpan === provList[i]) ? 'selected' : '';
-            provDropdown.innerHTML += '<option value="' + provList[i] + '" ' + selected + '>' + provList[i] + '</option>';
-        }
-        if (provinsiTersimpan) {
-            var kabList = getKabupatenList(provinsiTersimpan);
-            var kabDropdown = document.getElementById(prefix + 'Kabupaten');
-            kabDropdown.innerHTML = '<option value="">-- Pilih Kabupaten --</option>';
-            for (var i = 0; i < kabList.length; i++) {
-                var selected = (kabupatenTersimpan === kabList[i]) ? 'selected' : '';
-                kabDropdown.innerHTML += '<option value="' + kabList[i] + '" ' + selected + '>' + kabList[i] + '</option>';
-            }
-            if (kabupatenTersimpan) {
-                var kecList = getKecamatanList(provinsiTersimpan, kabupatenTersimpan);
-                var kecDropdown = document.getElementById(prefix + 'Kecamatan');
-                kecDropdown.innerHTML = '<option value="">-- Pilih Kecamatan --</option>';
-                for (var i = 0; i < kecList.length; i++) {
-                    var selected = (kecamatanTersimpan === kecList[i]) ? 'selected' : '';
-                    kecDropdown.innerHTML += '<option value="' + kecList[i] + '" ' + selected + '>' + kecList[i] + '</option>';
-                }
-                if (kecamatanTersimpan) {
-                    var desaList = getDesaList(provinsiTersimpan, kabupatenTersimpan, kecamatanTersimpan);
-                    var desaDropdown = document.getElementById(prefix + 'Desa');
-                    desaDropdown.innerHTML = '<option value="">-- Pilih Kelurahan --</option>';
-                    for (var i = 0; i < desaList.length; i++) {
-                        var selected = (desaTersimpan === desaList[i]) ? 'selected' : '';
-                        desaDropdown.innerHTML += '<option value="' + desaList[i] + '" ' + selected + '>' + desaList[i] + '</option>';
-                    }
-                    if (desaTersimpan) {
-                        var kodePos = getKodePos(provinsiTersimpan, kabupatenTersimpan, kecamatanTersimpan, desaTersimpan);
-                        if (kodePos) document.getElementById(prefix + 'Kodepos').value = kodePos;
-                    }
-                }
-            }
-        }
-    }
-    function hapusKTPMaster() {
-        if (!confirm('Yakin ingin menghapus foto KTP?')) return;
-        localStorage.removeItem('2r_ktp_temp_master');
-        renderFormDataMaster();
-        tampilkanToast('KTP dihapus dari form', 'info');
-    }
-    // ===== AKHIR BLOK 9.1 =====
-
-    // ===== BLOK 9.2 - JS_RENDER_REVIEW_DATA_MASTER =====
-    function prosesReviewDataMaster() {
-        var user = JSON.parse(localStorage.getItem('2r_user') || '{}');
-        var dataTemp = {};
-        dataTemp.nama = document.getElementById('masterNama').value.trim();
-        dataTemp.username = user.username;
-        dataTemp.email = document.getElementById('masterEmail').value.trim();
-        dataTemp.nomorHp = document.getElementById('masterHp').value.trim();
-        dataTemp.role = user.role;
-        var ktpDusun = document.getElementById('ktpDusun').value.trim();
-        var ktpRT = document.getElementById('ktpRT').value.trim();
-        var ktpRW = document.getElementById('ktpRW').value.trim();
-        var ktpJalan = document.getElementById('ktpJalan').value.trim();
-        var ktpDesa = document.getElementById('ktpDesa').value;
-        var ktpKecamatan = document.getElementById('ktpKecamatan').value;
-        var ktpKabupaten = document.getElementById('ktpKabupaten').value;
-        var ktpProvinsi = document.getElementById('ktpProvinsi').value;
-        var ktpKodepos = document.getElementById('ktpKodepos').value.trim();
-        var gabungKTP = '';
-        if (ktpDusun) gabungKTP += ktpDusun + ', ';
-        if (ktpRT) gabungKTP += 'RT ' + ktpRT + ', ';
-        if (ktpRW) gabungKTP += 'RW ' + ktpRW + ', ';
-        if (ktpJalan) gabungKTP += ktpJalan + ', ';
-        if (ktpDesa) gabungKTP += ktpDesa + ', ';
-        if (ktpKecamatan) gabungKTP += ktpKecamatan + ', ';
-        if (ktpKabupaten) gabungKTP += ktpKabupaten + ', ';
-        if (ktpProvinsi) gabungKTP += ktpProvinsi + ', ';
-        if (ktpKodepos) gabungKTP += ktpKodepos;
-        dataTemp.alamatKTP = gabungKTP;
-        var domDusun = document.getElementById('domDusun').value.trim();
-        var domRT = document.getElementById('domRT').value.trim();
-        var domRW = document.getElementById('domRW').value.trim();
-        var domJalan = document.getElementById('domJalan').value.trim();
-        var domDesa = document.getElementById('domDesa').value;
-        var domKecamatan = document.getElementById('domKecamatan').value;
-        var domKabupaten = document.getElementById('domKabupaten').value;
-        var domProvinsi = document.getElementById('domProvinsi').value;
-        var domKodepos = document.getElementById('domKodepos').value.trim();
-        var gabungDom = '';
-        if (domDusun) gabungDom += domDusun + ', ';
-        if (domRT) gabungDom += 'RT ' + domRT + ', ';
-        if (domRW) gabungDom += 'RW ' + domRW + ', ';
-        if (domJalan) gabungDom += domJalan + ', ';
-        if (domDesa) gabungDom += domDesa + ', ';
-        if (domKecamatan) gabungDom += domKecamatan + ', ';
-        if (domKabupaten) gabungDom += domKabupaten + ', ';
-        if (domProvinsi) gabungDom += domProvinsi + ', ';
-        if (domKodepos) gabungDom += domKodepos;
-        dataTemp.alamatDomisili = gabungDom;
-        var ktp = localStorage.getItem('2r_ktp_temp_master') || user.ktp || '';
-        dataTemp.ktp = ktp;
-        localStorage.setItem('2r_data_master_temp', JSON.stringify(dataTemp));
-        renderReviewDataMaster(dataTemp);
-    }
-    function renderReviewDataMaster(data) {
-        var areaKonten = document.getElementById('mainContent');
-        var html = '<div class="page-header"><h2>Review Data Master Akun</h2><p>Pastikan seluruh data berikut sudah benar. Data ini akan menjadi Data Master Akun Anda untuk pengiriman produk.</p></div>';
-        html += '<div class="card" style="border-left:5px solid #FF6B00;"><div class="card-header"><span><i class="fas fa-user-circle"></i> Data Pribadi & Kontak</span></div><div class="grid-2">';
-        html += '<div><strong>Nama Lengkap:</strong><br><span style="font-size:16px;">' + escapeHtml(data.nama || '-') + '</span></div>';
-        html += '<div><strong>Username:</strong><br><span>' + escapeHtml(data.username || '-') + '</span></div>';
-        html += '<div><strong>Email:</strong><br><span>' + escapeHtml(data.email || '-') + '</span></div>';
-        html += '<div><strong>Nomor HP:</strong><br><span>' + escapeHtml(data.nomorHp || '-') + '</span></div>';
-        html += '<div><strong>Role:</strong><br><span>' + escapeHtml(data.role || '-') + '</span></div></div></div>';
-        html += '<div class="card"><div class="card-header"><span><i class="fas fa-id-card"></i> Alamat Sesuai KTP</span></div><p>' + escapeHtml(data.alamatKTP || 'Belum diisi') + '</p></div>';
-        html += '<div class="card" style="border-left:5px solid #4CAF50;"><div class="card-header"><span><i class="fas fa-truck"></i> Alamat Domisili / Pengiriman</span></div><p>' + escapeHtml(data.alamatDomisili || 'Belum diisi') + '</p></div>';
-        html += '<div class="card"><div class="card-header"><span><i class="fas fa-image"></i> Foto KTP</span></div>';
-        if (data.ktp) {
-            html += '<div style="display:flex; align-items:center; gap:15px;"><img src="' + data.ktp + '" style="max-width:200px; max-height:150px; border-radius:8px; border:1px solid #ddd;"><span style="font-size:13px; color:#4CAF50;"><i class="fas fa-check-circle"></i> Terupload</span></div>';
-        } else {
-            html += '<span style="color:#d32f2f;">Belum diupload</span>';
-        }
-        html += '</div>';
-        html += '<div style="display:flex; gap:15px; margin-top:20px;">';
-        html += '<button class="button button-danger" onclick="renderFormDataMaster()"><i class="fas fa-arrow-left"></i> Kembali (Edit)</button>';
-        html += '<button class="button button-success" style="font-size:16px; padding:12px 24px;" onclick="finalisasiSimpanDataMaster()"><i class="fas fa-check-double"></i> Konfirmasi & Simpan Akhir</button>';
-        html += '</div>';
-        areaKonten.innerHTML = html;
-    }
-    function finalisasiSimpanDataMaster() {
-        var dataTemp = JSON.parse(localStorage.getItem('2r_data_master_temp') || '{}');
-        if (!dataTemp || !dataTemp.nama) {
-            tampilkanToast('Data tidak valid, silakan ulangi!', 'error');
-            return;
-        }
-        var user = JSON.parse(localStorage.getItem('2r_user') || '{}');
-        var dataAkun = getDataAkun();
-        user.nama = dataTemp.nama;
-        user.email = dataTemp.email;
-        user.nomorHp = dataTemp.nomorHp;
-        user.alamatKTP = dataTemp.alamatKTP;
-        user.alamatDomisili = dataTemp.alamatDomisili;
-        user.alamat = dataTemp.alamatDomisili || dataTemp.alamatKTP;
-        user.ktp = dataTemp.ktp;
-        var ditemukan = false;
-        for (var i = 0; i < dataAkun.length; i++) {
-            if (dataAkun[i].id === user.id) {
-                dataAkun[i].nama = user.nama;
-                dataAkun[i].email = user.email;
-                dataAkun[i].nomorHp = user.nomorHp;
-                dataAkun[i].alamatKTP = user.alamatKTP;
-                dataAkun[i].alamatDomisili = user.alamatDomisili;
-                dataAkun[i].alamat = user.alamat;
-                dataAkun[i].ktp = user.ktp;
-                dataAkun[i].dataLengkap = true;
-                ditemukan = true;
-                break;
-            }
-        }
-        if (ditemukan) {
-            localStorage.setItem('2r_user', JSON.stringify(user));
-            simpanDataAkun(dataAkun);
-            localStorage.removeItem('2r_data_master_temp');
-            localStorage.removeItem('2r_ktp_temp_master');
-            document.getElementById('userNama').textContent = user.nama;
-            tampilkanToast('Data Master Akun berhasil disimpan!', 'success');
-            renderDashboard();
-        } else {
-            tampilkanToast('Terjadi kesalahan saat menyimpan data!', 'error');
-        }
-    }
-    // ===== AKHIR BLOK 9.2 =====
-    // ===== AKHIR BAGIAN 9 =====
-</script>
-
-<!-- ===== BAGIAN 10 - JS_UTILITY_WILAYAH ===== -->
-<script>
+    // ===== BLOK 5.5.1 - GET PROVINSI LIST =====
     function getProvinsiList() {
         var dataWilayah = JSON.parse(localStorage.getItem('2r_data_wilayah') || '[]');
-        var list = []; var set = new Set();
+        var list = [];
+        var set = new Set();
         for (var i = 0; i < dataWilayah.length; i++) {
-            if (!set.has(dataWilayah[i].provinsi)) { set.add(dataWilayah[i].provinsi); list.push(dataWilayah[i].provinsi); }
+            if (!set.has(dataWilayah[i].provinsi)) {
+                set.add(dataWilayah[i].provinsi);
+                list.push(dataWilayah[i].provinsi);
+            }
         }
         return list;
     }
+    // ===== AKHIR BLOK 5.5.1 =====
+
+    // ===== BLOK 5.5.2 - GET KABUPATEN LIST =====
     function getKabupatenList(provinsi) {
         var dataWilayah = JSON.parse(localStorage.getItem('2r_data_wilayah') || '[]');
-        var list = []; var set = new Set();
+        var list = [];
+        var set = new Set();
         for (var i = 0; i < dataWilayah.length; i++) {
             if (dataWilayah[i].provinsi === provinsi && !set.has(dataWilayah[i].kabupaten)) {
-                set.add(dataWilayah[i].kabupaten); list.push(dataWilayah[i].kabupaten);
+                set.add(dataWilayah[i].kabupaten);
+                list.push(dataWilayah[i].kabupaten);
             }
         }
         return list;
     }
+    // ===== AKHIR BLOK 5.5.2 =====
+
+    // ===== BLOK 5.5.3 - GET KECAMATAN LIST =====
     function getKecamatanList(provinsi, kabupaten) {
         var dataWilayah = JSON.parse(localStorage.getItem('2r_data_wilayah') || '[]');
-        var list = []; var set = new Set();
+        var list = [];
+        var set = new Set();
         for (var i = 0; i < dataWilayah.length; i++) {
             if (dataWilayah[i].provinsi === provinsi && dataWilayah[i].kabupaten === kabupaten && !set.has(dataWilayah[i].kecamatan)) {
-                set.add(dataWilayah[i].kecamatan); list.push(dataWilayah[i].kecamatan);
+                set.add(dataWilayah[i].kecamatan);
+                list.push(dataWilayah[i].kecamatan);
             }
         }
         return list;
     }
+    // ===== AKHIR BLOK 5.5.3 =====
+
+    // ===== BLOK 5.5.4 - GET DESA LIST =====
     function getDesaList(provinsi, kabupaten, kecamatan) {
         var dataWilayah = JSON.parse(localStorage.getItem('2r_data_wilayah') || '[]');
-        var list = []; var set = new Set();
+        var list = [];
+        var set = new Set();
         for (var i = 0; i < dataWilayah.length; i++) {
             if (dataWilayah[i].provinsi === provinsi && dataWilayah[i].kabupaten === kabupaten &&
                 dataWilayah[i].kecamatan === kecamatan && !set.has(dataWilayah[i].desa)) {
-                set.add(dataWilayah[i].desa); list.push(dataWilayah[i].desa);
+                set.add(dataWilayah[i].desa);
+                list.push(dataWilayah[i].desa);
             }
         }
         return list;
     }
+    // ===== AKHIR BLOK 5.5.4 =====
+
+    // ===== BLOK 5.5.5 - GET KODE POS =====
     function getKodePos(provinsi, kabupaten, kecamatan, desa) {
         var dataWilayah = JSON.parse(localStorage.getItem('2r_data_wilayah') || '[]');
         for (var i = 0; i < dataWilayah.length; i++) {
@@ -2110,6 +3184,9 @@
         }
         return '';
     }
+    // ===== AKHIR BLOK 5.5.5 =====
+
+    // ===== BLOK 5.5.6 - ON CHANGE PROVINSI MANUAL =====
     function onChangeProvinsiManual(prefix) {
         var provinsi = document.getElementById(prefix + 'Provinsi').value;
         var kabupaten = document.getElementById(prefix + 'Kabupaten');
@@ -2122,11 +3199,15 @@
             var list = getKabupatenList(provinsi);
             for (var i = 0; i < list.length; i++) {
                 var opt = document.createElement('option');
-                opt.value = list[i]; opt.textContent = list[i];
+                opt.value = list[i];
+                opt.textContent = list[i];
                 kabupaten.appendChild(opt);
             }
         }
     }
+    // ===== AKHIR BLOK 5.5.6 =====
+
+    // ===== BLOK 5.5.7 - ON CHANGE KABUPATEN MANUAL =====
     function onChangeKabupatenManual(prefix) {
         var provinsi = document.getElementById(prefix + 'Provinsi').value;
         var kabupaten = document.getElementById(prefix + 'Kabupaten').value;
@@ -2138,11 +3219,15 @@
             var list = getKecamatanList(provinsi, kabupaten);
             for (var i = 0; i < list.length; i++) {
                 var opt = document.createElement('option');
-                opt.value = list[i]; opt.textContent = list[i];
+                opt.value = list[i];
+                opt.textContent = list[i];
                 kecamatan.appendChild(opt);
             }
         }
     }
+    // ===== AKHIR BLOK 5.5.7 =====
+
+    // ===== BLOK 5.5.8 - ON CHANGE KECAMATAN MANUAL =====
     function onChangeKecamatanManual(prefix) {
         var provinsi = document.getElementById(prefix + 'Provinsi').value;
         var kabupaten = document.getElementById(prefix + 'Kabupaten').value;
@@ -2153,11 +3238,15 @@
             var list = getDesaList(provinsi, kabupaten, kecamatan);
             for (var i = 0; i < list.length; i++) {
                 var opt = document.createElement('option');
-                opt.value = list[i]; opt.textContent = list[i];
+                opt.value = list[i];
+                opt.textContent = list[i];
                 desa.appendChild(opt);
             }
         }
     }
+    // ===== AKHIR BLOK 5.5.8 =====
+
+    // ===== BLOK 5.5.9 - ON CHANGE DESA MANUAL =====
     function onChangeDesaManual(prefix) {
         var provinsi = document.getElementById(prefix + 'Provinsi').value;
         var kabupaten = document.getElementById(prefix + 'Kabupaten').value;
@@ -2171,6 +3260,9 @@
             kodeposInput.value = '';
         }
     }
+    // ===== AKHIR BLOK 5.5.9 =====
+
+    // ===== BLOK 5.5.10 - LOAD DATA WILAYAH TERSIMPAN =====
     function loadDataWilayahTersimpan(prefix, user) {
         var provinsiDropdown = document.getElementById(prefix + 'Provinsi');
         var kabupatenDropdown = document.getElementById(prefix + 'Kabupaten');
@@ -2193,6 +3285,9 @@
             }
         }
     }
+    // ===== AKHIR BLOK 5.5.10 =====
+
+    // ===== BLOK 5.5.11 - ISI DROPDOWN WILAYAH =====
     function isiDropdownWilayah(prefix) {
         var provinsiDropdown = document.getElementById(prefix + 'Provinsi');
         if (!provinsiDropdown) return;
@@ -2234,98 +3329,23 @@
                     }
                     if (desaTersimpan) {
                         var kodePos = getKodePos(provinsiTersimpan, kabupatenTersimpan, kecamatanTersimpan, desaTersimpan);
-                        if (kodePos) document.getElementById(prefix + 'Kodepos').value = kodePos;
+                        if (kodePos) {
+                            document.getElementById(prefix + 'Kodepos').value = kodePos;
+                        }
                     }
                 }
             }
         }
     }
-    // ===== AKHIR BLOK 10 =====
+    // ===== AKHIR BLOK 5.5.11 =====
 </script>
+<!-- ===== AKHIR BLOK 5.5 ===== -->
 
-<!-- ===== BAGIAN 11 - EVENT HANDLERS & INITIALIZATION ===== -->
-<script>
-    // ===== EVENT LOGOUT & SIDEBAR =====
-    document.getElementById('buttonLogout').addEventListener('click', function() {
-        if (confirm('Keluar dari aplikasi?')) {
-            localStorage.removeItem('2r_user');
-            localStorage.removeItem('2r_user_role');
-            location.reload();
-        }
-    });
-    var tombolMenu = document.getElementById('menuToggle');
-    var sidebar = document.querySelector('.sidebar');
-    var overlay = document.getElementById('sidebarOverlay');
-    if (tombolMenu && sidebar && overlay) {
-        tombolMenu.addEventListener('click', function(e) {
-            e.stopPropagation();
-            if (sidebar.classList.contains('open')) { sidebar.classList.remove('open'); overlay.classList.remove('active'); }
-            else { sidebar.classList.add('open'); overlay.classList.add('active'); }
-        });
-        overlay.addEventListener('click', function() {
-            sidebar.classList.remove('open');
-            overlay.classList.remove('active');
-        });
-        document.querySelectorAll('.sidebar-menu-item').forEach(function(item) {
-            item.addEventListener('click', function() {
-                if (window.innerWidth <= 767) { sidebar.classList.remove('open'); overlay.classList.remove('active'); }
-            });
-        });
-    }
-    window.addEventListener('resize', function() {
-        if (window.innerWidth > 767) {
-            var s = document.querySelector('.sidebar');
-            var o = document.getElementById('sidebarOverlay');
-            if (s && o) { s.classList.remove('open'); o.classList.remove('active'); }
-        }
-    });
-    // ===== TOGGLE FORM =====
-    function toggleForm(tipe) {
-        var error = document.getElementById('authenticationError');
-        if (error) error.style.display = 'none';
-        var login = document.getElementById('loginForm');
-        var register = document.getElementById('registerForm');
-        if (tipe === 'register') { login.classList.add('hidden-form'); register.classList.remove('hidden-form'); }
-        else { register.classList.add('hidden-form'); login.classList.remove('hidden-form'); }
-    }
-</script>
+<!-- ============================================================ -->
+<!-- AKHIR BAGIAN 5                                               -->
+<!-- ============================================================ -->
 
-<script>
-    // ===== INITIALIZATION =====
-    function tampilkanDashboard(user) {
-        if (!user || !user.nama) {
-            localStorage.removeItem('2r_user');
-            localStorage.removeItem('2r_user_role');
-            location.reload();
-            return;
-        }
-        document.getElementById('pageAuthentication').style.display = 'none';
-        document.getElementById('pageDashboard').style.display = 'block';
-        document.getElementById('userNama').textContent = user.nama;
-        var daftarRole = {
-            superadmin: 'SuperAdmin', customer: 'Customer', toko: 'Toko', ojek: 'Ojek',
-            pedagang: 'Pedagang Pasar', staf_admin: 'Staf Admin', customer_service: 'Customer Service',
-            staf_owner_toko: 'Staf Owner Toko', staf_owner_ojek: 'Staf Owner Ojek', sponsor: 'Sponsor'
-        };
-        document.getElementById('roleBadge').textContent = daftarRole[user.role] || user.role;
-        document.getElementById('sidebarContainer').innerHTML = buatSidebarHTML(user.role);
-        setupNavigasiSidebar();
-        if (!user.dataLengkap && user.role !== 'superadmin') {
-            navigasiKeHalaman('lengkapiDataMaster');
-            return;
-        }
-        renderDashboard();
-    }
-    document.addEventListener('DOMContentLoaded', async function() {
-        await inisialisasiSuperAdmin();
-        var dataUser = localStorage.getItem('2r_user');
-        if (dataUser) {
-            var user = JSON.parse(dataUser);
-            tampilkanDashboard(user);
-        }
-    });
-</script>
-<!-- ===== AKHIR BAGIAN 11 ===== -->
+
+
 </body>
 </html>
-
