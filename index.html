@@ -1875,107 +1875,101 @@ function navigasiKeHalaman(namaHalaman) {
         areaKonten.innerHTML = html;
     }
     /* ===== AKHIR BLOK 3.5.3 ===== */
-	    /* ===== BLOK 3.5.4 - FUNGSI PLACEHOLDER UNTUK NAVIGASI ===== */
-    function renderBelanja() {
-        renderPlaceholder('Belanja');
+	    /* ===== BLOK 3.5.4 - RENDER MENU IKLAN (SUPERADMIN) ===== */
+/*
+    Fungsi ini menampilkan halaman Kelola Iklan untuk SuperAdmin.
+    Menampilkan tabel daftar iklan, tombol tambah, edit, dan hapus.
+    Data iklan disimpan di localStorage dengan kunci '2r_iklan'.
+*/
+function renderMenuIklan() {
+    var areaKonten = document.getElementById('mainContent');
+    var dataIklan = JSON.parse(localStorage.getItem('2r_iklan') || '[]');
+    var html = '';
+
+    // ===== HEADER HALAMAN =====
+    html += '<div class="page-header">';
+    html += '<h2>Kelola Iklan Sponsor</h2>';
+    html += '<p>Kelola iklan yang ditampilkan di dashboard semua pengguna.</p>';
+    html += '</div>';
+
+    // ===== TOMBOL TAMBAH IKLAN =====
+    html += '<div style="margin-bottom:20px;">';
+    html += '<button class="button button-primary" onclick="bukaFormIklan()"><i class="fas fa-plus"></i> Tambah Iklan</button>';
+    html += '</div>';
+
+    // ===== DAFTAR IKLAN (TABEL) =====
+    if (dataIklan.length === 0) {
+        html += '<div class="card"><div class="empty-state"><i class="fas fa-ad"></i><h3>Belum ada iklan</h3></div></div>';
+    } else {
+        html += '<div class="card">';
+        html += '<div class="table-container"><table class="table"><thead><tr><th>No</th><th>Judul</th><th>Deskripsi</th><th>Warna</th><th>Gambar</th><th>Aksi</th></tr></thead><tbody>';
+        for (var i = 0; i < dataIklan.length; i++) {
+            var iklan = dataIklan[i];
+            html += '<tr>';
+            html += '<td>' + (i + 1) + '</td>';
+            html += '<td>' + iklan.judul + '</td>';
+            html += '<td>' + iklan.deskripsi + '</td>';
+            html += '<td><span style="display:inline-block;width:30px;height:30px;background:' + (iklan.warna || '#FF6B00') + ';border-radius:4px;"></span></td>';
+            html += '<td>';
+            if (iklan.gambar) {
+                html += '<img src="' + iklan.gambar + '" style="width:50px;height:50px;object-fit:cover;border-radius:4px;cursor:pointer;" onclick="previewGambar(\'' + iklan.gambar + '\',\'Preview Iklan\')">';
+            } else {
+                html += '-';
+            }
+            html += '</td>';
+            html += '<td>';
+            html += '<button class="button button-primary button-extra-small" onclick="editIklan(' + i + ')"><i class="fas fa-edit"></i> Edit</button>';
+            html += '<button class="button button-danger button-extra-small" onclick="hapusIklan(' + i + ')"><i class="fas fa-trash"></i> Hapus</button>';
+            html += '</td>';
+            html += '</tr>';
+        }
+        html += '</tbody></table></div>';
+        html += '</div>';
     }
 
-    function renderPesananSaya() {
-        renderPlaceholder('Pesanan Saya');
-    }
+    // ===== FORM TAMBAH / EDIT IKLAN (AWALNYA TERSEMBUNYI) =====
+    html += '<div id="formIklanContainer" class="hidden" style="margin-top:20px;">';
+    html += '<div class="card">';
+    html += '<div class="card-header">';
+    html += '<span id="formIklanTitle">Tambah Iklan Baru</span>';
+    html += '<button class="button button-danger button-small" onclick="tutupFormIklan()"><i class="fas fa-times"></i> Tutup</button>';
+    html += '</div>';
+    html += '<div class="grid-2">';
+    html += '<div><label class="form-label">Judul Iklan</label><input type="text" id="iklanJudul" class="form-input" placeholder="Judul iklan"></div>';
+    html += '<div><label class="form-label">Warna Latar (opsional)</label><input type="color" id="iklanWarna" class="form-input" value="#FF6B00" style="padding:2px;height:40px;"></div>';
+    html += '<div><label class="form-label">Deskripsi</label><input type="text" id="iklanDeskripsi" class="form-input" placeholder="Deskripsi singkat"></div>';
+    html += '<div><label class="form-label">Gambar (opsional)</label><input type="file" id="iklanGambar" accept=".jpg,.jpeg,.png" style="display:none;">';
+    html += '<button class="button button-primary button-small" onclick="document.getElementById(\'iklanGambar\').click();">Pilih Gambar</button>';
+    html += '<span id="iklanNamaGambar" style="font-size:12px;color:#888;margin-left:10px;">Belum ada gambar</span>';
+    html += '</div>';
+    html += '</div>';
+    html += '<input type="hidden" id="iklanEditIndex" value="-1">';
+    html += '<button class="button button-primary margin-top-10" onclick="simpanIklan()"><i class="fas fa-save"></i> Simpan Iklan</button>';
+    html += '</div>';
+    html += '</div>';
 
-    function renderMenuIklan() {
-        renderPlaceholder('Menu Iklan');
-    }
+    // ===== TAMPILKAN KE AREA KONTEN =====
+    areaKonten.innerHTML = html;
 
-    function renderPengajuanHapusAkun() {
-        renderPlaceholder('Pengajuan Hapus Akun');
-    }
-
-    function renderDaftarBelanja() {
-        renderPlaceholder('Daftar Belanja');
-    }
-
-    function renderRiwayatBelanja() {
-        renderPlaceholder('Riwayat Belanja');
-    }
-
-    function renderPembayaran() {
-        renderPlaceholder('Pembayaran');
-    }
-
-    function renderUlasanRating() {
-        renderPlaceholder('Ulasan & Rating');
-    }
-
-    function renderBantuanFAQ() {
-        renderPlaceholder('Bantuan & FAQ');
-    }
-
-    function renderNotifikasi() {
-        renderPlaceholder('Notifikasi');
-    }
-
-    function renderPenagihan() {
-        renderPlaceholder('Penagihan');
-    }
-
-    function renderKelolaUpgrade() {
-        renderPlaceholder('Kelola Upgrade');
-    }
-
-    function renderSettingTarifOjek() {
-        renderPlaceholder('Setting Tarif Ojek');
-    }
-
-    function renderTransaksiToko() {
-        renderPlaceholder('Transaksi Toko');
-    }
-
-    function renderPesananMasuk() {
-        renderPlaceholder('Pesanan Masuk');
-    }
-
-    function renderLaporanPenjualan() {
-        renderPlaceholder('Laporan Penjualan');
-    }
-
-    function renderSettingToko() {
-        renderPlaceholder('Setting Toko');
-    }
-
-    function renderOrderMasuk() {
-        renderPlaceholder('Order Masuk');
-    }
-
-    function renderRiwayatOrder() {
-        renderPlaceholder('Riwayat Order');
-    }
-
-    function renderLaporanOjek() {
-        renderPlaceholder('Laporan Ojek');
-    }
-
-    function renderSettingOjek() {
-        renderPlaceholder('Setting Ojek');
-    }
-
-    function renderTiketBantuan() {
-        renderPlaceholder('Tiket Bantuan');
-    }
-
-    function renderLiveChat() {
-        renderPlaceholder('Live Chat');
-    }
-
-    function renderIklanSaya() {
-        renderPlaceholder('Iklan Saya');
-    }
-
-    function renderStatistik() {
-        renderPlaceholder('Statistik');
-    }
-    /* ===== AKHIR BLOK 3.5.4 ===== */
+    // ===== EVENT LISTENER UPLOAD GAMBAR =====
+    setTimeout(function() {
+        var inputGambar = document.getElementById('iklanGambar');
+        if (inputGambar) {
+            inputGambar.onchange = function(e) {
+                var file = e.target.files[0];
+                if (file) {
+                    document.getElementById('iklanNamaGambar').textContent = file.name;
+                    var pembaca = new FileReader();
+                    pembaca.onload = function(ev) {
+                        localStorage.setItem('2r_iklan_gambar_temp', ev.target.result);
+                    };
+                    pembaca.readAsDataURL(file);
+                }
+            };
+        }
+    }, 300);
+}
+/* ===== AKHIR BLOK 3.5.4 ===== */
 </script>
 <!-- ===== AKHIR BLOK 3.5 ===== -->
 <!-- ===== BLOK 3.6 - JS_RENDER_DASHBOARD_CORE ===== -->
@@ -6438,6 +6432,122 @@ function editWilayah(index) {
 }
 /* ===== AKHIR BLOK 4.12.2 ===== */
 /* ===== AKHIR BLOK 4.12 ===== */
+<!-- ===== BLOK 4.13 - JS_RENDER_KELOLA_IKLAN (FUNGSI CRUD) ===== -->
+<script>
+/* ===== BLOK 4.13.1 - BUKA FORM TAMBAH IKLAN ===== */
+/*
+    Fungsi ini menampilkan form tambah iklan dan mereset semua input.
+*/
+function bukaFormIklan() {
+    document.getElementById('formIklanContainer').classList.remove('hidden');
+    document.getElementById('formIklanTitle').textContent = 'Tambah Iklan Baru';
+    document.getElementById('iklanEditIndex').value = '-1';
+    document.getElementById('iklanJudul').value = '';
+    document.getElementById('iklanDeskripsi').value = '';
+    document.getElementById('iklanWarna').value = '#FF6B00';
+    document.getElementById('iklanNamaGambar').textContent = 'Belum ada gambar';
+    localStorage.removeItem('2r_iklan_gambar_temp');
+    document.getElementById('formIklanContainer').scrollIntoView({ behavior: 'smooth' });
+}
+/* ===== AKHIR BLOK 4.13.1 ===== */
+
+/* ===== BLOK 4.13.2 - TUTUP FORM IKLAN ===== */
+/*
+    Fungsi ini menyembunyikan form tambah/edit iklan.
+*/
+function tutupFormIklan() {
+    document.getElementById('formIklanContainer').classList.add('hidden');
+}
+/* ===== AKHIR BLOK 4.13.2 ===== */
+
+/* ===== BLOK 4.13.3 - SIMPAN IKLAN (TAMBAH ATAU EDIT) ===== */
+/*
+    Fungsi ini menyimpan iklan baru atau memperbarui iklan yang sudah ada.
+    Menyimpan data ke localStorage dengan kunci '2r_iklan'.
+*/
+function simpanIklan() {
+    var judul = document.getElementById('iklanJudul').value.trim();
+    var deskripsi = document.getElementById('iklanDeskripsi').value.trim();
+    var warna = document.getElementById('iklanWarna').value;
+    var gambarTemp = localStorage.getItem('2r_iklan_gambar_temp') || '';
+    var editIndex = parseInt(document.getElementById('iklanEditIndex').value);
+
+    if (!judul || !deskripsi) {
+        tampilkanToast('Judul dan deskripsi wajib diisi!', 'warning');
+        return;
+    }
+
+    var dataIklan = JSON.parse(localStorage.getItem('2r_iklan') || '[]');
+
+    if (editIndex === -1) {
+        // Tambah iklan baru
+        var iklanBaru = {
+            id: Date.now(),
+            judul: judul,
+            deskripsi: deskripsi,
+            warna: warna,
+            gambar: gambarTemp || ''
+        };
+        dataIklan.push(iklanBaru);
+        tampilkanToast('Iklan berhasil ditambahkan!', 'success');
+    } else {
+        // Edit iklan yang sudah ada
+        dataIklan[editIndex].judul = judul;
+        dataIklan[editIndex].deskripsi = deskripsi;
+        dataIklan[editIndex].warna = warna;
+        if (gambarTemp) {
+            dataIklan[editIndex].gambar = gambarTemp;
+        }
+        tampilkanToast('Iklan berhasil diperbarui!', 'success');
+    }
+
+    localStorage.setItem('2r_iklan', JSON.stringify(dataIklan));
+    localStorage.removeItem('2r_iklan_gambar_temp');
+
+    tutupFormIklan();
+    renderMenuIklan();
+}
+/* ===== AKHIR BLOK 4.13.3 ===== */
+
+/* ===== BLOK 4.13.4 - EDIT IKLAN ===== */
+/*
+    Fungsi ini membuka form edit dengan data iklan yang dipilih.
+*/
+function editIklan(index) {
+    var dataIklan = JSON.parse(localStorage.getItem('2r_iklan') || '[]');
+    if (index < 0 || index >= dataIklan.length) {
+        tampilkanToast('Iklan tidak ditemukan!', 'error');
+        return;
+    }
+    var iklan = dataIklan[index];
+
+    document.getElementById('formIklanContainer').classList.remove('hidden');
+    document.getElementById('formIklanTitle').textContent = 'Edit Iklan';
+    document.getElementById('iklanEditIndex').value = index;
+    document.getElementById('iklanJudul').value = iklan.judul;
+    document.getElementById('iklanDeskripsi').value = iklan.deskripsi;
+    document.getElementById('iklanWarna').value = iklan.warna || '#FF6B00';
+    document.getElementById('iklanNamaGambar').textContent = iklan.gambar ? 'Gambar sudah ada (klik untuk ganti)' : 'Belum ada gambar';
+    localStorage.removeItem('2r_iklan_gambar_temp');
+    document.getElementById('formIklanContainer').scrollIntoView({ behavior: 'smooth' });
+}
+/* ===== AKHIR BLOK 4.13.4 ===== */
+
+/* ===== BLOK 4.13.5 - HAPUS IKLAN ===== */
+/*
+    Fungsi ini menghapus iklan dari localStorage.
+*/
+function hapusIklan(index) {
+    if (!confirm('Yakin ingin menghapus iklan ini?')) return;
+    var dataIklan = JSON.parse(localStorage.getItem('2r_iklan') || '[]');
+    dataIklan.splice(index, 1);
+    localStorage.setItem('2r_iklan', JSON.stringify(dataIklan));
+    renderMenuIklan();
+    tampilkanToast('Iklan dihapus!', 'success');
+}
+/* ===== AKHIR BLOK 4.13.5 ===== */
+</script>
+<!-- ===== AKHIR BLOK 4.13 ===== -->	
 </script>
 <!-- ===== BLOK 5.1 - JS_EVENT_LOGOUT_MODAL ===== -->
 <script>
