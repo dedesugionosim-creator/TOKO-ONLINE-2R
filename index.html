@@ -1521,6 +1521,8 @@ function buatSidebarHTML(role) {
 
 <!-- ===== BLOK 7.5 - JS_RENDER_DAFTAR_AKUN & PERSETUJUAN ===== -->
 <script>
+    <!-- ===== BLOK 7.5.1 - JS_RENDER_DAFTAR_AKUN & PERSETUJUAN (PERBAIKAN FINAL) ===== -->
+<script>
     // ===== BLOK 7.5.1 - RENDER DAFTAR AKUN =====
     function renderDaftarAkun() {
         var areaKonten = document.getElementById('mainContent');
@@ -1537,56 +1539,136 @@ function buatSidebarHTML(role) {
         html += '<button class="button button-primary" style="width:100%;" onclick="prosesDaftarAkun()"><i class="fas fa-user-plus"></i> Buat Akun Baru</button></div>';
         areaKonten.innerHTML = html;
     }
+
+    // ===== UPDATE PREVIEW ID OTOMATIS =====
     function updatePreviewId() {
         var role = document.getElementById('daftarRole').value;
         document.getElementById('daftarIdPreview').textContent = generateId(role);
     }
+
+    // ===== PROSES DAFTAR AKUN BARU OLEH SUPERADMIN (DENGAN dataLengkap: false) =====
     async function prosesDaftarAkun() {
         var role = document.getElementById('daftarRole').value;
         var username = document.getElementById('daftarUsername').value.trim();
         var password = document.getElementById('daftarPassword').value.trim();
         var nama = document.getElementById('daftarNama').value.trim();
-        if (!role || !username || !password || !nama) { tampilkanToast('Data belum lengkap!', 'warning'); return; }
-        if (username.length < 4) { tampilkanToast('Username minimal 4 karakter!', 'warning'); return; }
-        if (password.length < 6) { tampilkanToast('Password minimal 6 karakter!', 'warning'); return; }
+        
+        if (!role || !username || !password || !nama) { 
+            tampilkanToast('Data belum lengkap!', 'warning'); 
+            return; 
+        }
+        if (username.length < 4) { 
+            tampilkanToast('Username minimal 4 karakter!', 'warning'); 
+            return; 
+        }
+        if (password.length < 6) { 
+            tampilkanToast('Password minimal 6 karakter!', 'warning'); 
+            return; 
+        }
+        
         var dataAkun = getDataAkun();
         for (var i = 0; i < dataAkun.length; i++) {
-            if (dataAkun[i].username === username) { tampilkanToast('Username sudah digunakan!', 'error'); return; }
+            if (dataAkun[i].username === username) { 
+                tampilkanToast('Username sudah digunakan!', 'error'); 
+                return; 
+            }
         }
+        
         var status = (role === 'toko' || role === 'ojek') ? 'NONAKTIF (Menunggu Verifikasi)' : 'AKTIF';
         var passwordHash = await hashPassword(password);
+        
+        // Buat objek akun baru dengan dataLengkap: false
         var akunBaru = {
-            id: generateId(role), role: role, username: username, password: passwordHash, nama: nama,
-            email: '', nomorHp: '', alamat: '', namaBank: '', nomorRekening: '', pemilikRekening: '', ktp: '',
-            status: status, waktuRegistrasi: new Date().toISOString()
-        };    
+            id: generateId(role), 
+            role: role, 
+            username: username, 
+            password: passwordHash, 
+            nama: nama,
+            email: '', 
+            nomorHp: '', 
+            alamat: '', 
+            namaBank: '', 
+            nomorRekening: '', 
+            pemilikRekening: '', 
+            ktp: '',
+            status: status, 
+            dataLengkap: false, // <--- PENTING: Inisialisasi data master belum lengkap
+            waktuRegistrasi: new Date().toISOString()
+        };
+        
         dataAkun.push(akunBaru);
         simpanDataAkun(dataAkun);
+        
         document.getElementById('daftarUsername').value = '';
         document.getElementById('daftarPassword').value = '';
         document.getElementById('daftarNama').value = '';
         updatePreviewId();
+        
         tampilkanToast('Akun ' + role + ' berhasil dibuat! ID: ' + akunBaru.id, 'success');
     }
-    // Di dalam BLOK 7.5.1, bagian var akunBaru:
-var akunBaru = {
-    id: generateId(role), 
-    role: role, 
-    username: username, 
-    password: passwordHash, 
-    nama: nama,
-    email: '', 
-    nomorHp: '', 
-    alamat: '', 
-    namaBank: '', 
-    nomorRekening: '', 
-    pemilikRekening: '', 
-    ktp: '',
-    status: status, 
-    dataLengkap: false, // <--- TAMBAHKAN INI
-    waktuRegistrasi: new Date().toISOString()
-};
-    // ===== AKHIR BLOK 7.5.1 =====
+
+    // ===== RENDER PERSETUJUAN AKUN =====
+    function renderPersetujuanAkun() {
+        var areaKonten = document.getElementById('mainContent');
+        var dataAkun = getDataAkun();
+        var daftar = [];
+        for (var i = 0; i < dataAkun.length; i++) {
+            if (dataAkun[i].role !== 'superadmin' && dataAkun[i].role !== 'customer') daftar.push(dataAkun[i]);
+        }
+        var html = '<div class="page-header"><h2>Persetujuan Akun</h2><p>Daftar akun yang membutuhkan persetujuan.</p></div>';
+        html += '<div class="card"><div class="card-header"><span>Daftar Permintaan</span><span>Total: ' + daftar.length + ' akun</span></div>';
+        if (daftar.length === 0) {
+            html += '<div class="empty-state"><i class="fas fa-check-circle" style="color:#4CAF50;"></i><h3>Tidak ada akun menunggu</h3></div>';
+        } else {
+            html += '<div class="table-container"><table class="table"><thead><tr><th>ID</th><th>Role</th><th>Username</th><th>Nama</th><th>Status</th><th>Aksi</th></tr></thead><tbody>';
+            for (var i = 0; i < daftar.length; i++) {
+                var a = daftar[i];
+                var badge = a.status === 'AKTIF' ? 'badge-success' : 'badge-warning';
+                var teks = a.status === 'AKTIF' ? 'AKTIF' : 'Menunggu';
+                html += '<tr><td>' + a.id + '</td><td>' + a.role + '</td><td>' + a.username + '</td><td>' + a.nama + '</td><td><span class="badge ' + badge + '">' + teks + '</span></td><td>';
+                if (a.status !== 'AKTIF') {
+                    html += '<button class="button button-success button-extra-small" onclick="setujuiAkun(\'' + a.id + '\')">Setujui</button>';
+                    html += '<button class="button button-danger button-extra-small" onclick="bukaTolakAkun(\'' + a.id + '\')">Tolak</button>';
+                } else {
+                    html += '<span style="color:#888;">Sudah Aktif</span>';
+                }
+                html += '</td></tr>';
+            }
+            html += '</tbody></table></div>';
+        }
+        html += '</div>';
+        areaKonten.innerHTML = html;
+    }
+
+    // ===== FUNGSI SETUJUI DAN TOLAK AKUN =====
+    function setujuiAkun(id) {
+        if (!confirm('Setujui akun ini?')) return;
+        var dataAkun = getDataAkun();
+        for (var i = 0; i < dataAkun.length; i++) {
+            if (dataAkun[i].id === id) { dataAkun[i].status = 'AKTIF'; break; }
+        }
+        simpanDataAkun(dataAkun);
+        renderPersetujuanAkun();
+        tampilkanToast('Akun diaktifkan!', 'success');
+    }
+    function bukaTolakAkun(id) {
+        document.getElementById('tolakIdAkun').value = id;
+        bukaModal('modalTolakAkun');
+    }
+    function eksekusiTolakAkun() {
+        var id = document.getElementById('tolakIdAkun').value;
+        var dataAkun = getDataAkun();
+        var baru = [];
+        for (var i = 0; i < dataAkun.length; i++) {
+            if (dataAkun[i].id !== id) baru.push(dataAkun[i]);
+        }
+        simpanDataAkun(baru);
+        tutupModal('modalTolakAkun');
+        renderPersetujuanAkun();
+        tampilkanToast('Akun ditolak!', 'success');
+    }
+</script>
+<!-- ===== AKHIR BLOK 7.5.1 ===== -->
 
     // ===== BLOK 7.5.2 - RENDER PERSETUJUAN AKUN =====
     function renderPersetujuanAkun() {
