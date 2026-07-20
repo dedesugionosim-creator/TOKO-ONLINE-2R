@@ -1734,6 +1734,13 @@ function setupNavigasiSidebar() {
 <!-- ===== AKHIR BLOK 3.4 ===== -->
 <!-- ===== BLOK 3.5 - JS_SIDEBAR_NAVIGASI ===== -->
 <script>
+    <!-- ===== BLOK 3.5.1 - SETUP NAVIGASI SIDEBAR ===== -->
+<!--
+    PERINGATAN: Fungsi ini adalah DUPLIKAT dari BLOK 3.4.2.
+    Sebaiknya blok ini dihapus untuk menghindari kode redundan.
+    Kode di bawah ini tetap ditulis lengkap sesuai dengan aslinya.
+-->
+<script>
     /* ===== BLOK 3.5.1 - SETUP NAVIGASI SIDEBAR ===== */
     /*
         Fungsi ini memberikan event listener ke setiap item menu di sidebar.
@@ -1743,28 +1750,34 @@ function setupNavigasiSidebar() {
         3. Memanggil navigasiKeHalaman() untuk menampilkan konten yang sesuai.
     */
     function setupNavigasiSidebar() {
+        // Ambil semua elemen menu sidebar
         var semuaItemMenu = document.querySelectorAll('.sidebar-menu-item');
         
+        // Loop untuk setiap item menu
         semuaItemMenu.forEach(function(item) {
+            // Tetapkan event klik pada setiap item
             item.onclick = function() {
+                // Ambil nama halaman dari atribut data-page
                 var namaHalaman = this.getAttribute('data-page');
+                
+                // Jika tidak ada nama halaman, hentikan
                 if (!namaHalaman) return;
                 
-                // Hapus active dari semua item
+                // Hapus class 'active' dari semua item
                 semuaItemMenu.forEach(function(m) {
                     m.classList.remove('active');
                 });
                 
-                // Tambahkan active ke item yang diklik
+                // Tambahkan class 'active' ke item yang diklik
                 this.classList.add('active');
                 
-                // Panggil navigasi
+                // Panggil navigasi untuk menampilkan halaman
                 navigasiKeHalaman(namaHalaman);
             };
         });
     }
     /* ===== AKHIR BLOK 3.5.1 ===== */
-
+</script>
             /* ===== BLOK 3.5.2 - NAVIGASI KE HALAMAN ===== */
 /*
     Fungsi ini adalah pusat routing aplikasi.
