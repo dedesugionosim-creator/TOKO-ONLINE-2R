@@ -1519,9 +1519,7 @@ function buatSidebarHTML(role) {
 </script>
 <!-- ===== AKHIR BLOK 7.4 ===== -->
 
-<!-- ===== BLOK 7.5 - JS_RENDER_DAFTAR_AKUN & PERSETUJUAN ===== -->
-<script>
-    <!-- ===== BLOK 7.5.1 - JS_RENDER_DAFTAR_AKUN & PERSETUJUAN (PERBAIKAN FINAL) ===== -->
+    <!-- ===== BLOK 7.5 - JS_RENDER_DAFTAR_AKUN & PERSETUJUAN ===== -->
 <script>
     // ===== BLOK 7.5.1 - RENDER DAFTAR AKUN =====
     function renderDaftarAkun() {
@@ -1546,7 +1544,7 @@ function buatSidebarHTML(role) {
         document.getElementById('daftarIdPreview').textContent = generateId(role);
     }
 
-    // ===== PROSES DAFTAR AKUN BARU OLEH SUPERADMIN (DENGAN dataLengkap: false) =====
+    // ===== PROSES DAFTAR AKUN BARU OLEH SUPERADMIN =====
     async function prosesDaftarAkun() {
         var role = document.getElementById('daftarRole').value;
         var username = document.getElementById('daftarUsername').value.trim();
@@ -1577,7 +1575,6 @@ function buatSidebarHTML(role) {
         var status = (role === 'toko' || role === 'ojek') ? 'NONAKTIF (Menunggu Verifikasi)' : 'AKTIF';
         var passwordHash = await hashPassword(password);
         
-        // Buat objek akun baru dengan dataLengkap: false
         var akunBaru = {
             id: generateId(role), 
             role: role, 
@@ -1592,7 +1589,7 @@ function buatSidebarHTML(role) {
             pemilikRekening: '', 
             ktp: '',
             status: status, 
-            dataLengkap: false, // <--- PENTING: Inisialisasi data master belum lengkap
+            dataLengkap: false, 
             waktuRegistrasi: new Date().toISOString()
         };
         
@@ -1668,7 +1665,7 @@ function buatSidebarHTML(role) {
         tampilkanToast('Akun ditolak!', 'success');
     }
 </script>
-<!-- ===== AKHIR BLOK 7.5.1 ===== -->
+<!-- ===== AKHIR BLOK 7.5 ===== -->
 
     // ===== BLOK 7.5.2 - RENDER PERSETUJUAN AKUN =====
     function renderPersetujuanAkun() {
