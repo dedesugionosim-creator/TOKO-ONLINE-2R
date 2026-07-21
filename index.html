@@ -1739,8 +1739,6 @@ function hapusKTPUmum() {
 
 <!-- ===== BLOK 7.5 - JS_RENDER_DAFTAR_AKUN & PERSETUJUAN ===== -->
 <script>
-    <!-- ===== BLOK 7.5.1 - JS_RENDER_DAFTAR_AKUN & PERSETUJUAN ===== -->
-<script>
     // ===== BLOK 7.5.1 - RENDER DAFTAR AKUN =====
     function renderDaftarAkun() {
         var areaKonten = document.getElementById('mainContent');
@@ -1758,13 +1756,11 @@ function hapusKTPUmum() {
         areaKonten.innerHTML = html;
     }
 
-    // ===== UPDATE PREVIEW ID =====
     function updatePreviewId() {
         var role = document.getElementById('daftarRole').value;
         document.getElementById('daftarIdPreview').textContent = generateId(role);
     }
 
-    // ===== PROSES DAFTAR AKUN =====
     async function prosesDaftarAkun() {
         var role = document.getElementById('daftarRole').value;
         var username = document.getElementById('daftarUsername').value.trim();
@@ -1793,7 +1789,6 @@ function hapusKTPUmum() {
         tampilkanToast('Akun ' + role + ' berhasil dibuat! ID: ' + akunBaru.id, 'success');
     }
     // ===== AKHIR BLOK 7.5.1 =====
-</script>
 
     // ===== BLOK 7.5.2 - RENDER PERSETUJUAN AKUN =====
     function renderPersetujuanAkun() {
@@ -1827,6 +1822,7 @@ function hapusKTPUmum() {
         html += '</div>';
         areaKonten.innerHTML = html;
     }
+
     function setujuiAkun(id) {
         if (!confirm('Setujui akun ini?')) return;
         var dataAkun = getDataAkun();
@@ -1837,10 +1833,12 @@ function hapusKTPUmum() {
         renderPersetujuanAkun();
         tampilkanToast('Akun diaktifkan!', 'success');
     }
+
     function bukaTolakAkun(id) {
         document.getElementById('tolakIdAkun').value = id;
         bukaModal('modalTolakAkun');
     }
+
     function eksekusiTolakAkun() {
         var id = document.getElementById('tolakIdAkun').value;
         var dataAkun = getDataAkun();
