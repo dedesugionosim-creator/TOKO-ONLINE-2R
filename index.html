@@ -2645,25 +2645,32 @@ function hapusKTPUmum() {
 
         areaKonten.innerHTML = html;
 
-        // === EVENT UPLOAD GAMBAR (1 FILE SAJA) ===
+                // === EVENT UPLOAD GAMBAR (DENGAN KOMPRESI OTOMATIS) ===
         setTimeout(function() {
             var inputGambar = document.getElementById('annGambar');
             if (inputGambar) {
                 var newInput = inputGambar.cloneNode(true);
                 inputGambar.parentNode.replaceChild(newInput, inputGambar);
                 
-                newInput.addEventListener('change', function(e) {
+                newInput.addEventListener('change', async function(e) {
                     var file = e.target.files[0];
                     if (file) {
-                        document.getElementById('annNamaGambar').textContent = file.name;
-                        var reader = new FileReader();
-                        reader.onload = function(ev) {
-                            localStorage.setItem('2r_announcement_gambar_temp', ev.target.result);
-                        };
-                        reader.onerror = function(err) {
-                            console.error('Error membaca file:', file.name, err);
-                        };
-                        reader.readAsDataURL(file);
+                        document.getElementById('annNamaGambar').textContent = 'Sedang mengkompres...';
+                        
+                        try {
+                            // Kompres gambar ke lebar maksimal 800px, kualitas 70%
+                            const compressedBase64 = await compressImage(file, 800, 0.7);
+                            
+                            // Simpan hasil kompresi ke localStorage (ukurannya sudah kecil, aman!)
+                            localStorage.setItem('2r_announcement_gambar_temp', compressedBase64);
+                            
+                            document.getElementById('annNamaGambar').textContent = file.name + ' (Terkompresi)';
+                        } catch (err) {
+                            console.error('Error kompresi:', err);
+                            tampilkanToast('Gagal memproses gambar!', 'error');
+                            document.getElementById('annNamaGambar').textContent = 'Gagal upload';
+                            localStorage.removeItem('2r_announcement_gambar_temp');
+                        }
                     }
                 });
             }
@@ -3208,6 +3215,30 @@ function hapusKTPUmum() {
     function scanBarcodeProduk() {
         tampilkanToast('Fitur scan barcode menggunakan kamera sedang dalam pengembangan.', 'info');
     }
+</script>
+    <script>
+// ===== FUNGSI KOMPRESI GAMBAR UNTUK DEMO =====
+function compressImage(file, maxWidth, quality) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = (event) => {
+            const img = new Image();
+            img.src = event.target.result;
+            img.onload = () => {
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                const scaleSize = maxWidth / img.width;
+                canvas.width = maxWidth;
+                canvas.height = img.height * scaleSize;
+                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                resolve(canvas.toDataURL('image/jpeg', quality));
+            };
+            img.onerror = reject;
+        };
+        reader.onerror = reject;
+    });
+}
 </script>
 <!-- ===== AKHIR BLOK 8.9 ===== -->
 <!-- ===== BLOK 8.10 - JS_RENDER_CHAT ===== -->
