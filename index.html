@@ -1985,7 +1985,7 @@ function hapusKTPUmum() {
 
         areaKonten.innerHTML = html;
         
-                // Event listener untuk upload banyak gambar (dipasang ulang setiap render)
+                        // Event listener untuk upload banyak gambar (dipasang ulang setiap render)
         setTimeout(function() {
             var inputGambar = document.getElementById('iklanGambar');
             if (inputGambar) {
@@ -2002,7 +2002,8 @@ function hapusKTPUmum() {
                             if (i > 3) { namaFile += ' ...'; break; }
                         }
                         document.getElementById('iklanNamaGambar').textContent = namaFile + ' (' + files.length + ' file)';
-                        // Simpan sementara di localStorage (diubah menjadi array di fungsi simpan)
+                        
+                        // Simpan sementara di localStorage
                         var tempData = [];
                         var total = files.length;
                         var selesai = 0;
@@ -2042,7 +2043,7 @@ function hapusKTPUmum() {
         document.getElementById('formIklanContainer').scrollIntoView({ behavior: 'smooth' });
     }
     function tutupFormIklan() { document.getElementById('formIklanContainer').classList.add('hidden'); }
-        function simpanIklan() {
+            function simpanIklan() {
         var judul = document.getElementById('iklanJudul').value.trim();
         var deskripsi = document.getElementById('iklanDeskripsi').value.trim();
         var warna = document.getElementById('iklanWarna').value;
