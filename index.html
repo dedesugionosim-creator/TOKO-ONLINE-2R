@@ -23,12 +23,12 @@
         <div class="authentication-box">
             
             <!-- ===== BLOK 2.1.1 - LOGO & JUDUL ===== -->
-<div class="authentication-logo">
-    <i id="loginAppIcon" class="fas fa-store-alt"></i>
-    <h1 id="loginAppTitle">Toko Online <span style="color:#FF6B00;">2R</span></h1>
-    <p id="loginAppTagline">Platform Belanja & Layanan Serba Ada</p>
-</div>
-<!-- ===== AKHIR BLOK 2.1.1 ===== -->
+            <div class="authentication-logo">
+                <i class="fas fa-store-alt"></i>
+                <h1>Toko Online <span style="color:#FF6B00;">2R</span></h1>
+                <p>Platform Belanja & Layanan Serba Ada</p>
+            </div>
+            <!-- ===== AKHIR BLOK 2.1.1 ===== -->
 
             <!-- ===== BLOK 2.1.2 - AREA PESAN ERROR ===== -->
             <div class="authentication-error" id="authenticationError">
@@ -600,6 +600,7 @@ body { font-family:'Poppins', sans-serif; background:var(--bg); min-height:100vh
         }
 
         var menuRole = {
+            // === PERUBAHAN: TAMBAHKAN MENU BACKUP & RESTORE KE SUPERADMIN ===
             'superadmin': [
                 { judul: 'Menu Utama', items: [ { halaman: 'dashboard', icon: 'fa-th-large', label: 'Dasbor' }, { halaman: 'profile', icon: 'fa-user-circle', label: 'Profil' }, { halaman: 'helloFriends', icon: 'fa-video', label: 'HelloFriends (Coming Soon)' } ] },
                 { judul: 'Menu Admin', items: [ { halaman: 'daftarAkun', icon: 'fa-user-plus', label: 'Daftar Akun Baru' }, { halaman: 'persetujuan', icon: 'fa-check-double', label: 'Persetujuan Akun' }, { halaman: 'kelolaAkun', icon: 'fa-users-cog', label: 'Kelola Semua Akun' }, { halaman: 'transferMenu', icon: 'fa-exchange-alt', label: 'Transfer Menu' }, { halaman: 'settingRekening', icon: 'fa-university', label: 'Setting Rekening' }, { halaman: 'menuIklan', icon: 'fa-ad', label: 'Menu Iklan' }, { halaman: 'papanInformasi', icon: 'fa-bullhorn', label: 'Papan Informasi' }, { halaman: 'kelolaWilayah', icon: 'fa-map-marked-alt', label: 'Kelola Wilayah' }, { halaman: 'bantuanFAQ', icon: 'fa-question-circle', label: 'Bantuan & FAQ' }, { halaman: 'backupRestore', icon: 'fa-database', label: 'Backup & Restore' } ] }
@@ -611,7 +612,7 @@ body { font-family:'Poppins', sans-serif; background:var(--bg); min-height:100vh
             ],
             'toko': [
                 { judul: 'Menu Utama', items: [ { halaman: 'dashboard', icon: 'fa-th-large', label: 'Dasbor' }, { halaman: 'profile', icon: 'fa-user-circle', label: 'Profil' }, { halaman: 'chat', icon: 'fa-comments', label: 'Chat' }, { halaman: 'helloFriends', icon: 'fa-video', label: 'HelloFriends (Coming Soon)' }, { halaman: 'menuIklan', icon: 'fa-ad', label: 'Menu Iklan' }, { halaman: 'papanInformasi', icon: 'fa-bullhorn', label: 'Papan Informasi' }, { halaman: 'bantuanFAQ', icon: 'fa-question-circle', label: 'Bantuan & FAQ' } ] },
-                { judul: 'Menu Toko', items: [ { halaman: 'kelolaProduk', icon: 'fa-box', label: 'Kelola Produk' }, { halaman: 'uploadProdukPublik', icon: 'fa-upload', label: 'Upload Produk Publik' }, { halaman: 'manajemenStokGudang', icon: 'fa-warehouse', label: 'Manajemen Stok Gudang' }, { halaman: 'settingToko', icon: 'fa-store', label: 'Setting Toko' } ] }
+                { judul: 'Menu Toko', items: [ { halaman: 'transaksi', icon: 'fa-cash-register', label: 'Transaksi' }, { halaman: 'kelolaProduk', icon: 'fa-box', label: 'Kelola Produk' }, { halaman: 'uploadProdukPublik', icon: 'fa-upload', label: 'Upload Produk Publik' }, { halaman: 'manajemenStokGudang', icon: 'fa-warehouse', label: 'Manajemen Stok Gudang' }, { halaman: 'pesananMasuk', icon: 'fa-shopping-cart', label: 'Pesanan Masuk' }, { halaman: 'laporanPenjualan', icon: 'fa-chart-line', label: 'Laporan Penjualan' }, { halaman: 'settingToko', icon: 'fa-store', label: 'Setting Toko' } ] }
             ],
             'ojek': [
                 { judul: 'Menu Utama', items: [ { halaman: 'dashboard', icon: 'fa-th-large', label: 'Dasbor' }, { halaman: 'profile', icon: 'fa-user-circle', label: 'Profil' }, { halaman: 'chat', icon: 'fa-comments', label: 'Chat' }, { halaman: 'helloFriends', icon: 'fa-video', label: 'HelloFriends (Coming Soon)' }, { halaman: 'menuIklan', icon: 'fa-ad', label: 'Menu Iklan' }, { halaman: 'papanInformasi', icon: 'fa-bullhorn', label: 'Papan Informasi' }, { halaman: 'bantuanFAQ', icon: 'fa-question-circle', label: 'Bantuan & FAQ' } ] },
@@ -865,17 +866,14 @@ body { font-family:'Poppins', sans-serif; background:var(--bg); min-height:100vh
         var html = '';
         html += '<div class="page-header"><h2>Profil SuperAdmin</h2><p>Kelola data aplikasi, keamanan akun, data pribadi, dan dokumen perusahaan.</p></div>';
 
-                // Data Aplikasi
+        // Data Aplikasi
         var dataAplikasi = JSON.parse(localStorage.getItem('2r_data_aplikasi') || '{}');
-        html += '<div class="card"><div class="card-header"><span><i class="fas fa-building" style="color:#FF6B00;"></i> Data Aplikasi & Tampilan Login</span><button class="button button-primary button-small" onclick="simpanDataAplikasi()"><i class="fas fa-save"></i> Simpan</button></div>';
+        html += '<div class="card"><div class="card-header"><span><i class="fas fa-building" style="color:#FF6B00;"></i> Data Aplikasi</span><button class="button button-primary button-small" onclick="simpanDataAplikasi()"><i class="fas fa-save"></i> Simpan</button></div>';
         html += '<div class="grid-2">';
-        html += '<div><label class="form-label">Nama Aplikasi (Login)</label><input type="text" id="appNama" class="form-input" value="' + escapeHtml(dataAplikasi.nama || 'Toko Online 2R') + '"></div>';
-        html += '<div><label class="form-label">Tagline / Sub Judul</label><input type="text" id="appTagline" class="form-input" value="' + escapeHtml(dataAplikasi.tagline || 'Platform Belanja & Layanan Serba Ada') + '"></div>';
+        html += '<div><label class="form-label">Nama Aplikasi</label><input type="text" id="appNama" class="form-input" value="' + escapeHtml(dataAplikasi.nama || '') + '"></div>';
         html += '<div><label class="form-label">Penerbit</label><input type="text" id="appPenerbit" class="form-input" value="' + escapeHtml(dataAplikasi.penerbit || '') + '"></div>';
         html += '<div><label class="form-label">Pemilik</label><input type="text" id="appPemilik" class="form-input" value="' + escapeHtml(dataAplikasi.pemilik || '') + '"></div>';
         html += '<div><label class="form-label">Pengelola</label><input type="text" id="appPengelola" class="form-input" value="' + escapeHtml(dataAplikasi.pengelola || '') + '"></div>';
-        html += '<div style="display:flex; align-items:center; gap:10px;"><div style="flex:1;"><label class="form-label">Ikon (FontAwesome)</label><input type="text" id="appIcon" class="form-input" value="' + escapeHtml(dataAplikasi.icon || 'fa-store-alt') + '"></div>';
-        html += '<div style="flex:1;"><label class="form-label">Warna Ikon</label><input type="color" id="appIconColor" class="form-input" value="' + (dataAplikasi.iconColor || '#FF6B00') + '" style="padding:2px;height:40px;"></div></div>';
         html += '</div></div>';
 
         // Keamanan
@@ -925,41 +923,16 @@ body { font-family:'Poppins', sans-serif; background:var(--bg); min-height:100vh
     }
     // ===== AKHIR BLOK 7.2.1 =====
 
-        // ===== BLOK 7.2.2 - SIMPAN DATA APLIKASI =====
+    // ===== BLOK 7.2.2 - SIMPAN DATA APLIKASI =====
     function simpanDataAplikasi() {
         var data = {
             nama: document.getElementById('appNama').value,
             penerbit: document.getElementById('appPenerbit').value,
             pemilik: document.getElementById('appPemilik').value,
-            pengelola: document.getElementById('appPengelola').value,
-            tagline: document.getElementById('appTagline').value,
-            icon: document.getElementById('appIcon').value,
-            iconColor: document.getElementById('appIconColor').value
+            pengelola: document.getElementById('appPengelola').value
         };
         localStorage.setItem('2r_data_aplikasi', JSON.stringify(data));
-        
-        // Update langsung halaman login secara realtime jika sedang dibuka di tab yang sama
-        var loginIcon = document.getElementById('loginAppIcon');
-        var loginTitle = document.getElementById('loginAppTitle');
-        var loginTagline = document.getElementById('loginAppTagline');
-        if (loginIcon) {
-            loginIcon.className = 'fas ' + data.icon;
-            loginIcon.style.color = data.iconColor;
-        }
-        if (loginTitle) {
-            var appNama = data.nama || 'Toko Online 2R';
-            var parts = appNama.split('2R');
-            if (parts.length > 1) {
-                loginTitle.innerHTML = parts[0] + '<span style="color:' + data.iconColor + ';">2R</span>' + parts.slice(1).join('');
-            } else {
-                loginTitle.innerHTML = appNama;
-            }
-        }
-        if (loginTagline) {
-            loginTagline.textContent = data.tagline || 'Platform Belanja & Layanan Serba Ada';
-        }
-
-        tampilkanToast('Data aplikasi dan tampilan login berhasil disimpan!', 'success');
+        tampilkanToast('Data aplikasi disimpan!', 'success');
     }
     // ===== AKHIR BLOK 7.2.2 =====
 
@@ -1758,59 +1731,55 @@ function hapusKTPUmum() {
 
 <!-- ===== BLOK 7.5 - JS_RENDER_DAFTAR_AKUN & PERSETUJUAN ===== -->
 <script>
-    <!-- ===== BLOK 7.5.1 - JS_RENDER_DAFTAR_AKUN ===== -->
-<script>
-// ===== BLOK 7.5.1 - RENDER DAFTAR AKUN =====
-function renderDaftarAkun() {
-    var areaKonten = document.getElementById('mainContent');
-    var html = '<div class="page-header"><h2>Daftar Akun Baru</h2><p>Form pendaftaran akun oleh SuperAdmin.</p></div>';
-    html += '<div class="card"><div class="card-header">Form Pendaftaran</div>';
-    html += '<div class="form-group"><label>Role</label><select id="daftarRole" class="form-input" onchange="updatePreviewId()">';
-    html += '<option value="customer">Customer</option><option value="toko">Toko (Verifikasi)</option><option value="ojek">Ojek (Verifikasi)</option>';
-    html += '<option value="pedagang">Pedagang Pasar</option><option value="codseller">COD Seller</option><option value="staf_admin">Staf Admin</option><option value="staf_owner_ojek">Staf Owner Ojek</option>';
-    html += '<option value="staf_owner_toko">Staf Owner Toko</option><option value="customer_service">Customer Service</option><option value="sponsor">Sponsor</option></select></div>';
-    html += '<div class="form-group"><label>ID Akun (Otomatis)</label><div style="background:#f0f0f0;border:2px solid #ddd;border-radius:8px;padding:12px;"><span id="daftarIdPreview" style="font-weight:600;">' + generateId('customer') + '</span></div></div>';
-    html += '<div class="form-group"><label>Username</label><input type="text" id="daftarUsername" class="form-input" placeholder="Username" required></div>';
-    html += '<div class="form-group"><label>Password</label><input type="password" id="daftarPassword" class="form-input" placeholder="Password" required></div>';
-    html += '<div class="form-group"><label>Nama Lengkap</label><input type="text" id="daftarNama" class="form-input" placeholder="Nama Lengkap" required></div>';
-    html += '<button class="button button-primary" style="width:100%;" onclick="prosesDaftarAkun()"><i class="fas fa-user-plus"></i> Buat Akun Baru</button></div>';
-    areaKonten.innerHTML = html;
-}
-
-function updatePreviewId() {
-    var role = document.getElementById('daftarRole').value;
-    document.getElementById('daftarIdPreview').textContent = generateId(role);
-}
-
-async function prosesDaftarAkun() {
-    var role = document.getElementById('daftarRole').value;
-    var username = document.getElementById('daftarUsername').value.trim();
-    var password = document.getElementById('daftarPassword').value.trim();
-    var nama = document.getElementById('daftarNama').value.trim();
-    if (!role || !username || !password || !nama) { tampilkanToast('Data belum lengkap!', 'warning'); return; }
-    if (username.length < 4) { tampilkanToast('Username minimal 4 karakter!', 'warning'); return; }
-    if (password.length < 6) { tampilkanToast('Password minimal 6 karakter!', 'warning'); return; }
-    var dataAkun = getDataAkun();
-    for (var i = 0; i < dataAkun.length; i++) {
-        if (dataAkun[i].username === username) { tampilkanToast('Username sudah digunakan!', 'error'); return; }
+    // ===== BLOK 7.5.1 - RENDER DAFTAR AKUN =====
+    function renderDaftarAkun() {
+        var areaKonten = document.getElementById('mainContent');
+        var html = '<div class="page-header"><h2>Daftar Akun Baru</h2><p>Form pendaftaran akun oleh SuperAdmin.</p></div>';
+        html += '<div class="card"><div class="card-header">Form Pendaftaran</div>';
+        html += '<div class="form-group"><label>Role</label><select id="daftarRole" class="form-input" onchange="updatePreviewId()">';
+        html += '<option value="customer">Customer</option><option value="toko">Toko (Verifikasi)</option><option value="ojek">Ojek (Verifikasi)</option>';
+        html += '<option value="pedagang">Pedagang Pasar</option><option value="staf_admin">Staf Admin</option><option value="staf_owner_ojek">Staf Owner Ojek</option>';
+        html += '<option value="staf_owner_toko">Staf Owner Toko</option><option value="customer_service">Customer Service</option><option value="sponsor">Sponsor</option></select></div>';
+        html += '<div class="form-group"><label>ID Akun (Otomatis)</label><div style="background:#f0f0f0;border:2px solid #ddd;border-radius:8px;padding:12px;"><span id="daftarIdPreview" style="font-weight:600;">' + generateId('customer') + '</span></div></div>';
+        html += '<div class="form-group"><label>Username</label><input type="text" id="daftarUsername" class="form-input" placeholder="Username" required></div>';
+        html += '<div class="form-group"><label>Password</label><input type="password" id="daftarPassword" class="form-input" placeholder="Password" required></div>';
+        html += '<div class="form-group"><label>Nama Lengkap</label><input type="text" id="daftarNama" class="form-input" placeholder="Nama Lengkap" required></div>';
+        html += '<button class="button button-primary" style="width:100%;" onclick="prosesDaftarAkun()"><i class="fas fa-user-plus"></i> Buat Akun Baru</button></div>';
+        areaKonten.innerHTML = html;
     }
-    var status = (role === 'toko' || role === 'ojek') ? 'NONAKTIF (Menunggu Verifikasi)' : 'AKTIF';
-    var passwordHash = await hashPassword(password);
-    var akunBaru = {
-        id: generateId(role), role: role, username: username, password: passwordHash, nama: nama,
-        email: '', nomorHp: '', alamat: '', namaBank: '', nomorRekening: '', pemilikRekening: '', ktp: '',
-        status: status, waktuRegistrasi: new Date().toISOString()
-    };
-    dataAkun.push(akunBaru);
-    simpanDataAkun(dataAkun);
-    document.getElementById('daftarUsername').value = '';
-    document.getElementById('daftarPassword').value = '';
-    document.getElementById('daftarNama').value = '';
-    updatePreviewId();
-    tampilkanToast('Akun ' + role + ' berhasil dibuat! ID: ' + akunBaru.id, 'success');
-}
-// ===== AKHIR BLOK 7.5.1 =====
-</script>
+    function updatePreviewId() {
+        var role = document.getElementById('daftarRole').value;
+        document.getElementById('daftarIdPreview').textContent = generateId(role);
+    }
+    async function prosesDaftarAkun() {
+        var role = document.getElementById('daftarRole').value;
+        var username = document.getElementById('daftarUsername').value.trim();
+        var password = document.getElementById('daftarPassword').value.trim();
+        var nama = document.getElementById('daftarNama').value.trim();
+        if (!role || !username || !password || !nama) { tampilkanToast('Data belum lengkap!', 'warning'); return; }
+        if (username.length < 4) { tampilkanToast('Username minimal 4 karakter!', 'warning'); return; }
+        if (password.length < 6) { tampilkanToast('Password minimal 6 karakter!', 'warning'); return; }
+        var dataAkun = getDataAkun();
+        for (var i = 0; i < dataAkun.length; i++) {
+            if (dataAkun[i].username === username) { tampilkanToast('Username sudah digunakan!', 'error'); return; }
+        }
+        var status = (role === 'toko' || role === 'ojek') ? 'NONAKTIF (Menunggu Verifikasi)' : 'AKTIF';
+        var passwordHash = await hashPassword(password);
+        var akunBaru = {
+            id: generateId(role), role: role, username: username, password: passwordHash, nama: nama,
+            email: '', nomorHp: '', alamat: '', namaBank: '', nomorRekening: '', pemilikRekening: '', ktp: '',
+            status: status, waktuRegistrasi: new Date().toISOString()
+        };
+        dataAkun.push(akunBaru);
+        simpanDataAkun(dataAkun);
+        document.getElementById('daftarUsername').value = '';
+        document.getElementById('daftarPassword').value = '';
+        document.getElementById('daftarNama').value = '';
+        updatePreviewId();
+        tampilkanToast('Akun ' + role + ' berhasil dibuat! ID: ' + akunBaru.id, 'success');
+    }
+    // ===== AKHIR BLOK 7.5.1 =====
+
     // ===== BLOK 7.5.2 - RENDER PERSETUJUAN AKUN =====
     function renderPersetujuanAkun() {
         var areaKonten = document.getElementById('mainContent');
@@ -3252,32 +3221,8 @@ function tampilkanDashboard(user) {
 }
 // ===== AKHIR BLOK 8.6.1 =====
 
-        // ===== BLOK 8.6.2 - DOMContentLoaded =====
+    // ===== BLOK 8.6.2 - DOMContentLoaded =====
     document.addEventListener('DOMContentLoaded', async function() {
-        // --- TAMBAHAN BARU: LOAD DATA APLIKASI KE HALAMAN LOGIN ---
-        var dataAplikasi = JSON.parse(localStorage.getItem('2r_data_aplikasi') || '{}');
-        var loginIcon = document.getElementById('loginAppIcon');
-        var loginTitle = document.getElementById('loginAppTitle');
-        var loginTagline = document.getElementById('loginAppTagline');
-
-        if (loginIcon) {
-            loginIcon.className = 'fas ' + (dataAplikasi.icon || 'fa-store-alt');
-            loginIcon.style.color = dataAplikasi.iconColor || '#FF6B00';
-        }
-        if (loginTitle) {
-            var appNama = dataAplikasi.nama || 'Toko Online 2R';
-            var parts = appNama.split('2R');
-            if (parts.length > 1) {
-                loginTitle.innerHTML = parts[0] + '<span style="color:' + (dataAplikasi.iconColor || '#FF6B00') + ';">2R</span>' + parts.slice(1).join('');
-            } else {
-                loginTitle.innerHTML = appNama;
-            }
-        }
-        if (loginTagline) {
-            loginTagline.textContent = dataAplikasi.tagline || 'Platform Belanja & Layanan Serba Ada';
-        }
-        // --- AKHIR TAMBAHAN BARU ---
-
         await inisialisasiSuperAdmin();
         var dataUser = localStorage.getItem('2r_user');
         if (dataUser) {
