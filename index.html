@@ -1911,7 +1911,8 @@ function hapusKTPUmum() {
     }
     // ===== AKHIR BLOK 8.1.1 =====
 
-    // ===== BLOK 8.1.2 - KELOLA IKLAN =====
+    <!-- ===== BLOK 8.1.2 - KELOLA IKLAN ===== -->
+<script>
     function renderMenuIklan() {
         var role = localStorage.getItem('2r_user_role');
         var areaKonten = document.getElementById('mainContent');
@@ -1924,7 +1925,7 @@ function hapusKTPUmum() {
             html += '<div style="margin-bottom:20px;"><button class="button button-primary" onclick="bukaFormIklan()"><i class="fas fa-plus"></i> Tambah Iklan</button></div>';
         }
 
-                if (dataIklan.length === 0) {
+        if (dataIklan.length === 0) {
             html += '<div class="card"><div class="empty-state"><i class="fas fa-ad"></i><h3>Belum ada iklan</h3></div></div>';
         } else {
             // ===== TAMPILAN GRID KARTU DENGAN GAMBAR BESAR =====
@@ -1980,47 +1981,6 @@ function hapusKTPUmum() {
             html += '</div></div>'; // Tutup Grid dan Card
             // ===============================================
         }
-            // Kolom Aksi hanya untuk SuperAdmin
-            if (role === 'superadmin') html += '<th>Aksi</th>';
-            html += '</tr></thead><tbody>';
-            
-            for (var i = 0; i < dataIklan.length; i++) {
-                var iklan = dataIklan[i];
-                
-                // === KONVERSI DATA GAMBAR KE ARRAY ===
-                var gambarArray = [];
-                if (iklan.gambar) {
-                    if (Array.isArray(iklan.gambar)) {
-                        gambarArray = iklan.gambar;
-                    } else if (typeof iklan.gambar === 'string' && iklan.gambar !== '') {
-                        // Jika data lama masih berupa string, ubah menjadi array
-                        gambarArray = [iklan.gambar];
-                    }
-                }
-                // =====================================
-
-                html += '<tr><td>' + (i+1) + '</td><td>' + escapeHtml(iklan.judul) + '</td><td>' + escapeHtml(iklan.deskripsi) + '</td><td><span style="display:inline-block;width:30px;height:30px;background:' + (iklan.warna || '#FF6B00') + ';border-radius:4px;"></span></td><td>';
-                
-                // ===== SLIDER GAMBAR YANG BISA DIGULIR =====
-                html += '<div style="display:flex; overflow-x:auto; gap:8px; padding:5px; max-width:300px; white-space:nowrap; scrollbar-width:thin; border:1px solid #eee; border-radius:6px;">';
-                if (gambarArray.length > 0) {
-                    for (var j = 0; j < gambarArray.length; j++) {
-                        html += '<img src="' + gambarArray[j] + '" style="height:60px; width:auto; border-radius:6px; cursor:pointer; border:1px solid #eee; flex-shrink:0;" onclick="previewGambar(\'' + gambarArray[j] + '\',\'Preview Iklan\')">';
-                    }
-                } else {
-                    html += '<span style="color:#999; font-size:12px; padding:10px;">-</span>';
-                }
-                html += '</div></td>';
-                // ===== AKHIR SLIDER =====
-                
-                // Tombol Edit/Hapus hanya untuk SuperAdmin
-                if (role === 'superadmin') {
-                    html += '<td><button class="button button-primary button-extra-small" onclick="editIklan(' + i + ')"><i class="fas fa-edit"></i> Edit</button><button class="button button-danger button-extra-small" onclick="hapusIklan(' + i + ')"><i class="fas fa-trash"></i> Hapus</button></td>';
-                }
-                html += '</tr>';
-            }
-            html += '</tbody></table></div></div>';
-        }
 
         // Form tambah/edit hanya untuk SuperAdmin
         if (role === 'superadmin') {
@@ -2037,7 +1997,7 @@ function hapusKTPUmum() {
 
         areaKonten.innerHTML = html;
         
-                        // Event listener untuk upload banyak gambar (dipasang ulang setiap render)
+        // Event listener untuk upload banyak gambar (dipasang ulang setiap render)
         setTimeout(function() {
             var inputGambar = document.getElementById('iklanGambar');
             if (inputGambar) {
@@ -2095,7 +2055,7 @@ function hapusKTPUmum() {
         document.getElementById('formIklanContainer').scrollIntoView({ behavior: 'smooth' });
     }
     function tutupFormIklan() { document.getElementById('formIklanContainer').classList.add('hidden'); }
-            function simpanIklan() {
+    function simpanIklan() {
         var judul = document.getElementById('iklanJudul').value.trim();
         var deskripsi = document.getElementById('iklanDeskripsi').value.trim();
         var warna = document.getElementById('iklanWarna').value;
