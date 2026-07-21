@@ -3142,35 +3142,22 @@ function renderChat() {
     var areaKonten = document.getElementById('mainContent');
     if (!areaKonten) return;
 
-    var dataAkun = getDataAkun(); // Ambil data akun untuk pengecekan role
+    // Ambil semua pesan
     var semuaPesan = JSON.parse(localStorage.getItem('2r_chat_messages') || '[]');
     
+    // Filter pesan yang melibatkan user saat ini
     var pesanSaya = semuaPesan.filter(function(p) {
         return p.pengirim === user.id || p.penerima === user.id;
     });
 
-    // Kumpulkan ID lawan bicara unik, BUKAN SuperAdmin
+    // Kumpulkan ID lawan bicara yang unik
     var daftarLawan = {};
     for (var i = 0; i < pesanSaya.length; i++) {
         var idLawan = (pesanSaya[i].pengirim === user.id) ? pesanSaya[i].penerima : pesanSaya[i].pengirim;
-        
-        // Cari role lawan bicara
-        var roleLawan = '';
-        for (var k = 0; k < dataAkun.length; k++) {
-            if (dataAkun[k].id === idLawan) {
-                roleLawan = dataAkun[k].role;
-                break;
-            }
-        }
-
-        // LEWATKAN jika role lawan adalah SuperAdmin
-        if (roleLawan === 'superadmin') {
-            continue; 
-        }
-
         if (!daftarLawan[idLawan]) {
             daftarLawan[idLawan] = { id: idLawan, pesanTerakhir: pesanSaya[i], waktu: new Date(pesanSaya[i].waktu) };
         } else {
+            // Update jika pesan lebih baru
             if (new Date(pesanSaya[i].waktu) > daftarLawan[idLawan].waktu) {
                 daftarLawan[idLawan].pesanTerakhir = pesanSaya[i];
                 daftarLawan[idLawan].waktu = new Date(pesanSaya[i].waktu);
@@ -3178,17 +3165,21 @@ function renderChat() {
         }
     }
 
+    // Urutkan berdasarkan waktu terbaru
     var listLawan = Object.values(daftarLawan);
     listLawan.sort(function(a, b) { return b.waktu - a.waktu; });
 
     var html = '<div class="page-header"><h2>Chat</h2><p>Daftar percakapan Anda. ID lawan bicara ditampilkan untuk memudahkan balasan.</p></div>';
 
+    // Tampilkan Inbox (Daftar Percakapan)
     if (listLawan.length === 0) {
-        html += '<div class="card"><div class="empty-state"><i class="fas fa-comments"></i><h3>Belum ada percakapan</h3><p>Silakan pilih ID tujuan di bawah untuk memulai chat (SuperAdmin tidak ditampilkan).</p></div></div>';
+        html += '<div class="card"><div class="empty-state"><i class="fas fa-comments"></i><h3>Belum ada percakapan</h3><p>Silakan pilih ID tujuan di bawah untuk memulai chat.</p></div></div>';
     } else {
         html += '<div class="card"><div class="table-container"><table class="table"><thead><tr><th>ID Lawan</th><th>Pesan Terakhir</th><th>Waktu</th><th>Aksi</th></tr></thead><tbody>';
         for (var i = 0; i < listLawan.length; i++) {
             var lawan = listLawan[i];
+            // Cari nama lawan dari data akun
+            var dataAkun = getDataAkun();
             var namaLawan = lawan.id;
             for (var j = 0; j < dataAkun.length; j++) {
                 if (dataAkun[j].id === lawan.id) {
@@ -3206,16 +3197,21 @@ function renderChat() {
         html += '</tbody></table></div></div>';
     }
 
-    // DROPDOWN PILIH ID TUJUAN (SuperAdmin Tidak Ditampilkan)
+    // ===== FITUR BARU: DROPDOWN PILIH ID TUJUAN =====
+    // Ambil semua data akun untuk dropdown
+    var dataAkun = getDataAkun();
     var opsiDropdown = '<option value="">-- Pilih ID Tujuan --</option>';
+    
     for (var i = 0; i < dataAkun.length; i++) {
         var a = dataAkun[i];
-        if (a.id !== user.id && a.role !== 'superadmin') {
+        // Jangan tampilkan akun diri sendiri
+        if (a.id !== user.id) {
             var tampilan = a.id + ' - ' + a.nama + ' (' + a.role + ')';
             opsiDropdown += '<option value="' + a.id + '">' + escapeHtml(tampilan) + '</option>';
         }
     }
 
+    // Form Memulai Chat Baru
     html += '<div class="card"><div class="card-header">Mulai Percakapan Baru</div>';
     html += '<div class="grid-2"><div><label class="form-label">Pilih ID Tujuan (Atau Ketik Manual)</label>';
     html += '<select id="chatTargetId" class="form-input" onchange="document.getElementById(\'chatManualInput\').value = this.value">';
