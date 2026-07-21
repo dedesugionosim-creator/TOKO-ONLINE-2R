@@ -1950,11 +1950,11 @@ function hapusKTPUmum() {
                 html += '<div style="background:white; border-radius:16px; box-shadow:0 4px 20px rgba(0,0,0,0.08); border:1px solid #e9ecef; overflow:hidden; display:flex; flex-direction:column; transition:transform 0.2s, box-shadow 0.2s;">';
                 html += '<div style="flex:1; display:flex; flex-direction:column;">';
 
-                // --- 1. BAGIAN GAMBAR (DI ATAS) ---
-                html += '<img src="' + gambarArray[j] + '" style="width:100%; height:auto; object-fit:contain; cursor:pointer; flex-shrink:0; scroll-snap-align:start; display:block;" onclick="previewGambar(\'' + gambarArray[j] + '\',\'Preview Iklan\')">';
+                                // --- 1. BAGIAN GAMBAR (DI ATAS) ---
+                html += '<div style="height:300px; background:#f8f9fa; display:flex; overflow-x:auto; gap:0; scroll-snap-type:x mandatory; scrollbar-width:thin; border-bottom:1px solid #f0f0f0; position:relative;">';
                 if (gambarArray.length > 0) {
                     for (var j = 0; j < gambarArray.length; j++) {
-                        html += '<img src="' + gambarArray[j] + '" style="min-width:100%; height:100%; object-fit:cover; cursor:pointer; flex-shrink:0; scroll-snap-align:start; display:block;" onclick="previewGambar(\'' + gambarArray[j] + '\',\'Preview Iklan\')">';
+                        html += '<img src="' + gambarArray[j] + '" style="width:100%; height:100%; object-fit:contain; cursor:pointer; flex-shrink:0; scroll-snap-align:start; display:block;" onclick="previewGambar(\'' + gambarArray[j] + '\',\'Preview Iklan\')">';
                     }
                 } else {
                     html += '<div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; color:#ccc;"><i class="fas fa-image" style="font-size:48px;"></i></div>';
