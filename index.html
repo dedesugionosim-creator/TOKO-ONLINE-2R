@@ -3143,19 +3143,16 @@ function renderChat() {
     var areaKonten = document.getElementById('mainContent');
     if (!areaKonten) return;
 
-    var dataAkun = getDataAkun(); // Ambil data akun untuk pengecekan role
+    var dataAkun = getDataAkun();
     var semuaPesan = JSON.parse(localStorage.getItem('2r_chat_messages') || '[]');
     
     var pesanSaya = semuaPesan.filter(function(p) {
         return p.pengirim === user.id || p.penerima === user.id;
     });
 
-    // Kumpulkan ID lawan bicara unik, BUKAN SuperAdmin
     var daftarLawan = {};
     for (var i = 0; i < pesanSaya.length; i++) {
         var idLawan = (pesanSaya[i].pengirim === user.id) ? pesanSaya[i].penerima : pesanSaya[i].pengirim;
-        
-        // Cari role lawan bicara
         var roleLawan = '';
         for (var k = 0; k < dataAkun.length; k++) {
             if (dataAkun[k].id === idLawan) {
@@ -3163,11 +3160,7 @@ function renderChat() {
                 break;
             }
         }
-
-        // LEWATKAN jika role lawan adalah SuperAdmin
-        if (roleLawan === 'superadmin') {
-            continue; 
-        }
+        if (roleLawan === 'superadmin') { continue; }
 
         if (!daftarLawan[idLawan]) {
             daftarLawan[idLawan] = { id: idLawan, pesanTerakhir: pesanSaya[i], waktu: new Date(pesanSaya[i].waktu) };
@@ -3185,7 +3178,7 @@ function renderChat() {
     var html = '<div class="page-header"><h2>Chat</h2><p>Daftar percakapan Anda. ID lawan bicara ditampilkan untuk memudahkan balasan.</p></div>';
 
     if (listLawan.length === 0) {
-        html += '<div class="card"><div class="empty-state"><i class="fas fa-comments"></i><h3>Belum ada percakapan</h3><p>Silakan pilih ID tujuan di bawah untuk memulai chat (SuperAdmin tidak ditampilkan).</p></div></div>';
+        html += '<div class="card"><div class="empty-state"><i class="fas fa-comments"></i><h3>Belum ada percakapan</h3><p>Silakan pilih ID tujuan di bawah (SuperAdmin tidak ditampilkan).</p></div></div>';
     } else {
         html += '<div class="card"><div class="table-container"><table class="table"><thead><tr><th>ID Lawan</th><th>Pesan Terakhir</th><th>Waktu</th><th>Aksi</th></tr></thead><tbody>';
         for (var i = 0; i < listLawan.length; i++) {
@@ -3207,7 +3200,6 @@ function renderChat() {
         html += '</tbody></table></div></div>';
     }
 
-    // DROPDOWN PILIH ID TUJUAN (SuperAdmin Tidak Ditampilkan)
     var opsiDropdown = '<option value="">-- Pilih ID Tujuan --</option>';
     for (var i = 0; i < dataAkun.length; i++) {
         var a = dataAkun[i];
@@ -3222,7 +3214,7 @@ function renderChat() {
     html += '<select id="chatTargetId" class="form-input" onchange="document.getElementById(\'chatManualInput\').value = this.value">';
     html += opsiDropdown;
     html += '</select>';
-    html += '<div style="margin-top:5px;"><input type="text" id="chatManualInput" class="form-input" placeholder="Ketik ID manual jika tidak ada di daftar" oninput="document.getElementById(\'chatTargetId\').value = this.value"></div>';
+    html += '<div style="margin-top:5px;"><input type="text" id="chatManualInput" class="form-input" placeholder="Ketik ID manual" oninput="document.getElementById(\'chatTargetId\').value = this.value"></div>';
     html += '</div>';
     html += '<div style="display:flex; align-items:flex-end;"><button class="button button-primary" onclick="bukaChat(document.getElementById(\'chatTargetId\').value)"><i class="fas fa-arrow-right"></i> Buka Chat</button></div></div></div>';
 
