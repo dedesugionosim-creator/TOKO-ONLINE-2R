@@ -585,7 +585,7 @@ body { font-family:'Poppins', sans-serif; background:var(--bg); min-height:100vh
 
 <!-- ===== BLOK 6.1 - JS_SIDEBAR_BUILDER ===== -->
 <script>
-                // ===== BLOK 6.1.1 - BUAT SIDEBAR HTML (MENU IKLAN & PAPAN INFORMASI UNTUK SEMUA ROLE) =====
+            // ===== BLOK 6.1.1 - BUAT SIDEBAR HTML (MENU IKLAN & PAPAN INFORMASI UNTUK SEMUA ROLE) =====
     function buatSidebarHTML(role) {
         // Hitung notifikasi belum dibaca untuk user yang login
         var user = JSON.parse(localStorage.getItem('2r_user') || '{}');
@@ -602,38 +602,38 @@ body { font-family:'Poppins', sans-serif; background:var(--bg); min-height:100vh
         var menuRole = {
             'superadmin': [
                 { judul: 'Menu Utama', items: [ { halaman: 'dashboard', icon: 'fa-th-large', label: 'Dasbor' }, { halaman: 'profile', icon: 'fa-user-circle', label: 'Profil' }, { halaman: 'helloFriends', icon: 'fa-video', label: 'HelloFriends (Coming Soon)' } ] },
-                { judul: 'Menu Admin', items: [ { halaman: 'daftarAkun', icon: 'fa-user-plus', label: 'Daftar Akun Baru' }, { halaman: 'persetujuan', icon: 'fa-check-double', label: 'Persetujuan Akun' }, { halaman: 'kelolaAkun', icon: 'fa-users-cog', label: 'Kelola Semua Akun' }, { halaman: 'transferMenu', icon: 'fa-exchange-alt', label: 'Transfer Menu' }, { halaman: 'settingRekening', icon: 'fa-university', label: 'Setting Rekening' }, { halaman: 'menuIklan', icon: 'fa-ad', label: 'Menu Iklan' }, { halaman: 'papanInformasi', icon: 'fa-bullhorn', label: 'Papan Informasi' }, { halaman: 'pengajuanHapus', icon: 'fa-trash-alt', label: 'Pengajuan Hapus Akun' }, { halaman: 'kelolaWilayah', icon: 'fa-map-marked-alt', label: 'Kelola Wilayah' }, { halaman: 'notifikasi', icon: 'fa-bell', label: 'Notifikasi' } ] }
+                { judul: 'Menu Admin', items: [ { halaman: 'daftarAkun', icon: 'fa-user-plus', label: 'Daftar Akun Baru' }, { halaman: 'persetujuan', icon: 'fa-check-double', label: 'Persetujuan Akun' }, { halaman: 'kelolaAkun', icon: 'fa-users-cog', label: 'Kelola Semua Akun' }, { halaman: 'transferMenu', icon: 'fa-exchange-alt', label: 'Transfer Menu' }, { halaman: 'settingRekening', icon: 'fa-university', label: 'Setting Rekening' }, { halaman: 'menuIklan', icon: 'fa-ad', label: 'Menu Iklan' }, { halaman: 'papanInformasi', icon: 'fa-bullhorn', label: 'Papan Informasi' }, { halaman: 'pengajuanHapus', icon: 'fa-trash-alt', label: 'Pengajuan Hapus Akun' }, { halaman: 'kelolaWilayah', icon: 'fa-map-marked-alt', label: 'Kelola Wilayah' }, { halaman: 'hapusAkun', icon: 'fa-trash-alt', label: 'Hapus Akun' } ] }
             ],
             'customer': [
                 { judul: 'Menu Belanja', items: [ { halaman: 'dashboardCustomer', icon: 'fa-th-large', label: 'Dasbor' }, { halaman: 'profilCustomer', icon: 'fa-user-circle', label: 'Profil' }, { halaman: 'lihatTokoTerdekat', icon: 'fa-store', label: 'Lihat Toko Terdekat' }, { halaman: 'lihatOjekTerdekat', icon: 'fa-motorcycle', label: 'Lihat Ojek Terdekat' }, { halaman: 'lihatProduk', icon: 'fa-box', label: 'Lihat Produk' }, { halaman: 'keranjang', icon: 'fa-shopping-cart', label: 'Keranjang' }, { halaman: 'chat', icon: 'fa-comments', label: 'Chat' }, { halaman: 'papanInformasi', icon: 'fa-bullhorn', label: 'Papan Informasi' }, { halaman: 'menuIklan', icon: 'fa-ad', label: 'Menu Iklan' } ] },
                 { judul: 'Transaksi', items: [ { halaman: 'daftarBelanja', icon: 'fa-clipboard-list', label: 'Daftar Belanja' }, { halaman: 'riwayatBelanja', icon: 'fa-history', label: 'Riwayat Belanja' }, { halaman: 'pembayaran', icon: 'fa-credit-card', label: 'Pembayaran' }, { halaman: 'ulasanRating', icon: 'fa-star', label: 'Ulasan & Rating' } ] },
-                { judul: 'Lainnya', items: [ { halaman: 'bantuanFAQ', icon: 'fa-question-circle', label: 'Bantuan & FAQ' }, { halaman: 'notifikasi', icon: 'fa-bell', label: 'Notifikasi' }, { halaman: 'editAkun', icon: 'fa-user-edit', label: 'Edit / Hapus Akun' }, { halaman: 'helloFriends', icon: 'fa-video', label: 'HelloFriends (Coming Soon)' } ] }
+                { judul: 'Lainnya', items: [ { halaman: 'bantuanFAQ', icon: 'fa-question-circle', label: 'Bantuan & FAQ' }, { halaman: 'notifikasi', icon: 'fa-bell', label: 'Notifikasi' }, { halaman: 'hapusAkun', icon: 'fa-trash-alt', label: 'Hapus Akun' }, { halaman: 'helloFriends', icon: 'fa-video', label: 'HelloFriends (Coming Soon)' } ] }
             ],
             'toko': [
-                { judul: 'Menu Utama', items: [ { halaman: 'dashboard', icon: 'fa-th-large', label: 'Dasbor' }, { halaman: 'profile', icon: 'fa-user-circle', label: 'Profil' }, { halaman: 'chat', icon: 'fa-comments', label: 'Chat' }, { halaman: 'helloFriends', icon: 'fa-video', label: 'HelloFriends (Coming Soon)' }, { halaman: 'menuIklan', icon: 'fa-ad', label: 'Menu Iklan' }, { halaman: 'papanInformasi', icon: 'fa-bullhorn', label: 'Papan Informasi' }, { halaman: 'notifikasi', icon: 'fa-bell', label: 'Notifikasi' } ] },
+                { judul: 'Menu Utama', items: [ { halaman: 'dashboard', icon: 'fa-th-large', label: 'Dasbor' }, { halaman: 'profile', icon: 'fa-user-circle', label: 'Profil' }, { halaman: 'chat', icon: 'fa-comments', label: 'Chat' }, { halaman: 'helloFriends', icon: 'fa-video', label: 'HelloFriends (Coming Soon)' }, { halaman: 'menuIklan', icon: 'fa-ad', label: 'Menu Iklan' }, { halaman: 'papanInformasi', icon: 'fa-bullhorn', label: 'Papan Informasi' }, { halaman: 'hapusAkun', icon: 'fa-trash-alt', label: 'Hapus Akun' } ] },
                 { judul: 'Menu Toko', items: [ { halaman: 'transaksi', icon: 'fa-cash-register', label: 'Transaksi' }, { halaman: 'kelolaProduk', icon: 'fa-box', label: 'Kelola Produk' }, { halaman: 'uploadProdukPublik', icon: 'fa-upload', label: 'Upload Produk Publik' }, { halaman: 'manajemenStokGudang', icon: 'fa-warehouse', label: 'Manajemen Stok Gudang' }, { halaman: 'pesananMasuk', icon: 'fa-shopping-cart', label: 'Pesanan Masuk' }, { halaman: 'laporanPenjualan', icon: 'fa-chart-line', label: 'Laporan Penjualan' }, { halaman: 'settingToko', icon: 'fa-store', label: 'Setting Toko' } ] }
             ],
             'ojek': [
-                { judul: 'Menu Utama', items: [ { halaman: 'dashboard', icon: 'fa-th-large', label: 'Dasbor' }, { halaman: 'profile', icon: 'fa-user-circle', label: 'Profil' }, { halaman: 'chat', icon: 'fa-comments', label: 'Chat' }, { halaman: 'helloFriends', icon: 'fa-video', label: 'HelloFriends (Coming Soon)' }, { halaman: 'menuIklan', icon: 'fa-ad', label: 'Menu Iklan' }, { halaman: 'papanInformasi', icon: 'fa-bullhorn', label: 'Papan Informasi' }, { halaman: 'notifikasi', icon: 'fa-bell', label: 'Notifikasi' } ] },
+                { judul: 'Menu Utama', items: [ { halaman: 'dashboard', icon: 'fa-th-large', label: 'Dasbor' }, { halaman: 'profile', icon: 'fa-user-circle', label: 'Profil' }, { halaman: 'chat', icon: 'fa-comments', label: 'Chat' }, { halaman: 'helloFriends', icon: 'fa-video', label: 'HelloFriends (Coming Soon)' }, { halaman: 'menuIklan', icon: 'fa-ad', label: 'Menu Iklan' }, { halaman: 'papanInformasi', icon: 'fa-bullhorn', label: 'Papan Informasi' }, { halaman: 'hapusAkun', icon: 'fa-trash-alt', label: 'Hapus Akun' } ] },
                 { judul: 'Menu Ojek', items: [ { halaman: 'orderMasuk', icon: 'fa-motorcycle', label: 'Order Masuk' }, { halaman: 'riwayatOrder', icon: 'fa-history', label: 'Riwayat Order' }, { halaman: 'laporanOjek', icon: 'fa-chart-bar', label: 'Laporan' }, { halaman: 'settingOjek', icon: 'fa-cog', label: 'Setting Ojek' } ] }
             ],
             'pedagang': [
-                { judul: 'Menu Utama', items: [ { halaman: 'dashboard', icon: 'fa-th-large', label: 'Dasbor' }, { halaman: 'profile', icon: 'fa-user-circle', label: 'Profil' }, { halaman: 'chat', icon: 'fa-comments', label: 'Chat' }, { halaman: 'helloFriends', icon: 'fa-video', label: 'HelloFriends (Coming Soon)' }, { halaman: 'menuIklan', icon: 'fa-ad', label: 'Menu Iklan' }, { halaman: 'papanInformasi', icon: 'fa-bullhorn', label: 'Papan Informasi' }, { halaman: 'notifikasi', icon: 'fa-bell', label: 'Notifikasi' } ] }
+                { judul: 'Menu Utama', items: [ { halaman: 'dashboard', icon: 'fa-th-large', label: 'Dasbor' }, { halaman: 'profile', icon: 'fa-user-circle', label: 'Profil' }, { halaman: 'chat', icon: 'fa-comments', label: 'Chat' }, { halaman: 'helloFriends', icon: 'fa-video', label: 'HelloFriends (Coming Soon)' }, { halaman: 'menuIklan', icon: 'fa-ad', label: 'Menu Iklan' }, { halaman: 'papanInformasi', icon: 'fa-bullhorn', label: 'Papan Informasi' }, { halaman: 'hapusAkun', icon: 'fa-trash-alt', label: 'Hapus Akun' } ] }
             ],
             'staf_admin': [
-                { judul: 'Menu Utama', items: [ { halaman: 'dashboard', icon: 'fa-th-large', label: 'Dasbor' }, { halaman: 'chat', icon: 'fa-comments', label: 'Chat' }, { halaman: 'persetujuan', icon: 'fa-check-double', label: 'Persetujuan Akun' }, { halaman: 'kelolaAkun', icon: 'fa-users-cog', label: 'Kelola Akun' }, { halaman: 'profile', icon: 'fa-user-circle', label: 'Profil' }, { halaman: 'pengajuanHapus', icon: 'fa-trash-alt', label: 'Pengajuan Hapus Akun' }, { halaman: 'helloFriends', icon: 'fa-video', label: 'HelloFriends (Coming Soon)' }, { halaman: 'menuIklan', icon: 'fa-ad', label: 'Menu Iklan' }, { halaman: 'papanInformasi', icon: 'fa-bullhorn', label: 'Papan Informasi' }, { halaman: 'notifikasi', icon: 'fa-bell', label: 'Notifikasi' } ] }
+                { judul: 'Menu Utama', items: [ { halaman: 'dashboard', icon: 'fa-th-large', label: 'Dasbor' }, { halaman: 'chat', icon: 'fa-comments', label: 'Chat' }, { halaman: 'persetujuan', icon: 'fa-check-double', label: 'Persetujuan Akun' }, { halaman: 'kelolaAkun', icon: 'fa-users-cog', label: 'Kelola Akun' }, { halaman: 'profile', icon: 'fa-user-circle', label: 'Profil' }, { halaman: 'pengajuanHapus', icon: 'fa-trash-alt', label: 'Pengajuan Hapus Akun' }, { halaman: 'helloFriends', icon: 'fa-video', label: 'HelloFriends (Coming Soon)' }, { halaman: 'menuIklan', icon: 'fa-ad', label: 'Menu Iklan' }, { halaman: 'papanInformasi', icon: 'fa-bullhorn', label: 'Papan Informasi' }, { halaman: 'hapusAkun', icon: 'fa-trash-alt', label: 'Hapus Akun' } ] }
             ],
             'customer_service': [
-                { judul: 'Menu Utama', items: [ { halaman: 'dashboard', icon: 'fa-th-large', label: 'Dasbor' }, { halaman: 'chat', icon: 'fa-comments', label: 'Chat' }, { halaman: 'tiketBantuan', icon: 'fa-ticket-alt', label: 'Tiket Bantuan' }, { halaman: 'liveChat', icon: 'fa-comments', label: 'Live Chat' }, { halaman: 'profile', icon: 'fa-user-circle', label: 'Profil' }, { halaman: 'helloFriends', icon: 'fa-video', label: 'HelloFriends (Coming Soon)' }, { halaman: 'menuIklan', icon: 'fa-ad', label: 'Menu Iklan' }, { halaman: 'papanInformasi', icon: 'fa-bullhorn', label: 'Papan Informasi' }, { halaman: 'notifikasi', icon: 'fa-bell', label: 'Notifikasi' } ] }
+                { judul: 'Menu Utama', items: [ { halaman: 'dashboard', icon: 'fa-th-large', label: 'Dasbor' }, { halaman: 'chat', icon: 'fa-comments', label: 'Chat' }, { halaman: 'tiketBantuan', icon: 'fa-ticket-alt', label: 'Tiket Bantuan' }, { halaman: 'liveChat', icon: 'fa-comments', label: 'Live Chat' }, { halaman: 'profile', icon: 'fa-user-circle', label: 'Profil' }, { halaman: 'helloFriends', icon: 'fa-video', label: 'HelloFriends (Coming Soon)' }, { halaman: 'menuIklan', icon: 'fa-ad', label: 'Menu Iklan' }, { halaman: 'papanInformasi', icon: 'fa-bullhorn', label: 'Papan Informasi' }, { halaman: 'hapusAkun', icon: 'fa-trash-alt', label: 'Hapus Akun' } ] }
             ],
             'staf_owner_toko': [
-                { judul: 'Menu Utama', items: [ { halaman: 'dashboard', icon: 'fa-th-large', label: 'Dasbor' }, { halaman: 'chat', icon: 'fa-comments', label: 'Chat' }, { halaman: 'kelolaProduk', icon: 'fa-box', label: 'Kelola Produk' }, { halaman: 'uploadProdukPublik', icon: 'fa-upload', label: 'Upload Produk Publik' }, { halaman: 'manajemenStokGudang', icon: 'fa-warehouse', label: 'Manajemen Stok Gudang' }, { halaman: 'pesananMasuk', icon: 'fa-shopping-cart', label: 'Pesanan Masuk' }, { halaman: 'laporanPenjualan', icon: 'fa-chart-line', label: 'Laporan' }, { halaman: 'profile', icon: 'fa-user-circle', label: 'Profil' }, { halaman: 'helloFriends', icon: 'fa-video', label: 'HelloFriends (Coming Soon)' }, { halaman: 'menuIklan', icon: 'fa-ad', label: 'Menu Iklan' }, { halaman: 'papanInformasi', icon: 'fa-bullhorn', label: 'Papan Informasi' }, { halaman: 'notifikasi', icon: 'fa-bell', label: 'Notifikasi' } ] }
+                { judul: 'Menu Utama', items: [ { halaman: 'dashboard', icon: 'fa-th-large', label: 'Dasbor' }, { halaman: 'chat', icon: 'fa-comments', label: 'Chat' }, { halaman: 'kelolaProduk', icon: 'fa-box', label: 'Kelola Produk' }, { halaman: 'uploadProdukPublik', icon: 'fa-upload', label: 'Upload Produk Publik' }, { halaman: 'manajemenStokGudang', icon: 'fa-warehouse', label: 'Manajemen Stok Gudang' }, { halaman: 'pesananMasuk', icon: 'fa-shopping-cart', label: 'Pesanan Masuk' }, { halaman: 'laporanPenjualan', icon: 'fa-chart-line', label: 'Laporan' }, { halaman: 'profile', icon: 'fa-user-circle', label: 'Profil' }, { halaman: 'helloFriends', icon: 'fa-video', label: 'HelloFriends (Coming Soon)' }, { halaman: 'menuIklan', icon: 'fa-ad', label: 'Menu Iklan' }, { halaman: 'papanInformasi', icon: 'fa-bullhorn', label: 'Papan Informasi' }, { halaman: 'hapusAkun', icon: 'fa-trash-alt', label: 'Hapus Akun' } ] }
             ],
             'staf_owner_ojek': [
-                { judul: 'Menu Utama', items: [ { halaman: 'dashboard', icon: 'fa-th-large', label: 'Dasbor' }, { halaman: 'chat', icon: 'fa-comments', label: 'Chat' }, { halaman: 'orderMasuk', icon: 'fa-motorcycle', label: 'Order Masuk' }, { halaman: 'riwayatOrder', icon: 'fa-history', label: 'Riwayat Order' }, { halaman: 'laporanOjek', icon: 'fa-chart-bar', label: 'Laporan' }, { halaman: 'profile', icon: 'fa-user-circle', label: 'Profil' }, { halaman: 'helloFriends', icon: 'fa-video', label: 'HelloFriends (Coming Soon)' }, { halaman: 'menuIklan', icon: 'fa-ad', label: 'Menu Iklan' }, { halaman: 'papanInformasi', icon: 'fa-bullhorn', label: 'Papan Informasi' }, { halaman: 'notifikasi', icon: 'fa-bell', label: 'Notifikasi' } ] }
+                { judul: 'Menu Utama', items: [ { halaman: 'dashboard', icon: 'fa-th-large', label: 'Dasbor' }, { halaman: 'chat', icon: 'fa-comments', label: 'Chat' }, { halaman: 'orderMasuk', icon: 'fa-motorcycle', label: 'Order Masuk' }, { halaman: 'riwayatOrder', icon: 'fa-history', label: 'Riwayat Order' }, { halaman: 'laporanOjek', icon: 'fa-chart-bar', label: 'Laporan' }, { halaman: 'profile', icon: 'fa-user-circle', label: 'Profil' }, { halaman: 'helloFriends', icon: 'fa-video', label: 'HelloFriends (Coming Soon)' }, { halaman: 'menuIklan', icon: 'fa-ad', label: 'Menu Iklan' }, { halaman: 'papanInformasi', icon: 'fa-bullhorn', label: 'Papan Informasi' }, { halaman: 'hapusAkun', icon: 'fa-trash-alt', label: 'Hapus Akun' } ] }
             ],
             'sponsor': [
-                { judul: 'Menu Utama', items: [ { halaman: 'dashboard', icon: 'fa-th-large', label: 'Dasbor' }, { halaman: 'iklanSaya', icon: 'fa-ad', label: 'Iklan Saya' }, { halaman: 'statistik', icon: 'fa-chart-pie', label: 'Statistik' }, { halaman: 'pembayaran', icon: 'fa-credit-card', label: 'Pembayaran' }, { halaman: 'profile', icon: 'fa-user-circle', label: 'Profil' }, { halaman: 'helloFriends', icon: 'fa-video', label: 'HelloFriends (Coming Soon)' }, { halaman: 'menuIklan', icon: 'fa-ad', label: 'Menu Iklan' }, { halaman: 'papanInformasi', icon: 'fa-bullhorn', label: 'Papan Informasi' }, { halaman: 'notifikasi', icon: 'fa-bell', label: 'Notifikasi' } ] }
+                { judul: 'Menu Utama', items: [ { halaman: 'dashboard', icon: 'fa-th-large', label: 'Dasbor' }, { halaman: 'iklanSaya', icon: 'fa-ad', label: 'Iklan Saya' }, { halaman: 'statistik', icon: 'fa-chart-pie', label: 'Statistik' }, { halaman: 'pembayaran', icon: 'fa-credit-card', label: 'Pembayaran' }, { halaman: 'profile', icon: 'fa-user-circle', label: 'Profil' }, { halaman: 'helloFriends', icon: 'fa-video', label: 'HelloFriends (Coming Soon)' }, { halaman: 'menuIklan', icon: 'fa-ad', label: 'Menu Iklan' }, { halaman: 'papanInformasi', icon: 'fa-bullhorn', label: 'Papan Informasi' }, { halaman: 'hapusAkun', icon: 'fa-trash-alt', label: 'Hapus Akun' } ] }
             ]
         };
         var daftarMenu = menuRole[role] || menuRole['customer'];
@@ -710,7 +710,7 @@ body { font-family:'Poppins', sans-serif; background:var(--bg); min-height:100vh
         else if (namaHalaman === 'ulasanRating') renderUlasanRating();
         else if (namaHalaman === 'bantuanFAQ') renderBantuanFAQ();
         else if (namaHalaman === 'notifikasi') renderNotifikasi();
-        else if (namaHalaman === 'editAkun') renderEditAkun();
+        else if (namaHalaman === 'hapusAkun') renderHapusAkun();
         else renderPlaceholder(namaHalaman);
     }
     // ===== AKHIR BLOK 6.2.1 =====
@@ -2930,156 +2930,86 @@ function renderPapanInformasi() {
     }
 </script>
 <!-- ===== AKHIR BLOK 8.4.5 ===== -->
-<!-- ===== BLOK 8.4.6 - RENDER NOTIFIKASI ===== -->
-<script>
-    // ===== FUNGSI UTAMA RENDER NOTIFIKASI =====
-    function renderNotifikasi() {
-        var user = JSON.parse(localStorage.getItem('2r_user') || '{}');
-        var areaKonten = document.getElementById('mainContent');
-        if (!areaKonten) return;
+// ===== BLOK 8.4.6 - RENDER HAPUS AKUN (UNTUK SEMUA ROLE) =====
+function renderHapusAkun() {
+    var user = JSON.parse(localStorage.getItem('2r_user') || '{}');
+    var areaKonten = document.getElementById('mainContent');
+    var html = `
+    <div class="page-header">
+        <h2>Hapus Akun</h2>
+        <p style="color:#d32f2f; font-weight:500;">Peringatan: Tindakan menghapus akun tidak dapat dibatalkan!</p>
+    </div>
+    <div class="card" style="border:2px solid #f44336;">
+        <div class="card-header" style="color:#f44336;">
+            <i class="fas fa-exclamation-triangle"></i> Konfirmasi Penghapusan Akun
+        </div>
+        <div style="margin-bottom:15px;">
+            <p>Anda akan menghapus akun <strong>${escapeHtml(user.nama)} (${escapeHtml(user.id)})</strong> secara permanen. Semua data terkait akun ini akan dihapus dari sistem.</p>
+            <p style="color:#666; font-size:13px;">Untuk keamanan, masukkan password Anda untuk mengonfirmasi tindakan ini.</p>
+        </div>
+        <div class="form-group">
+            <label>Password Anda</label>
+            <input type="password" id="hapusAkunPassword" class="form-input" placeholder="Masukkan password akun Anda">
+        </div>
+        <button class="button button-danger" onclick="prosesHapusAkun()" style="width:100%;"><i class="fas fa-trash-alt"></i> Hapus Akun Saya</button>
+    </div>
+    `;
+    areaKonten.innerHTML = html;
+}
 
-        var dataNotif = JSON.parse(localStorage.getItem('2r_notifikasi') || '[]');
-        // Filter hanya notifikasi milik user yang login
-        var notifSaya = dataNotif.filter(function(n) { return n.userId === user.id; });
-        // Urutkan dari yang terbaru
-        notifSaya.sort(function(a, b) { return new Date(b.waktu) - new Date(a.waktu); });
+// ===== PROSES HAPUS AKUN (UNTUK SEMUA ROLE) =====
+async function prosesHapusAkun() {
+    // Konfirmasi ganda untuk keamanan
+    if (!confirm('Yakin ingin menghapus akun ini SELAMANYA? Data tidak dapat dikembalikan.')) return;
+    if (!confirm('KONFIRMASI TERAKHIR: Hapus akun?')) return;
 
-        // Hitung notifikasi belum dibaca
-        var belumDibaca = 0;
-        for (var i = 0; i < notifSaya.length; i++) {
-            if (!notifSaya[i].sudahDibaca) belumDibaca++;
-        }
-
-        var html = '<div class="page-header"><h2>Notifikasi</h2><p>Pemberitahuan penting untuk Anda.</p>';
-        
-        // Tombol Tandai Semua & Demo
-        html += '<div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:15px;">';
-        if (belumDibaca > 0) {
-            html += '<button class="button button-success button-small" onclick="tandaiSemuaDibaca()"><i class="fas fa-check-double"></i> Tandai Semua Dibaca (' + belumDibaca + ')</button>';
-        }
-        html += '<button class="button button-primary button-small" onclick="buatNotifikasiDemo()"><i class="fas fa-plus"></i> Buat Notifikasi Demo</button>';
-        html += '</div></div>';
-
-        if (notifSaya.length === 0) {
-            html += '<div class="card"><div class="empty-state"><i class="fas fa-bell"></i><h3>Belum ada notifikasi</h3></div></div>';
-        } else {
-            html += '<div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(300px, 1fr)); gap:20px;">';
-            for (var i = 0; i < notifSaya.length; i++) {
-                var n = notifSaya[i];
-                var colorClass = 'info';
-                var icon = 'fa-info-circle';
-                var bgColor = '#e3f2fd';
-                var textColor = '#1976d2';
-                if (n.tipe === 'success') { colorClass = 'success'; icon = 'fa-check-circle'; bgColor = '#e8f5e9'; textColor = '#2e7d32'; }
-                else if (n.tipe === 'warning') { colorClass = 'warning'; icon = 'fa-exclamation-triangle'; bgColor = '#fff3e0'; textColor = '#e65100'; }
-                else if (n.tipe === 'error') { colorClass = 'danger'; icon = 'fa-times-circle'; bgColor = '#ffebee'; textColor = '#c62828'; }
-
-                // Tentukan kelas kartu berdasarkan status baca
-                var cardClass = n.sudahDibaca ? 'notif-item-read' : 'notif-item-unread';
-                var waktu = new Date(n.waktu).toLocaleString('id-ID');
-
-                html += `
-                <div class="card ${cardClass}" style="display:flex; flex-direction:column; padding:20px; transition:0.3s;">
-                    <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:8px;">
-                        <div style="display:flex; align-items:center; gap:10px;">
-                            <div class="notif-icon-box" style="background:${bgColor}; color:${textColor};">
-                                <i class="fas ${icon}"></i>
-                            </div>
-                            <strong style="font-size:15px;">${escapeHtml(n.judul)}</strong>
-                        </div>
-                        <span style="font-size:11px; color:#999;">${waktu}</span>
-                    </div>
-                    <p style="font-size:14px; color:#555; margin:0 0 15px 0; line-height:1.5; flex:1;">${escapeHtml(n.pesan)}</p>
-                    
-                    <div style="display:flex; gap:8px; justify-content:flex-end; border-top:1px solid #f0f0f0; padding-top:12px;">
-                        ${!n.sudahDibaca ? `<button class="button button-success button-extra-small" onclick="tandaiDibaca('${n.id}')"><i class="fas fa-check"></i> Tandai Dibaca</button>` : ''}
-                        <button class="button button-danger button-extra-small" onclick="hapusNotifikasi('${n.id}')"><i class="fas fa-trash"></i> Hapus</button>
-                    </div>
-                </div>`;
-            }
-            html += '</div>';
-        }
-        areaKonten.innerHTML = html;
+    var passwordInput = document.getElementById('hapusAkunPassword').value.trim();
+    if (!passwordInput) {
+        tampilkanToast('Masukkan password Anda terlebih dahulu!', 'warning');
+        return;
     }
 
-    // ===== FUNGSI TANDAI SEMUA DI BACA =====
-    function tandaiSemuaDibaca() {
-        var user = JSON.parse(localStorage.getItem('2r_user') || '{}');
-        var dataNotif = JSON.parse(localStorage.getItem('2r_notifikasi') || '[]');
-        for (var i = 0; i < dataNotif.length; i++) {
-            if (dataNotif[i].userId === user.id) {
-                dataNotif[i].sudahDibaca = true;
-            }
+    var user = JSON.parse(localStorage.getItem('2r_user') || '{}');
+    var dataAkun = getDataAkun();
+
+    // Cari data user di database akun
+    var targetAkun = null;
+    for (var i = 0; i < dataAkun.length; i++) {
+        if (dataAkun[i].id === user.id) {
+            targetAkun = dataAkun[i];
+            break;
         }
-        localStorage.setItem('2r_notifikasi', JSON.stringify(dataNotif));
-        renderNotifikasi();
-        tampilkanToast('Semua notifikasi telah ditandai dibaca!', 'success');
+    }
+    if (!targetAkun) {
+        tampilkanToast('Data akun tidak ditemukan!', 'error');
+        return;
     }
 
-    // ===== FUNGSI TANDAI SATU NOTIFIKASI =====
-    function tandaiDibaca(id) {
-        var dataNotif = JSON.parse(localStorage.getItem('2r_notifikasi') || '[]');
-        for (var i = 0; i < dataNotif.length; i++) {
-            if (dataNotif[i].id === id) {
-                dataNotif[i].sudahDibaca = true;
-                break;
-            }
-        }
-        localStorage.setItem('2r_notifikasi', JSON.stringify(dataNotif));
-        renderNotifikasi();
-        tampilkanToast('Notifikasi ditandai dibaca!', 'success');
+    // Validasi password (menggunakan SHA-256 yang sudah ada di BLOK 5.2)
+    var cocok = await verifikasiPassword(passwordInput, targetAkun.password);
+    if (!cocok) {
+        tampilkanToast('Password yang Anda masukkan salah!', 'error');
+        return;
     }
 
-    // ===== FUNGSI HAPUS NOTIFIKASI =====
-    function hapusNotifikasi(id) {
-        if (!confirm('Yakin ingin menghapus notifikasi ini?')) return;
-        var dataNotif = JSON.parse(localStorage.getItem('2r_notifikasi') || '[]');
-        var dataBaru = [];
-        for (var i = 0; i < dataNotif.length; i++) {
-            if (dataNotif[i].id !== id) {
-                dataBaru.push(dataNotif[i]);
-            }
+    // Hapus akun dari database localStorage
+    var dataBaru = [];
+    for (var i = 0; i < dataAkun.length; i++) {
+        if (dataAkun[i].id !== user.id) {
+            dataBaru.push(dataAkun[i]);
         }
-        localStorage.setItem('2r_notifikasi', JSON.stringify(dataBaru));
-        renderNotifikasi();
-        tampilkanToast('Notifikasi berhasil dihapus!', 'success');
     }
+    simpanDataAkun(dataBaru);
 
-    // ===== FUNGSI BUAT NOTIFIKASI DEMO (UNTUK PENGUJIAN) =====
-    function buatNotifikasiDemo() {
-        var user = JSON.parse(localStorage.getItem('2r_user') || '{}');
-        var role = localStorage.getItem('2r_user_role') || 'Pengguna';
-        var judul, pesan, tipe;
-        var acak = Math.floor(Math.random() * 3);
-        if (acak === 0) {
-            judul = 'Selamat Datang!';
-            pesan = 'Anda berhasil login sebagai ' + role + '. Selamat beraktivitas di Toko Online 2R!';
-            tipe = 'success';
-        } else if (acak === 1) {
-            judul = 'Pengumuman Sistem';
-            pesan = 'Aplikasi akan melakukan pemeliharaan pada pukul 02:00. Mohon persiapkan data Anda.';
-            tipe = 'warning';
-        } else {
-            judul = 'Notifikasi Demo';
-            pesan = 'Ini adalah contoh notifikasi untuk menguji fitur notifikasi Anda.';
-            tipe = 'info';
-        }
-        var dataNotif = JSON.parse(localStorage.getItem('2r_notifikasi') || '[]');
-        dataNotif.push({
-            id: Date.now() + Math.random(),
-            userId: user.id,
-            judul: judul,
-            pesan: pesan,
-            tipe: tipe,
-            sudahDibaca: false,
-            waktu: new Date().toISOString()
-        });
-        localStorage.setItem('2r_notifikasi', JSON.stringify(dataNotif));
-        renderNotifikasi();
-        tampilkanToast('Notifikasi demo baru dibuat!', 'info');
-    }
-</script>
-<!-- ===== AKHIR BLOK 8.4.6 ===== -->
+    // Hapus session login
+    localStorage.removeItem('2r_user');
+    localStorage.removeItem('2r_user_role');
+
+    tampilkanToast('Akun Anda berhasil dihapus!', 'success');
+    // Refresh halaman untuk kembali ke form login setelah 1.5 detik
+    setTimeout(function() { location.reload(); }, 1500);
+}
+// ===== AKHIR BLOK 8.4.6 =====
 <!-- ===== BLOK 8.5 - JS_ESCAPE_HTML (ANTI-XSS) ===== -->
 <script>
     // ===== BLOK 8.5.1 - ESCAPE HTML =====
