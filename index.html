@@ -937,7 +937,7 @@ body { font-family:'Poppins', sans-serif; background:var(--bg); min-height:100vh
     }
     // ===== AKHIR BLOK 7.1.1 =====
 
-    // ===== BLOK 7.1.2 - RENDER PROFIL (PEMILIH ROLE) =====
+        // ===== BLOK 7.1.2 - RENDER PROFIL (PEMILIH ROLE) =====
     function renderProfil() {
         var role = localStorage.getItem('2r_user_role');
         var user = JSON.parse(localStorage.getItem('2r_user') || '{}');
@@ -945,6 +945,9 @@ body { font-family:'Poppins', sans-serif; background:var(--bg); min-height:100vh
             renderProfilSuperAdmin(user);
         } else if (role === 'customer') {
             renderProfilCustomer();
+        } else if (role === 'toko' || role === 'ojek' || role === 'pedagang') {
+            // Gunakan fungsi profil lengkap untuk Toko, Ojek, dan Pedagang
+            renderProfilLengkap(user, role);
         } else {
             renderProfilUmum(user, role);
         }
@@ -1587,6 +1590,211 @@ body { font-family:'Poppins', sans-serif; background:var(--bg); min-height:100vh
         tampilkanToast('KTP disimpan!', 'success');
     }
     // ===== AKHIR BLOK 7.4.3 =====
+    // ===== BLOK 7.4.4 - RENDER PROFIL LENGKAP (UNTUK TOKO, OJEK, PEDAGANG) =====
+function renderProfilLengkap(user, role) {
+    var areaKonten = document.getElementById('mainContent');
+    if (!areaKonten) return;
+    
+    // Tentukan nama role yang akan ditampilkan di judul
+    var namaRole = role === 'toko' ? 'Toko' : (role === 'ojek' ? 'Ojek' : 'Pedagang Pasar');
+    
+    var html = '';
+    html += '<div class="page-header"><h2>Profil ' + namaRole + '</h2><p>ID Akun: <strong>' + (user.id || '-') + '</strong> &nbsp;|&nbsp; Role: <strong>' + (user.role || '-') + '</strong></p></div>';
+    html += '<div id="notifikasiSimpanProfil" style="display:none; background:#4CAF50; color:white; padding:12px 20px; border-radius:8px; margin-bottom:15px; text-align:center; font-weight:600; font-size:15px; animation: fadeInOut 1.5s ease-in-out;"><i class="fas fa-check-circle"></i> Profil berhasil disimpan!</div>';
+
+    // Ringkasan
+    html += '<div class="card" style="background:#f8f9fa; border:2px solid #FF6B00;">';
+    html += '<div class="card-header" style="color:#FF6B00; font-weight:700;"><span><i class="fas fa-user-circle"></i> Ringkasan Profil Anda</span>';
+    html += '<span style="font-weight:normal; font-size:13px; color:#888;">Terakhir diperbarui: ' + (user.waktuRegistrasi ? new Date(user.waktuRegistrasi).toLocaleDateString('id-ID') : '-') + '</span></div>';
+    html += '<div class="grid-2"><div><strong>Nama Lengkap:</strong><br><span style="font-size:16px;">' + escapeHtml(user.nama || '-') + '</span></div>';
+    html += '<div><strong>Username:</strong><br><span style="font-size:16px;">' + escapeHtml(user.username || '-') + '</span></div>';
+    html += '<div><strong>Email:</strong><br><span style="font-size:16px;">' + escapeHtml(user.email || '-') + '</span></div>';
+    html += '<div><strong>Nomor HP:</strong><br><span style="font-size:16px;">' + escapeHtml(user.nomorHp || '-') + '</span></div>';
+    html += '<div><strong>Role:</strong><br><span style="font-size:16px;">' + escapeHtml(user.role || '-') + '</span></div></div>';
+    html += '<div style="margin-top:10px; border-top:1px solid #eee; padding-top:10px;"><strong style="color:#FF6B00;">Alamat Sesuai KTP:</strong><br><span>' + escapeHtml(user.alamatKTP || 'Belum diisi') + '</span>';
+    if (user.ktpKodepos) html += '<br><span style="color:#888; font-size:13px;">Kode Pos: ' + escapeHtml(user.ktpKodepos) + '</span>';
+    html += '</div>';
+    html += '<div style="margin-top:10px; border-top:1px solid #eee; padding-top:10px;"><strong style="color:#FF6B00;">Alamat Domisili / Sekarang:</strong><br><span>' + escapeHtml(user.alamatDomisili || 'Belum diisi') + '</span>';
+    if (user.domKodepos) html += '<br><span style="color:#888; font-size:13px;">Kode Pos: ' + escapeHtml(user.domKodepos) + '</span>';
+    html += '</div>';
+    html += '<div style="margin-top:10px; border-top:1px solid #eee; padding-top:10px;"><strong style="color:#FF6B00;">Data Rekening:</strong><br><span>Bank: ' + escapeHtml(user.namaBank || '-') + ' | No. Rek: ' + escapeHtml(user.nomorRekening || '-') + ' | A/n: ' + escapeHtml(user.pemilikRekening || '-') + '</span></div>';
+    html += '<div style="margin-top:10px; border-top:1px solid #eee; padding-top:10px;"><strong style="color:#FF6B00;">Dokumen KTP:</strong><br>';
+    if (user.ktp) {
+        html += '<div style="display:flex; align-items:center; gap:15px;"><img src="' + user.ktp + '" style="max-width:200px; max-height:150px; border-radius:8px; border:1px solid #ddd;">';
+        html += '<button class="button button-danger button-extra-small" onclick="hapusKTPUmum()"><i class="fas fa-trash"></i> Hapus KTP</button></div>';
+    } else {
+        html += '<span>Belum diupload</span>';
+    }
+    html += '</div></div>';
+
+    // Data Registrasi
+    html += '<div class="card"><div class="card-header">Data Registrasi <button class="button button-primary button-small" onclick="simpanProfilLengkap()"><i class="fas fa-save"></i> Simpan Profil</button></div>';
+    html += '<div class="grid-2"><div><label class="form-label">Nama Lengkap (Sesuai KTP)</label><input type="text" id="editNamaLengkap" class="form-input" value="' + escapeHtml(user.nama || '') + '"></div>';
+    html += '<div><label class="form-label">Username</label><input type="text" id="editUsernameLengkap" class="form-input" value="' + escapeHtml(user.username || '') + '" disabled></div>';
+    html += '<div><label class="form-label">Email</label><input type="email" id="editEmailLengkap" class="form-input" value="' + escapeHtml(user.email || '') + '"></div>';
+    html += '<div><label class="form-label">Nomor HP</label><input type="tel" id="editHpLengkap" class="form-input" value="' + escapeHtml(user.nomorHp || '') + '"></div></div></div>';
+
+    // Alamat KTP
+    html += buatAlamatHTML('ktp', 'Alamat Sesuai KTP', user);
+    // Alamat Domisili
+    html += buatAlamatHTML('dom', 'Alamat Domisili / Sekarang', user);
+
+    // Rekening
+    html += '<div class="card"><div class="card-header">Data Rekening <button class="button button-primary button-small" onclick="simpanRekeningLengkap()"><i class="fas fa-save"></i> Simpan Rekening</button></div>';
+    html += '<div class="grid-2"><div><label class="form-label">Nama Bank</label><input type="text" id="profilBankLengkap" class="form-input" value="' + escapeHtml(user.namaBank || '') + '"></div>';
+    html += '<div><label class="form-label">Nomor Rekening</label><input type="text" id="profilRekeningLengkap" class="form-input" value="' + escapeHtml(user.nomorRekening || '') + '"></div>';
+    html += '<div><label class="form-label">Nama Pemilik Rekening</label><input type="text" id="profilPemilikRekLengkap" class="form-input" value="' + escapeHtml(user.pemilikRekening || '') + '"></div></div></div>';
+
+    // KTP Upload
+    html += '<div class="card"><div class="card-header">Dokumen KTP & Domisili</div>';
+    html += '<div class="upload-area" id="uploadKtpContainerLengkap"><div id="ktpPreviewLengkap">';
+    if (user.ktp) {
+        html += '<img src="' + user.ktp + '" class="preview-image">';
+    } else {
+        html += '<i class="fas fa-cloud-upload-alt"></i><p>Klik untuk upload KTP</p>';
+    }
+    html += '</div><input type="file" id="inputKtpLengkap" accept=".jpg,.jpeg,.png" style="display:none"></div>';
+    html += '<button class="button button-primary margin-top-10" onclick="simpanKTPLengkap()"><i class="fas fa-save"></i> Simpan KTP</button>';
+    if (user.ktp) html += '<button class="button button-danger margin-top-10" onclick="hapusKTPUmum()" style="margin-left:10px;"><i class="fas fa-trash"></i> Hapus KTP</button>';
+    html += '</div>';
+
+    areaKonten.innerHTML = html;
+    setTimeout(function() {
+        loadDataWilayahTersimpan('ktp', user);
+        loadDataWilayahTersimpan('dom', user);
+        isiDropdownWilayah('ktp');
+        isiDropdownWilayah('dom');
+    }, 500);
+    setTimeout(function() {
+        var containerKTP = document.getElementById('uploadKtpContainerLengkap');
+        var inputKTP = document.getElementById('inputKtpLengkap');
+        if (containerKTP && inputKTP) {
+            containerKTP.onclick = function() { inputKTP.click(); };
+            inputKTP.onchange = function(e) { previewKTPLengkap(e.target.files[0]); };
+        }
+    }, 300);
+}
+// ===== AKHIR BLOK 7.4.4 =====
+    // ===== BLOK 7.4.5 - FUNGSI PENDUKUNG UNTUK PROFIL TOKO/OJEK/PEDAGANG =====
+function simpanProfilLengkap() {
+    var user = JSON.parse(localStorage.getItem('2r_user'));
+    var dataAkun = getDataAkun();
+    user.nama = document.getElementById('editNamaLengkap').value.trim();
+    user.email = document.getElementById('editEmailLengkap').value.trim();
+    user.nomorHp = document.getElementById('editHpLengkap').value.trim();
+    user.ktpDusun = document.getElementById('ktpDusun').value.trim();
+    user.ktpRT = document.getElementById('ktpRT').value.trim();
+    user.ktpRW = document.getElementById('ktpRW').value.trim();
+    user.ktpJalan = document.getElementById('ktpJalan').value.trim();
+    user.ktpDesa = document.getElementById('ktpDesa').value;
+    user.ktpKecamatan = document.getElementById('ktpKecamatan').value;
+    user.ktpKabupaten = document.getElementById('ktpKabupaten').value;
+    user.ktpProvinsi = document.getElementById('ktpProvinsi').value;
+    user.ktpKodepos = document.getElementById('ktpKodepos').value.trim();
+    user.ktpProvinsiManual = document.getElementById('ktpProvinsiManual').value.trim();
+    user.ktpKabupatenManual = document.getElementById('ktpKabupatenManual').value.trim();
+    user.ktpKecamatanManual = document.getElementById('ktpKecamatanManual').value.trim();
+    user.ktpDesaManual = document.getElementById('ktpDesaManual').value.trim();
+    var gabungKTP = (user.ktpDusun ? user.ktpDusun + ', ' : '') + (user.ktpRT ? 'RT ' + user.ktpRT + ', ' : '') + (user.ktpRW ? 'RW ' + user.ktpRW + ', ' : '') + (user.ktpJalan ? user.ktpJalan + ', ' : '') + (user.ktpDesa ? user.ktpDesa + ', ' : '') + (user.ktpKecamatan ? user.ktpKecamatan + ', ' : '') + (user.ktpKabupaten ? user.ktpKabupaten + ', ' : '') + (user.ktpProvinsi ? user.ktpProvinsi + ', ' : '') + (user.ktpKodepos ? user.ktpKodepos : '');
+    user.alamatKTP = gabungKTP;
+    user.domDusun = document.getElementById('domDusun').value.trim();
+    user.domRT = document.getElementById('domRT').value.trim();
+    user.domRW = document.getElementById('domRW').value.trim();
+    user.domJalan = document.getElementById('domJalan').value.trim();
+    user.domDesa = document.getElementById('domDesa').value;
+    user.domKecamatan = document.getElementById('domKecamatan').value;
+    user.domKabupaten = document.getElementById('domKabupaten').value;
+    user.domProvinsi = document.getElementById('domProvinsi').value;
+    user.domKodepos = document.getElementById('domKodepos').value.trim();
+    user.domProvinsiManual = document.getElementById('domProvinsiManual').value.trim();
+    user.domKabupatenManual = document.getElementById('domKabupatenManual').value.trim();
+    user.domKecamatanManual = document.getElementById('domKecamatanManual').value.trim();
+    user.domDesaManual = document.getElementById('domDesaManual').value.trim();
+    var gabungDom = (user.domDusun ? user.domDusun + ', ' : '') + (user.domRT ? 'RT ' + user.domRT + ', ' : '') + (user.domRW ? 'RW ' + user.domRW + ', ' : '') + (user.domJalan ? user.domJalan + ', ' : '') + (user.domDesa ? user.domDesa + ', ' : '') + (user.domKecamatan ? user.domKecamatan + ', ' : '') + (user.domKabupaten ? user.domKabupaten + ', ' : '') + (user.domProvinsi ? user.domProvinsi + ', ' : '') + (user.domKodepos ? user.domKodepos : '');
+    user.alamatDomisili = gabungDom;
+    user.alamat = user.alamatDomisili || user.alamatKTP;
+    if (!user.nama) { tampilkanToast('Nama lengkap wajib diisi!', 'warning'); return; }
+    for (var i = 0; i < dataAkun.length; i++) {
+        if (dataAkun[i].id === user.id) {
+            dataAkun[i].nama = user.nama; dataAkun[i].email = user.email; dataAkun[i].nomorHp = user.nomorHp;
+            dataAkun[i].ktpDusun = user.ktpDusun; dataAkun[i].ktpRT = user.ktpRT; dataAkun[i].ktpRW = user.ktpRW;
+            dataAkun[i].ktpJalan = user.ktpJalan; dataAkun[i].ktpDesa = user.ktpDesa; dataAkun[i].ktpKecamatan = user.ktpKecamatan;
+            dataAkun[i].ktpKabupaten = user.ktpKabupaten; dataAkun[i].ktpProvinsi = user.ktpProvinsi; dataAkun[i].ktpKodepos = user.ktpKodepos;
+            dataAkun[i].ktpProvinsiManual = user.ktpProvinsiManual; dataAkun[i].ktpKabupatenManual = user.ktpKabupatenManual;
+            dataAkun[i].ktpKecamatanManual = user.ktpKecamatanManual; dataAkun[i].ktpDesaManual = user.ktpDesaManual;
+            dataAkun[i].alamatKTP = user.alamatKTP;
+            dataAkun[i].domDusun = user.domDusun; dataAkun[i].domRT = user.domRT; dataAkun[i].domRW = user.domRW;
+            dataAkun[i].domJalan = user.domJalan; dataAkun[i].domDesa = user.domDesa; dataAkun[i].domKecamatan = user.domKecamatan;
+            dataAkun[i].domKabupaten = user.domKabupaten; dataAkun[i].domProvinsi = user.domProvinsi; dataAkun[i].domKodepos = user.domKodepos;
+            dataAkun[i].domProvinsiManual = user.domProvinsiManual; dataAkun[i].domKabupatenManual = user.domKabupatenManual;
+            dataAkun[i].domKecamatanManual = user.domKecamatanManual; dataAkun[i].domDesaManual = user.domDesaManual;
+            dataAkun[i].alamatDomisili = user.alamatDomisili; dataAkun[i].alamat = user.alamat; break;
+        }
+    }
+    localStorage.setItem('2r_user', JSON.stringify(user));
+    simpanDataAkun(dataAkun);
+    document.getElementById('userNama').textContent = user.nama;
+    var notif = document.getElementById('notifikasiSimpanProfil');
+    if (notif) { notif.style.display = 'block'; notif.classList.add('notif-berkedip'); setTimeout(function() { notif.style.display = 'none'; notif.classList.remove('notif-berkedip'); renderProfilLengkap(user, user.role); }, 3000); }
+    tampilkanToast('Profil berhasil disimpan!', 'success');
+}
+
+function simpanRekeningLengkap() {
+    var user = JSON.parse(localStorage.getItem('2r_user'));
+    var dataAkun = getDataAkun();
+    user.namaBank = document.getElementById('profilBankLengkap').value;
+    user.nomorRekening = document.getElementById('profilRekeningLengkap').value;
+    user.pemilikRekening = document.getElementById('profilPemilikRekLengkap').value;
+    for (var i = 0; i < dataAkun.length; i++) {
+        if (dataAkun[i].id === user.id) { dataAkun[i].namaBank = user.namaBank; dataAkun[i].nomorRekening = user.nomorRekening; dataAkun[i].pemilikRekening = user.pemilikRekening; break; }
+    }
+    localStorage.setItem('2r_user', JSON.stringify(user));
+    simpanDataAkun(dataAkun);
+    tampilkanToast('Rekening disimpan!', 'success');
+}
+
+function previewKTPLengkap(file) {
+    if (!file) return;
+    var pembaca = new FileReader();
+    pembaca.onload = function(e) {
+        document.getElementById('ktpPreviewLengkap').innerHTML = '<img src="' + e.target.result + '" class="preview-image">';
+        localStorage.setItem('2r_ktp_temp_lengkap', e.target.result);
+    };
+    pembaca.readAsDataURL(file);
+}
+
+function simpanKTPLengkap() {
+    var ktp = localStorage.getItem('2r_ktp_temp_lengkap');
+    if (!ktp) { tampilkanToast('Upload KTP dulu!', 'warning'); return; }
+    var user = JSON.parse(localStorage.getItem('2r_user'));
+    var dataAkun = getDataAkun();
+    user.ktp = ktp;
+    for (var i = 0; i < dataAkun.length; i++) {
+        if (dataAkun[i].id === user.id) { dataAkun[i].ktp = ktp; break; }
+    }
+    localStorage.setItem('2r_user', JSON.stringify(user));
+    simpanDataAkun(dataAkun);
+    localStorage.removeItem('2r_ktp_temp_lengkap');
+    tampilkanToast('KTP disimpan!', 'success');
+}
+
+function hapusKTPUmum() {
+    if (!confirm('Yakin ingin menghapus foto KTP?')) return;
+    var user = JSON.parse(localStorage.getItem('2r_user'));
+    var dataAkun = getDataAkun();
+    user.ktp = '';
+    for (var i = 0; i < dataAkun.length; i++) {
+        if (dataAkun[i].id === user.id) { dataAkun[i].ktp = ''; break; }
+    }
+    localStorage.setItem('2r_user', JSON.stringify(user));
+    simpanDataAkun(dataAkun);
+    tampilkanToast('KTP berhasil dihapus!', 'success');
+    var role = localStorage.getItem('2r_user_role');
+    if (role === 'toko' || role === 'ojek' || role === 'pedagang') {
+        renderProfilLengkap(user, role);
+    }
+}
+// ===== AKHIR BLOK 7.4.5 =====
 </script>
 <!-- ===== AKHIR BLOK 7.4 ===== -->
 
