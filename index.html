@@ -711,7 +711,7 @@ body { font-family:'Poppins', sans-serif; background:var(--bg); min-height:100vh
         else if (namaHalaman === 'ulasanRating') renderUlasanRating();
         else if (namaHalaman === 'bantuanFAQ') renderBantuanFAQ();
         else if (namaHalaman === 'notifikasi') renderNotifikasi();
-        else if (namaHalaman === 'editAkun') renderEditAkun();
+        else if (namaHalaman === 'hapusAkun') renderHapusAkun();
         else renderPlaceholder(namaHalaman);
     }
     // ===== AKHIR BLOK 6.2.1 =====
@@ -3081,6 +3081,79 @@ function renderPapanInformasi() {
     }
 </script>
 <!-- ===== AKHIR BLOK 8.4.6 ===== -->
+    <!-- ===== BLOK 8.4.7 - RENDER HAPUS AKUN ===== -->
+<script>
+    function renderHapusAkun() {
+        var user = JSON.parse(localStorage.getItem('2r_user') || '{}');
+        var areaKonten = document.getElementById('mainContent');
+        var html = `
+        <div class="page-header">
+            <h2>Hapus Akun</h2>
+            <p style="color:#d32f2f; font-weight:500;">Peringatan: Tindakan menghapus akun tidak dapat dibatalkan!</p>
+        </div>
+        <div class="card" style="border:2px solid #f44336;">
+            <div class="card-header" style="color:#f44336;">
+                <i class="fas fa-exclamation-triangle"></i> Konfirmasi Penghapusan Akun
+            </div>
+            <div style="margin-bottom:15px;">
+                <p>Anda akan menghapus akun <strong>${escapeHtml(user.nama)} (${escapeHtml(user.id)})</strong> secara permanen. Semua data terkait akun ini akan dihapus dari sistem.</p>
+                <p style="color:#666; font-size:13px;">Untuk keamanan, masukkan password Anda untuk mengonfirmasi tindakan ini.</p>
+            </div>
+            <div class="form-group">
+                <label>Password Anda</label>
+                <input type="password" id="hapusAkunPassword" class="form-input" placeholder="Masukkan password akun Anda">
+            </div>
+            <button class="button button-danger" onclick="prosesHapusAkun()" style="width:100%;"><i class="fas fa-trash-alt"></i> Hapus Akun Saya</button>
+        </div>
+        `;
+        areaKonten.innerHTML = html;
+    }
+
+    async function prosesHapusAkun() {
+        if (!confirm('Yakin ingin menghapus akun ini SELAMANYA? Data tidak dapat dikembalikan.')) return;
+        if (!confirm('KONFIRMASI TERAKHIR: Hapus akun?')) return;
+
+        var passwordInput = document.getElementById('hapusAkunPassword').value.trim();
+        if (!passwordInput) {
+            tampilkanToast('Masukkan password Anda terlebih dahulu!', 'warning');
+            return;
+        }
+
+        var user = JSON.parse(localStorage.getItem('2r_user') || '{}');
+        var dataAkun = getDataAkun();
+        var targetAkun = null;
+        for (var i = 0; i < dataAkun.length; i++) {
+            if (dataAkun[i].id === user.id) {
+                targetAkun = dataAkun[i];
+                break;
+            }
+        }
+        if (!targetAkun) {
+            tampilkanToast('Data akun tidak ditemukan!', 'error');
+            return;
+        }
+
+        var cocok = await verifikasiPassword(passwordInput, targetAkun.password);
+        if (!cocok) {
+            tampilkanToast('Password yang Anda masukkan salah!', 'error');
+            return;
+        }
+
+        var dataBaru = [];
+        for (var i = 0; i < dataAkun.length; i++) {
+            if (dataAkun[i].id !== user.id) {
+                dataBaru.push(dataAkun[i]);
+            }
+        }
+        simpanDataAkun(dataBaru);
+
+        localStorage.removeItem('2r_user');
+        localStorage.removeItem('2r_user_role');
+        tampilkanToast('Akun Anda berhasil dihapus!', 'success');
+        setTimeout(function() { location.reload(); }, 1500);
+    }
+</script>
+<!-- ===== AKHIR BLOK 8.4.7 ===== -->
 <!-- ===== BLOK 8.5 - JS_ESCAPE_HTML (ANTI-XSS) ===== -->
 <script>
     // ===== BLOK 8.5.1 - ESCAPE HTML =====
