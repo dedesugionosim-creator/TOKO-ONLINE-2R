@@ -21,6 +21,15 @@
 <div id="pageAuthentication">
     <div class="authentication-wrapper">
         <div class="authentication-box">
+            
+            <!-- ===== BLOK 2.1.1 - LOGO & JUDUL ===== -->
+            <div class="authentication-logo">
+                <i class="fas fa-store-alt"></i>
+                <h1>Toko Online <span style="color:#FF6B00;">2R</span></h1>
+                <p>Platform Belanja & Layanan Serba Ada</p>
+            </div>
+            <!-- ===== AKHIR BLOK 2.1.1 ===== -->
+
             <!-- ===== BLOK 2.1.2 - AREA PESAN ERROR ===== -->
             <div class="authentication-error" id="authenticationError">
                 <i class="fas fa-exclamation-circle"></i> 
@@ -118,22 +127,18 @@
 <div id="pageDashboard" class="page-dashboard">
     
     <!-- ===== BLOK 2.2.1 - NAVBAR ===== -->
-<nav class="navbar">
-    <div class="navbar-brand">
-        <button id="menuToggle"><i class="fas fa-bars"></i></button>
-        <i class="fas fa-store-alt"></i> Toko Online 2R
-    </div>
-    <div class="navbar-user">
-        <!-- TEMPAT FOTO PROFIL -->
-        <img id="userAvatar" src="" style="width:36px; height:36px; border-radius:50%; object-fit:cover; display:none; margin-right:10px; border:2px solid #fff; box-shadow:0 2px 6px rgba(0,0,0,0.1);">
-        <i id="userAvatarPlaceholder" class="fas fa-user-circle" style="font-size:32px; color:#ddd; margin-right:10px; display:block;"></i>
-        
-        <span class="role-badge" id="roleBadge">Role</span>
-        <span id="userNama" style="font-weight:600;">User</span>
-        <button class="button-logout" id="buttonLogout"><i class="fas fa-sign-out-alt"></i> Keluar</button>
-    </div>
-</nav>
-<!-- ===== AKHIR BLOK 2.2.1 ===== -->
+    <nav class="navbar">
+        <div class="navbar-brand">
+            <button id="menuToggle"><i class="fas fa-bars"></i></button>
+            <i class="fas fa-store-alt"></i> Toko Online 2R
+        </div>
+        <div class="navbar-user">
+            <span class="role-badge" id="roleBadge">Role</span>
+            <span id="userNama" style="font-weight:600;">User</span>
+            <button class="button-logout" id="buttonLogout"><i class="fas fa-sign-out-alt"></i> Keluar</button>
+        </div>
+    </nav>
+    <!-- ===== AKHIR BLOK 2.2.1 ===== -->
 
     <!-- ===== BLOK 2.2.2 - SIDEBAR ===== -->
     <aside class="sidebar" id="sidebarContainer"></aside>
@@ -1180,41 +1185,49 @@ body { font-family:'Poppins', sans-serif; background:var(--bg); min-height:100vh
 
         areaKonten.innerHTML = html;
 
-                // --- EVENT LISTENER FOTO PROFIL (DIPERKUAT) ---
-        setTimeout(function() {
+        // --- EVENT LISTENER FOTO PROFIL ---
             var containerFoto = document.getElementById('uploadFotoContainerCustomer');
             var inputFoto = document.getElementById('inputFotoProfilCustomer');
-            var previewContainer = document.getElementById('fotoPreviewCustomer');
-            
-            if (containerFoto && inputFoto && previewContainer) {
-                // Mengklik area upload akan membuka file explorer
-                containerFoto.onclick = function() {
-                    inputFoto.click();
-                };
-
-                // Saat file dipilih, langsung kompres dan preview
+            if (containerFoto && inputFoto) {
+                containerFoto.onclick = function() { inputFoto.click(); };
                 inputFoto.onchange = async function(e) {
                     var file = e.target.files[0];
                     if (file) {
-                        previewContainer.innerHTML = '<p style="color:#FF6B00; font-weight:600;">Sedang mengompres...</p>';
-                        try {
-                            // Kompres gambar ke ukuran kecil (200px, kualitas 70%) agar localStorage tidak penuh
-                            var compressed = await compressImage(file, 200, 0.7);
-                            // Tampilkan preview
-                            previewContainer.innerHTML = '<img src="' + compressed + '" class="preview-image" style="max-width:150px; max-height:150px; border-radius:50%; object-fit:cover;">';
-                            // Simpan sementara di localStorage
-                            localStorage.setItem('2r_foto_profil_temp_customer', compressed);
-                            tampilkanToast('Foto siap! Klik tombol "Simpan Foto" di bawah.', 'success');
-                        } catch (err) {
-                            console.error('Error kompresi foto:', err);
-                            tampilkanToast('Gagal memproses foto! Coba file lain.', 'error');
-                            previewContainer.innerHTML = '<p style="color:#d32f2f; font-weight:600;">Gagal upload</p>';
-                            localStorage.removeItem('2r_foto_profil_temp_customer');
-                        }
+                        document.getElementById('fotoPreviewCustomer').innerHTML = '<p>Mengkompres...</p>';
+                        var compressed = await compressImage(file, 200, 0.7);
+                        document.getElementById('fotoPreviewCustomer').innerHTML = '<img src="' + compressed + '" class="preview-image" style="max-width:150px; max-height:150px; border-radius:50%; object-fit:cover;">';
+                        localStorage.setItem('2r_foto_profil_temp_customer', compressed);
                     }
                 };
-            } else {
-                console.error("Elemen upload foto tidak ditemukan! Periksa ID uploadFotoContainerCustomer.");
+            }
+        // --- EVENT LISTENER FOTO PROFIL (Masih di dalam setTimeout yang sudah ada) ---
+        // Scroll ke bawah lagi, ada setTimeout kedua. Tambahkan ini di dalamnya:
+        // KTP Upload
+        html += '<div class="card"><div class="card-header">Dokumen KTP & Domisili</div>';
+        html += '<div class="upload-area" id="uploadKtpContainerCustomer"><div id="ktpPreviewCustomer">';
+        if (user.ktp) {
+            html += '<img src="' + user.ktp + '" class="preview-image">';
+        } else {
+            html += '<i class="fas fa-cloud-upload-alt"></i><p>Klik untuk upload KTP</p>';
+        }
+        html += '</div><input type="file" id="inputKtpCustomer" accept=".jpg,.jpeg,.png" style="display:none"></div>';
+        html += '<button class="button button-primary margin-top-10" onclick="simpanKTPCustomer()"><i class="fas fa-save"></i> Simpan KTP</button>';
+        if (user.ktp) html += '<button class="button button-danger margin-top-10" onclick="hapusKTPCustomer()" style="margin-left:10px;"><i class="fas fa-trash"></i> Hapus KTP</button>';
+        html += '</div>';
+
+        areaKonten.innerHTML = html;
+        setTimeout(function() {
+            loadDataWilayahTersimpan('ktp', user);
+            loadDataWilayahTersimpan('dom', user);
+            isiDropdownWilayah('ktp');
+            isiDropdownWilayah('dom');
+        }, 500);
+        setTimeout(function() {
+            var containerKTP = document.getElementById('uploadKtpContainerCustomer');
+            var inputKTP = document.getElementById('inputKtpCustomer');
+            if (containerKTP && inputKTP) {
+                containerKTP.onclick = function() { inputKTP.click(); };
+                inputKTP.onchange = function(e) { previewKTPCustomer(e.target.files[0]); };
             }
         }, 300);
     }
@@ -2362,16 +2375,12 @@ function hapusKTPUmum() {
     });
     // ===== AKHIR BLOK 8.2.4 =====
 
-        // ===== BLOK 8.2.5 - LOGOUT (VERSI TAHAN BANTING) =====
-    document.addEventListener('click', function(e) {
-        // Mendeteksi apakah yang diklik adalah tombol Logout atau anak elemennya
-        var target = e.target.closest('#buttonLogout');
-        if (target) {
-            if (confirm('Keluar dari aplikasi?')) {
-                localStorage.removeItem('2r_user');
-                localStorage.removeItem('2r_user_role');
-                location.reload();
-            }
+    // ===== BLOK 8.2.5 - LOGOUT =====
+    document.getElementById('buttonLogout').addEventListener('click', function() {
+        if (confirm('Keluar dari aplikasi?')) {
+            localStorage.removeItem('2r_user');
+            localStorage.removeItem('2r_user_role');
+            location.reload();
         }
     });
     // ===== AKHIR BLOK 8.2.5 =====
@@ -3703,50 +3712,37 @@ function tampilkanDashboard(user) {
 </script>
 <!-- ===== AKHIR BLOK 8.8 ===== -->
 
-// ===== PERBAIKAN BLOK 8.9 - FUNCTION KOMPRESI GAMBAR =====
-function compressImage(file, maxWidth = 150, quality = 0.7) {
+<!-- ===== BLOK 8.9 - JS_SCAN_BARCODE (PLACEHOLDER) ===== -->
+<script>
+    function scanBarcodeProduk() {
+        tampilkanToast('Fitur scan barcode menggunakan kamera sedang dalam pengembangan.', 'info');
+    }
+</script>
+    <script>
+// ===== FUNGSI KOMPRESI GAMBAR UNTUK DEMO =====
+function compressImage(file, maxWidth, quality) {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
-        
         reader.onload = (event) => {
             const img = new Image();
             img.src = event.target.result;
-            
             img.onload = () => {
                 const canvas = document.createElement('canvas');
                 const ctx = canvas.getContext('2d');
-                
-                // Pertahankan rasio aspek gambar
                 const scaleSize = maxWidth / img.width;
                 canvas.width = maxWidth;
                 canvas.height = img.height * scaleSize;
-                
                 ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                
-                // Tentukan format output agar kompatibel dengan PNG transparan
-                let format = 'image/jpeg';
-                let outputQuality = quality;
-                if (file.type === 'image/png') {
-                    format = 'image/png'; // PNG menggunakan format PNG agar transparan tetap terjaga
-                    outputQuality = 0.8;
-                }
-                
-                try {
-                    const result = canvas.toDataURL(format, outputQuality);
-                    resolve(result);
-                } catch (e) {
-                    reject(e);
-                }
+                resolve(canvas.toDataURL('image/jpeg', quality));
             };
-            
-            img.onerror = () => reject(new Error('Gagal memuat gambar. File mungkin rusak.'));
+            img.onerror = reject;
         };
-        
-        reader.onerror = (e) => reject(e);
+        reader.onerror = reject;
     });
 }
-// ===== AKHIR PERBAIKAN BLOK 8.9 =====
+</script>
+<!-- ===== AKHIR BLOK 8.9 ===== -->
 <!-- ===== BLOK 8.10 - JS_RENDER_CHAT ===== -->
 <script>
 // ===== BLOK 8.10.1 - RENDER DAFTAR PERCAKAPAN (INBOX) =====
@@ -4255,51 +4251,25 @@ function bukaChat(targetId) {
     }
 </script>
 <!-- ===== AKHIR BLOK 8.13 ===== -->
-    // ===== PERBAIKAN BLOK 8.14 - SIMPAN FOTO PROFIL =====
-function simpanFotoProfilCustomer() {
-    try {
+    <!-- ===== BLOK 8.14 - JS_CRUD_FOTO_PROFIL_CUSTOMER ===== -->
+<script>
+    function simpanFotoProfilCustomer() {
         var foto = localStorage.getItem('2r_foto_profil_temp_customer');
-        
-        // Jika tidak ada foto di localStorage, beri peringatan agar user upload ulang
-        if (!foto) {
-            tampilkanToast('Proses upload gagal atau belum selesai. Silakan upload ulang foto!', 'warning');
-            return;
-        }
-
+        if (!foto) { tampilkanToast('Upload foto terlebih dahulu!', 'warning'); return; }
         var user = JSON.parse(localStorage.getItem('2r_user'));
         var dataAkun = getDataAkun();
-        
-        // Simpan foto ke data user
         user.fotoProfil = foto;
         for (var i = 0; i < dataAkun.length; i++) {
-            if (dataAkun[i].id === user.id) {
-                dataAkun[i].fotoProfil = foto;
-                break;
-            }
+            if (dataAkun[i].id === user.id) { dataAkun[i].fotoProfil = foto; break; }
         }
-
-        // Simpan ke localStorage dengan penanganan kuota penuh
-        try {
-            localStorage.setItem('2r_user', JSON.stringify(user));
-            simpanDataAkun(dataAkun);
-            localStorage.removeItem('2r_foto_profil_temp_customer'); // Hapus temp hanya jika sukses
-            
-            tampilkanToast('Foto profil berhasil disimpan!', 'success');
-            renderProfilCustomer(); // Refresh halaman agar foto langsung muncul di Navbar
-            
-        } catch (e) {
-            if (e.name === 'QuotaExceededError' || e.code === 22) {
-                tampilkanToast('Penyimpanan browser penuh! Hapus beberapa data aplikasi atau gunakan gambar yang sangat kecil (max 100KB).', 'error');
-            } else {
-                throw e;
-            }
-        }
-    } catch (error) {
-        console.error("ERROR SIMPAN FOTO:", error);
-        tampilkanToast('Terjadi error internal saat menyimpan foto. Cek Console Browser (F12).', 'error');
+        localStorage.setItem('2r_user', JSON.stringify(user));
+        simpanDataAkun(dataAkun);
+        localStorage.removeItem('2r_foto_profil_temp_customer');
+        tampilkanToast('Foto profil berhasil disimpan!', 'success');
+        renderProfilCustomer();
     }
-}
-// ===== AKHIR PERBAIKAN BLOK 8.14 =====
+</script>
+<!-- ===== AKHIR BLOK 8.14 ===== -->
 <!-- ===== AKHIR BAGIAN 8 ===== -->
 
 </body>
