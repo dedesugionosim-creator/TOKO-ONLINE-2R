@@ -1951,10 +1951,10 @@ function hapusKTPUmum() {
                 html += '<div style="flex:1; display:flex; flex-direction:column;">';
 
                 // --- 1. BAGIAN GAMBAR (DI ATAS) ---
-                html += '<div style="height:200px; background:#f8f9fa; display:flex; overflow-x:auto; gap:10px; padding:10px; scrollbar-width:thin; border-bottom:1px solid #f0f0f0; position:relative;">';
+                html += '<div style="height:200px; background:#f8f9fa; display:flex; overflow-x:auto; scroll-snap-type:x mandatory; scrollbar-width:thin; border-bottom:1px solid #f0f0f0; position:relative;">';
                 if (gambarArray.length > 0) {
                     for (var j = 0; j < gambarArray.length; j++) {
-                        html += '<img src="' + gambarArray[j] + '" style="height:100%; width:auto; border-radius:8px; cursor:pointer; flex-shrink:0; object-fit:cover;" onclick="previewGambar(\'' + gambarArray[j] + '\',\'Preview Iklan\')">';
+                        html += '<img src="' + gambarArray[j] + '" style="min-width:100%; height:100%; object-fit:cover; cursor:pointer; flex-shrink:0; scroll-snap-align:start; display:block;" onclick="previewGambar(\'' + gambarArray[j] + '\',\'Preview Iklan\')">';
                     }
                 } else {
                     html += '<div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; color:#ccc;"><i class="fas fa-image" style="font-size:48px;"></i></div>';
