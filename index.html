@@ -1758,6 +1758,8 @@ function hapusKTPUmum() {
 
 <!-- ===== BLOK 7.5 - JS_RENDER_DAFTAR_AKUN & PERSETUJUAN ===== -->
 <script>
+    <!-- ===== BLOK 7.5.1 - RENDER DAFTAR AKUN & PERSETUJUAN ===== -->
+<script>
     // ===== BLOK 7.5.1 - RENDER DAFTAR AKUN =====
     function renderDaftarAkun() {
         var areaKonten = document.getElementById('mainContent');
@@ -1765,7 +1767,7 @@ function hapusKTPUmum() {
         html += '<div class="card"><div class="card-header">Form Pendaftaran</div>';
         html += '<div class="form-group"><label>Role</label><select id="daftarRole" class="form-input" onchange="updatePreviewId()">';
         html += '<option value="customer">Customer</option><option value="toko">Toko (Verifikasi)</option><option value="ojek">Ojek (Verifikasi)</option>';
-        html += '<option value="pedagang">Pedagang Pasar</option><option value="staf_admin">Staf Admin</option><option value="staf_owner_ojek">Staf Owner Ojek</option>';
+        html += '<option value="pedagang">Pedagang Pasar</option><option value="codseller">COD Seller</option><option value="staf_admin">Staf Admin</option><option value="staf_owner_ojek">Staf Owner Ojek</option>';
         html += '<option value="staf_owner_toko">Staf Owner Toko</option><option value="customer_service">Customer Service</option><option value="sponsor">Sponsor</option></select></div>';
         html += '<div class="form-group"><label>ID Akun (Otomatis)</label><div style="background:#f0f0f0;border:2px solid #ddd;border-radius:8px;padding:12px;"><span id="daftarIdPreview" style="font-weight:600;">' + generateId('customer') + '</span></div></div>';
         html += '<div class="form-group"><label>Username</label><input type="text" id="daftarUsername" class="form-input" placeholder="Username" required></div>';
@@ -1774,10 +1776,12 @@ function hapusKTPUmum() {
         html += '<button class="button button-primary" style="width:100%;" onclick="prosesDaftarAkun()"><i class="fas fa-user-plus"></i> Buat Akun Baru</button></div>';
         areaKonten.innerHTML = html;
     }
+
     function updatePreviewId() {
         var role = document.getElementById('daftarRole').value;
         document.getElementById('daftarIdPreview').textContent = generateId(role);
     }
+
     async function prosesDaftarAkun() {
         var role = document.getElementById('daftarRole').value;
         var username = document.getElementById('daftarUsername').value.trim();
@@ -1806,7 +1810,6 @@ function hapusKTPUmum() {
         tampilkanToast('Akun ' + role + ' berhasil dibuat! ID: ' + akunBaru.id, 'success');
     }
     // ===== AKHIR BLOK 7.5.1 =====
-
     // ===== BLOK 7.5.2 - RENDER PERSETUJUAN AKUN =====
     function renderPersetujuanAkun() {
         var areaKonten = document.getElementById('mainContent');
