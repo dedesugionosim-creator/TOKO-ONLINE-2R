@@ -1149,6 +1149,37 @@ body { font-family:'Poppins', sans-serif; background:var(--bg); min-height:100vh
         html += '<div><label class="form-label">Nomor Rekening</label><input type="text" id="profilRekeningCustomer" class="form-input" value="' + escapeHtml(user.nomorRekening || '') + '"></div>';
         html += '<div><label class="form-label">Nama Pemilik Rekening</label><input type="text" id="profilPemilikRekCustomer" class="form-input" value="' + escapeHtml(user.pemilikRekening || '') + '"></div></div></div>';
 
+                // --- TAMBAHAN CARD FOTO PROFIL ---
+        html += '<div class="card"><div class="card-header">Foto Profil</div>';
+        html += '<div class="upload-area" id="uploadFotoContainerCustomer"><div id="fotoPreviewCustomer">';
+        if (user.fotoProfil) {
+            html += '<img src="' + user.fotoProfil + '" class="preview-image" style="max-width:150px; max-height:150px; border-radius:50%; object-fit:cover;">';
+        } else {
+            html += '<i class="fas fa-user-circle" style="font-size:60px; color:#ddd;"></i><p>Klik untuk upload foto profil</p>';
+        }
+        html += '</div><input type="file" id="inputFotoProfilCustomer" accept=".jpg,.jpeg,.png" style="display:none"></div>';
+        html += '<button class="button button-primary margin-top-10" onclick="simpanFotoProfilCustomer()"><i class="fas fa-save"></i> Simpan Foto</button>';
+        html += '</div>';
+
+        areaKonten.innerHTML = html;
+
+        // --- EVENT LISTENER FOTO PROFIL ---
+            var containerFoto = document.getElementById('uploadFotoContainerCustomer');
+            var inputFoto = document.getElementById('inputFotoProfilCustomer');
+            if (containerFoto && inputFoto) {
+                containerFoto.onclick = function() { inputFoto.click(); };
+                inputFoto.onchange = async function(e) {
+                    var file = e.target.files[0];
+                    if (file) {
+                        document.getElementById('fotoPreviewCustomer').innerHTML = '<p>Mengkompres...</p>';
+                        var compressed = await compressImage(file, 200, 0.7);
+                        document.getElementById('fotoPreviewCustomer').innerHTML = '<img src="' + compressed + '" class="preview-image" style="max-width:150px; max-height:150px; border-radius:50%; object-fit:cover;">';
+                        localStorage.setItem('2r_foto_profil_temp_customer', compressed);
+                    }
+                };
+            }
+        // --- EVENT LISTENER FOTO PROFIL (Masih di dalam setTimeout yang sudah ada) ---
+        // Scroll ke bawah lagi, ada setTimeout kedua. Tambahkan ini di dalamnya:
         // KTP Upload
         html += '<div class="card"><div class="card-header">Dokumen KTP & Domisili</div>';
         html += '<div class="upload-area" id="uploadKtpContainerCustomer"><div id="ktpPreviewCustomer">';
