@@ -2589,99 +2589,111 @@ function hapusKTPUmum() {
     }
     // ===== AKHIR BLOK 8.4.2 =====
 
-            // ===== BLOK 8.4.3 - RENDER BANTUAN & FAQ (FITUR BARU) =====
-    function renderBantuanFAQ() {
+            <!-- ===== BLOK 8.4.3 - RENDER PAPAN INFORMASI (GRID BESAR, CRUD KHUSUS SUPERADMIN) ===== -->
+<script>
+    function renderPapanInformasi() {
+        var role = localStorage.getItem('2r_user_role');
         var areaKonten = document.getElementById('mainContent');
-        var html = '<div class="page-header"><h2>Pusat Bantuan & FAQ</h2><p>Temukan jawaban atas pertanyaan seputar aplikasi Toko Online 2R.</p></div>';
+        var dataAnn = JSON.parse(localStorage.getItem('2r_announcements') || '[]');
         
-        html += '<div class="faq-container">';
+        var html = '<div class="page-header"><h2>Papan Informasi</h2><p>Pengumuman resmi dari Staf Admin / SuperAdmin.</p></div>';
+        
+        // === TOMBOL TAMBAH (HANYA SUPERADMIN) ===
+        if (role === 'superadmin') {
+            html += '<div style="margin-bottom:20px;"><button class="button button-primary" onclick="bukaFormAnnouncement()"><i class="fas fa-plus"></i> Tambah Pengumuman</button></div>';
+        }
 
-        // Data FAQ (Bisa ditambah sesuai keinginan)
-        var dataFAQ = [
-            {
-                kategori: 'Akun & Login',
-                items: [
-                    { q: 'Bagaimana cara mendaftar akun?', a: 'Anda dapat mendaftar dengan mengisi form registrasi di halaman login. Pilih role Anda (Customer, Toko, Ojek, dll), lalu isi username, password, dan nama lengkap.' },
-                    { q: 'Saya lupa password, bagaimana cara meresetnya?', a: 'Pada halaman login, masukkan username Anda, lalu klik tombol "Lupa Password?". Sistem akan secara otomatis mereset password Anda menjadi 8 karakter acak baru yang akan ditampilkan di notifikasi.' },
-                    { q: 'Mengapa akun saya statusnya "Menunggu Verifikasi"?', a: 'Jika Anda mendaftar sebagai Toko atau Ojek, akun Anda harus disetujui terlebih dahulu oleh SuperAdmin/Staf Admin. Tunggu konfirmasi notifikasi atau cek status di menu Profil.' }
-                ]
-            },
-            {
-                kategori: 'Belanja & Layanan (Untuk Customer)',
-                items: [
-                    { q: 'Bagaimana cara membeli produk?', a: 'Anda dapat melihat produk di menu "Lihat Produk" atau "Lihat Toko Terdekat". Jika tertarik, tambahkan ke Keranjang, lalu lanjutkan ke halaman Pembayaran.' },
-                    { q: 'Bagaimana cara memberi Ulasan & Rating?', a: 'Masuk ke menu "Ulasan & Rating", lalu pilih ID Toko/Ojek yang sudah pernah Anda beli. Isi bintang dan komentar, lalu klik Kirim Ulasan.' },
-                    { q: 'Saya ingin menghubungi penjual, bagaimana caranya?', a: 'Anda bisa menggunakan fitur "Chat". Cari ID tujuan (misal ID Toko), lalu kirim pesan. Fitur ini juga bisa digunakan untuk chat dengan Customer Service.' }
-                ]
-            },
-            {
-                kategori: 'Manajemen Toko & Ojek (Untuk Penjual)',
-                items: [
-                    { q: 'Bagaimana cara menambahkan produk di gudang?', a: 'Masuk ke menu "Manajemen Stok Gudang", lalu klik tombol "Tambah Produk Baru". Isi nama, harga, stok, dan tanggal kadaluarsa produk.' },
-                    { q: 'Dimana saya bisa melihat pesanan masuk?', a: 'Anda bisa melihat daftar pesanan yang harus diproses di menu "Pesanan Masuk" (khusus role Toko) atau "Order Masuk" (khusus role Ojek).' },
-                    { q: 'Bagaimana cara membalas ulasan dari Customer?', a: 'Buka menu "Ulasan & Rating". Setiap ulasan yang masuk ke akun Anda akan memiliki kolom input teks untuk membalas komentar tersebut.' }
-                ]
-            },
-            {
-                kategori: 'Administrasi & Pengelolaan (Untuk Admin)',
-                items: [
-                    { q: 'Bagaimana cara menyetujui akun Toko/Ojek baru?', a: 'Masuk ke menu "Persetujuan Akun". Anda akan melihat daftar akun yang menunggu verifikasi. Klik tombol "Setujui" untuk mengaktifkan akun, atau "Tolak" untuk menghapus permohonan.' },
-                    { q: 'Bagaimana cara menambahkan Iklan atau Pengumuman?', a: 'Klik menu "Menu Iklan" lalu klik "Tambah Iklan Baru". Untuk Pengumuman, buka menu "Papan Informasi" lalu klik "Tambah Pengumuman". Isi data dan upload gambar pendukung.' }
-                ]
-            }
-        ];
-
-        // Render Loop FAQ
-        for (var k = 0; k < dataFAQ.length; k++) {
-            var kat = dataFAQ[k];
-            html += '<div class="faq-kategori-title">' + kat.kategori + '</div>';
-            for (var i = 0; i < kat.items.length; i++) {
-                var item = kat.items[i];
-                var indexId = 'faq_' + k + '_' + i;
+        // === GRID KARTU ===
+        html += '<div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr)); gap:25px; padding:10px 0;">';
+        
+        if (dataAnn.length === 0) {
+            html += '<div class="card" style="grid-column:1/-1;"><div class="empty-state"><i class="fas fa-bullhorn"></i><h3>Belum ada pengumuman</h3></div></div>';
+        } else {
+            for (var i = 0; i < dataAnn.length; i++) {
+                var a = dataAnn[i];
                 html += `
-                <div class="faq-item" id="${indexId}">
-                    <div class="faq-question" onclick="toggleFaq('${indexId}')">
-                        <span>${escapeHtml(item.q)}</span>
-                        <i class="fas fa-chevron-down"></i>
+                <div style="background:white; border-radius:16px; box-shadow:0 4px 20px rgba(0,0,0,0.08); border:1px solid #e9ecef; overflow:hidden; display:flex; flex-direction:column; transition:transform 0.2s;">
+                    <div style="height:300px; background:#f8f9fa; display:flex; justify-content:center; align-items:center; border-bottom:1px solid #f0f0f0;">
+                        ${a.gambar ? `<img src="${a.gambar}" style="width:100%; height:100%; object-fit:contain; cursor:pointer;" onclick="previewGambar('${a.gambar}','Preview Pengumuman')">` : `<div style="color:#ccc;"><i class="fas fa-image" style="font-size:48px;"></i></div>`}
                     </div>
-                    <div class="faq-answer">
-                        ${escapeHtml(item.a)}
+                    <div style="padding:20px 20px 15px 20px; flex:1;">
+                        <h3 style="font-size:18px; font-weight:700; color:#333; margin:0 0 8px 0;">${escapeHtml(a.judul)}</h3>
+                        <p style="font-size:14px; color:#666; line-height:1.6; margin:0;">${escapeHtml(a.deskripsi)}</p>
+                        <div style="margin-top:10px; font-size:12px; color:#999;">${a.waktu ? new Date(a.waktu).toLocaleDateString('id-ID') : ''}</div>
                     </div>
+                    ${role === 'superadmin' ? `
+                    <div style="padding:10px 20px 20px 20px; border-top:1px solid #f0f0f0; display:flex; gap:10px; justify-content:flex-end;">
+                        <button class="button button-primary button-extra-small" onclick="editAnnouncement(${i})"><i class="fas fa-edit"></i> Edit</button>
+                        <button class="button button-danger button-extra-small" onclick="hapusAnnouncement(${i})"><i class="fas fa-trash"></i> Hapus</button>
+                    </div>` : ''}
                 </div>`;
             }
         }
+        html += '</div>';
 
-        // Hubungi Kami
-        html += '<div class="faq-kategori-title">Hubungi Kami</div>';
-        html += `
-        <div class="card" style="text-align:center; background:#f8f9fa;">
-            <p style="font-size:14px; color:#666; margin-bottom:10px;">Butuh bantuan lebih lanjut? Silakan chat langsung dengan Admin atau Customer Service.</p>
-            <button class="button button-primary" onclick="navigasiKeHalaman('chat')"><i class="fas fa-comments"></i> Buka Chat</button>
-        </div>`;
-
-        html += '</div>'; // tutup faq-container
-        areaKonten.innerHTML = html;
-    }
-
-    // ===== FUNGSI TOGGLE FAQ (ACCORDION) =====
-    function toggleFaq(id) {
-        var element = document.getElementById(id);
-        if (element) {
-            if (element.classList.contains('active')) {
-                element.classList.remove('active');
-            } else {
-                // Tutup semua FAQ lain yang sedang terbuka
-                var allItems = document.querySelectorAll('.faq-item');
-                for (var i = 0; i < allItems.length; i++) {
-                    allItems[i].classList.remove('active');
-                }
-                // Buka FAQ yang diklik
-                element.classList.add('active');
-            }
+        // === FORM TAMBAH/EDIT (HANYA SUPERADMIN) ===
+        if (role === 'superadmin') {
+            html += `
+            <div id="formAnnouncementContainer" class="hidden" style="margin-top:30px;">
+                <div class="card">
+                    <div class="card-header">
+                        <span id="formAnnouncementTitle">Tambah Pengumuman Baru</span>
+                        <button class="button button-danger button-small" onclick="tutupFormAnnouncement()"><i class="fas fa-times"></i> Tutup</button>
+                    </div>
+                    <div class="grid-2">
+                        <div><label class="form-label">Judul Pengumuman</label><input type="text" id="annJudul" class="form-input" placeholder="Judul pengumuman"></div>
+                        <div><label class="form-label">Gambar (Maks 500KB)</label>
+                            <input type="file" id="annGambar" accept=".jpg,.jpeg,.png" style="display:none;">
+                            <button class="button button-primary button-small" onclick="document.getElementById('annGambar').click();">Pilih Gambar</button>
+                            <span id="annNamaGambar" style="font-size:12px;color:#888;margin-left:10px;">Belum ada gambar</span>
+                        </div>
+                    </div>
+                    <div class="form-group"><label class="form-label">Keterangan / Teks</label><textarea id="annDeskripsi" class="form-input" rows="4" placeholder="Isi detail pengumuman..."></textarea></div>
+                    <input type="hidden" id="annEditIndex" value="-1">
+                    <button class="button button-primary margin-top-10" onclick="simpanAnnouncement()"><i class="fas fa-save"></i> Simpan Pengumuman</button>
+                </div>
+            </div>`;
         }
+
+        areaKonten.innerHTML = html;
+
+        // === EVENT UPLOAD GAMBAR (AMAN: CEK UKURAN, TANPA KOMPRESI RUMIT) ===
+        setTimeout(function() {
+            var inputGambar = document.getElementById('annGambar');
+            if (inputGambar) {
+                var newInput = inputGambar.cloneNode(true);
+                inputGambar.parentNode.replaceChild(newInput, inputGambar);
+                
+                newInput.addEventListener('change', function(e) {
+                    var file = e.target.files[0];
+                    if (file) {
+                        // Batasi ukuran gambar agar tidak penuhi localStorage (maks 500KB)
+                        if (file.size > 500 * 1024) {
+                            tampilkanToast('Ukuran gambar terlalu besar! Maksimal 500KB.', 'error');
+                            document.getElementById('annNamaGambar').textContent = 'Gagal upload (terlalu besar)';
+                            this.value = ''; // Reset input
+                            localStorage.removeItem('2r_announcement_gambar_temp');
+                            return;
+                        }
+
+                        document.getElementById('annNamaGambar').textContent = 'Sedang memproses...';
+                        var reader = new FileReader();
+                        reader.onload = function(ev) {
+                            localStorage.setItem('2r_announcement_gambar_temp', ev.target.result);
+                            document.getElementById('annNamaGambar').textContent = file.name + ' (Siap)';
+                        };
+                        reader.onerror = function() {
+                            tampilkanToast('Gagal membaca file.', 'error');
+                            document.getElementById('annNamaGambar').textContent = 'Gagal upload';
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                });
+            }
+        }, 300);
     }
-    // ===== AKHIR BLOK 8.4.3 =====
 </script>
+<!-- ===== AKHIR BLOK 8.4.3 ===== -->
 <!-- ===== AKHIR BLOK 8.4 ===== -->
 <!-- ===== BLOK 8.4.4 - RENDER ULASAN & RATING ===== -->
 <script>
