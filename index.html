@@ -3134,12 +3134,14 @@ function hapusKTPUmum() {
         tampilkanToast('Fitur scan barcode menggunakan kamera sedang dalam pengembangan.', 'info');
     }
 </script>
-<!-- ===== AKHIR BLOK 8.9 ===== -->
-    // ===== BLOK 8.10.1 - RENDER DAFTAR PERCAKAPAN (INBOX) =====
+// ===== BLOK 8.10.1 - RENDER DAFTAR PERCAKAPAN (INBOX) =====
 function renderChat() {
     var user = JSON.parse(localStorage.getItem('2r_user') || '{}');
     var areaKonten = document.getElementById('mainContent');
     if (!areaKonten) return;
+
+    // Ambil semua data akun untuk keperluan pengecekan role
+    var dataAkun = getDataAkun();
 
     // Ambil semua pesan
     var semuaPesan = JSON.parse(localStorage.getItem('2r_chat_messages') || '[]');
@@ -3149,10 +3151,26 @@ function renderChat() {
         return p.pengirim === user.id || p.penerima === user.id;
     });
 
-    // Kumpulkan ID lawan bicara yang unik
+    // Kumpulkan ID lawan bicara yang unik (HANYA user biasa, BUKAN SuperAdmin)
     var daftarLawan = {};
     for (var i = 0; i < pesanSaya.length; i++) {
         var idLawan = (pesanSaya[i].pengirim === user.id) ? pesanSaya[i].penerima : pesanSaya[i].pengirim;
+        
+        // Cari role dari lawan bicara
+        var roleLawan = '';
+        for (var k = 0; k < dataAkun.length; k++) {
+            if (dataAkun[k].id === idLawan) {
+                roleLawan = dataAkun[k].role;
+                break;
+            }
+        }
+
+        // LEWATKAN jika lawan bicara adalah SuperAdmin (Tidak dimasukkan ke inbox)
+        if (roleLawan === 'superadmin') {
+            continue; 
+        }
+
+        // Proses memasukkan ke daftar lawan jika bukan SuperAdmin
         if (!daftarLawan[idLawan]) {
             daftarLawan[idLawan] = { id: idLawan, pesanTerakhir: pesanSaya[i], waktu: new Date(pesanSaya[i].waktu) };
         } else {
@@ -3172,13 +3190,12 @@ function renderChat() {
 
     // Tampilkan Inbox (Daftar Percakapan)
     if (listLawan.length === 0) {
-        html += '<div class="card"><div class="empty-state"><i class="fas fa-comments"></i><h3>Belum ada percakapan</h3><p>Silakan pilih ID tujuan di bawah untuk memulai chat.</p></div></div>';
+        html += '<div class="card"><div class="empty-state"><i class="fas fa-comments"></i><h3>Belum ada percakapan dengan user lain</h3><p>Silakan pilih ID tujuan di bawah untuk memulai chat (SuperAdmin tidak ditampilkan).</p></div></div>';
     } else {
         html += '<div class="card"><div class="table-container"><table class="table"><thead><tr><th>ID Lawan</th><th>Pesan Terakhir</th><th>Waktu</th><th>Aksi</th></tr></thead><tbody>';
         for (var i = 0; i < listLawan.length; i++) {
             var lawan = listLawan[i];
             // Cari nama lawan dari data akun
-            var dataAkun = getDataAkun();
             var namaLawan = lawan.id;
             for (var j = 0; j < dataAkun.length; j++) {
                 if (dataAkun[j].id === lawan.id) {
@@ -3197,8 +3214,6 @@ function renderChat() {
     }
 
     // ===== FITUR DROPDOWN PILIH ID TUJUAN (SuperAdmin Tidak Ditampilkan) =====
-    // Ambil semua data akun untuk dropdown
-    var dataAkun = getDataAkun();
     var opsiDropdown = '<option value="">-- Pilih ID Tujuan --</option>';
     
     for (var i = 0; i < dataAkun.length; i++) {
