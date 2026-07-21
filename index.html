@@ -2620,87 +2620,109 @@ function hapusKTPUmum() {
     }
     // ===== AKHIR BLOK 8.4.2 =====
 
-            <!-- ===== BLOK 8.4.3 - RENDER PAPAN INFORMASI ===== -->
+            <!-- ===== BLOK 8.4.3 - RENDER PAPAN INFORMASI (VERSI TERBARU) ===== -->
 <script>
 function renderPapanInformasi() {
     var role = localStorage.getItem('2r_user_role');
     var areaKonten = document.getElementById('mainContent');
+    if (!areaKonten) return;
+
     var dataAnn = JSON.parse(localStorage.getItem('2r_announcements') || '[]');
     
     var html = '<div class="page-header"><h2>Papan Informasi</h2><p>Pengumuman resmi dari Staf Admin / SuperAdmin.</p></div>';
     if (role === 'superadmin') {
         html += '<div style="margin-bottom:20px;"><button class="button button-primary" onclick="bukaFormAnnouncement()"><i class="fas fa-plus"></i> Tambah Pengumuman</button></div>';
     }
+    
+    // Grid Kartu
     html += '<div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr)); gap:25px; padding:10px 0;">';
     if (dataAnn.length === 0) {
         html += '<div class="card" style="grid-column:1/-1;"><div class="empty-state"><i class="fas fa-bullhorn"></i><h3>Belum ada pengumuman</h3></div></div>';
     } else {
         for (var i = 0; i < dataAnn.length; i++) {
             var a = dataAnn[i];
-            html += '<div style="background:white; border-radius:16px; box-shadow:0 4px 20px rgba(0,0,0,0.08); border:1px solid #e9ecef; overflow:hidden; display:flex; flex-direction:column; transition:transform 0.2s;">';
-            html += '<div style="height:300px; background:#f8f9fa; display:flex; justify-content:center; align-items:center; border-bottom:1px solid #f0f0f0;">';
-            if (a.gambar) {
-                html += '<img src="' + a.gambar + '" style="width:100%; height:100%; object-fit:contain; cursor:pointer;" onclick="previewGambar(\'' + a.gambar + '\',\'Preview Pengumuman\')">';
-            } else {
-                html += '<div style="color:#ccc;"><i class="fas fa-image" style="font-size:48px;"></i></div>';
-            }
-            html += '</div>';
-            html += '<div style="padding:20px 20px 15px 20px; flex:1; display:flex; flex-direction:column;">';
-            html += '<h3 style="font-size:18px; font-weight:700; color:#333; margin:0 0 8px 0;">' + escapeHtml(a.judul) + '</h3>';
-            html += '<p style="font-size:14px; color:#666; line-height:1.6; margin:0; flex:1;">' + escapeHtml(a.deskripsi) + '</p>';
-            html += '<div style="margin-top:10px; font-size:12px; color:#999;">' + (a.waktu ? new Date(a.waktu).toLocaleDateString('id-ID') : '') + '</div>';
-            html += '</div>';
-            if (role === 'superadmin') {
-                html += '<div style="padding:10px 20px 20px 20px; border-top:1px solid #f0f0f0; display:flex; gap:10px; justify-content:flex-end;">';
-                html += '<button class="button button-primary button-extra-small" onclick="editAnnouncement(' + i + ')"><i class="fas fa-edit"></i> Edit</button>';
-                html += '<button class="button button-danger button-extra-small" onclick="hapusAnnouncement(' + i + ')"><i class="fas fa-trash"></i> Hapus</button>';
-                html += '</div>';
-            }
-            html += '</div>';
+            var gambarHTML = a.gambar 
+                ? `<img src="${a.gambar}" style="width:100%; height:100%; object-fit:contain; cursor:pointer;" onclick="previewGambar('${a.gambar}','Preview Pengumuman')">` 
+                : `<div style="color:#ccc;"><i class="fas fa-image" style="font-size:48px;"></i></div>`;
+            
+            html += `
+            <div style="background:white; border-radius:16px; box-shadow:0 4px 20px rgba(0,0,0,0.08); border:1px solid #e9ecef; overflow:hidden; display:flex; flex-direction:column; transition:transform 0.2s;">
+                <div style="height:300px; background:#f8f9fa; display:flex; justify-content:center; align-items:center; border-bottom:1px solid #f0f0f0;">
+                    ${gambarHTML}
+                </div>
+                <div style="padding:20px 20px 15px 20px; flex:1; display:flex; flex-direction:column;">
+                    <h3 style="font-size:18px; font-weight:700; color:#333; margin:0 0 8px 0;">${escapeHtml(a.judul)}</h3>
+                    <p style="font-size:14px; color:#666; line-height:1.6; margin:0; flex:1;">${escapeHtml(a.deskripsi)}</p>
+                    <div style="margin-top:10px; font-size:12px; color:#999;">${a.waktu ? new Date(a.waktu).toLocaleDateString('id-ID') : ''}</div>
+                </div>
+                ${role === 'superadmin' ? `
+                <div style="padding:10px 20px 20px 20px; border-top:1px solid #f0f0f0; display:flex; gap:10px; justify-content:flex-end;">
+                    <button class="button button-primary button-extra-small" onclick="editAnnouncement(${i})"><i class="fas fa-edit"></i> Edit</button>
+                    <button class="button button-danger button-extra-small" onclick="hapusAnnouncement(${i})"><i class="fas fa-trash"></i> Hapus</button>
+                </div>` : ''}
+            </div>`;
         }
     }
     html += '</div>';
 
+    // Form Tambah/Edit
     if (role === 'superadmin') {
-        html += '<div id="formAnnouncementContainer" class="hidden" style="margin-top:30px;"><div class="card"><div class="card-header"><span id="formAnnouncementTitle">Tambah Pengumuman Baru</span><button class="button button-danger button-small" onclick="tutupFormAnnouncement()"><i class="fas fa-times"></i> Tutup</button></div>';
-        html += '<div class="grid-2"><div><label class="form-label">Judul Pengumuman</label><input type="text" id="annJudul" class="form-input" placeholder="Judul pengumuman"></div>';
-        html += '<div><label class="form-label">Gambar (Maks 500KB)</label><input type="file" id="annGambar" accept=".jpg,.jpeg,.png" style="display:none;">';
-        html += '<button class="button button-primary button-small" onclick="document.getElementById(\'annGambar\').click();">Pilih Gambar</button>';
-        html += '<span id="annNamaGambar" style="font-size:12px;color:#888;margin-left:10px;">Belum ada gambar</span></div></div>';
-        html += '<div class="form-group"><label class="form-label">Keterangan / Teks</label><textarea id="annDeskripsi" class="form-input" rows="4" placeholder="Isi detail pengumuman..."></textarea></div>';
-        html += '<input type="hidden" id="annEditIndex" value="-1">';
-        html += '<button class="button button-primary margin-top-10" onclick="simpanAnnouncement()"><i class="fas fa-save"></i> Simpan Pengumuman</button></div></div>';
+        html += `
+        <div id="formAnnouncementContainer" class="hidden" style="margin-top:30px;">
+            <div class="card">
+                <div class="card-header">
+                    <span id="formAnnouncementTitle">Tambah Pengumuman Baru</span>
+                    <button class="button button-danger button-small" onclick="tutupFormAnnouncement()"><i class="fas fa-times"></i> Tutup</button>
+                </div>
+                <div class="grid-2">
+                    <div><label class="form-label">Judul Pengumuman</label><input type="text" id="annJudul" class="form-input" placeholder="Judul pengumuman"></div>
+                    <div><label class="form-label">Gambar (Maks 500KB)</label>
+                        <input type="file" id="annGambar" accept=".jpg,.jpeg,.png" style="display:none;">
+                        <button class="button button-primary button-small" onclick="document.getElementById('annGambar').click();">Pilih Gambar</button>
+                        <span id="annNamaGambar" style="font-size:12px; color:#888; margin-left:10px;">Belum ada gambar</span>
+                    </div>
+                </div>
+                <div class="form-group"><label class="form-label">Keterangan / Teks</label><textarea id="annDeskripsi" class="form-input" rows="4" placeholder="Isi detail pengumuman..."></textarea></div>
+                <input type="hidden" id="annEditIndex" value="-1">
+                <button class="button button-primary margin-top-10" onclick="simpanAnnouncement()"><i class="fas fa-save"></i> Simpan Pengumuman</button>
+            </div>
+        </div>`;
     }
 
     areaKonten.innerHTML = html;
 
+    // Event listener upload gambar (dilindungi agar tidak error saat elemen belum muncul)
     setTimeout(function() {
         var inputGambar = document.getElementById('annGambar');
         if (inputGambar) {
+            // Clone node untuk menghindari duplikasi event
             var newInput = inputGambar.cloneNode(true);
             inputGambar.parentNode.replaceChild(newInput, inputGambar);
+            
             newInput.addEventListener('change', function(e) {
                 var file = e.target.files[0];
-                if (file) {
-                    if (file.size > 500 * 1024) {
-                        tampilkanToast('Ukuran gambar terlalu besar! Maksimal 500KB.', 'error');
-                        document.getElementById('annNamaGambar').textContent = 'Gagal upload (terlalu besar)';
-                        this.value = '';
-                        localStorage.removeItem('2r_announcement_gambar_temp');
-                        return;
-                    }
-                    document.getElementById('annNamaGambar').textContent = 'Sedang memproses...';
-                    var reader = new FileReader();
-                    reader.onload = function(ev) {
-                        localStorage.setItem('2r_announcement_gambar_temp', ev.target.result);
-                        document.getElementById('annNamaGambar').textContent = file.name + ' (Siap)';
-                    };
-                    reader.onerror = function() {
-                        tampilkanToast('Gagal membaca file.', 'error');
-                        document.getElementById('annNamaGambar').textContent = 'Gagal upload';
-                    };
-                    reader.readAsDataURL(file);
+                var label = document.getElementById('annNamaGambar');
+                if (!file) return;
+                
+                if (file.size > 500 * 1024) {
+                    tampilkanToast('Ukuran gambar terlalu besar! Maksimal 500KB.', 'error');
+                    label.textContent = 'Gagal upload (terlalu besar)';
+                    this.value = '';
+                    localStorage.removeItem('2r_announcement_gambar_temp');
+                    return;
                 }
+
+                label.textContent = 'Sedang memproses...';
+                var reader = new FileReader();
+                reader.onload = function(ev) {
+                    localStorage.setItem('2r_announcement_gambar_temp', ev.target.result);
+                    label.textContent = file.name + ' (Siap)';
+                };
+                reader.onerror = function() {
+                    tampilkanToast('Gagal membaca file.', 'error');
+                    label.textContent = 'Gagal upload';
+                };
+                reader.readAsDataURL(file);
             });
         }
     }, 300);
@@ -3686,7 +3708,7 @@ function bukaChat(targetId) {
 // ===== AKHIR BLOK 8.10.4 =====
 </script>
 <!-- ===== AKHIR BLOK 8.10 ===== -->
-    <!-- ===== BLOK 8.11 - JS_CRUD_PAPAN_INFORMASI (HANYA SUPERADMIN) ===== -->
+    <!-- ===== BLOK 8.11 - JS_CRUD_PAPAN_INFORMASI (VERSI TERBARU) ===== -->
 <script>
     // ===== BUKA & TUTUP FORM =====
     function bukaFormAnnouncement() {
@@ -3699,7 +3721,11 @@ function bukaChat(targetId) {
         document.getElementById('annDeskripsi').value = '';
         document.getElementById('annNamaGambar').textContent = 'Belum ada gambar';
         localStorage.removeItem('2r_announcement_gambar_temp');
-        container.scrollIntoView({ behavior: 'smooth' });
+        
+        // Scroll ke form setelah 200ms agar DOM sempat dirender
+        setTimeout(function() {
+            container.scrollIntoView({ behavior: 'smooth' });
+        }, 200);
     }
     
     function tutupFormAnnouncement() {
@@ -3737,7 +3763,10 @@ function bukaChat(targetId) {
                 if (editIndex < dataAnn.length) {
                     dataAnn[editIndex].judul = judul;
                     dataAnn[editIndex].deskripsi = deskripsi;
-                    if (gambarTemp) dataAnn[editIndex].gambar = gambarTemp;
+                    // Ganti gambar hanya jika user mengupload gambar baru
+                    if (gambarTemp) {
+                        dataAnn[editIndex].gambar = gambarTemp;
+                    }
                     tampilkanToast('Pengumuman berhasil diperbarui!', 'success');
                 } else {
                     tampilkanToast('Data tidak ditemukan!', 'error');
@@ -3747,8 +3776,9 @@ function bukaChat(targetId) {
 
             localStorage.setItem('2r_announcements', JSON.stringify(dataAnn));
             localStorage.removeItem('2r_announcement_gambar_temp');
+            
             tutupFormAnnouncement();
-            renderPapanInformasi();
+            renderPapanInformasi(); // Refresh tampilan
 
         } catch (error) {
             console.error("ERROR PAPAN INFORMASI:", error);
@@ -3766,6 +3796,7 @@ function bukaChat(targetId) {
         var a = dataAnn[index];
         var container = document.getElementById('formAnnouncementContainer');
         if (!container) return;
+        
         container.classList.remove('hidden');
         document.getElementById('formAnnouncementTitle').textContent = 'Edit Pengumuman';
         document.getElementById('annEditIndex').value = index;
@@ -3773,7 +3804,10 @@ function bukaChat(targetId) {
         document.getElementById('annDeskripsi').value = a.deskripsi;
         document.getElementById('annNamaGambar').textContent = a.gambar ? 'Gambar sudah ada' : 'Belum ada gambar';
         localStorage.removeItem('2r_announcement_gambar_temp');
-        container.scrollIntoView({ behavior: 'smooth' });
+
+        setTimeout(function() {
+            container.scrollIntoView({ behavior: 'smooth' });
+        }, 200);
     }
 
     // ===== HAPUS DATA =====
