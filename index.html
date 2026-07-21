@@ -2797,6 +2797,89 @@ function renderPapanInformasi() {
     }
 </script>
 <!-- ===== AKHIR BLOK 8.4.4 ===== -->
+<!-- ===== BLOK 8.4.5 - RENDER BANTUAN & FAQ ===== -->
+<script>
+    function renderBantuanFAQ() {
+        var areaKonten = document.getElementById('mainContent');
+        var html = '<div class="page-header"><h2>Pusat Bantuan & FAQ</h2><p>Temukan jawaban atas pertanyaan seputar aplikasi Toko Online 2R.</p></div>';
+        
+        html += '<div class="faq-container">';
+        var dataFAQ = [
+            {
+                kategori: 'Akun & Login',
+                items: [
+                    { q: 'Bagaimana cara mendaftar akun?', a: 'Anda dapat mendaftar dengan mengisi form registrasi di halaman login. Pilih role Anda, lalu isi username, password, dan nama lengkap.' },
+                    { q: 'Saya lupa password, bagaimana cara meresetnya?', a: 'Pada halaman login, masukkan username Anda, lalu klik tombol "Lupa Password?". Sistem akan mereset password Anda menjadi 8 karakter acak baru.' },
+                    { q: 'Mengapa akun saya statusnya "Menunggu Verifikasi"?', a: 'Jika mendaftar sebagai Toko atau Ojek, akun harus disetujui oleh SuperAdmin/Staf Admin terlebih dahulu.' }
+                ]
+            },
+            {
+                kategori: 'Belanja & Layanan (Untuk Customer)',
+                items: [
+                    { q: 'Bagaimana cara membeli produk?', a: 'Anda dapat melihat produk di menu "Lihat Produk" atau "Lihat Toko Terdekat". Jika tertarik, tambahkan ke Keranjang, lalu lanjutkan ke Pembayaran.' },
+                    { q: 'Bagaimana cara memberi Ulasan & Rating?', a: 'Masuk ke menu "Ulasan & Rating", pilih ID Toko/Ojek target, isi bintang dan komentar, lalu klik Kirim Ulasan.' },
+                    { q: 'Bagaimana cara chat dengan penjual?', a: 'Anda bisa menggunakan fitur "Chat". Cari ID tujuan (misal ID Toko), lalu kirim pesan.' }
+                ]
+            },
+            {
+                kategori: 'Manajemen Toko & Ojek (Untuk Penjual)',
+                items: [
+                    { q: 'Bagaimana cara menambahkan produk di gudang?', a: 'Masuk ke menu "Manajemen Stok Gudang", lalu klik "Tambah Produk Baru". Isi data produk dengan lengkap.' },
+                    { q: 'Dimana saya bisa melihat pesanan masuk?', a: 'Anda bisa melihat daftar pesanan di menu "Pesanan Masuk" (Toko) atau "Order Masuk" (Ojek).' },
+                    { q: 'Bagaimana cara membalas ulasan dari Customer?', a: 'Buka menu "Ulasan & Rating". Di bawah ulasan yang masuk, akan ada kolom input teks untuk membalas.' }
+                ]
+            },
+            {
+                kategori: 'Administrasi & Pengelolaan (Untuk Admin)',
+                items: [
+                    { q: 'Bagaimana cara menyetujui akun baru?', a: 'Masuk ke menu "Persetujuan Akun". Lihat daftar akun yang menunggu, lalu klik "Setujui" atau "Tolak".' },
+                    { q: 'Bagaimana cara menambahkan Iklan atau Pengumuman?', a: 'Klik menu "Menu Iklan" lalu "Tambah Iklan Baru". Untuk Pengumuman, buka "Papan Informasi" lalu "Tambah Pengumuman".' }
+                ]
+            }
+        ];
+
+        for (var k = 0; k < dataFAQ.length; k++) {
+            var kat = dataFAQ[k];
+            html += '<div class="faq-kategori-title">' + kat.kategori + '</div>';
+            for (var i = 0; i < kat.items.length; i++) {
+                var item = kat.items[i];
+                var indexId = 'faq_' + k + '_' + i;
+                html += `
+                <div class="faq-item" id="${indexId}">
+                    <div class="faq-question" onclick="toggleFaq('${indexId}')">
+                        <span>${escapeHtml(item.q)}</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">${escapeHtml(item.a)}</div>
+                </div>`;
+            }
+        }
+
+        html += '<div class="faq-kategori-title">Hubungi Kami</div>';
+        html += `<div class="card" style="text-align:center; background:#f8f9fa;">
+            <p style="font-size:14px; color:#666; margin-bottom:10px;">Butuh bantuan lebih lanjut? Silakan chat langsung dengan Admin atau Customer Service.</p>
+            <button class="button button-primary" onclick="navigasiKeHalaman('chat')"><i class="fas fa-comments"></i> Buka Chat</button>
+        </div>`;
+        html += '</div>';
+        areaKonten.innerHTML = html;
+    }
+
+    function toggleFaq(id) {
+        var element = document.getElementById(id);
+        if (element) {
+            if (element.classList.contains('active')) {
+                element.classList.remove('active');
+            } else {
+                var allItems = document.querySelectorAll('.faq-item');
+                for (var i = 0; i < allItems.length; i++) {
+                    allItems[i].classList.remove('active');
+                }
+                element.classList.add('active');
+            }
+        }
+    }
+</script>
+<!-- ===== AKHIR BLOK 8.4.5 ===== -->
 <!-- ===== BLOK 8.5 - JS_ESCAPE_HTML (ANTI-XSS) ===== -->
 <script>
     // ===== BLOK 8.5.1 - ESCAPE HTML =====
@@ -3854,6 +3937,25 @@ function bukaChat(targetId) {
     }
 </script>
 <!-- ===== AKHIR BLOK 8.13 ===== -->
+    <!-- ===== BLOK 8.14 - JS_CRUD_FOTO_PROFIL_CUSTOMER ===== -->
+<script>
+    function simpanFotoProfilCustomer() {
+        var foto = localStorage.getItem('2r_foto_profil_temp_customer');
+        if (!foto) { tampilkanToast('Upload foto terlebih dahulu!', 'warning'); return; }
+        var user = JSON.parse(localStorage.getItem('2r_user'));
+        var dataAkun = getDataAkun();
+        user.fotoProfil = foto;
+        for (var i = 0; i < dataAkun.length; i++) {
+            if (dataAkun[i].id === user.id) { dataAkun[i].fotoProfil = foto; break; }
+        }
+        localStorage.setItem('2r_user', JSON.stringify(user));
+        simpanDataAkun(dataAkun);
+        localStorage.removeItem('2r_foto_profil_temp_customer');
+        tampilkanToast('Foto profil berhasil disimpan!', 'success');
+        renderProfilCustomer();
+    }
+</script>
+<!-- ===== AKHIR BLOK 8.14 ===== -->
 <!-- ===== AKHIR BAGIAN 8 ===== -->
 
 </body>
