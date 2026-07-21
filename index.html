@@ -1180,49 +1180,41 @@ body { font-family:'Poppins', sans-serif; background:var(--bg); min-height:100vh
 
         areaKonten.innerHTML = html;
 
-        // --- EVENT LISTENER FOTO PROFIL ---
+                // --- EVENT LISTENER FOTO PROFIL (DIPERKUAT) ---
+        setTimeout(function() {
             var containerFoto = document.getElementById('uploadFotoContainerCustomer');
             var inputFoto = document.getElementById('inputFotoProfilCustomer');
-            if (containerFoto && inputFoto) {
-                containerFoto.onclick = function() { inputFoto.click(); };
+            var previewContainer = document.getElementById('fotoPreviewCustomer');
+            
+            if (containerFoto && inputFoto && previewContainer) {
+                // Mengklik area upload akan membuka file explorer
+                containerFoto.onclick = function() {
+                    inputFoto.click();
+                };
+
+                // Saat file dipilih, langsung kompres dan preview
                 inputFoto.onchange = async function(e) {
                     var file = e.target.files[0];
                     if (file) {
-                        document.getElementById('fotoPreviewCustomer').innerHTML = '<p>Mengkompres...</p>';
-                        var compressed = await compressImage(file, 200, 0.7);
-                        document.getElementById('fotoPreviewCustomer').innerHTML = '<img src="' + compressed + '" class="preview-image" style="max-width:150px; max-height:150px; border-radius:50%; object-fit:cover;">';
-                        localStorage.setItem('2r_foto_profil_temp_customer', compressed);
+                        previewContainer.innerHTML = '<p style="color:#FF6B00; font-weight:600;">Sedang mengompres...</p>';
+                        try {
+                            // Kompres gambar ke ukuran kecil (200px, kualitas 70%) agar localStorage tidak penuh
+                            var compressed = await compressImage(file, 200, 0.7);
+                            // Tampilkan preview
+                            previewContainer.innerHTML = '<img src="' + compressed + '" class="preview-image" style="max-width:150px; max-height:150px; border-radius:50%; object-fit:cover;">';
+                            // Simpan sementara di localStorage
+                            localStorage.setItem('2r_foto_profil_temp_customer', compressed);
+                            tampilkanToast('Foto siap! Klik tombol "Simpan Foto" di bawah.', 'success');
+                        } catch (err) {
+                            console.error('Error kompresi foto:', err);
+                            tampilkanToast('Gagal memproses foto! Coba file lain.', 'error');
+                            previewContainer.innerHTML = '<p style="color:#d32f2f; font-weight:600;">Gagal upload</p>';
+                            localStorage.removeItem('2r_foto_profil_temp_customer');
+                        }
                     }
                 };
-            }
-        // --- EVENT LISTENER FOTO PROFIL (Masih di dalam setTimeout yang sudah ada) ---
-        // Scroll ke bawah lagi, ada setTimeout kedua. Tambahkan ini di dalamnya:
-        // KTP Upload
-        html += '<div class="card"><div class="card-header">Dokumen KTP & Domisili</div>';
-        html += '<div class="upload-area" id="uploadKtpContainerCustomer"><div id="ktpPreviewCustomer">';
-        if (user.ktp) {
-            html += '<img src="' + user.ktp + '" class="preview-image">';
-        } else {
-            html += '<i class="fas fa-cloud-upload-alt"></i><p>Klik untuk upload KTP</p>';
-        }
-        html += '</div><input type="file" id="inputKtpCustomer" accept=".jpg,.jpeg,.png" style="display:none"></div>';
-        html += '<button class="button button-primary margin-top-10" onclick="simpanKTPCustomer()"><i class="fas fa-save"></i> Simpan KTP</button>';
-        if (user.ktp) html += '<button class="button button-danger margin-top-10" onclick="hapusKTPCustomer()" style="margin-left:10px;"><i class="fas fa-trash"></i> Hapus KTP</button>';
-        html += '</div>';
-
-        areaKonten.innerHTML = html;
-        setTimeout(function() {
-            loadDataWilayahTersimpan('ktp', user);
-            loadDataWilayahTersimpan('dom', user);
-            isiDropdownWilayah('ktp');
-            isiDropdownWilayah('dom');
-        }, 500);
-        setTimeout(function() {
-            var containerKTP = document.getElementById('uploadKtpContainerCustomer');
-            var inputKTP = document.getElementById('inputKtpCustomer');
-            if (containerKTP && inputKTP) {
-                containerKTP.onclick = function() { inputKTP.click(); };
-                inputKTP.onchange = function(e) { previewKTPCustomer(e.target.files[0]); };
+            } else {
+                console.error("Elemen upload foto tidak ditemukan! Periksa ID uploadFotoContainerCustomer.");
             }
         }, 300);
     }
@@ -4253,19 +4245,39 @@ function bukaChat(targetId) {
     <!-- ===== BLOK 8.14 - JS_CRUD_FOTO_PROFIL_CUSTOMER ===== -->
 <script>
     function simpanFotoProfilCustomer() {
-        var foto = localStorage.getItem('2r_foto_profil_temp_customer');
-        if (!foto) { tampilkanToast('Upload foto terlebih dahulu!', 'warning'); return; }
-        var user = JSON.parse(localStorage.getItem('2r_user'));
-        var dataAkun = getDataAkun();
-        user.fotoProfil = foto;
-        for (var i = 0; i < dataAkun.length; i++) {
-            if (dataAkun[i].id === user.id) { dataAkun[i].fotoProfil = foto; break; }
+        try {
+            var foto = localStorage.getItem('2r_foto_profil_temp_customer');
+            if (!foto) {
+                tampilkanToast('Anda belum memilih atau mengupload foto!', 'warning');
+                return;
+            }
+
+            var user = JSON.parse(localStorage.getItem('2r_user'));
+            var dataAkun = getDataAkun();
+            
+            // Simpan foto ke data akun user
+            user.fotoProfil = foto;
+            for (var i = 0; i < dataAkun.length; i++) {
+                if (dataAkun[i].id === user.id) {
+                    dataAkun[i].fotoProfil = foto;
+                    break;
+                }
+            }
+
+            // Simpan perubahan ke localStorage
+            localStorage.setItem('2r_user', JSON.stringify(user));
+            simpanDataAkun(dataAkun);
+            
+            // Hapus data temporary
+            localStorage.removeItem('2r_foto_profil_temp_customer');
+            
+            tampilkanToast('Foto profil berhasil disimpan!', 'success');
+            renderProfilCustomer(); // Refresh halaman agar foto langsung terlihat di Navbar
+            
+        } catch (error) {
+            console.error("ERROR SIMPAN FOTO:", error);
+            tampilkanToast('Terjadi error saat menyimpan foto: ' + error.message, 'error');
         }
-        localStorage.setItem('2r_user', JSON.stringify(user));
-        simpanDataAkun(dataAkun);
-        localStorage.removeItem('2r_foto_profil_temp_customer');
-        tampilkanToast('Foto profil berhasil disimpan!', 'success');
-        renderProfilCustomer();
     }
 </script>
 <!-- ===== AKHIR BLOK 8.14 ===== -->
