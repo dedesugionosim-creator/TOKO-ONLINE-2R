@@ -183,6 +183,7 @@
 <!-- ===== AKHIR BAGIAN 2 ===== -->
 <!-- ===== BAGIAN 3 - CSS GLOBAL & RESET ===== -->
 
+<style>
 /* ====================================================== */
 /* BLOK 3.1 – CSS RESET GLOBAL (VERSI DIPERBARUI)         */
 /* Semua fitur asli tetap dipertahankan, hanya dipercantik */
@@ -316,7 +317,6 @@ body {
     animation: blink 0.5s ease-in-out 3;
 }
 /* ===== AKHIR BLOK 3.1.6 ===== */
-
 /* ===== AKHIR BLOK 3.1 ===== */
 
 /* ====================================================== */
@@ -461,137 +461,235 @@ body {
     color: var(--primary-dark);
 }
 /* ===== AKHIR BLOK 3.2.6 ===== */
-
-/* ===== AKHIR BLOK 3.2 ===== */  
+/* ===== AKHIR BLOK 3.2 ===== */
 
 /* ===== BLOK 3.3 - CSS_DASHBOARD ===== */
-<style>
-    .navbar { background:white; padding:12px 30px; display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid #FF6B00; position:fixed; top:0; left:0; right:0; z-index:1000; }
-    .navbar-brand { font-size:20px; font-weight:700; color:#FF6B00; display:flex; align-items:center; gap:10px; }
-    .navbar-user { display:flex; align-items:center; gap:15px; }
-    .navbar-user .role-badge { background:#fff0e5; color:#FF6B00; padding:4px 12px; border-radius:15px; font-size:12px; font-weight:600; }
-    .button-logout { background:#f44336; color:white; border:none; padding:8px 16px; border-radius:6px; cursor:pointer; font-weight:600; font-size:13px; transition:background 0.3s ease; }
-    .button-logout:hover { background:#d32f2f; }
-    .sidebar { position:fixed; top:60px; left:0; bottom:0; width:250px; background:white; border-right:1px solid #eeeeee; padding-top:15px; overflow-y:auto; z-index:999; }
-    .sidebar-menu-title { font-size:10px; text-transform:uppercase; color:#bbbbbb; padding:15px 25px 8px; font-weight:700; letter-spacing:1.5px; }
-    .sidebar-menu-item { padding:11px 25px; cursor:pointer; color:#666666; font-weight:500; display:flex; align-items:center; gap:12px; font-size:14px; border-left:3px solid transparent; transition:background 0.2s ease, color 0.2s ease; }
-    .sidebar-menu-item:hover { background:#fdf6f0; color:#FF6B00; }
-    .sidebar-menu-item.active { background:#fff0e5; color:#FF6B00; border-left-color:#FF6B00; font-weight:600; }
-    .content { margin-left:250px; margin-top:60px; padding:25px; min-height:calc(100vh - 60px); background:#f8f9fa; }
-    .page-header { margin-bottom:20px; }
-    .page-header h2 { font-size:22px; color:#333333; }
-    .page-header p { color:#888888; font-size:14px; }
+/* (Anda bisa tetap menggunakan versi asli atau versi baru) */
+/* Untuk konsistensi, disarankan menggunakan versi yang sudah diperbarui */
+/* Berikut adalah versi yang sudah disesuaikan dengan variabel CSS: */
+
+.navbar {
+    background: white;
+    padding: 12px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid var(--primary);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    height: 64px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+.navbar-brand {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.navbar-user {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+.navbar-user .role-badge {
+    background: var(--primary-light);
+    color: var(--primary);
+    padding: 4px 12px;
+    border-radius: var(--radius);
+    font-size: 12px;
+    font-weight: 600;
+    transition: background 0.3s ease;
+}
+.navbar-user .role-badge:hover {
+    background: #ffe0cc;
+}
+.button-logout {
+    background: #f44336;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: var(--radius);
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 13px;
+    transition: all 0.3s ease;
+}
+.button-logout:hover {
+    background: #d32f2f;
+    transform: scale(1.02);
+}
+.sidebar {
+    position: fixed;
+    top: 64px;
+    left: 0;
+    bottom: 0;
+    width: 250px;
+    background: white;
+    border-right: 1px solid var(--border);
+    padding-top: 15px;
+    overflow-y: auto;
+    z-index: 999;
+    box-shadow: 2px 0 10px rgba(0,0,0,0.03);
+    transition: left 0.3s ease;
+}
+.sidebar-menu-title {
+    font-size: 11px;
+    text-transform: uppercase;
+    color: #aaa;
+    padding: 15px 25px 8px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+}
+.sidebar-menu-item {
+    padding: 12px 25px;
+    cursor: pointer;
+    color: #555;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-size: 14px;
+    border-left: 4px solid transparent;
+    transition: all 0.2s ease;
+    position: relative;
+}
+.sidebar-menu-item:hover {
+    background: #fafafa;
+    color: var(--primary);
+    transform: translateX(4px);
+}
+.sidebar-menu-item.active {
+    background: var(--primary-light);
+    color: var(--primary);
+    border-left-color: var(--primary);
+    font-weight: 600;
+}
+.content {
+    margin-left: 250px;
+    margin-top: 64px;
+    padding: 25px;
+    min-height: calc(100vh - 64px);
+    background: var(--bg);
+    transition: margin-left 0.3s ease;
+}
+.page-header {
+    margin-bottom: 20px;
+}
+.page-header h2 {
+    font-size: 22px;
+    color: var(--text);
+    font-weight: 700;
+}
+.page-header p {
+    color: var(--text-muted);
+    font-size: 14px;
+}
+/* ===== AKHIR BLOK 3.3 ===== */
 </style>
+
 <!-- ===== BAGIAN 4 - CSS WIDGET, TABEL, MODAL, BUTTON, RESPONSIVE ===== -->
 
-<!-- ===== BLOK 4.1 - CSS_WIDGET_TABEL ===== -->
 <style>
-    .card { background:white; border-radius:10px; box-shadow:0 2px 8px rgba(0,0,0,0.04); margin-bottom:20px; padding:20px; border:1px solid #f0f0f0; }
-    .card-header { font-weight:600; font-size:15px; border-bottom:1px solid #f0f0f0; padding-bottom:12px; margin-bottom:15px; display:flex; justify-content:space-between; align-items:center; }
-    .widget-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:15px; margin-bottom:25px; }
-    .widget-card { background:white; border-radius:12px; padding:20px; box-shadow:0 2px 8px rgba(0,0,0,0.04); border:1px solid #f0f0f0; text-align:center; }
-    .widget-card .widget-icon { font-size:35px; margin-bottom:10px; }
-    .widget-card .widget-number { font-size:28px; font-weight:700; color:#333; }
-    .widget-card .widget-label { font-size:13px; color:#888; margin-top:5px; }
-    .grid-2 { display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:15px; }
-    .table-container { overflow-x:auto; }
-    .table { width:100%; border-collapse:collapse; font-size:13px; }
-    .table thead { background:#f8f9fa; }
-    .table thead th { padding:12px 14px; text-align:left; font-weight:600; color:#555; border-bottom:2px solid #eee; }
-    .table tbody td { padding:10px 14px; border-bottom:1px solid #f5f5f5; }
-    .badge { display:inline-block; padding:4px 12px; border-radius:12px; font-size:11px; font-weight:600; }
-    .badge-success { background:#e8f5e9; color:#2e7d32; }
-    .badge-warning { background:#fff3e0; color:#e65100; }
-    .badge-danger { background:#ffebee; color:#c62828; }
-</style>
-<!-- ===== AKHIR BLOK 4.1 ===== -->
+/* ===== BLOK 4.1 - CSS_WIDGET_TABEL ===== */
+.card { background:white; border-radius:10px; box-shadow:0 2px 8px rgba(0,0,0,0.04); margin-bottom:20px; padding:20px; border:1px solid #f0f0f0; }
+.card-header { font-weight:600; font-size:15px; border-bottom:1px solid #f0f0f0; padding-bottom:12px; margin-bottom:15px; display:flex; justify-content:space-between; align-items:center; }
+.widget-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:15px; margin-bottom:25px; }
+.widget-card { background:white; border-radius:12px; padding:20px; box-shadow:0 2px 8px rgba(0,0,0,0.04); border:1px solid #f0f0f0; text-align:center; }
+.widget-card .widget-icon { font-size:35px; margin-bottom:10px; }
+.widget-card .widget-number { font-size:28px; font-weight:700; color:#333; }
+.widget-card .widget-label { font-size:13px; color:#888; margin-top:5px; }
+.grid-2 { display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:15px; }
+.table-container { overflow-x:auto; }
+.table { width:100%; border-collapse:collapse; font-size:13px; }
+.table thead { background:#f8f9fa; }
+.table thead th { padding:12px 14px; text-align:left; font-weight:600; color:#555; border-bottom:2px solid #eee; }
+.table tbody td { padding:10px 14px; border-bottom:1px solid #f5f5f5; }
+.badge { display:inline-block; padding:4px 12px; border-radius:12px; font-size:11px; font-weight:600; }
+.badge-success { background:#e8f5e9; color:#2e7d32; }
+.badge-warning { background:#fff3e0; color:#e65100; }
+.badge-danger { background:#ffebee; color:#c62828; }
+/* ===== AKHIR BLOK 4.1 ===== */
 
-<!-- ===== BLOK 4.2 - CSS_MODAL_BUTTON ===== -->
-<style>
-    .form-input { width:100%; padding:10px 14px; border:1px solid #dddddd; border-radius:6px; font-size:14px; font-family:'Poppins', sans-serif; transition:border-color 0.3s ease; }
-    .form-input:focus { border-color:#FF6B00; outline:none; }
-    .form-label { font-size:12px; color:#888888; margin-bottom:4px; display:block; }
-    .button { padding:8px 18px; border-radius:6px; cursor:pointer; font-weight:600; font-size:13px; border:none; font-family:'Poppins', sans-serif; display:inline-flex; align-items:center; gap:6px; transition:background 0.3s ease; }
-    .button-primary { background:#FF6B00; color:white; }
-    .button-primary:hover { background:#e65c00; }
-    .button-success { background:#4CAF50; color:white; }
-    .button-success:hover { background:#388E3C; }
-    .button-danger { background:#F44336; color:white; }
-    .button-danger:hover { background:#D32F2F; }
-    .button-warning { background:#FF9800; color:white; }
-    .button-extra-small { padding:4px 10px; font-size:11px; }
-    .button-small { padding:6px 14px; font-size:12px; }
-    .modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:9999; display:none; justify-content:center; align-items:center; }
-    .modal-overlay.active { display:flex; }
-    .modal { background:white; border-radius:12px; max-width:500px; width:90%; padding:25px; }
-    .modal-header { display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #eeeeee; padding-bottom:12px; margin-bottom:15px; }
-    .modal-header h3 { font-size:18px; }
-    .modal-close { background:none; border:none; font-size:22px; cursor:pointer; color:#aaaaaa; transition:color 0.3s ease; }
-    .modal-close:hover { color:#333333; }
-    .modal-footer { display:flex; justify-content:flex-end; gap:10px; border-top:1px solid #eeeeee; padding-top:15px; margin-top:15px; }
-</style>
-<!-- ===== AKHIR BLOK 4.2 ===== -->
+/* ===== BLOK 4.2 - CSS_MODAL_BUTTON ===== */
+.form-input { width:100%; padding:10px 14px; border:1px solid #dddddd; border-radius:6px; font-size:14px; font-family:'Poppins', sans-serif; transition:border-color 0.3s ease; }
+.form-input:focus { border-color:#FF6B00; outline:none; }
+.form-label { font-size:12px; color:#888888; margin-bottom:4px; display:block; }
+.button { padding:8px 18px; border-radius:6px; cursor:pointer; font-weight:600; font-size:13px; border:none; font-family:'Poppins', sans-serif; display:inline-flex; align-items:center; gap:6px; transition:background 0.3s ease; }
+.button-primary { background:#FF6B00; color:white; }
+.button-primary:hover { background:#e65c00; }
+.button-success { background:#4CAF50; color:white; }
+.button-success:hover { background:#388E3C; }
+.button-danger { background:#F44336; color:white; }
+.button-danger:hover { background:#D32F2F; }
+.button-warning { background:#FF9800; color:white; }
+.button-extra-small { padding:4px 10px; font-size:11px; }
+.button-small { padding:6px 14px; font-size:12px; }
+.modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:9999; display:none; justify-content:center; align-items:center; }
+.modal-overlay.active { display:flex; }
+.modal { background:white; border-radius:12px; max-width:500px; width:90%; padding:25px; }
+.modal-header { display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #eeeeee; padding-bottom:12px; margin-bottom:15px; }
+.modal-header h3 { font-size:18px; }
+.modal-close { background:none; border:none; font-size:22px; cursor:pointer; color:#aaaaaa; transition:color 0.3s ease; }
+.modal-close:hover { color:#333333; }
+.modal-footer { display:flex; justify-content:flex-end; gap:10px; border-top:1px solid #eeeeee; padding-top:15px; margin-top:15px; }
+/* ===== AKHIR BLOK 4.2 ===== */
 
-<!-- ===== BLOK 4.3 - CSS_UPLOAD_PROFIL ===== -->
-<style>
-    .upload-area { border:2px dashed #dddddd; border-radius:10px; padding:25px; text-align:center; background:#fafafa; cursor:pointer; transition:border-color 0.3s ease, background 0.3s ease; }
-    .upload-area:hover { border-color:#FF6B00; background:#fff5f0; }
-    .upload-area i { font-size:45px; color:#dddddd; display:block; margin-bottom:10px; }
-    .preview-image { max-width:100%; max-height:300px; border-radius:8px; margin-top:10px; object-fit:contain; }
-</style>
-<!-- ===== AKHIR BLOK 4.3 ===== -->
+/* ===== BLOK 4.3 - CSS_UPLOAD_PROFIL ===== */
+.upload-area { border:2px dashed #dddddd; border-radius:10px; padding:25px; text-align:center; background:#fafafa; cursor:pointer; transition:border-color 0.3s ease, background 0.3s ease; }
+.upload-area:hover { border-color:#FF6B00; background:#fff5f0; }
+.upload-area i { font-size:45px; color:#dddddd; display:block; margin-bottom:10px; }
+.preview-image { max-width:100%; max-height:300px; border-radius:8px; margin-top:10px; object-fit:contain; }
+/* ===== AKHIR BLOK 4.3 ===== */
 
-<!-- ===== BLOK 4.4 - CSS_RESPONSIVE_TABLET ===== -->
-<style>
-    @media (min-width:768px) and (max-width:1024px) {
-        .navbar { padding:10px 20px; }
-        .navbar-brand { font-size:18px; }
-        .sidebar { width:220px; }
-        .content { margin-left:220px; padding:20px; }
-        .widget-grid { grid-template-columns:repeat(auto-fit, minmax(160px, 1fr)); }
-        .grid-2 { grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); }
-    }
-</style>
-<!-- ===== AKHIR BLOK 4.4 ===== -->
+/* ===== BLOK 4.4 - CSS_RESPONSIVE_TABLET ===== */
+@media (min-width:768px) and (max-width:1024px) {
+    .navbar { padding:10px 20px; }
+    .navbar-brand { font-size:18px; }
+    .sidebar { width:220px; }
+    .content { margin-left:220px; padding:20px; }
+    .widget-grid { grid-template-columns:repeat(auto-fit, minmax(160px, 1fr)); }
+    .grid-2 { grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); }
+}
+/* ===== AKHIR BLOK 4.4 ===== */
 
-<!-- ===== BLOK 4.5 - CSS_RESPONSIVE_HP ===== -->
-<style>
-    @media (max-width:767px) {
-        .navbar { padding:10px 15px; position:fixed; top:0; left:0; right:0; z-index:1001; }
-        .navbar-brand { font-size:16px; gap:8px; }
-        .navbar-user .role-badge { font-size:10px; padding:2px 8px; }
-        .navbar-user span { font-size:13px; }
-        .button-logout { padding:6px 12px; font-size:12px; }
-        #menuToggle { display:block; }
-        .sidebar { left:-100%; width:80%; transition:left 0.3s ease; top:60px; bottom:0; z-index:999; }
-        .sidebar.open { left:0; }
-        .sidebar-overlay { top:60px; z-index:998; }
-        .content { margin-left:0; padding:15px; margin-top:60px; }
-        .widget-grid { grid-template-columns:repeat(auto-fit, minmax(140px, 1fr)); gap:10px; }
-        .widget-card .widget-number { font-size:22px; }
-        .grid-2 { grid-template-columns:1fr; }
-        .table { font-size:12px; }
-        .modal { width:95%; padding:15px; }
-        .authentication-wrapper { padding:10px; }
-        .authentication-box { padding:20px; }
-    }
-</style>
-<!-- ===== AKHIR BLOK 4.5 ===== -->
+/* ===== BLOK 4.5 - CSS_RESPONSIVE_HP ===== */
+@media (max-width:767px) {
+    .navbar { padding:10px 15px; position:fixed; top:0; left:0; right:0; z-index:1001; }
+    .navbar-brand { font-size:16px; gap:8px; }
+    .navbar-user .role-badge { font-size:10px; padding:2px 8px; }
+    .navbar-user span { font-size:13px; }
+    .button-logout { padding:6px 12px; font-size:12px; }
+    #menuToggle { display:block; }
+    .sidebar { left:-100%; width:80%; transition:left 0.3s ease; top:60px; bottom:0; z-index:999; }
+    .sidebar.open { left:0; }
+    .sidebar-overlay { top:60px; z-index:998; }
+    .content { margin-left:0; padding:15px; margin-top:60px; }
+    .widget-grid { grid-template-columns:repeat(auto-fit, minmax(140px, 1fr)); gap:10px; }
+    .widget-card .widget-number { font-size:22px; }
+    .grid-2 { grid-template-columns:1fr; }
+    .table { font-size:12px; }
+    .modal { width:95%; padding:15px; }
+    .authentication-wrapper { padding:10px; }
+    .authentication-box { padding:20px; }
+}
+/* ===== AKHIR BLOK 4.5 ===== */
 
-<!-- ===== BLOK 4.6 - CSS_HAMBURGER_OVERLAY ===== -->
-<style>
-    #menuToggle { display:none; background:none; border:none; font-size:22px; cursor:pointer; color:#FF6B00; padding:0; margin-right:10px; transition:transform 0.3s ease; }
-    #menuToggle:active { transform:scale(0.9); }
-    .sidebar-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:998; }
-    .sidebar-overlay.active { display:block; }
-</style>
-<!-- ===== AKHIR BLOK 4.6 ===== -->
+/* ===== BLOK 4.6 - CSS_HAMBURGER_OVERLAY ===== */
+#menuToggle { display:none; background:none; border:none; font-size:22px; cursor:pointer; color:#FF6B00; padding:0; margin-right:10px; transition:transform 0.3s ease; }
+#menuToggle:active { transform:scale(0.9); }
+.sidebar-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:998; }
+.sidebar-overlay.active { display:block; }
+/* ===== AKHIR BLOK 4.6 ===== */
 
-<!-- ===== BLOK 4.7 - CSS_BADGE_NOTIFIKASI ===== -->
-<style>
-    .sidebar-menu-item .notif-badge { background:#f44336; color:white; border-radius:50%; padding:2px 8px; font-size:10px; margin-left:8px; display:inline-block; font-weight:700; min-width:20px; text-align:center; line-height:1.4; }
+/* ===== BLOK 4.7 - CSS_BADGE_NOTIFIKASI ===== */
+.sidebar-menu-item .notif-badge { background:#f44336; color:white; border-radius:50%; padding:2px 8px; font-size:10px; margin-left:8px; display:inline-block; font-weight:700; min-width:20px; text-align:center; line-height:1.4; }
+/* ===== AKHIR BLOK 4.7 ===== */
 </style>
-<!-- ===== AKHIR BLOK 4.7 ===== -->
 <!-- ===== AKHIR BAGIAN 4 ===== -->
 <!-- ===== BAGIAN 5 - JAVASCRIPT UTILITY ===== -->
 
