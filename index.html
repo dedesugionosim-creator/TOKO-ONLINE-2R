@@ -3513,6 +3513,128 @@ function bukaChat(targetId) {
     }
 </script>
 <!-- ===== AKHIR BLOK 8.11 ===== -->
+    <!-- ===== BLOK 8.12 - JS_CRUD_KELOLA_IKLAN (YANG HILANG) ===== -->
+<script>
+    // ===== BUKA & TUTUP FORM IKLAN =====
+    function bukaFormIklan() {
+        var container = document.getElementById('formIklanContainer');
+        if (container) {
+            container.classList.remove('hidden');
+            document.getElementById('formIklanTitle').textContent = 'Tambah Iklan Baru';
+            document.getElementById('iklanEditIndex').value = '-1';
+            document.getElementById('iklanJudul').value = '';
+            document.getElementById('iklanDeskripsi').value = '';
+            document.getElementById('iklanWarna').value = '#FF6B00';
+            document.getElementById('iklanNamaGambar').textContent = 'Belum ada gambar';
+            localStorage.removeItem('2r_iklan_gambar_temp');
+            container.scrollIntoView({ behavior: 'smooth' });
+        }
+    }
+
+    function tutupFormIklan() {
+        var container = document.getElementById('formIklanContainer');
+        if (container) container.classList.add('hidden');
+    }
+
+    // ===== SIMPAN DATA IKLAN =====
+    function simpanIklan() {
+        try {
+            var judul = document.getElementById('iklanJudul').value.trim();
+            var deskripsi = document.getElementById('iklanDeskripsi').value.trim();
+            var warna = document.getElementById('iklanWarna').value;
+            var editIndex = parseInt(document.getElementById('iklanEditIndex').value);
+
+            // Validasi
+            if (!judul || !deskripsi) {
+                tampilkanToast('Judul dan deskripsi wajib diisi!', 'warning');
+                return;
+            }
+
+            // Ambil gambar sementara (format JSON Array)
+            var gambarTemp = localStorage.getItem('2r_iklan_gambar_temp');
+            var gambarArray = [];
+            if (gambarTemp) {
+                try {
+                    gambarArray = JSON.parse(gambarTemp);
+                } catch (e) {
+                    console.error('Gagal parsing gambar:', e);
+                    gambarArray = [];
+                }
+            }
+
+            var dataIklan = JSON.parse(localStorage.getItem('2r_iklan') || '[]');
+
+            if (editIndex === -1) {
+                // Tambah baru
+                dataIklan.push({
+                    id: Date.now(),
+                    judul: judul,
+                    deskripsi: deskripsi,
+                    warna: warna,
+                    gambar: gambarArray
+                });
+                tampilkanToast('Iklan berhasil ditambahkan!', 'success');
+            } else {
+                // Edit data
+                if (editIndex < dataIklan.length) {
+                    dataIklan[editIndex].judul = judul;
+                    dataIklan[editIndex].deskripsi = deskripsi;
+                    dataIklan[editIndex].warna = warna;
+                    // Jika user mengupload gambar baru, ganti gambar lama
+                    if (gambarArray.length > 0) {
+                        dataIklan[editIndex].gambar = gambarArray;
+                    }
+                    tampilkanToast('Iklan berhasil diperbarui!', 'success');
+                } else {
+                    tampilkanToast('Iklan tidak ditemukan!', 'error');
+                    return;
+                }
+            }
+
+            // Simpan ke localStorage
+            localStorage.setItem('2r_iklan', JSON.stringify(dataIklan));
+            localStorage.removeItem('2r_iklan_gambar_temp');
+
+            tutupFormIklan();
+            renderMenuIklan(); // Refresh tampilan
+
+        } catch (error) {
+            console.error('ERROR SIMPAN IKLAN:', error);
+            tampilkanToast('Terjadi error: ' + error.message, 'error');
+        }
+    }
+
+    // ===== EDIT DATA IKLAN =====
+    function editIklan(index) {
+        var dataIklan = JSON.parse(localStorage.getItem('2r_iklan') || '[]');
+        if (index < 0 || index >= dataIklan.length) {
+            tampilkanToast('Iklan tidak ditemukan!', 'error');
+            return;
+        }
+        var iklan = dataIklan[index];
+        document.getElementById('formIklanContainer').classList.remove('hidden');
+        document.getElementById('formIklanTitle').textContent = 'Edit Iklan';
+        document.getElementById('iklanEditIndex').value = index;
+        document.getElementById('iklanJudul').value = iklan.judul;
+        document.getElementById('iklanDeskripsi').value = iklan.deskripsi;
+        document.getElementById('iklanWarna').value = iklan.warna || '#FF6B00';
+        var jmlGambar = (iklan.gambar && Array.isArray(iklan.gambar)) ? iklan.gambar.length : 0;
+        document.getElementById('iklanNamaGambar').textContent = (jmlGambar > 0) ? 'Gambar sudah ada (' + jmlGambar + ' file)' : 'Belum ada gambar';
+        localStorage.removeItem('2r_iklan_gambar_temp');
+        document.getElementById('formIklanContainer').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // ===== HAPUS DATA IKLAN =====
+    function hapusIklan(index) {
+        if (!confirm('Yakin ingin menghapus iklan ini?')) return;
+        var dataIklan = JSON.parse(localStorage.getItem('2r_iklan') || '[]');
+        dataIklan.splice(index, 1);
+        localStorage.setItem('2r_iklan', JSON.stringify(dataIklan));
+        renderMenuIklan();
+        tampilkanToast('Iklan berhasil dihapus!', 'success');
+    }
+</script>
+<!-- ===== AKHIR BLOK 8.12 ===== -->
 <!-- ===== AKHIR BAGIAN 8 ===== -->
 
 </body>
