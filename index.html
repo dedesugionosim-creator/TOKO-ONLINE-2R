@@ -22,13 +22,23 @@
     <div class="authentication-wrapper">
         <div class="authentication-box">
             
-            <!-- ===== BLOK 2.1.1 - LOGO & JUDUL ===== -->
-            <div class="authentication-logo">
-                <i class="fas fa-store-alt"></i>
-                <h1>Toko Online <span style="color:#FF6B00;">2R</span></h1>
-                <p>Platform Belanja & Layanan Serba Ada</p>
-            </div>
-            <!-- ===== AKHIR BLOK 2.1.1 ===== -->
+            <!-- ===== BLOK 2.2.1 - NAVBAR ===== -->
+<nav class="navbar">
+    <div class="navbar-brand">
+        <button id="menuToggle"><i class="fas fa-bars"></i></button>
+        <i class="fas fa-store-alt"></i> Toko Online 2R
+    </div>
+    <div class="navbar-user">
+        <!-- TEMPAT FOTO PROFIL -->
+        <img id="userAvatar" src="" style="width:36px; height:36px; border-radius:50%; object-fit:cover; display:none; margin-right:10px; border:2px solid #fff; box-shadow:0 2px 6px rgba(0,0,0,0.1);">
+        <i id="userAvatarPlaceholder" class="fas fa-user-circle" style="font-size:32px; color:#ddd; margin-right:10px; display:block;"></i>
+        
+        <span class="role-badge" id="roleBadge">Role</span>
+        <span id="userNama" style="font-weight:600;">User</span>
+        <button class="button-logout" id="buttonLogout"><i class="fas fa-sign-out-alt"></i> Keluar</button>
+    </div>
+</nav>
+<!-- ===== AKHIR BLOK 2.2.1 ===== -->
 
             <!-- ===== BLOK 2.1.2 - AREA PESAN ERROR ===== -->
             <div class="authentication-error" id="authenticationError">
