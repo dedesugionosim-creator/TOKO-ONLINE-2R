@@ -376,6 +376,17 @@ body { font-family:'Poppins', sans-serif; background:var(--bg); min-height:100vh
 /* ===== BLOK 4.7 - CSS_BADGE_NOTIFIKASI ===== */
 .sidebar-menu-item .notif-badge { background:#f44336; color:white; border-radius:50%; padding:2px 8px; font-size:10px; margin-left:8px; display:inline-block; font-weight:700; min-width:20px; text-align:center; line-height:1.4; }
 </style>
+/* ===== BLOK 4.8 - CSS_BANTUAN_FAQ ===== */
+.faq-container { max-width: 850px; margin: 0 auto; }
+.faq-item { background: white; border-radius: 12px; box-shadow: var(--shadow); border: 1px solid var(--border); margin-bottom: 15px; overflow: hidden; transition: all 0.3s; }
+.faq-item:hover { box-shadow: 0 8px 25px rgba(0,0,0,0.1); }
+.faq-question { padding: 18px 25px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-weight: 600; font-size: 15px; color: var(--text); user-select: none; }
+.faq-question:hover { color: var(--primary); }
+.faq-question i { transition: transform 0.3s; color: var(--primary); }
+.faq-item.active .faq-question i { transform: rotate(180deg); }
+.faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.4s ease, padding 0.3s; padding: 0 25px; font-size: 14px; line-height: 1.7; color: #555; }
+.faq-item.active .faq-answer { max-height: 500px; padding: 0 25px 20px 25px; }
+.faq-kategori-title { font-size: 18px; font-weight: 700; color: var(--primary); margin: 30px 0 15px 0; border-left: 4px solid var(--primary); padding-left: 12px; }
 <!-- ===== AKHIR BAGIAN 4 ===== -->
 <!-- ===== BAGIAN 5 - JAVASCRIPT UTILITY ===== -->
 
@@ -2577,104 +2588,96 @@ function hapusKTPUmum() {
     }
     // ===== AKHIR BLOK 8.4.2 =====
 
-        // ===== BLOK 8.4.3 - RENDER PAPAN INFORMASI (GRID BESAR, CRUD KHUSUS SUPERADMIN) =====
-    function renderPapanInformasi() {
-        var role = localStorage.getItem('2r_user_role');
+            // ===== BLOK 8.4.3 - RENDER BANTUAN & FAQ (FITUR BARU) =====
+    function renderBantuanFAQ() {
         var areaKonten = document.getElementById('mainContent');
-        var dataAnn = JSON.parse(localStorage.getItem('2r_announcements') || '[]');
+        var html = '<div class="page-header"><h2>Pusat Bantuan & FAQ</h2><p>Temukan jawaban atas pertanyaan seputar aplikasi Toko Online 2R.</p></div>';
         
-        var html = '<div class="page-header"><h2>Papan Informasi</h2><p>Pengumuman resmi dari Staf Admin / SuperAdmin.</p></div>';
-        
-        // === HANYA SUPERADMIN YANG MELIHAT TOMBOL TAMBAH ===
-        if (role === 'superadmin') {
-            html += '<div style="margin-bottom:20px;"><button class="button button-primary" onclick="bukaFormAnnouncement()"><i class="fas fa-plus"></i> Tambah Pengumuman</button></div>';
-        }
+        html += '<div class="faq-container">';
 
-        // === GRID KARTU PAPAN INFORMASI ===
-        html += '<div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr)); gap:25px; padding:10px 0;">';
-        
-        if (dataAnn.length === 0) {
-            html += '<div class="card" style="grid-column:1/-1;"><div class="empty-state"><i class="fas fa-bullhorn"></i><h3>Belum ada pengumuman</h3></div></div>';
-        } else {
-            for (var i = 0; i < dataAnn.length; i++) {
-                var a = dataAnn[i];
-                
-                // Mulai kartu
-                html += '<div style="background:white; border-radius:16px; box-shadow:0 4px 20px rgba(0,0,0,0.08); border:1px solid #e9ecef; overflow:hidden; display:flex; flex-direction:column; transition:transform 0.2s;">';
-                
-                // --- 1. GAMBAR (Tinggi tetap 300px, contain agar tidak terpotong) ---
-                html += '<div style="height:300px; background:#f8f9fa; display:flex; justify-content:center; align-items:center; border-bottom:1px solid #f0f0f0;">';
-                if (a.gambar) {
-                    html += '<img src="' + a.gambar + '" style="width:100%; height:100%; object-fit:contain; cursor:pointer;" onclick="previewGambar(\'' + a.gambar + '\',\'Preview Pengumuman\')">';
-                } else {
-                    html += '<div style="color:#ccc;"><i class="fas fa-image" style="font-size:48px;"></i></div>';
-                }
-                html += '</div>';
+        // Data FAQ (Bisa ditambah sesuai keinginan)
+        var dataFAQ = [
+            {
+                kategori: 'Akun & Login',
+                items: [
+                    { q: 'Bagaimana cara mendaftar akun?', a: 'Anda dapat mendaftar dengan mengisi form registrasi di halaman login. Pilih role Anda (Customer, Toko, Ojek, dll), lalu isi username, password, dan nama lengkap.' },
+                    { q: 'Saya lupa password, bagaimana cara meresetnya?', a: 'Pada halaman login, masukkan username Anda, lalu klik tombol "Lupa Password?". Sistem akan secara otomatis mereset password Anda menjadi 8 karakter acak baru yang akan ditampilkan di notifikasi.' },
+                    { q: 'Mengapa akun saya statusnya "Menunggu Verifikasi"?', a: 'Jika Anda mendaftar sebagai Toko atau Ojek, akun Anda harus disetujui terlebih dahulu oleh SuperAdmin/Staf Admin. Tunggu konfirmasi notifikasi atau cek status di menu Profil.' }
+                ]
+            },
+            {
+                kategori: 'Belanja & Layanan (Untuk Customer)',
+                items: [
+                    { q: 'Bagaimana cara membeli produk?', a: 'Anda dapat melihat produk di menu "Lihat Produk" atau "Lihat Toko Terdekat". Jika tertarik, tambahkan ke Keranjang, lalu lanjutkan ke halaman Pembayaran.' },
+                    { q: 'Bagaimana cara memberi Ulasan & Rating?', a: 'Masuk ke menu "Ulasan & Rating", lalu pilih ID Toko/Ojek yang sudah pernah Anda beli. Isi bintang dan komentar, lalu klik Kirim Ulasan.' },
+                    { q: 'Saya ingin menghubungi penjual, bagaimana caranya?', a: 'Anda bisa menggunakan fitur "Chat". Cari ID tujuan (misal ID Toko), lalu kirim pesan. Fitur ini juga bisa digunakan untuk chat dengan Customer Service.' }
+                ]
+            },
+            {
+                kategori: 'Manajemen Toko & Ojek (Untuk Penjual)',
+                items: [
+                    { q: 'Bagaimana cara menambahkan produk di gudang?', a: 'Masuk ke menu "Manajemen Stok Gudang", lalu klik tombol "Tambah Produk Baru". Isi nama, harga, stok, dan tanggal kadaluarsa produk.' },
+                    { q: 'Dimana saya bisa melihat pesanan masuk?', a: 'Anda bisa melihat daftar pesanan yang harus diproses di menu "Pesanan Masuk" (khusus role Toko) atau "Order Masuk" (khusus role Ojek).' },
+                    { q: 'Bagaimana cara membalas ulasan dari Customer?', a: 'Buka menu "Ulasan & Rating". Setiap ulasan yang masuk ke akun Anda akan memiliki kolom input teks untuk membalas komentar tersebut.' }
+                ]
+            },
+            {
+                kategori: 'Administrasi & Pengelolaan (Untuk Admin)',
+                items: [
+                    { q: 'Bagaimana cara menyetujui akun Toko/Ojek baru?', a: 'Masuk ke menu "Persetujuan Akun". Anda akan melihat daftar akun yang menunggu verifikasi. Klik tombol "Setujui" untuk mengaktifkan akun, atau "Tolak" untuk menghapus permohonan.' },
+                    { q: 'Bagaimana cara menambahkan Iklan atau Pengumuman?', a: 'Klik menu "Menu Iklan" lalu klik "Tambah Iklan Baru". Untuk Pengumuman, buka menu "Papan Informasi" lalu klik "Tambah Pengumuman". Isi data dan upload gambar pendukung.' }
+                ]
+            }
+        ];
 
-                // --- 2. JUDUL & DESKRIPSI TEKS ---
-                html += '<div style="padding:20px 20px 15px 20px; flex:1; display:flex; flex-direction:column;">';
-                html += '<h3 style="font-size:18px; font-weight:700; color:#333; margin:0 0 8px 0;">' + escapeHtml(a.judul) + '</h3>';
-                html += '<p style="font-size:14px; color:#666; line-height:1.6; margin:0; flex:1;">' + escapeHtml(a.deskripsi) + '</p>';
-                html += '<div style="margin-top:10px; font-size:12px; color:#999;">' + (a.waktu ? new Date(a.waktu).toLocaleDateString('id-ID') : '') + '</div>';
-                html += '</div>';
-
-                // --- 3. TOMBOL AKSI (Hanya untuk Superadmin) ---
-                if (role === 'superadmin') {
-                    html += '<div style="padding:10px 20px 20px 20px; border-top:1px solid #f0f0f0; display:flex; gap:10px; justify-content:flex-end;">';
-                    html += '<button class="button button-primary button-extra-small" onclick="editAnnouncement(' + i + ')"><i class="fas fa-edit"></i> Edit</button>';
-                    html += '<button class="button button-danger button-extra-small" onclick="hapusAnnouncement(' + i + ')"><i class="fas fa-trash"></i> Hapus</button>';
-                    html += '</div>';
-                }
-
-                html += '</div>'; // Tutup kartu
+        // Render Loop FAQ
+        for (var k = 0; k < dataFAQ.length; k++) {
+            var kat = dataFAQ[k];
+            html += '<div class="faq-kategori-title">' + kat.kategori + '</div>';
+            for (var i = 0; i < kat.items.length; i++) {
+                var item = kat.items[i];
+                var indexId = 'faq_' + k + '_' + i;
+                html += `
+                <div class="faq-item" id="${indexId}">
+                    <div class="faq-question" onclick="toggleFaq('${indexId}')">
+                        <span>${escapeHtml(item.q)}</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        ${escapeHtml(item.a)}
+                    </div>
+                </div>`;
             }
         }
-        html += '</div>'; // Tutup grid
 
-        // === FORM TAMBAH/EDIT (HANYA SUPERADMIN) ===
-        if (role === 'superadmin') {
-            html += '<div id="formAnnouncementContainer" class="hidden" style="margin-top:30px;"><div class="card"><div class="card-header"><span id="formAnnouncementTitle">Tambah Pengumuman Baru</span><button class="button button-danger button-small" onclick="tutupFormAnnouncement()"><i class="fas fa-times"></i> Tutup</button></div>';
-            html += '<div class="grid-2"><div><label class="form-label">Judul Pengumuman</label><input type="text" id="annJudul" class="form-input" placeholder="Judul pengumuman"></div>';
-            html += '<div><label class="form-label">Gambar (1 Foto)</label><input type="file" id="annGambar" accept=".jpg,.jpeg,.png" style="display:none;">';
-            html += '<button class="button button-primary button-small" onclick="document.getElementById(\'annGambar\').click();">Pilih Gambar</button>';
-            html += '<span id="annNamaGambar" style="font-size:12px;color:#888;margin-left:10px;">Belum ada gambar</span></div></div>';
-            html += '<div class="form-group"><label class="form-label">Keterangan / Teks</label><textarea id="annDeskripsi" class="form-input" rows="4" placeholder="Isi detail pengumuman..."></textarea></div>';
-            html += '<input type="hidden" id="annEditIndex" value="-1">';
-            html += '<button class="button button-primary margin-top-10" onclick="simpanAnnouncement()"><i class="fas fa-save"></i> Simpan Pengumuman</button></div></div>';
-        }
+        // Hubungi Kami
+        html += '<div class="faq-kategori-title">Hubungi Kami</div>';
+        html += `
+        <div class="card" style="text-align:center; background:#f8f9fa;">
+            <p style="font-size:14px; color:#666; margin-bottom:10px;">Butuh bantuan lebih lanjut? Silakan chat langsung dengan Admin atau Customer Service.</p>
+            <button class="button button-primary" onclick="navigasiKeHalaman('chat')"><i class="fas fa-comments"></i> Buka Chat</button>
+        </div>`;
 
+        html += '</div>'; // tutup faq-container
         areaKonten.innerHTML = html;
+    }
 
-                // === EVENT UPLOAD GAMBAR (DENGAN KOMPRESI OTOMATIS) ===
-        setTimeout(function() {
-            var inputGambar = document.getElementById('annGambar');
-            if (inputGambar) {
-                var newInput = inputGambar.cloneNode(true);
-                inputGambar.parentNode.replaceChild(newInput, inputGambar);
-                
-                newInput.addEventListener('change', async function(e) {
-                    var file = e.target.files[0];
-                    if (file) {
-                        document.getElementById('annNamaGambar').textContent = 'Sedang mengkompres...';
-                        
-                        try {
-                            // Kompres gambar ke lebar maksimal 800px, kualitas 70%
-                            const compressedBase64 = await compressImage(file, 800, 0.7);
-                            
-                            // Simpan hasil kompresi ke localStorage (ukurannya sudah kecil, aman!)
-                            localStorage.setItem('2r_announcement_gambar_temp', compressedBase64);
-                            
-                            document.getElementById('annNamaGambar').textContent = file.name + ' (Terkompresi)';
-                        } catch (err) {
-                            console.error('Error kompresi:', err);
-                            tampilkanToast('Gagal memproses gambar!', 'error');
-                            document.getElementById('annNamaGambar').textContent = 'Gagal upload';
-                            localStorage.removeItem('2r_announcement_gambar_temp');
-                        }
-                    }
-                });
+    // ===== FUNGSI TOGGLE FAQ (ACCORDION) =====
+    function toggleFaq(id) {
+        var element = document.getElementById(id);
+        if (element) {
+            if (element.classList.contains('active')) {
+                element.classList.remove('active');
+            } else {
+                // Tutup semua FAQ lain yang sedang terbuka
+                var allItems = document.querySelectorAll('.faq-item');
+                for (var i = 0; i < allItems.length; i++) {
+                    allItems[i].classList.remove('active');
+                }
+                // Buka FAQ yang diklik
+                element.classList.add('active');
             }
-        }, 300);
+        }
     }
     // ===== AKHIR BLOK 8.4.3 =====
 </script>
