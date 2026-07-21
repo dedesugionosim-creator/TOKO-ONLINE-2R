@@ -1924,10 +1924,62 @@ function hapusKTPUmum() {
             html += '<div style="margin-bottom:20px;"><button class="button button-primary" onclick="bukaFormIklan()"><i class="fas fa-plus"></i> Tambah Iklan</button></div>';
         }
 
-        if (dataIklan.length === 0) {
+                if (dataIklan.length === 0) {
             html += '<div class="card"><div class="empty-state"><i class="fas fa-ad"></i><h3>Belum ada iklan</h3></div></div>';
         } else {
-            html += '<div class="card"><div class="table-container"><table class="table"><thead><tr><th>No</th><th>Judul</th><th>Deskripsi</th><th>Warna</th><th>Gambar (Scroll)</th>';
+            // ===== TAMPILAN GRID KARTU DENGAN GAMBAR BESAR =====
+            html += '<div class="card">';
+            html += '<div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(300px, 1fr)); gap:20px; padding:5px;">';
+            
+            for (var i = 0; i < dataIklan.length; i++) {
+                var iklan = dataIklan[i];
+                
+                // === KONVERSI DATA GAMBAR KE ARRAY ===
+                var gambarArray = [];
+                if (iklan.gambar) {
+                    if (Array.isArray(iklan.gambar)) {
+                        gambarArray = iklan.gambar;
+                    } else if (typeof iklan.gambar === 'string' && iklan.gambar !== '') {
+                        gambarArray = [iklan.gambar];
+                    }
+                }
+                // =====================================
+
+                // Mulai Card Iklan
+                html += '<div style="border:1px solid #eee; border-radius:12px; padding:20px; background:white; box-shadow:0 2px 8px rgba(0,0,0,0.04); display:flex; flex-direction:column;">';
+                
+                // Warna (strip di atas)
+                var warna = iklan.warna || '#FF6B00';
+                html += '<div style="height:6px; background:' + warna + '; border-radius:12px 12px 0 0; margin:-20px -20px 15px -20px;"></div>';
+                
+                // Judul
+                html += '<h4 style="font-size:18px; font-weight:600; margin:0 0 10px 0; color:#333;">' + escapeHtml(iklan.judul) + '</h4>';
+                
+                // GAMBAR BESAR
+                if (gambarArray.length > 0) {
+                    // Ambil gambar pertama agar tampil besar
+                    html += '<img src="' + gambarArray[0] + '" style="width:100%; max-height:300px; object-fit:contain; border-radius:8px; margin-bottom:15px; cursor:pointer; border:1px solid #f0f0f0;" onclick="previewGambar(\'' + gambarArray[0] + '\',\'Preview Iklan\')">';
+                } else {
+                    html += '<div style="width:100%; height:200px; background:#f8f9fa; border-radius:8px; display:flex; align-items:center; justify-content:center; color:#aaa; margin-bottom:15px; border:1px solid #eee;"><i class="fas fa-image" style="font-size:40px;"></i></div>';
+                }
+
+                // DESKRIPSI DI BAWAH GAMBAR
+                html += '<p style="font-size:14px; color:#555; margin:0 0 15px 0; line-height:1.6;">' + escapeHtml(iklan.deskripsi) + '</p>';
+                
+                // AKSI (Hanya untuk SuperAdmin)
+                if (role === 'superadmin') {
+                    html += '<div style="display:flex; gap:10px; margin-top:auto; border-top:1px solid #f0f0f0; padding-top:15px;">';
+                    html += '<button class="button button-primary button-extra-small" onclick="editIklan(' + i + ')"><i class="fas fa-edit"></i> Edit</button>';
+                    html += '<button class="button button-danger button-extra-small" onclick="hapusIklan(' + i + ')"><i class="fas fa-trash"></i> Hapus</button>';
+                    html += '</div>';
+                }
+                
+                html += '</div>'; // Tutup Card Iklan
+            }
+            
+            html += '</div></div>'; // Tutup Grid dan Card
+            // ===============================================
+        }
             // Kolom Aksi hanya untuk SuperAdmin
             if (role === 'superadmin') html += '<th>Aksi</th>';
             html += '</tr></thead><tbody>';
