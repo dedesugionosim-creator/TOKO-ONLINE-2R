@@ -3135,9 +3135,7 @@ function hapusKTPUmum() {
     }
 </script>
 <!-- ===== AKHIR BLOK 8.9 ===== -->
-    <!-- ===== BLOK 8.10 - JS_RENDER_CHAT ===== -->
-<script>
-// ===== BLOK 8.10.1 - RENDER DAFTAR PERCAKAPAN (INBOX) =====
+    // ===== BLOK 8.10.1 - RENDER DAFTAR PERCAKAPAN (INBOX) =====
 function renderChat() {
     var user = JSON.parse(localStorage.getItem('2r_user') || '{}');
     var areaKonten = document.getElementById('mainContent');
@@ -3198,15 +3196,15 @@ function renderChat() {
         html += '</tbody></table></div></div>';
     }
 
-    // ===== FITUR BARU: DROPDOWN PILIH ID TUJUAN =====
+    // ===== FITUR DROPDOWN PILIH ID TUJUAN (SuperAdmin Tidak Ditampilkan) =====
     // Ambil semua data akun untuk dropdown
     var dataAkun = getDataAkun();
     var opsiDropdown = '<option value="">-- Pilih ID Tujuan --</option>';
     
     for (var i = 0; i < dataAkun.length; i++) {
         var a = dataAkun[i];
-        // Jangan tampilkan akun diri sendiri
-        if (a.id !== user.id) {
+        // Jangan tampilkan akun diri sendiri DAN jangan tampilkan akun SuperAdmin
+        if (a.id !== user.id && a.role !== 'superadmin') {
             var tampilan = a.id + ' - ' + a.nama + ' (' + a.role + ')';
             opsiDropdown += '<option value="' + a.id + '">' + escapeHtml(tampilan) + '</option>';
         }
