@@ -1201,20 +1201,28 @@ body { font-family:'Poppins', sans-serif; background:var(--bg); min-height:100vh
                     }
                 };
             }
-        // --- EVENT LISTENER FOTO PROFIL (Masih di dalam setTimeout yang sudah ada) ---
-        // Scroll ke bawah lagi, ada setTimeout kedua. Tambahkan ini di dalamnya:
+                areaKonten.innerHTML = html;
+
+        // --- EVENT LISTENER FOTO PROFIL ---
+        var containerFoto = document.getElementById('uploadFotoContainerCustomer');
+        var inputFoto = document.getElementById('inputFotoProfilCustomer');
+        if (containerFoto && inputFoto) {
+            containerFoto.onclick = function() { inputFoto.click(); };
+            inputFoto.onchange = async function(e) {
+                var file = e.target.files[0];
+                if (file) {
+                    document.getElementById('fotoPreviewCustomer').innerHTML = '<p>Mengkompres...</p>';
+                    var compressed = await compressImage(file, 200, 0.7);
+                    document.getElementById('fotoPreviewCustomer').innerHTML = '<img src="' + compressed + '" class="preview-image" style="max-width:150px; max-height:150px; border-radius:50%; object-fit:cover;">';
+                    localStorage.setItem('2r_foto_profil_temp_customer', compressed);
+                }
+            };
+        }
+
         // KTP Upload
         html += '<div class="card"><div class="card-header">Dokumen KTP & Domisili</div>';
         html += '<div class="upload-area" id="uploadKtpContainerCustomer"><div id="ktpPreviewCustomer">';
-        if (user.ktp) {
-            html += '<img src="' + user.ktp + '" class="preview-image">';
-        } else {
-            html += '<i class="fas fa-cloud-upload-alt"></i><p>Klik untuk upload KTP</p>';
-        }
-        html += '</div><input type="file" id="inputKtpCustomer" accept=".jpg,.jpeg,.png" style="display:none"></div>';
-        html += '<button class="button button-primary margin-top-10" onclick="simpanKTPCustomer()"><i class="fas fa-save"></i> Simpan KTP</button>';
-        if (user.ktp) html += '<button class="button button-danger margin-top-10" onclick="hapusKTPCustomer()" style="margin-left:10px;"><i class="fas fa-trash"></i> Hapus KTP</button>';
-        html += '</div>';
+        // ... kode selanjutnya tetap sama ...
 
         areaKonten.innerHTML = html;
         setTimeout(function() {
