@@ -3567,56 +3567,70 @@ function bukaChat(targetId) {
 <script>
     // ===== BUKA & TUTUP FORM =====
     function bukaFormAnnouncement() {
-        document.getElementById('formAnnouncementContainer').classList.remove('hidden');
+        var container = document.getElementById('formAnnouncementContainer');
+        if (!container) return;
+        container.classList.remove('hidden');
         document.getElementById('formAnnouncementTitle').textContent = 'Tambah Pengumuman Baru';
         document.getElementById('annEditIndex').value = '-1';
         document.getElementById('annJudul').value = '';
         document.getElementById('annDeskripsi').value = '';
         document.getElementById('annNamaGambar').textContent = 'Belum ada gambar';
         localStorage.removeItem('2r_announcement_gambar_temp');
-        document.getElementById('formAnnouncementContainer').scrollIntoView({ behavior: 'smooth' });
+        container.scrollIntoView({ behavior: 'smooth' });
     }
     
     function tutupFormAnnouncement() {
-        document.getElementById('formAnnouncementContainer').classList.add('hidden');
+        var container = document.getElementById('formAnnouncementContainer');
+        if (container) container.classList.add('hidden');
     }
 
-    // ===== SIMPAN DATA =====
+    // ===== SIMPAN DATA (DENGAN PENGAMANAN ERROR) =====
     function simpanAnnouncement() {
-        var judul = document.getElementById('annJudul').value.trim();
-        var deskripsi = document.getElementById('annDeskripsi').value.trim();
-        var gambarTemp = localStorage.getItem('2r_announcement_gambar_temp') || '';
-        var editIndex = parseInt(document.getElementById('annEditIndex').value);
+        try {
+            var judul = document.getElementById('annJudul').value.trim();
+            var deskripsi = document.getElementById('annDeskripsi').value.trim();
+            var gambarTemp = localStorage.getItem('2r_announcement_gambar_temp') || '';
+            var editIndex = parseInt(document.getElementById('annEditIndex').value);
 
-        if (!judul || !deskripsi) {
-            tampilkanToast('Judul dan teks keterangan wajib diisi!', 'warning');
-            return;
+            if (!judul || !deskripsi) {
+                tampilkanToast('Judul dan teks keterangan wajib diisi!', 'warning');
+                return;
+            }
+
+            var dataAnn = JSON.parse(localStorage.getItem('2r_announcements') || '[]');
+
+            if (editIndex === -1) {
+                // Tambah baru
+                dataAnn.push({
+                    id: Date.now(),
+                    judul: judul,
+                    deskripsi: deskripsi,
+                    gambar: gambarTemp,
+                    waktu: new Date().toISOString()
+                });
+                tampilkanToast('Pengumuman berhasil ditambahkan!', 'success');
+            } else {
+                // Edit data
+                if (editIndex < dataAnn.length) {
+                    dataAnn[editIndex].judul = judul;
+                    dataAnn[editIndex].deskripsi = deskripsi;
+                    if (gambarTemp) dataAnn[editIndex].gambar = gambarTemp;
+                    tampilkanToast('Pengumuman berhasil diperbarui!', 'success');
+                } else {
+                    tampilkanToast('Data tidak ditemukan!', 'error');
+                    return;
+                }
+            }
+
+            localStorage.setItem('2r_announcements', JSON.stringify(dataAnn));
+            localStorage.removeItem('2r_announcement_gambar_temp');
+            tutupFormAnnouncement();
+            renderPapanInformasi();
+
+        } catch (error) {
+            console.error("ERROR PAPAN INFORMASI:", error);
+            tampilkanToast('Terjadi error: ' + error.message, 'error');
         }
-
-        var dataAnn = JSON.parse(localStorage.getItem('2r_announcements') || '[]');
-
-        if (editIndex === -1) {
-            // Tambah baru
-            dataAnn.push({
-                id: Date.now(),
-                judul: judul,
-                deskripsi: deskripsi,
-                gambar: gambarTemp,
-                waktu: new Date().toISOString()
-            });
-            tampilkanToast('Pengumuman berhasil ditambahkan!', 'success');
-        } else {
-            // Edit data
-            dataAnn[editIndex].judul = judul;
-            dataAnn[editIndex].deskripsi = deskripsi;
-            if (gambarTemp) dataAnn[editIndex].gambar = gambarTemp;
-            tampilkanToast('Pengumuman berhasil diperbarui!', 'success');
-        }
-
-        localStorage.setItem('2r_announcements', JSON.stringify(dataAnn));
-        localStorage.removeItem('2r_announcement_gambar_temp');
-        tutupFormAnnouncement();
-        renderPapanInformasi();
     }
 
     // ===== EDIT DATA =====
@@ -3627,14 +3641,16 @@ function bukaChat(targetId) {
             return;
         }
         var a = dataAnn[index];
-        document.getElementById('formAnnouncementContainer').classList.remove('hidden');
+        var container = document.getElementById('formAnnouncementContainer');
+        if (!container) return;
+        container.classList.remove('hidden');
         document.getElementById('formAnnouncementTitle').textContent = 'Edit Pengumuman';
         document.getElementById('annEditIndex').value = index;
         document.getElementById('annJudul').value = a.judul;
         document.getElementById('annDeskripsi').value = a.deskripsi;
         document.getElementById('annNamaGambar').textContent = a.gambar ? 'Gambar sudah ada' : 'Belum ada gambar';
         localStorage.removeItem('2r_announcement_gambar_temp');
-        document.getElementById('formAnnouncementContainer').scrollIntoView({ behavior: 'smooth' });
+        container.scrollIntoView({ behavior: 'smooth' });
     }
 
     // ===== HAPUS DATA =====
