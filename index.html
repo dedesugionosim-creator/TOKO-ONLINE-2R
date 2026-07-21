@@ -584,10 +584,8 @@ body { font-family:'Poppins', sans-serif; background:var(--bg); min-height:100vh
 <!-- ===== BAGIAN 6 - JAVASCRIPT SIDEBAR & NAVIGASI ===== -->
 
 <!-- ===== BLOK 6.1 - JS_SIDEBAR_BUILDER ===== -->
-<script>            
-    <!-- ===== BLOK 6.1.1 - BUAT SIDEBAR HTML (MENU IKLAN & PAPAN INFORMASI UNTUK SEMUA ROLE) ===== -->
 <script>
-    // ===== BLOK 6.1.1 - BUAT SIDEBAR HTML =====
+    // ===== BLOK 6.1.1 - BUAT SIDEBAR HTML (MENU IKLAN & PAPAN INFORMASI UNTUK SEMUA ROLE) =====
     function buatSidebarHTML(role) {
         // Hitung notifikasi belum dibaca untuk user yang login
         var user = JSON.parse(localStorage.getItem('2r_user') || '{}');
@@ -643,7 +641,7 @@ body { font-family:'Poppins', sans-serif; background:var(--bg); min-height:100vh
                 { judul: 'Menu Utama', items: [ { halaman: 'dashboard', icon: 'fa-th-large', label: 'Dasbor' }, { halaman: 'chat', icon: 'fa-comments', label: 'Chat' }, { halaman: 'kelolaProduk', icon: 'fa-box', label: 'Kelola Produk' }, { halaman: 'uploadProdukPublik', icon: 'fa-upload', label: 'Upload Produk Publik' }, { halaman: 'manajemenStokGudang', icon: 'fa-warehouse', label: 'Manajemen Stok Gudang' }, { halaman: 'pesananMasuk', icon: 'fa-shopping-cart', label: 'Pesanan Masuk' }, { halaman: 'laporanPenjualan', icon: 'fa-chart-line', label: 'Laporan' }, { halaman: 'profile', icon: 'fa-user-circle', label: 'Profil' }, { halaman: 'helloFriends', icon: 'fa-video', label: 'HelloFriends (Coming Soon)' }, { halaman: 'menuIklan', icon: 'fa-ad', label: 'Menu Iklan' }, { halaman: 'papanInformasi', icon: 'fa-bullhorn', label: 'Papan Informasi' }, { halaman: 'bantuanFAQ', icon: 'fa-question-circle', label: 'Bantuan & FAQ' } ] },
                 { judul: 'Manajemen Anggota', items: [ { halaman: 'buatAkunToko', icon: 'fa-store', label: 'Buat Akun Toko' } ] }
             ],
-            // === STAF ADMIN, CS, STAF OWNER LAINNYA, SPONSOR ===
+            // === STAF ADMIN, CS, SPONSOR ===
             'staf_admin': [
                 { judul: 'Menu Utama', items: [ { halaman: 'dashboard', icon: 'fa-th-large', label: 'Dasbor' }, { halaman: 'chat', icon: 'fa-comments', label: 'Chat' }, { halaman: 'persetujuan', icon: 'fa-check-double', label: 'Persetujuan Akun' }, { halaman: 'kelolaAkun', icon: 'fa-users-cog', label: 'Kelola Akun' }, { halaman: 'profile', icon: 'fa-user-circle', label: 'Profil' }, { halaman: 'pengajuanHapus', icon: 'fa-trash-alt', label: 'Pengajuan Hapus Akun' }, { halaman: 'helloFriends', icon: 'fa-video', label: 'HelloFriends (Coming Soon)' }, { halaman: 'menuIklan', icon: 'fa-ad', label: 'Menu Iklan' }, { halaman: 'papanInformasi', icon: 'fa-bullhorn', label: 'Papan Informasi' }, { halaman: 'bantuanFAQ', icon: 'fa-question-circle', label: 'Bantuan & FAQ' } ] }
             ],
@@ -673,7 +671,6 @@ body { font-family:'Poppins', sans-serif; background:var(--bg); min-height:100vh
         return html;
     }
     // ===== AKHIR BLOK 6.1.1 =====
-</script>
 
     // ===== BLOK 6.1.2 - SETUP NAVIGASI SIDEBAR =====
     function setupNavigasiSidebar() {
