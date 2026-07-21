@@ -656,6 +656,7 @@ body { font-family:'Poppins', sans-serif; background:var(--bg); min-height:100vh
         else if (namaHalaman === 'belanja') renderBelanja();
         else if (namaHalaman === 'pesananSaya') renderPesananSaya();
         else if (namaHalaman === 'kelolaIklan') renderMenuIklan();
+        else if (namaHalaman === 'menuIklan') renderMenuIklan();
         else if (namaHalaman === 'pengajuanHapus') renderPengajuanHapusAkun();
         else if (namaHalaman === 'uploadProdukPublik') renderUploadProdukPublik();
         else if (namaHalaman === 'manajemenStokGudang') renderManajemenStokGudang();
@@ -671,7 +672,6 @@ body { font-family:'Poppins', sans-serif; background:var(--bg); min-height:100vh
         else if (namaHalaman === 'keranjang') renderKeranjang();
         else if (namaHalaman === 'chat') renderChat();
         else if (namaHalaman === 'papanInformasi') renderPapanInformasi();
-        else if (namaHalaman === 'menuIklan') renderMenuIklan();
         else if (namaHalaman === 'daftarBelanja') renderDaftarBelanja();
         else if (namaHalaman === 'riwayatBelanja') renderRiwayatBelanja();
         else if (namaHalaman === 'pembayaran') renderPembayaran();
@@ -1990,10 +1990,9 @@ function hapusKTPUmum() {
                         }
                         document.getElementById('iklanNamaGambar').textContent = namaFile + ' (' + files.length + ' file)';
                         // Simpan sementara di localStorage (diubah menjadi array di fungsi simpan)
-                        var pembacaArray = [];
+                        var tempData = [];
                         var total = files.length;
                         var selesai = 0;
-                        var tempData = [];
                         for (var i = 0; i < files.length; i++) {
                             (function(file) {
                                 var reader = new FileReader();
