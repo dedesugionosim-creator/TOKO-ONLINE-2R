@@ -1912,8 +1912,7 @@ function hapusKTPUmum() {
     }
     // ===== AKHIR BLOK 8.1.1 =====
 
-    <!-- ===== BLOK 8.1.2 - KELOLA IKLAN ===== -->
-<script>
+    // ===== BLOK 8.1.2 - KELOLA IKLAN =====
     function renderMenuIklan() {
         var role = localStorage.getItem('2r_user_role');
         var areaKonten = document.getElementById('mainContent');
@@ -1989,7 +1988,6 @@ function hapusKTPUmum() {
                             if (i > 3) { namaFile += ' ...'; break; }
                         }
                         document.getElementById('iklanNamaGambar').textContent = namaFile + ' (' + files.length + ' file)';
-                        // Simpan sementara di localStorage (diubah menjadi array di fungsi simpan)
                         var tempData = [];
                         var total = files.length;
                         var selesai = 0;
@@ -2076,7 +2074,6 @@ function hapusKTPUmum() {
         tampilkanToast('Iklan dihapus!', 'success');
     }
     // ===== AKHIR BLOK 8.1.2 =====
-</script>
 
     // ===== BLOK 8.1.3 - TRANSFER MENU =====
     function renderTransferMenu() {
@@ -2245,7 +2242,6 @@ function hapusKTPUmum() {
     // ===== AKHIR BLOK 8.1.4 =====
 </script>
 <!-- ===== AKHIR BLOK 8.1 ===== -->
-
 <!-- ===== BLOK 8.2 - JS_EVENT_AUTH, LOGOUT, SIDEBAR ===== -->
 <script>
     // ===== BLOK 8.2.1 - TOGGLE FORM =====
