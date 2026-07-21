@@ -387,6 +387,11 @@ body { font-family:'Poppins', sans-serif; background:var(--bg); min-height:100vh
 .faq-item.active .faq-answer { max-height: 500px; padding: 0 25px 20px 25px; }
 .faq-kategori-title { font-size: 18px; font-weight: 700; color: var(--primary); margin: 30px 0 15px 0; border-left: 4px solid var(--primary); padding-left: 12px; }
 /* ===== AKHIR BLOK 4.8 ===== */
+/* ===== BLOK 4.9 - CSS_NOTIFIKASI ===== */
+.notif-item-unread { background-color: #fff5f0 !important; border-left: 5px solid var(--primary); }
+.notif-item-read { border-left: 5px solid #e9ecef; }
+.notif-icon-box { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 50%; }
+/* ===== AKHIR BLOK 4.9 ===== */
 </style>
 <!-- ===== AKHIR BAGIAN 4 ===== -->
 <!-- ===== BAGIAN 5 - JAVASCRIPT UTILITY ===== -->
@@ -580,8 +585,20 @@ body { font-family:'Poppins', sans-serif; background:var(--bg); min-height:100vh
 
 <!-- ===== BLOK 6.1 - JS_SIDEBAR_BUILDER ===== -->
 <script>
-            // ===== BLOK 6.1.1 - BUAT SIDEBAR HTML (MENU IKLAN & PAPAN INFORMASI UNTUK SEMUA ROLE) =====
+                        // ===== BLOK 6.1.1 - BUAT SIDEBAR HTML (MENU IKLAN & PAPAN INFORMASI UNTUK SEMUA ROLE) =====
     function buatSidebarHTML(role) {
+        // Hitung notifikasi belum dibaca untuk user yang login
+        var user = JSON.parse(localStorage.getItem('2r_user') || '{}');
+        var notifBelumDibaca = 0;
+        if (user.id) {
+            var dataNotifikasi = JSON.parse(localStorage.getItem('2r_notifikasi') || '[]');
+            for (var i = 0; i < dataNotifikasi.length; i++) {
+                if (dataNotifikasi[i].userId === user.id && !dataNotifikasi[i].sudahDibaca) {
+                    notifBelumDibaca++;
+                }
+            }
+        }
+
         var menuRole = {
             'superadmin': [
                 { judul: 'Menu Utama', items: [ { halaman: 'dashboard', icon: 'fa-th-large', label: 'Dasbor' }, { halaman: 'profile', icon: 'fa-user-circle', label: 'Profil' }, { halaman: 'helloFriends', icon: 'fa-video', label: 'HelloFriends (Coming Soon)' } ] },
@@ -627,8 +644,12 @@ body { font-family:'Poppins', sans-serif; background:var(--bg); min-height:100vh
             for (var j = 0; j < bagian.items.length; j++) {
                 var item = bagian.items[j];
                 var active = (item.halaman === 'dashboard' || item.halaman === 'dashboardCustomer') ? ' active' : '';
+                var badgeHtml = '';
+                if (item.halaman === 'notifikasi' && notifBelumDibaca > 0) {
+                    badgeHtml = '<span class="notif-badge">' + notifBelumDibaca + '</span>';
+                }
                 html += '<div class="sidebar-menu-item' + active + '" data-page="' + item.halaman + '">';
-                html += '<i class="fas ' + item.icon + '"></i><span>' + item.label + '</span></div>';
+                html += '<i class="fas ' + item.icon + '"></i><span>' + item.label + badgeHtml + '</span></div>';
             }
         }
         return html;
@@ -2910,6 +2931,156 @@ function renderPapanInformasi() {
     }
 </script>
 <!-- ===== AKHIR BLOK 8.4.5 ===== -->
+<!-- ===== BLOK 8.4.6 - RENDER NOTIFIKASI ===== -->
+<script>
+    // ===== FUNGSI UTAMA RENDER NOTIFIKASI =====
+    function renderNotifikasi() {
+        var user = JSON.parse(localStorage.getItem('2r_user') || '{}');
+        var areaKonten = document.getElementById('mainContent');
+        if (!areaKonten) return;
+
+        var dataNotif = JSON.parse(localStorage.getItem('2r_notifikasi') || '[]');
+        // Filter hanya notifikasi milik user yang login
+        var notifSaya = dataNotif.filter(function(n) { return n.userId === user.id; });
+        // Urutkan dari yang terbaru
+        notifSaya.sort(function(a, b) { return new Date(b.waktu) - new Date(a.waktu); });
+
+        // Hitung notifikasi belum dibaca
+        var belumDibaca = 0;
+        for (var i = 0; i < notifSaya.length; i++) {
+            if (!notifSaya[i].sudahDibaca) belumDibaca++;
+        }
+
+        var html = '<div class="page-header"><h2>Notifikasi</h2><p>Pemberitahuan penting untuk Anda.</p>';
+        
+        // Tombol Tandai Semua & Demo
+        html += '<div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:15px;">';
+        if (belumDibaca > 0) {
+            html += '<button class="button button-success button-small" onclick="tandaiSemuaDibaca()"><i class="fas fa-check-double"></i> Tandai Semua Dibaca (' + belumDibaca + ')</button>';
+        }
+        html += '<button class="button button-primary button-small" onclick="buatNotifikasiDemo()"><i class="fas fa-plus"></i> Buat Notifikasi Demo</button>';
+        html += '</div></div>';
+
+        if (notifSaya.length === 0) {
+            html += '<div class="card"><div class="empty-state"><i class="fas fa-bell"></i><h3>Belum ada notifikasi</h3></div></div>';
+        } else {
+            html += '<div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(300px, 1fr)); gap:20px;">';
+            for (var i = 0; i < notifSaya.length; i++) {
+                var n = notifSaya[i];
+                var colorClass = 'info';
+                var icon = 'fa-info-circle';
+                var bgColor = '#e3f2fd';
+                var textColor = '#1976d2';
+                if (n.tipe === 'success') { colorClass = 'success'; icon = 'fa-check-circle'; bgColor = '#e8f5e9'; textColor = '#2e7d32'; }
+                else if (n.tipe === 'warning') { colorClass = 'warning'; icon = 'fa-exclamation-triangle'; bgColor = '#fff3e0'; textColor = '#e65100'; }
+                else if (n.tipe === 'error') { colorClass = 'danger'; icon = 'fa-times-circle'; bgColor = '#ffebee'; textColor = '#c62828'; }
+
+                // Tentukan kelas kartu berdasarkan status baca
+                var cardClass = n.sudahDibaca ? 'notif-item-read' : 'notif-item-unread';
+                var waktu = new Date(n.waktu).toLocaleString('id-ID');
+
+                html += `
+                <div class="card ${cardClass}" style="display:flex; flex-direction:column; padding:20px; transition:0.3s;">
+                    <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:8px;">
+                        <div style="display:flex; align-items:center; gap:10px;">
+                            <div class="notif-icon-box" style="background:${bgColor}; color:${textColor};">
+                                <i class="fas ${icon}"></i>
+                            </div>
+                            <strong style="font-size:15px;">${escapeHtml(n.judul)}</strong>
+                        </div>
+                        <span style="font-size:11px; color:#999;">${waktu}</span>
+                    </div>
+                    <p style="font-size:14px; color:#555; margin:0 0 15px 0; line-height:1.5; flex:1;">${escapeHtml(n.pesan)}</p>
+                    
+                    <div style="display:flex; gap:8px; justify-content:flex-end; border-top:1px solid #f0f0f0; padding-top:12px;">
+                        ${!n.sudahDibaca ? `<button class="button button-success button-extra-small" onclick="tandaiDibaca('${n.id}')"><i class="fas fa-check"></i> Tandai Dibaca</button>` : ''}
+                        <button class="button button-danger button-extra-small" onclick="hapusNotifikasi('${n.id}')"><i class="fas fa-trash"></i> Hapus</button>
+                    </div>
+                </div>`;
+            }
+            html += '</div>';
+        }
+        areaKonten.innerHTML = html;
+    }
+
+    // ===== FUNGSI TANDAI SEMUA DI BACA =====
+    function tandaiSemuaDibaca() {
+        var user = JSON.parse(localStorage.getItem('2r_user') || '{}');
+        var dataNotif = JSON.parse(localStorage.getItem('2r_notifikasi') || '[]');
+        for (var i = 0; i < dataNotif.length; i++) {
+            if (dataNotif[i].userId === user.id) {
+                dataNotif[i].sudahDibaca = true;
+            }
+        }
+        localStorage.setItem('2r_notifikasi', JSON.stringify(dataNotif));
+        renderNotifikasi();
+        tampilkanToast('Semua notifikasi telah ditandai dibaca!', 'success');
+    }
+
+    // ===== FUNGSI TANDAI SATU NOTIFIKASI =====
+    function tandaiDibaca(id) {
+        var dataNotif = JSON.parse(localStorage.getItem('2r_notifikasi') || '[]');
+        for (var i = 0; i < dataNotif.length; i++) {
+            if (dataNotif[i].id === id) {
+                dataNotif[i].sudahDibaca = true;
+                break;
+            }
+        }
+        localStorage.setItem('2r_notifikasi', JSON.stringify(dataNotif));
+        renderNotifikasi();
+        tampilkanToast('Notifikasi ditandai dibaca!', 'success');
+    }
+
+    // ===== FUNGSI HAPUS NOTIFIKASI =====
+    function hapusNotifikasi(id) {
+        if (!confirm('Yakin ingin menghapus notifikasi ini?')) return;
+        var dataNotif = JSON.parse(localStorage.getItem('2r_notifikasi') || '[]');
+        var dataBaru = [];
+        for (var i = 0; i < dataNotif.length; i++) {
+            if (dataNotif[i].id !== id) {
+                dataBaru.push(dataNotif[i]);
+            }
+        }
+        localStorage.setItem('2r_notifikasi', JSON.stringify(dataBaru));
+        renderNotifikasi();
+        tampilkanToast('Notifikasi berhasil dihapus!', 'success');
+    }
+
+    // ===== FUNGSI BUAT NOTIFIKASI DEMO (UNTUK PENGUJIAN) =====
+    function buatNotifikasiDemo() {
+        var user = JSON.parse(localStorage.getItem('2r_user') || '{}');
+        var role = localStorage.getItem('2r_user_role') || 'Pengguna';
+        var judul, pesan, tipe;
+        var acak = Math.floor(Math.random() * 3);
+        if (acak === 0) {
+            judul = 'Selamat Datang!';
+            pesan = 'Anda berhasil login sebagai ' + role + '. Selamat beraktivitas di Toko Online 2R!';
+            tipe = 'success';
+        } else if (acak === 1) {
+            judul = 'Pengumuman Sistem';
+            pesan = 'Aplikasi akan melakukan pemeliharaan pada pukul 02:00. Mohon persiapkan data Anda.';
+            tipe = 'warning';
+        } else {
+            judul = 'Notifikasi Demo';
+            pesan = 'Ini adalah contoh notifikasi untuk menguji fitur notifikasi Anda.';
+            tipe = 'info';
+        }
+        var dataNotif = JSON.parse(localStorage.getItem('2r_notifikasi') || '[]');
+        dataNotif.push({
+            id: Date.now() + Math.random(),
+            userId: user.id,
+            judul: judul,
+            pesan: pesan,
+            tipe: tipe,
+            sudahDibaca: false,
+            waktu: new Date().toISOString()
+        });
+        localStorage.setItem('2r_notifikasi', JSON.stringify(dataNotif));
+        renderNotifikasi();
+        tampilkanToast('Notifikasi demo baru dibuat!', 'info');
+    }
+</script>
+<!-- ===== AKHIR BLOK 8.4.6 ===== -->
 <!-- ===== BLOK 8.5 - JS_ESCAPE_HTML (ANTI-XSS) ===== -->
 <script>
     // ===== BLOK 8.5.1 - ESCAPE HTML =====
