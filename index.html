@@ -3312,6 +3312,94 @@ function bukaChat(targetId) {
 // ===== AKHIR BLOK 8.10.4 =====
 </script>
 <!-- ===== AKHIR BLOK 8.10 ===== -->
+    // ===== BLOK 8.10.1 - RENDER DAFTAR PERCAKAPAN (INBOX) =====
+function renderChat() {
+    var user = JSON.parse(localStorage.getItem('2r_user') || '{}');
+    var areaKonten = document.getElementById('mainContent');
+    if (!areaKonten) return;
+
+    // Ambil semua pesan
+    var semuaPesan = JSON.parse(localStorage.getItem('2r_chat_messages') || '[]');
+    
+    // Filter pesan yang melibatkan user saat ini
+    var pesanSaya = semuaPesan.filter(function(p) {
+        return p.pengirim === user.id || p.penerima === user.id;
+    });
+
+    // Kumpulkan ID lawan bicara yang unik
+    var daftarLawan = {};
+    for (var i = 0; i < pesanSaya.length; i++) {
+        var idLawan = (pesanSaya[i].pengirim === user.id) ? pesanSaya[i].penerima : pesanSaya[i].pengirim;
+        if (!daftarLawan[idLawan]) {
+            daftarLawan[idLawan] = { id: idLawan, pesanTerakhir: pesanSaya[i], waktu: new Date(pesanSaya[i].waktu) };
+        } else {
+            // Update jika pesan lebih baru
+            if (new Date(pesanSaya[i].waktu) > daftarLawan[idLawan].waktu) {
+                daftarLawan[idLawan].pesanTerakhir = pesanSaya[i];
+                daftarLawan[idLawan].waktu = new Date(pesanSaya[i].waktu);
+            }
+        }
+    }
+
+    // Urutkan berdasarkan waktu terbaru
+    var listLawan = Object.values(daftarLawan);
+    listLawan.sort(function(a, b) { return b.waktu - a.waktu; });
+
+    var html = '<div class="page-header"><h2>Chat</h2><p>Daftar percakapan Anda. ID lawan bicara ditampilkan untuk memudahkan balasan.</p></div>';
+
+    // Tampilkan Inbox (Daftar Percakapan)
+    if (listLawan.length === 0) {
+        html += '<div class="card"><div class="empty-state"><i class="fas fa-comments"></i><h3>Belum ada percakapan</h3><p>Silakan pilih ID tujuan di bawah untuk memulai chat.</p></div></div>';
+    } else {
+        html += '<div class="card"><div class="table-container"><table class="table"><thead><tr><th>ID Lawan</th><th>Pesan Terakhir</th><th>Waktu</th><th>Aksi</th></tr></thead><tbody>';
+        for (var i = 0; i < listLawan.length; i++) {
+            var lawan = listLawan[i];
+            // Cari nama lawan dari data akun
+            var dataAkun = getDataAkun();
+            var namaLawan = lawan.id;
+            for (var j = 0; j < dataAkun.length; j++) {
+                if (dataAkun[j].id === lawan.id) {
+                    namaLawan = dataAkun[j].nama || dataAkun[j].username;
+                    break;
+                }
+            }
+            var isiPesan = lawan.pesanTerakhir.isi;
+            var waktu = new Date(lawan.pesanTerakhir.waktu).toLocaleString('id-ID');
+            html += '<tr><td><strong>' + escapeHtml(lawan.id) + '</strong> (' + escapeHtml(namaLawan) + ')</td>';
+            html += '<td>' + escapeHtml(isiPesan.length > 50 ? isiPesan.substring(0, 50) + '...' : isiPesan) + '</td>';
+            html += '<td>' + waktu + '</td>';
+            html += '<td><button class="button button-primary button-small" onclick="bukaChat(\'' + lawan.id + '\')"><i class="fas fa-reply"></i> Balas</button></td></tr>';
+        }
+        html += '</tbody></table></div></div>';
+    }
+
+    // ===== FITUR BARU: DROPDOWN PILIH ID TUJUAN =====
+    // Ambil semua data akun untuk dropdown
+    var dataAkun = getDataAkun();
+    var opsiDropdown = '<option value="">-- Pilih ID Tujuan --</option>';
+    
+    for (var i = 0; i < dataAkun.length; i++) {
+        var a = dataAkun[i];
+        // Jangan tampilkan akun diri sendiri
+        if (a.id !== user.id) {
+            var tampilan = a.id + ' - ' + a.nama + ' (' + a.role + ')';
+            opsiDropdown += '<option value="' + a.id + '">' + escapeHtml(tampilan) + '</option>';
+        }
+    }
+
+    // Form Memulai Chat Baru
+    html += '<div class="card"><div class="card-header">Mulai Percakapan Baru</div>';
+    html += '<div class="grid-2"><div><label class="form-label">Pilih ID Tujuan (Atau Ketik Manual)</label>';
+    html += '<select id="chatTargetId" class="form-input" onchange="document.getElementById(\'chatManualInput\').value = this.value">';
+    html += opsiDropdown;
+    html += '</select>';
+    html += '<div style="margin-top:5px;"><input type="text" id="chatManualInput" class="form-input" placeholder="Ketik ID manual jika tidak ada di daftar" oninput="document.getElementById(\'chatTargetId\').value = this.value"></div>';
+    html += '</div>';
+    html += '<div style="display:flex; align-items:flex-end;"><button class="button button-primary" onclick="bukaChat(document.getElementById(\'chatTargetId\').value)"><i class="fas fa-arrow-right"></i> Buka Chat</button></div></div></div>';
+
+    areaKonten.innerHTML = html;
+}
+// ===== AKHIR BLOK 8.10.1 =====
 <!-- ===== AKHIR BAGIAN 8 ===== -->
 
 </body>
