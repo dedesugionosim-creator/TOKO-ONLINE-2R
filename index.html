@@ -1985,7 +1985,7 @@ function hapusKTPUmum() {
 
         areaKonten.innerHTML = html;
         
-        // Event listener untuk upload banyak gambar (dipasang ulang setiap render)
+                // Event listener untuk upload banyak gambar (dipasang ulang setiap render)
         setTimeout(function() {
             var inputGambar = document.getElementById('iklanGambar');
             if (inputGambar) {
@@ -2014,7 +2014,12 @@ function hapusKTPUmum() {
                                     selesai++;
                                     if (selesai === total) {
                                         localStorage.setItem('2r_iklan_gambar_temp', JSON.stringify(tempData));
+                                        console.log('Gambar berhasil dikonversi ke Base64. Total:', total, 'file');
                                     }
+                                };
+                                reader.onerror = function(err) {
+                                    console.error('Error membaca file:', file.name, err);
+                                    tampilkanToast('Gagal membaca file: ' + file.name, 'error');
                                 };
                                 reader.readAsDataURL(file);
                             })(files[i]);
@@ -2037,7 +2042,7 @@ function hapusKTPUmum() {
         document.getElementById('formIklanContainer').scrollIntoView({ behavior: 'smooth' });
     }
     function tutupFormIklan() { document.getElementById('formIklanContainer').classList.add('hidden'); }
-    function simpanIklan() {
+        function simpanIklan() {
         var judul = document.getElementById('iklanJudul').value.trim();
         var deskripsi = document.getElementById('iklanDeskripsi').value.trim();
         var warna = document.getElementById('iklanWarna').value;
@@ -2046,7 +2051,13 @@ function hapusKTPUmum() {
         if (gambarTemp) {
             try {
                 gambarArray = JSON.parse(gambarTemp);
-            } catch (e) { gambarArray = []; }
+                console.log('Gambar yang akan disimpan:', gambarArray.length, 'file');
+            } catch (e) { 
+                console.warn('Gagal parse gambarTemp:', e);
+                gambarArray = []; 
+            }
+        } else {
+            console.log('Tidak ada gambar temporary yang disimpan.');
         }
         var editIndex = parseInt(document.getElementById('iklanEditIndex').value);
         if (!judul || !deskripsi) { tampilkanToast('Judul dan deskripsi wajib diisi!', 'warning'); return; }
