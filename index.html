@@ -2927,27 +2927,54 @@ function renderPapanInformasi() {
 <!-- ===== BLOK 8.6 - JS_INIT_UTAMA (DOMContentLoaded) ===== -->
 <script>
     // ===== BLOK 8.6.1 - TAMPILKAN DASHBOARD =====
-    function tampilkanDashboard(user) {
-        if (!user || !user.nama) {
-            localStorage.removeItem('2r_user');
-            localStorage.removeItem('2r_user_role');
-            location.reload();
-            return;
-        }
-        document.getElementById('pageAuthentication').style.display = 'none';
-        document.getElementById('pageDashboard').style.display = 'block';
-        document.getElementById('userNama').textContent = user.nama;
-        var daftarRole = {
-            superadmin: 'SuperAdmin', customer: 'Customer', toko: 'Toko', ojek: 'Ojek',
-            pedagang: 'Pedagang Pasar', staf_admin: 'Staf Admin', customer_service: 'Customer Service',
-            staf_owner_toko: 'Staf Owner Toko', staf_owner_ojek: 'Staf Owner Ojek', sponsor: 'Sponsor'
-        };
-        document.getElementById('roleBadge').textContent = daftarRole[user.role] || user.role;
-        document.getElementById('sidebarContainer').innerHTML = buatSidebarHTML(user.role);
-        setupNavigasiSidebar();
-        renderDashboard();
+function tampilkanDashboard(user) {
+    // Jika data user tidak valid, logout paksa dan reload
+    if (!user || !user.nama) {
+        localStorage.removeItem('2r_user');
+        localStorage.removeItem('2r_user_role');
+        location.reload();
+        return;
     }
-    // ===== AKHIR BLOK 8.6.1 =====
+
+    // Sembunyikan halaman login, tampilkan dashboard
+    document.getElementById('pageAuthentication').style.display = 'none';
+    document.getElementById('pageDashboard').style.display = 'block';
+
+    // Tampilkan nama user di navbar
+    document.getElementById('userNama').textContent = user.nama;
+
+    // Tampilkan badge Role di navbar
+    var daftarRole = {
+        superadmin: 'SuperAdmin', customer: 'Customer', toko: 'Toko', ojek: 'Ojek',
+        pedagang: 'Pedagang Pasar', staf_admin: 'Staf Admin', customer_service: 'Customer Service',
+        staf_owner_toko: 'Staf Owner Toko', staf_owner_ojek: 'Staf Owner Ojek', sponsor: 'Sponsor'
+    };
+    document.getElementById('roleBadge').textContent = daftarRole[user.role] || user.role;
+
+    // Bangun sidebar dan setup navigasi
+    document.getElementById('sidebarContainer').innerHTML = buatSidebarHTML(user.role);
+    setupNavigasiSidebar();
+
+    // === FITUR FOTO PROFIL (PERBAIKAN) ===
+    // Cek apakah user memiliki foto profil tersimpan
+    var avatar = document.getElementById('userAvatar');
+    var placeholder = document.getElementById('userAvatarPlaceholder');
+    if (user.fotoProfil) {
+        // Jika ada foto, tampilkan foto dan sembunyikan placeholder
+        avatar.src = user.fotoProfil;
+        avatar.style.display = 'block';
+        placeholder.style.display = 'none';
+    } else {
+        // Jika tidak ada foto, sembunyikan tag img dan tampilkan placeholder ikon
+        avatar.style.display = 'none';
+        placeholder.style.display = 'block';
+    }
+    // ===================================
+
+    // Render halaman dashboard sesuai role
+    renderDashboard();
+}
+// ===== AKHIR BLOK 8.6.1 =====
 
     // ===== BLOK 8.6.2 - DOMContentLoaded =====
     document.addEventListener('DOMContentLoaded', async function() {
