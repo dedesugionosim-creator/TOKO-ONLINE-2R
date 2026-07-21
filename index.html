@@ -2385,12 +2385,16 @@ function hapusKTPUmum() {
     });
     // ===== AKHIR BLOK 8.2.4 =====
 
-    // ===== BLOK 8.2.5 - LOGOUT =====
-    document.getElementById('buttonLogout').addEventListener('click', function() {
-        if (confirm('Keluar dari aplikasi?')) {
-            localStorage.removeItem('2r_user');
-            localStorage.removeItem('2r_user_role');
-            location.reload();
+        // ===== BLOK 8.2.5 - LOGOUT (VERSI TAHAN BANTING) =====
+    document.addEventListener('click', function(e) {
+        // Mendeteksi apakah yang diklik adalah tombol Logout atau anak elemennya
+        var target = e.target.closest('#buttonLogout');
+        if (target) {
+            if (confirm('Keluar dari aplikasi?')) {
+                localStorage.removeItem('2r_user');
+                localStorage.removeItem('2r_user_role');
+                location.reload();
+            }
         }
     });
     // ===== AKHIR BLOK 8.2.5 =====
