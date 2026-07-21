@@ -4539,6 +4539,271 @@ function bukaChat(targetId) {
         reader.readAsText(file);
     }
     // ===== AKHIR BLOK 8.15.4 =====
+    <!-- ===== BLOK 8.16 - JS_RENDER_BUAT_AKUN_OJEK ===== -->
+<script>
+// ===== BLOK 8.16.1 - RENDER HALAMAN BUAT AKUN OJEK =====
+function renderBuatAkunOjek() {
+    var role = localStorage.getItem('2r_user_role');
+    if (role !== 'staf_owner_ojek') {
+        tampilkanToast('Anda tidak memiliki akses ke halaman ini!', 'error');
+        return;
+    }
+
+    var user = JSON.parse(localStorage.getItem('2r_user') || '{}');
+    var areaKonten = document.getElementById('mainContent');
+    
+    var dataAkun = getDataAkun();
+    var anggotaOjek = dataAkun.filter(function(a) {
+        return a.role === 'ojek' && a.dibuatOleh === user.id;
+    });
+
+    var html = `
+    <div class="page-header">
+        <h2><i class="fas fa-motorcycle" style="color:#FF6B00;"></i> Buat Akun Ojek</h2>
+        <p>Daftarkan anggota ojek baru untuk bergabung di bawah manajemen Anda.</p>
+    </div>
+
+    <div class="card" style="border-top:4px solid #4CAF50;">
+        <div class="card-header">
+            <span style="color:#2e7d32; font-weight:700;"><i class="fas fa-user-plus"></i> Form Pendaftaran Ojek Baru</span>
+        </div>
+        <div class="grid-2">
+            <div>
+                <label class="form-label">Nama Lengkap Ojek</label>
+                <input type="text" id="ojekNama" class="form-input" placeholder="Contoh: Bambang Supriyadi">
+            </div>
+            <div>
+                <label class="form-label">ID Akun (Otomatis)</label>
+                <div style="background:#f0f0f0;border:2px solid #ddd;border-radius:8px;padding:12px;font-weight:600;">` + generateId('ojek') + `</div>
+            </div>
+            <div>
+                <label class="form-label">Username</label>
+                <input type="text" id="ojekUsername" class="form-input" placeholder="Buat username unik">
+            </div>
+            <div>
+                <label class="form-label">Password</label>
+                <input type="password" id="ojekPassword" class="form-input" placeholder="Minimal 6 karakter">
+            </div>
+        </div>
+        <div style="margin-top:10px;">
+            <button class="button button-success" onclick="prosesBuatAkunOjek()" style="width:100%; justify-content:center;">
+                <i class="fas fa-save"></i> Daftarkan Ojek Ini
+            </button>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <span><i class="fas fa-list"></i> Daftar Anggota Ojek Saya</span>
+            <span style="font-weight:normal;font-size:13px;color:#888;">Total: ` + anggotaOjek.length + ` ojek</span>
+        </div>`;
+
+    if (anggotaOjek.length === 0) {
+        html += `<div class="empty-state"><i class="fas fa-users-slash"></i><h3>Belum ada anggota ojek</h3><p>Silakan daftarkan ojek pertama Anda melalui form di atas.</p></div>`;
+    } else {
+        html += `<div class="table-container"><table class="table"><thead><tr><th>No</th><th>ID Ojek</th><th>Nama</th><th>Username</th><th>Status</th></tr></thead><tbody>`;
+        for (var i = 0; i < anggotaOjek.length; i++) {
+            var a = anggotaOjek[i];
+            var badge = a.status === 'AKTIF' ? 'badge-success' : 'badge-warning';
+            html += `<tr><td>` + (i+1) + `</td><td>` + a.id + `</td><td>` + escapeHtml(a.nama) + `</td><td>` + escapeHtml(a.username) + `</td><td><span class="badge ` + badge + `">` + a.status + `</span></td></tr>`;
+        }
+        html += `</tbody></table></div>`;
+    }
+    html += `</div>`;
+    areaKonten.innerHTML = html;
+}
+// ===== AKHIR BLOK 8.16.1 =====
+
+// ===== BLOK 8.16.2 - PROSES DAFTAR AKUN OJEK =====
+async function prosesBuatAkunOjek() {
+    var user = JSON.parse(localStorage.getItem('2r_user') || '{}');
+    var nama = document.getElementById('ojekNama').value.trim();
+    var username = document.getElementById('ojekUsername').value.trim();
+    var password = document.getElementById('ojekPassword').value.trim();
+
+    if (!nama || !username || !password) {
+        tampilkanToast('Nama, Username, dan Password wajib diisi!', 'warning');
+        return;
+    }
+    if (username.length < 4) { tampilkanToast('Username minimal 4 karakter!', 'warning'); return; }
+    if (password.length < 6) { tampilkanToast('Password minimal 6 karakter!', 'warning'); return; }
+
+    var dataAkun = getDataAkun();
+    for (var i = 0; i < dataAkun.length; i++) {
+        if (dataAkun[i].username === username) {
+            tampilkanToast('Username sudah digunakan!', 'error');
+            return;
+        }
+    }
+
+    var passwordHash = await hashPassword(password);
+    var idOjek = generateId('ojek');
+
+    var akunOjekBaru = {
+        id: idOjek,
+        role: 'ojek',
+        username: username,
+        password: passwordHash,
+        nama: nama,
+        email: '',
+        nomorHp: '',
+        alamat: '',
+        namaBank: '',
+        nomorRekening: '',
+        pemilikRekening: '',
+        ktp: '',
+        status: 'AKTIF',
+        waktuRegistrasi: new Date().toISOString(),
+        dibuatOleh: user.id,
+        dibuatOlehNama: user.nama
+    };
+
+    dataAkun.push(akunOjekBaru);
+    simpanDataAkun(dataAkun);
+
+    document.getElementById('ojekNama').value = '';
+    document.getElementById('ojekUsername').value = '';
+    document.getElementById('ojekPassword').value = '';
+
+    tampilkanToast('Akun Ojek dengan ID ' + idOjek + ' berhasil dibuat!', 'success');
+    renderBuatAkunOjek();
+}
+// ===== AKHIR BLOK 8.16.2 =====
+</script>
+<!-- ===== AKHIR BLOK 8.16 ===== -->
+
+<!-- ===== BLOK 8.17 - JS_RENDER_BUAT_AKUN_TOKO ===== -->
+<script>
+// ===== BLOK 8.17.1 - RENDER HALAMAN BUAT AKUN TOKO =====
+function renderBuatAkunToko() {
+    var role = localStorage.getItem('2r_user_role');
+    if (role !== 'staf_owner_toko') {
+        tampilkanToast('Anda tidak memiliki akses ke halaman ini!', 'error');
+        return;
+    }
+
+    var user = JSON.parse(localStorage.getItem('2r_user') || '{}');
+    var areaKonten = document.getElementById('mainContent');
+    
+    var dataAkun = getDataAkun();
+    var anggotaToko = dataAkun.filter(function(a) {
+        return a.role === 'toko' && a.dibuatOleh === user.id;
+    });
+
+    var html = `
+    <div class="page-header">
+        <h2><i class="fas fa-store" style="color:#FF6B00;"></i> Buat Akun Toko</h2>
+        <p>Daftarkan anggota toko baru untuk bergabung di bawah manajemen Anda.</p>
+    </div>
+
+    <div class="card" style="border-top:4px solid #4CAF50;">
+        <div class="card-header">
+            <span style="color:#2e7d32; font-weight:700;"><i class="fas fa-user-plus"></i> Form Pendaftaran Toko Baru</span>
+        </div>
+        <div class="grid-2">
+            <div>
+                <label class="form-label">Nama Lengkap Toko</label>
+                <input type="text" id="tokoNama" class="form-input" placeholder="Contoh: Toko Serba Ada">
+            </div>
+            <div>
+                <label class="form-label">ID Akun (Otomatis)</label>
+                <div style="background:#f0f0f0;border:2px solid #ddd;border-radius:8px;padding:12px;font-weight:600;">` + generateId('toko') + `</div>
+            </div>
+            <div>
+                <label class="form-label">Username</label>
+                <input type="text" id="tokoUsername" class="form-input" placeholder="Buat username unik">
+            </div>
+            <div>
+                <label class="form-label">Password</label>
+                <input type="password" id="tokoPassword" class="form-input" placeholder="Minimal 6 karakter">
+            </div>
+        </div>
+        <div style="margin-top:10px;">
+            <button class="button button-success" onclick="prosesBuatAkunToko()" style="width:100%; justify-content:center;">
+                <i class="fas fa-save"></i> Daftarkan Toko Ini
+            </button>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <span><i class="fas fa-list"></i> Daftar Anggota Toko Saya</span>
+            <span style="font-weight:normal;font-size:13px;color:#888;">Total: ` + anggotaToko.length + ` toko</span>
+        </div>`;
+
+    if (anggotaToko.length === 0) {
+        html += `<div class="empty-state"><i class="fas fa-store-slash"></i><h3>Belum ada anggota toko</h3><p>Silakan daftarkan toko pertama Anda melalui form di atas.</p></div>`;
+    } else {
+        html += `<div class="table-container"><table class="table"><thead><tr><th>No</th><th>ID Toko</th><th>Nama</th><th>Username</th><th>Status</th></tr></thead><tbody>`;
+        for (var i = 0; i < anggotaToko.length; i++) {
+            var a = anggotaToko[i];
+            var badge = a.status === 'AKTIF' ? 'badge-success' : 'badge-warning';
+            html += `<tr><td>` + (i+1) + `</td><td>` + a.id + `</td><td>` + escapeHtml(a.nama) + `</td><td>` + escapeHtml(a.username) + `</td><td><span class="badge ` + badge + `">` + a.status + `</span></td></tr>`;
+        }
+        html += `</tbody></table></div>`;
+    }
+    html += `</div>`;
+    areaKonten.innerHTML = html;
+}
+// ===== AKHIR BLOK 8.17.1 =====
+
+// ===== BLOK 8.17.2 - PROSES DAFTAR AKUN TOKO =====
+async function prosesBuatAkunToko() {
+    var user = JSON.parse(localStorage.getItem('2r_user') || '{}');
+    var nama = document.getElementById('tokoNama').value.trim();
+    var username = document.getElementById('tokoUsername').value.trim();
+    var password = document.getElementById('tokoPassword').value.trim();
+
+    if (!nama || !username || !password) {
+        tampilkanToast('Nama, Username, dan Password wajib diisi!', 'warning');
+        return;
+    }
+    if (username.length < 4) { tampilkanToast('Username minimal 4 karakter!', 'warning'); return; }
+    if (password.length < 6) { tampilkanToast('Password minimal 6 karakter!', 'warning'); return; }
+
+    var dataAkun = getDataAkun();
+    for (var i = 0; i < dataAkun.length; i++) {
+        if (dataAkun[i].username === username) {
+            tampilkanToast('Username sudah digunakan!', 'error');
+            return;
+        }
+    }
+
+    var passwordHash = await hashPassword(password);
+    var idToko = generateId('toko');
+
+    var akunTokoBaru = {
+        id: idToko,
+        role: 'toko',
+        username: username,
+        password: passwordHash,
+        nama: nama,
+        email: '',
+        nomorHp: '',
+        alamat: '',
+        namaBank: '',
+        nomorRekening: '',
+        pemilikRekening: '',
+        ktp: '',
+        status: 'AKTIF',
+        waktuRegistrasi: new Date().toISOString(),
+        dibuatOleh: user.id,
+        dibuatOlehNama: user.nama
+    };
+
+    dataAkun.push(akunTokoBaru);
+    simpanDataAkun(dataAkun);
+
+    document.getElementById('tokoNama').value = '';
+    document.getElementById('tokoUsername').value = '';
+    document.getElementById('tokoPassword').value = '';
+
+    tampilkanToast('Akun Toko dengan ID ' + idToko + ' berhasil dibuat!', 'success');
+    renderBuatAkunToko();
+}
+// ===== AKHIR BLOK 8.17.2 =====
+</script>
+<!-- ===== AKHIR BLOK 8.17 ===== -->
 </script>
 <!-- ===== AKHIR BLOK 8.15 ===== -->
 <!-- ===== AKHIR BAGIAN 8 ===== -->
