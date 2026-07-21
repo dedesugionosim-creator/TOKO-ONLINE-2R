@@ -1188,7 +1188,7 @@ function buatSidebarHTML(role) {
         html += '<div><label class="form-label">Nomor Rekening</label><input type="text" id="profilRekeningCustomer" class="form-input" value="' + escapeHtml(user.nomorRekening || '') + '"></div>';
         html += '<div><label class="form-label">Nama Pemilik Rekening</label><input type="text" id="profilPemilikRekCustomer" class="form-input" value="' + escapeHtml(user.pemilikRekening || '') + '"></div></div></div>';
 
-                // --- TAMBAHAN CARD FOTO PROFIL ---
+                        // --- TAMBAHAN CARD FOTO PROFIL ---
         html += '<div class="card"><div class="card-header">Foto Profil</div>';
         html += '<div class="upload-area" id="uploadFotoContainerCustomer"><div id="fotoPreviewCustomer">';
         if (user.fotoProfil) {
@@ -1200,9 +1200,25 @@ function buatSidebarHTML(role) {
         html += '<button class="button button-primary margin-top-10" onclick="simpanFotoProfilCustomer()"><i class="fas fa-save"></i> Simpan Foto</button>';
         html += '</div>';
 
+        // KTP Upload
+        html += '<div class="card"><div class="card-header">Dokumen KTP & Domisili</div>';
+        html += '<div class="upload-area" id="uploadKtpContainerCustomer"><div id="ktpPreviewCustomer">';
+        if (user.ktp) {
+            html += '<img src="' + user.ktp + '" class="preview-image">';
+        } else {
+            html += '<i class="fas fa-cloud-upload-alt"></i><p>Klik untuk upload KTP</p>';
+        }
+        html += '</div><input type="file" id="inputKtpCustomer" accept=".jpg,.jpeg,.png" style="display:none"></div>';
+        html += '<button class="button button-primary margin-top-10" onclick="simpanKTPCustomer()"><i class="fas fa-save"></i> Simpan KTP</button>';
+        if (user.ktp) html += '<button class="button button-danger margin-top-10" onclick="hapusKTPCustomer()" style="margin-left:10px;"><i class="fas fa-trash"></i> Hapus KTP</button>';
+        html += '</div>';
+
+        // TAMPILKAN HTML KE LAYAR
         areaKonten.innerHTML = html;
 
-        // --- EVENT LISTENER FOTO PROFIL ---
+        // SETUP EVENT LISTENER SETELAH DOM TERBENTUK
+        setTimeout(function() {
+            // 1. EVENT FOTO PROFIL
             var containerFoto = document.getElementById('uploadFotoContainerCustomer');
             var inputFoto = document.getElementById('inputFotoProfilCustomer');
             if (containerFoto && inputFoto) {
@@ -1211,50 +1227,33 @@ function buatSidebarHTML(role) {
                     var file = e.target.files[0];
                     if (file) {
                         document.getElementById('fotoPreviewCustomer').innerHTML = '<p>Mengkompres...</p>';
-                        var compressed = await compressImage(file, 200, 0.7);
-                        document.getElementById('fotoPreviewCustomer').innerHTML = '<img src="' + compressed + '" class="preview-image" style="max-width:150px; max-height:150px; border-radius:50%; object-fit:cover;">';
-                        localStorage.setItem('2r_foto_profil_temp_customer', compressed);
+                        try {
+                            var compressed = await compressImage(file, 200, 0.7);
+                            document.getElementById('fotoPreviewCustomer').innerHTML = '<img src="' + compressed + '" class="preview-image" style="max-width:150px; max-height:150px; border-radius:50%; object-fit:cover;">';
+                            localStorage.setItem('2r_foto_profil_temp_customer', compressed);
+                            tampilkanToast('Foto siap, klik Simpan Foto.', 'success');
+                        } catch(err) {
+                            tampilkanToast('Gagal kompresi file.', 'error');
+                        }
                     }
                 };
             }
-                areaKonten.innerHTML = html;
 
-        // --- EVENT LISTENER FOTO PROFIL ---
-        var containerFoto = document.getElementById('uploadFotoContainerCustomer');
-        var inputFoto = document.getElementById('inputFotoProfilCustomer');
-        if (containerFoto && inputFoto) {
-            containerFoto.onclick = function() { inputFoto.click(); };
-            inputFoto.onchange = async function(e) {
-                var file = e.target.files[0];
-                if (file) {
-                    document.getElementById('fotoPreviewCustomer').innerHTML = '<p>Mengkompres...</p>';
-                    var compressed = await compressImage(file, 200, 0.7);
-                    document.getElementById('fotoPreviewCustomer').innerHTML = '<img src="' + compressed + '" class="preview-image" style="max-width:150px; max-height:150px; border-radius:50%; object-fit:cover;">';
-                    localStorage.setItem('2r_foto_profil_temp_customer', compressed);
-                }
-            };
-        }
-
-        // KTP Upload
-        html += '<div class="card"><div class="card-header">Dokumen KTP & Domisili</div>';
-        html += '<div class="upload-area" id="uploadKtpContainerCustomer"><div id="ktpPreviewCustomer">';
-        // ... kode selanjutnya tetap sama ...
-
-        areaKonten.innerHTML = html;
-        setTimeout(function() {
-            loadDataWilayahTersimpan('ktp', user);
-            loadDataWilayahTersimpan('dom', user);
-            isiDropdownWilayah('ktp');
-            isiDropdownWilayah('dom');
-        }, 500);
-        setTimeout(function() {
+            // 2. EVENT KTP
             var containerKTP = document.getElementById('uploadKtpContainerCustomer');
             var inputKTP = document.getElementById('inputKtpCustomer');
             if (containerKTP && inputKTP) {
                 containerKTP.onclick = function() { inputKTP.click(); };
                 inputKTP.onchange = function(e) { previewKTPCustomer(e.target.files[0]); };
             }
-        }, 300);
+
+            // 3. LOAD DROPDOWN WILAYAH
+            loadDataWilayahTersimpan('ktp', user);
+            loadDataWilayahTersimpan('dom', user);
+            isiDropdownWilayah('ktp');
+            isiDropdownWilayah('dom');
+
+        }, 300); // AKHIR DARI SETTIMEOUT
     }
     // ===== AKHIR BLOK 7.3.1 =====
 
