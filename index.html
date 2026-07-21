@@ -22,13 +22,23 @@
     <div class="authentication-wrapper">
         <div class="authentication-box">
             
-            <!-- ===== BLOK 2.1.1 - LOGO & JUDUL ===== -->
-            <div class="authentication-logo">
-                <i class="fas fa-store-alt"></i>
-                <h1>Toko Online <span style="color:#FF6B00;">2R</span></h1>
-                <p>Platform Belanja & Layanan Serba Ada</p>
-            </div>
-            <!-- ===== AKHIR BLOK 2.1.1 ===== -->
+            <!-- ===== BLOK 2.2.1 - NAVBAR ===== -->
+    <nav class="navbar">
+        <div class="navbar-brand">
+            <button id="menuToggle"><i class="fas fa-bars"></i></button>
+            <i class="fas fa-store-alt"></i> Toko Online 2R
+        </div>
+        <div class="navbar-user">
+            <!-- TEMPAT FOTO PROFIL -->
+            <img id="userAvatar" src="" style="width:36px; height:36px; border-radius:50%; object-fit:cover; display:none; margin-right:10px; border:2px solid #fff; box-shadow:0 2px 6px rgba(0,0,0,0.1);">
+            <i id="userAvatarPlaceholder" class="fas fa-user-circle" style="font-size:32px; color:#ddd; margin-right:10px; display:block;"></i>
+            
+            <span class="role-badge" id="roleBadge">Role</span>
+            <span id="userNama" style="font-weight:600;">User</span>
+            <button class="button-logout" id="buttonLogout"><i class="fas fa-sign-out-alt"></i> Keluar</button>
+        </div>
+    </nav>
+<!-- ===== AKHIR BLOK 2.2.1 ===== -->
 
             <!-- ===== BLOK 2.1.2 - AREA PESAN ERROR ===== -->
             <div class="authentication-error" id="authenticationError">
@@ -823,7 +833,7 @@ body { font-family:'Poppins', sans-serif; background:var(--bg); min-height:100vh
 
 <!-- ===== BLOK 7.2 - JS_RENDER_PROFIL_SUPERADMIN ===== -->
 <script>
-    // ===== BLOK 7.2.1 - RENDER PROFIL SUPERADMIN =====
+        // ===== BLOK 7.2.1 - RENDER PROFIL SUPERADMIN =====
     function renderProfilSuperAdmin(user) {
         var areaKonten = document.getElementById('mainContent');
         if (!areaKonten) return;
@@ -875,6 +885,18 @@ body { font-family:'Poppins', sans-serif; background:var(--bg); min-height:100vh
         html += '<button class="button button-primary margin-top-10" onclick="simpanKeteranganSA()"><i class="fas fa-save"></i> Simpan</button>';
         html += '</div>';
 
+        // --- TAMBAHAN: UPLOAD FOTO PROFIL SUPERADMIN ---
+        html += '<div class="card"><div class="card-header"><span><i class="fas fa-image" style="color:#FF6B00;"></i> Foto Profil SuperAdmin</span></div>';
+        html += '<div class="upload-area" id="uploadFotoContainerSA"><div id="fotoPreviewSA">';
+        if (user.fotoProfil) {
+            html += '<img src="' + user.fotoProfil + '" class="preview-image" style="max-width:150px; max-height:150px; border-radius:50%; object-fit:cover;">';
+        } else {
+            html += '<i class="fas fa-user-circle" style="font-size:60px; color:#ddd;"></i><p>Klik untuk upload foto profil</p>';
+        }
+        html += '</div><input type="file" id="inputFotoProfilSA" accept=".jpg,.jpeg,.png" style="display:none"></div>';
+        html += '<button class="button button-primary margin-top-10" onclick="simpanFotoProfilSA()"><i class="fas fa-save"></i> Simpan Foto</button>';
+        html += '</div>';
+
         areaKonten.innerHTML = html;
         setTimeout(function() {
             var tombolUpload = document.getElementById('btnUploadDokumen');
@@ -884,6 +906,22 @@ body { font-family:'Poppins', sans-serif; background:var(--bg); min-height:100vh
                 inputUpload.onchange = function(e) { uploadDokumenSA(e.target.files); };
             }
             loadDokumenSA();
+            
+            // --- EVENT LISTENER FOTO PROFIL SA ---
+            var containerFotoSA = document.getElementById('uploadFotoContainerSA');
+            var inputFotoSA = document.getElementById('inputFotoProfilSA');
+            if (containerFotoSA && inputFotoSA) {
+                containerFotoSA.onclick = function() { inputFotoSA.click(); };
+                inputFotoSA.onchange = async function(e) {
+                    var file = e.target.files[0];
+                    if (file) {
+                        document.getElementById('fotoPreviewSA').innerHTML = '<p>Mengkompres...</p>';
+                        var compressed = await compressImage(file, 200, 0.7);
+                        document.getElementById('fotoPreviewSA').innerHTML = '<img src="' + compressed + '" class="preview-image" style="max-width:150px; max-height:150px; border-radius:50%; object-fit:cover;">';
+                        localStorage.setItem('2r_foto_profil_temp_sa', compressed);
+                    }
+                };
+            }
         }, 300);
     }
     // ===== AKHIR BLOK 7.2.1 =====
@@ -1084,8 +1122,6 @@ body { font-family:'Poppins', sans-serif; background:var(--bg); min-height:100vh
 </script>
 <!-- ===== AKHIR BLOK 7.2 ===== -->
 
-<!-- ===== BLOK 7.3 - JS_RENDER_PROFIL_CUSTOMER ===== -->
-<script>
     // ===== BLOK 7.3.1 - RENDER PROFIL CUSTOMER =====
     function renderProfilCustomer() {
         var user = JSON.parse(localStorage.getItem('2r_user') || '{}');
@@ -1150,6 +1186,18 @@ body { font-family:'Poppins', sans-serif; background:var(--bg); min-height:100vh
         if (user.ktp) html += '<button class="button button-danger margin-top-10" onclick="hapusKTPCustomer()" style="margin-left:10px;"><i class="fas fa-trash"></i> Hapus KTP</button>';
         html += '</div>';
 
+        // --- TAMBAHAN: UPLOAD FOTO PROFIL ---
+        html += '<div class="card"><div class="card-header">Foto Profil</div>';
+        html += '<div class="upload-area" id="uploadFotoContainerCustomer"><div id="fotoPreviewCustomer">';
+        if (user.fotoProfil) {
+            html += '<img src="' + user.fotoProfil + '" class="preview-image" style="max-width:150px; max-height:150px; border-radius:50%; object-fit:cover;">';
+        } else {
+            html += '<i class="fas fa-user-circle" style="font-size:60px; color:#ddd;"></i><p>Klik untuk upload foto profil</p>';
+        }
+        html += '</div><input type="file" id="inputFotoProfilCustomer" accept=".jpg,.jpeg,.png" style="display:none"></div>';
+        html += '<button class="button button-primary margin-top-10" onclick="simpanFotoProfilCustomer()"><i class="fas fa-save"></i> Simpan Foto</button>';
+        html += '</div>';
+
         areaKonten.innerHTML = html;
         setTimeout(function() {
             loadDataWilayahTersimpan('ktp', user);
@@ -1163,6 +1211,23 @@ body { font-family:'Poppins', sans-serif; background:var(--bg); min-height:100vh
             if (containerKTP && inputKTP) {
                 containerKTP.onclick = function() { inputKTP.click(); };
                 inputKTP.onchange = function(e) { previewKTPCustomer(e.target.files[0]); };
+            }
+        }, 300);
+        // --- EVENT LISTENER FOTO PROFIL ---
+        setTimeout(function() {
+            var containerFoto = document.getElementById('uploadFotoContainerCustomer');
+            var inputFoto = document.getElementById('inputFotoProfilCustomer');
+            if (containerFoto && inputFoto) {
+                containerFoto.onclick = function() { inputFoto.click(); };
+                inputFoto.onchange = async function(e) {
+                    var file = e.target.files[0];
+                    if (file) {
+                        document.getElementById('fotoPreviewCustomer').innerHTML = '<p>Mengkompres...</p>';
+                        var compressed = await compressImage(file, 200, 0.7);
+                        document.getElementById('fotoPreviewCustomer').innerHTML = '<img src="' + compressed + '" class="preview-image" style="max-width:150px; max-height:150px; border-radius:50%; object-fit:cover;">';
+                        localStorage.setItem('2r_foto_profil_temp_customer', compressed);
+                    }
+                };
             }
         }, 300);
     }
@@ -1358,7 +1423,7 @@ body { font-family:'Poppins', sans-serif; background:var(--bg); min-height:100vh
 
 <!-- ===== BLOK 7.4 - JS_RENDER_PROFIL_UMUM ===== -->
 <script>
-    // ===== BLOK 7.4.1 - RENDER PROFIL UMUM =====
+        // ===== BLOK 7.4.1 - RENDER PROFIL UMUM =====
     function renderProfilUmum(user, role) {
         var areaKonten = document.getElementById('mainContent');
         if (!areaKonten) return;
@@ -1385,6 +1450,19 @@ body { font-family:'Poppins', sans-serif; background:var(--bg); min-height:100vh
         }
         html += '</div><input type="file" id="inputKtp" accept=".jpg,.jpeg,.png" style="display:none"></div>';
         html += '<button class="button button-primary margin-top-10" onclick="simpanKTP()"><i class="fas fa-save"></i> Simpan KTP</button></div>';
+        
+        // --- TAMBAHAN: UPLOAD FOTO PROFIL ---
+        html += '<div class="card"><div class="card-header">Foto Profil</div>';
+        html += '<div class="upload-area" id="uploadFotoContainerUmum"><div id="fotoPreviewUmum">';
+        if (user.fotoProfil) {
+            html += '<img src="' + user.fotoProfil + '" class="preview-image" style="max-width:150px; max-height:150px; border-radius:50%; object-fit:cover;">';
+        } else {
+            html += '<i class="fas fa-user-circle" style="font-size:60px; color:#ddd;"></i><p>Klik untuk upload foto profil</p>';
+        }
+        html += '</div><input type="file" id="inputFotoProfilUmum" accept=".jpg,.jpeg,.png" style="display:none"></div>';
+        html += '<button class="button button-primary margin-top-10" onclick="simpanFotoProfilUmum()"><i class="fas fa-save"></i> Simpan Foto</button>';
+        html += '</div>';
+
         areaKonten.innerHTML = html;
         setTimeout(function() {
             var containerKTP = document.getElementById('uploadKtpContainer');
@@ -1392,6 +1470,23 @@ body { font-family:'Poppins', sans-serif; background:var(--bg); min-height:100vh
             if (containerKTP && inputKTP) {
                 containerKTP.onclick = function() { inputKTP.click(); };
                 inputKTP.onchange = function(e) { previewKTP(e.target.files[0]); };
+            }
+        }, 300);
+        // --- EVENT LISTENER FOTO PROFIL ---
+        setTimeout(function() {
+            var containerFoto = document.getElementById('uploadFotoContainerUmum');
+            var inputFoto = document.getElementById('inputFotoProfilUmum');
+            if (containerFoto && inputFoto) {
+                containerFoto.onclick = function() { inputFoto.click(); };
+                inputFoto.onchange = async function(e) {
+                    var file = e.target.files[0];
+                    if (file) {
+                        document.getElementById('fotoPreviewUmum').innerHTML = '<p>Mengkompres...</p>';
+                        var compressed = await compressImage(file, 200, 0.7);
+                        document.getElementById('fotoPreviewUmum').innerHTML = '<img src="' + compressed + '" class="preview-image" style="max-width:150px; max-height:150px; border-radius:50%; object-fit:cover;">';
+                        localStorage.setItem('2r_foto_profil_temp_umum', compressed);
+                    }
+                };
             }
         }, 300);
     }
@@ -1523,6 +1618,18 @@ function renderProfilLengkap(user, role) {
     if (user.ktp) html += '<button class="button button-danger margin-top-10" onclick="hapusKTPUmum()" style="margin-left:10px;"><i class="fas fa-trash"></i> Hapus KTP</button>';
     html += '</div>';
 
+    // --- TAMBAHAN: UPLOAD FOTO PROFIL ---
+    html += '<div class="card"><div class="card-header">Foto Profil</div>';
+    html += '<div class="upload-area" id="uploadFotoContainerLengkap"><div id="fotoPreviewLengkap">';
+    if (user.fotoProfil) {
+        html += '<img src="' + user.fotoProfil + '" class="preview-image" style="max-width:150px; max-height:150px; border-radius:50%; object-fit:cover;">';
+    } else {
+        html += '<i class="fas fa-user-circle" style="font-size:60px; color:#ddd;"></i><p>Klik untuk upload foto profil</p>';
+    }
+    html += '</div><input type="file" id="inputFotoProfilLengkap" accept=".jpg,.jpeg,.png" style="display:none"></div>';
+    html += '<button class="button button-primary margin-top-10" onclick="simpanFotoProfilLengkap()"><i class="fas fa-save"></i> Simpan Foto</button>';
+    html += '</div>';
+
     areaKonten.innerHTML = html;
     setTimeout(function() {
         loadDataWilayahTersimpan('ktp', user);
@@ -1536,6 +1643,23 @@ function renderProfilLengkap(user, role) {
         if (containerKTP && inputKTP) {
             containerKTP.onclick = function() { inputKTP.click(); };
             inputKTP.onchange = function(e) { previewKTPLengkap(e.target.files[0]); };
+        }
+    }, 300);
+    // --- EVENT LISTENER FOTO PROFIL ---
+    setTimeout(function() {
+        var containerFoto = document.getElementById('uploadFotoContainerLengkap');
+        var inputFoto = document.getElementById('inputFotoProfilLengkap');
+        if (containerFoto && inputFoto) {
+            containerFoto.onclick = function() { inputFoto.click(); };
+            inputFoto.onchange = async function(e) {
+                var file = e.target.files[0];
+                if (file) {
+                    document.getElementById('fotoPreviewLengkap').innerHTML = '<p>Mengkompres...</p>';
+                    var compressed = await compressImage(file, 200, 0.7);
+                    document.getElementById('fotoPreviewLengkap').innerHTML = '<img src="' + compressed + '" class="preview-image" style="max-width:150px; max-height:150px; border-radius:50%; object-fit:cover;">';
+                    localStorage.setItem('2r_foto_profil_temp_lengkap', compressed);
+                }
+            };
         }
     }, 300);
 }
@@ -2814,7 +2938,7 @@ function hapusKTPUmum() {
 
 <!-- ===== BLOK 8.6 - JS_INIT_UTAMA (DOMContentLoaded) ===== -->
 <script>
-    // ===== BLOK 8.6.1 - TAMPILKAN DASHBOARD =====
+        // ===== BLOK 8.6.1 - TAMPILKAN DASHBOARD =====
     function tampilkanDashboard(user) {
         if (!user || !user.nama) {
             localStorage.removeItem('2r_user');
@@ -2833,6 +2957,20 @@ function hapusKTPUmum() {
         document.getElementById('roleBadge').textContent = daftarRole[user.role] || user.role;
         document.getElementById('sidebarContainer').innerHTML = buatSidebarHTML(user.role);
         setupNavigasiSidebar();
+        
+        // === PERUBAHAN: TAMPILKAN FOTO PROFIL ===
+        var avatar = document.getElementById('userAvatar');
+        var placeholder = document.getElementById('userAvatarPlaceholder');
+        if (user.fotoProfil) {
+            avatar.src = user.fotoProfil;
+            avatar.style.display = 'block';
+            placeholder.style.display = 'none';
+        } else {
+            avatar.style.display = 'none';
+            placeholder.style.display = 'block';
+        }
+        // ======================================
+
         renderDashboard();
     }
     // ===== AKHIR BLOK 8.6.1 =====
@@ -3840,6 +3978,78 @@ function bukaChat(targetId) {
     }
 </script>
 <!-- ===== AKHIR BLOK 8.13 ===== -->
+            <!-- ===== BLOK 8.14 - JS_CRUD_FOTO_PROFIL ===== -->
+<script>
+    // ===== 1. SIMPAN FOTO CUSTOMER =====
+    function simpanFotoProfilCustomer() {
+        var foto = localStorage.getItem('2r_foto_profil_temp_customer');
+        if (!foto) { tampilkanToast('Upload foto terlebih dahulu!', 'warning'); return; }
+        var user = JSON.parse(localStorage.getItem('2r_user'));
+        var dataAkun = getDataAkun();
+        user.fotoProfil = foto;
+        for (var i = 0; i < dataAkun.length; i++) {
+            if (dataAkun[i].id === user.id) { dataAkun[i].fotoProfil = foto; break; }
+        }
+        localStorage.setItem('2r_user', JSON.stringify(user));
+        simpanDataAkun(dataAkun);
+        localStorage.removeItem('2r_foto_profil_temp_customer');
+        tampilkanToast('Foto profil berhasil disimpan!', 'success');
+        var role = localStorage.getItem('2r_user_role');
+        if (role === 'customer') renderProfilCustomer();
+    }
+
+    // ===== 2. SIMPAN FOTO TOKO/OJEK/PEDAGANG =====
+    function simpanFotoProfilLengkap() {
+        var foto = localStorage.getItem('2r_foto_profil_temp_lengkap');
+        if (!foto) { tampilkanToast('Upload foto terlebih dahulu!', 'warning'); return; }
+        var user = JSON.parse(localStorage.getItem('2r_user'));
+        var dataAkun = getDataAkun();
+        user.fotoProfil = foto;
+        for (var i = 0; i < dataAkun.length; i++) {
+            if (dataAkun[i].id === user.id) { dataAkun[i].fotoProfil = foto; break; }
+        }
+        localStorage.setItem('2r_user', JSON.stringify(user));
+        simpanDataAkun(dataAkun);
+        localStorage.removeItem('2r_foto_profil_temp_lengkap');
+        tampilkanToast('Foto profil berhasil disimpan!', 'success');
+        renderProfilLengkap(user, user.role);
+    }
+
+    // ===== 3. SIMPAN FOTO ROLE UMUM =====
+    function simpanFotoProfilUmum() {
+        var foto = localStorage.getItem('2r_foto_profil_temp_umum');
+        if (!foto) { tampilkanToast('Upload foto terlebih dahulu!', 'warning'); return; }
+        var user = JSON.parse(localStorage.getItem('2r_user'));
+        var dataAkun = getDataAkun();
+        user.fotoProfil = foto;
+        for (var i = 0; i < dataAkun.length; i++) {
+            if (dataAkun[i].id === user.id) { dataAkun[i].fotoProfil = foto; break; }
+        }
+        localStorage.setItem('2r_user', JSON.stringify(user));
+        simpanDataAkun(dataAkun);
+        localStorage.removeItem('2r_foto_profil_temp_umum');
+        tampilkanToast('Foto profil berhasil disimpan!', 'success');
+        renderProfilUmum(user, user.role);
+    }
+
+    // ===== 4. SIMPAN FOTO SUPERADMIN =====
+    function simpanFotoProfilSA() {
+        var foto = localStorage.getItem('2r_foto_profil_temp_sa');
+        if (!foto) { tampilkanToast('Upload foto terlebih dahulu!', 'warning'); return; }
+        var user = JSON.parse(localStorage.getItem('2r_user'));
+        var dataAkun = getDataAkun();
+        user.fotoProfil = foto;
+        for (var i = 0; i < dataAkun.length; i++) {
+            if (dataAkun[i].id === user.id) { dataAkun[i].fotoProfil = foto; break; }
+        }
+        localStorage.setItem('2r_user', JSON.stringify(user));
+        simpanDataAkun(dataAkun);
+        localStorage.removeItem('2r_foto_profil_temp_sa');
+        tampilkanToast('Foto profil berhasil disimpan!', 'success');
+        renderProfilSuperAdmin(user);
+    }
+</script>
+<!-- ===== AKHIR BLOK 8.14 ===== -->
 <!-- ===== AKHIR BAGIAN 8 ===== -->
 
 </body>
