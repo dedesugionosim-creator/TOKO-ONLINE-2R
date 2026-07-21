@@ -2693,11 +2693,18 @@ function hapusKTPUmum() {
 
         // === 1. TAMBAH ULASAN (HANYA UNTUK CUSTOMER) ===
         if (role === 'customer') {
+            // --- PERUBAHAN DI SINI ---
+            var lastTarget = localStorage.getItem('2r_last_review_target') || ''; // Ambil ID terakhir
+            // -------------------------
+
             html += `
             <div class="card" style="border: 2px solid #FF6B00; margin-bottom:25px;">
                 <div class="card-header" style="color:#FF6B00;">Tulis Ulasan Baru</div>
                 <div class="grid-2">
-                    <div><label class="form-label">ID Toko/Ojek Target</label><input type="text" id="ulasanTargetId" class="form-input" placeholder="Contoh: TOKO-001"></div>
+                    <div><label class="form-label">ID Toko/Ojek Target</label>
+                        <!-- MASUKKAN VALUE DI SINI -->
+                        <input type="text" id="ulasanTargetId" class="form-input" placeholder="Contoh: TOKO-001" value="${lastTarget}">
+                    </div>
                     <div><label class="form-label">Rating</label>
                         <select id="ulasanRating" class="form-input">
                             <option value="5">⭐ 5 - Sangat Puas</option>
@@ -3756,9 +3763,7 @@ function bukaChat(targetId) {
     }
 </script>
 <!-- ===== AKHIR BLOK 8.12 ===== -->
-    <!-- ===== BLOK 8.13 - JS_CRUD_ULASAN_RATING ===== -->
-<script>
-    // ===== 1. SIMPAN ULASAN BARU (CUSTOMER) =====
+        // ===== 1. SIMPAN ULASAN BARU (CUSTOMER) =====
     function simpanUlasan() {
         var user = JSON.parse(localStorage.getItem('2r_user') || '{}');
         var targetId = document.getElementById('ulasanTargetId').value.trim();
@@ -3801,45 +3806,17 @@ function bukaChat(targetId) {
         });
 
         localStorage.setItem('2r_ulasan', JSON.stringify(dataUlasan));
+
+        // ===== PERUBAHAN DI SINI =====
+        // Simpan ID target ke localStorage agar otomatis terisi saat halaman dibuka kembali
+        localStorage.setItem('2r_last_review_target', targetId);
+        // ============================
+
         document.getElementById('ulasanTargetId').value = '';
         document.getElementById('ulasanKomentar').value = '';
         tampilkanToast('Ulasan berhasil dikirim!', 'success');
         renderUlasanRating();
     }
-
-    // ===== 2. KIRIM BALASAN (TOKO/OJEK) =====
-    function kirimBalasan(idUlasan, indexInput) {
-        var balasan = document.getElementById('balasanInput_' + indexInput).value.trim();
-        if (!balasan) { tampilkanToast('Tulis balasan Anda terlebih dahulu!', 'warning'); return; }
-
-        var dataUlasan = JSON.parse(localStorage.getItem('2r_ulasan') || '[]');
-        for (var i = 0; i < dataUlasan.length; i++) {
-            if (dataUlasan[i].id === idUlasan) {
-                dataUlasan[i].balasan = balasan;
-                break;
-            }
-        }
-        localStorage.setItem('2r_ulasan', JSON.stringify(dataUlasan));
-        tampilkanToast('Balasan berhasil dikirim!', 'success');
-        renderUlasanRating();
-    }
-
-    // ===== 3. HAPUS ULASAN (ADMIN / CUSTOMER) =====
-    function hapusUlasan(idUlasan) {
-        if (!confirm('Yakin ingin menghapus ulasan ini?')) return;
-        var dataUlasan = JSON.parse(localStorage.getItem('2r_ulasan') || '[]');
-        var dataBaru = [];
-        for (var i = 0; i < dataUlasan.length; i++) {
-            if (dataUlasan[i].id !== idUlasan) {
-                dataBaru.push(dataUlasan[i]);
-            }
-        }
-        localStorage.setItem('2r_ulasan', JSON.stringify(dataBaru));
-        tampilkanToast('Ulasan berhasil dihapus!', 'success');
-        renderUlasanRating();
-    }
-</script>
-<!-- ===== AKHIR BLOK 8.13 ===== -->
 <!-- ===== AKHIR BAGIAN 8 ===== -->
 
 </body>
