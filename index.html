@@ -586,6 +586,8 @@ body { font-family:'Poppins', sans-serif; background:var(--bg); min-height:100vh
 <!-- ===== BLOK 6.1 - JS_SIDEBAR_BUILDER ===== -->
 <script>            
     <!-- ===== BLOK 6.1.1 - BUAT SIDEBAR HTML (MENU IKLAN & PAPAN INFORMASI UNTUK SEMUA ROLE) ===== -->
+<script>
+    // ===== BLOK 6.1.1 - BUAT SIDEBAR HTML =====
     function buatSidebarHTML(role) {
         // Hitung notifikasi belum dibaca untuk user yang login
         var user = JSON.parse(localStorage.getItem('2r_user') || '{}');
@@ -671,6 +673,7 @@ body { font-family:'Poppins', sans-serif; background:var(--bg); min-height:100vh
         return html;
     }
     // ===== AKHIR BLOK 6.1.1 =====
+</script>
 
     // ===== BLOK 6.1.2 - SETUP NAVIGASI SIDEBAR =====
     function setupNavigasiSidebar() {
