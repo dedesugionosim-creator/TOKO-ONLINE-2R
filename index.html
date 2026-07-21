@@ -3703,37 +3703,50 @@ function tampilkanDashboard(user) {
 </script>
 <!-- ===== AKHIR BLOK 8.8 ===== -->
 
-<!-- ===== BLOK 8.9 - JS_SCAN_BARCODE (PLACEHOLDER) ===== -->
-<script>
-    function scanBarcodeProduk() {
-        tampilkanToast('Fitur scan barcode menggunakan kamera sedang dalam pengembangan.', 'info');
-    }
-</script>
-    <script>
-// ===== FUNGSI KOMPRESI GAMBAR UNTUK DEMO =====
-function compressImage(file, maxWidth, quality) {
+// ===== PERBAIKAN BLOK 8.9 - FUNCTION KOMPRESI GAMBAR =====
+function compressImage(file, maxWidth = 150, quality = 0.7) {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
+        
         reader.onload = (event) => {
             const img = new Image();
             img.src = event.target.result;
+            
             img.onload = () => {
                 const canvas = document.createElement('canvas');
                 const ctx = canvas.getContext('2d');
+                
+                // Pertahankan rasio aspek gambar
                 const scaleSize = maxWidth / img.width;
                 canvas.width = maxWidth;
                 canvas.height = img.height * scaleSize;
+                
                 ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                resolve(canvas.toDataURL('image/jpeg', quality));
+                
+                // Tentukan format output agar kompatibel dengan PNG transparan
+                let format = 'image/jpeg';
+                let outputQuality = quality;
+                if (file.type === 'image/png') {
+                    format = 'image/png'; // PNG menggunakan format PNG agar transparan tetap terjaga
+                    outputQuality = 0.8;
+                }
+                
+                try {
+                    const result = canvas.toDataURL(format, outputQuality);
+                    resolve(result);
+                } catch (e) {
+                    reject(e);
+                }
             };
-            img.onerror = reject;
+            
+            img.onerror = () => reject(new Error('Gagal memuat gambar. File mungkin rusak.'));
         };
-        reader.onerror = reject;
+        
+        reader.onerror = (e) => reject(e);
     });
 }
-</script>
-<!-- ===== AKHIR BLOK 8.9 ===== -->
+// ===== AKHIR PERBAIKAN BLOK 8.9 =====
 <!-- ===== BLOK 8.10 - JS_RENDER_CHAT ===== -->
 <script>
 // ===== BLOK 8.10.1 - RENDER DAFTAR PERCAKAPAN (INBOX) =====
@@ -4242,45 +4255,51 @@ function bukaChat(targetId) {
     }
 </script>
 <!-- ===== AKHIR BLOK 8.13 ===== -->
-    <!-- ===== BLOK 8.14 - JS_CRUD_FOTO_PROFIL_CUSTOMER ===== -->
-<script>
-    function simpanFotoProfilCustomer() {
+    // ===== PERBAIKAN BLOK 8.14 - SIMPAN FOTO PROFIL =====
+function simpanFotoProfilCustomer() {
+    try {
+        var foto = localStorage.getItem('2r_foto_profil_temp_customer');
+        
+        // Jika tidak ada foto di localStorage, beri peringatan agar user upload ulang
+        if (!foto) {
+            tampilkanToast('Proses upload gagal atau belum selesai. Silakan upload ulang foto!', 'warning');
+            return;
+        }
+
+        var user = JSON.parse(localStorage.getItem('2r_user'));
+        var dataAkun = getDataAkun();
+        
+        // Simpan foto ke data user
+        user.fotoProfil = foto;
+        for (var i = 0; i < dataAkun.length; i++) {
+            if (dataAkun[i].id === user.id) {
+                dataAkun[i].fotoProfil = foto;
+                break;
+            }
+        }
+
+        // Simpan ke localStorage dengan penanganan kuota penuh
         try {
-            var foto = localStorage.getItem('2r_foto_profil_temp_customer');
-            if (!foto) {
-                tampilkanToast('Anda belum memilih atau mengupload foto!', 'warning');
-                return;
-            }
-
-            var user = JSON.parse(localStorage.getItem('2r_user'));
-            var dataAkun = getDataAkun();
-            
-            // Simpan foto ke data akun user
-            user.fotoProfil = foto;
-            for (var i = 0; i < dataAkun.length; i++) {
-                if (dataAkun[i].id === user.id) {
-                    dataAkun[i].fotoProfil = foto;
-                    break;
-                }
-            }
-
-            // Simpan perubahan ke localStorage
             localStorage.setItem('2r_user', JSON.stringify(user));
             simpanDataAkun(dataAkun);
-            
-            // Hapus data temporary
-            localStorage.removeItem('2r_foto_profil_temp_customer');
+            localStorage.removeItem('2r_foto_profil_temp_customer'); // Hapus temp hanya jika sukses
             
             tampilkanToast('Foto profil berhasil disimpan!', 'success');
-            renderProfilCustomer(); // Refresh halaman agar foto langsung terlihat di Navbar
+            renderProfilCustomer(); // Refresh halaman agar foto langsung muncul di Navbar
             
-        } catch (error) {
-            console.error("ERROR SIMPAN FOTO:", error);
-            tampilkanToast('Terjadi error saat menyimpan foto: ' + error.message, 'error');
+        } catch (e) {
+            if (e.name === 'QuotaExceededError' || e.code === 22) {
+                tampilkanToast('Penyimpanan browser penuh! Hapus beberapa data aplikasi atau gunakan gambar yang sangat kecil (max 100KB).', 'error');
+            } else {
+                throw e;
+            }
         }
+    } catch (error) {
+        console.error("ERROR SIMPAN FOTO:", error);
+        tampilkanToast('Terjadi error internal saat menyimpan foto. Cek Console Browser (F12).', 'error');
     }
-</script>
-<!-- ===== AKHIR BLOK 8.14 ===== -->
+}
+// ===== AKHIR PERBAIKAN BLOK 8.14 =====
 <!-- ===== AKHIR BAGIAN 8 ===== -->
 
 </body>
