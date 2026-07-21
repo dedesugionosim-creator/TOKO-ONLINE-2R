@@ -800,16 +800,19 @@ body { font-family:'Poppins', sans-serif; background:var(--bg); min-height:100vh
     }
     // ===== AKHIR BLOK 7.1.1 =====
 
-        // ===== BLOK 7.1.2 - RENDER PROFIL (PEMILIH ROLE) =====
+            // ===== BLOK 7.1.2 - RENDER PROFIL (PEMILIH ROLE) =====
     function renderProfil() {
         var role = localStorage.getItem('2r_user_role');
         var user = JSON.parse(localStorage.getItem('2r_user') || '{}');
+        
         if (role === 'superadmin') {
             renderProfilSuperAdmin(user);
         } else if (role === 'customer') {
             renderProfilCustomer();
-        } else if (role === 'toko' || role === 'ojek' || role === 'pedagang') {
-            // Gunakan fungsi profil lengkap untuk Toko, Ojek, dan Pedagang
+        } else if (role === 'toko' || role === 'ojek' || role === 'pedagang' || 
+                   role === 'customer_service' || role === 'staf_admin' || 
+                   role === 'staf_owner_toko' || role === 'staf_owner_ojek') {
+            // Gunakan fungsi profil lengkap untuk Toko, Ojek, Pedagang, CS, dan semua Staff
             renderProfilLengkap(user, role);
         } else {
             renderProfilUmum(user, role);
