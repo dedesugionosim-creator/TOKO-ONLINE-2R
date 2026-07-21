@@ -1911,7 +1911,8 @@ function hapusKTPUmum() {
     }
     // ===== AKHIR BLOK 8.1.1 =====
 
-    // ===== BLOK 8.1.2 - KELOLA IKLAN =====
+    <!-- ===== BLOK 8.1.2 - KELOLA IKLAN ===== -->
+<script>
     function renderMenuIklan() {
         var role = localStorage.getItem('2r_user_role');
         var areaKonten = document.getElementById('mainContent');
@@ -1919,7 +1920,6 @@ function hapusKTPUmum() {
         
         var html = '<div class="page-header"><h2>Kelola Iklan Sponsor</h2><p>Kelola iklan yang ditampilkan di dashboard semua pengguna.</p></div>';
         
-        // Hanya SuperAdmin yang bisa menambah iklan
         if (role === 'superadmin') {
             html += '<div style="margin-bottom:20px;"><button class="button button-primary" onclick="bukaFormIklan()"><i class="fas fa-plus"></i> Tambah Iklan</button></div>';
         }
@@ -1928,40 +1928,40 @@ function hapusKTPUmum() {
             html += '<div class="card"><div class="empty-state"><i class="fas fa-ad"></i><h3>Belum ada iklan</h3></div></div>';
         } else {
             html += '<div class="card"><div class="table-container"><table class="table"><thead><tr><th>No</th><th>Judul</th><th>Deskripsi</th><th>Warna</th><th>Gambar (Scroll)</th>';
-            // Kolom Aksi hanya untuk SuperAdmin
             if (role === 'superadmin') html += '<th>Aksi</th>';
             html += '</tr></thead><tbody>';
             
             for (var i = 0; i < dataIklan.length; i++) {
                 var iklan = dataIklan[i];
                 
-                // === KONVERSI DATA GAMBAR KE ARRAY ===
+                // == DEBUGGING: Lihat data iklan di Console ==
+                console.log('Memuat iklan ke-' + i + ':', iklan);
+                
+                // == KONVERSI DATA ==
                 var gambarArray = [];
                 if (iklan.gambar) {
                     if (Array.isArray(iklan.gambar)) {
                         gambarArray = iklan.gambar;
                     } else if (typeof iklan.gambar === 'string' && iklan.gambar !== '') {
-                        // Jika data lama masih berupa string, ubah menjadi array
                         gambarArray = [iklan.gambar];
                     }
                 }
-                // =====================================
+                console.log('Gambar yang ditemukan (' + i + '):', gambarArray.length + ' file');
 
                 html += '<tr><td>' + (i+1) + '</td><td>' + escapeHtml(iklan.judul) + '</td><td>' + escapeHtml(iklan.deskripsi) + '</td><td><span style="display:inline-block;width:30px;height:30px;background:' + (iklan.warna || '#FF6B00') + ';border-radius:4px;"></span></td><td>';
                 
-                // ===== SLIDER GAMBAR YANG BISA DIGULIR =====
+                // == SLIDER GAMBAR ==
                 html += '<div style="display:flex; overflow-x:auto; gap:8px; padding:5px; max-width:300px; white-space:nowrap; scrollbar-width:thin; border:1px solid #eee; border-radius:6px;">';
                 if (gambarArray.length > 0) {
                     for (var j = 0; j < gambarArray.length; j++) {
+                        // Pastikan src diisi dengan data base64
                         html += '<img src="' + gambarArray[j] + '" style="height:60px; width:auto; border-radius:6px; cursor:pointer; border:1px solid #eee; flex-shrink:0;" onclick="previewGambar(\'' + gambarArray[j] + '\',\'Preview Iklan\')">';
                     }
                 } else {
-                    html += '<span style="color:#999; font-size:12px; padding:10px;">-</span>';
+                    html += '<span style="color:#999; font-size:12px; padding:10px;">- (Tidak ada gambar)</span>';
                 }
                 html += '</div></td>';
-                // ===== AKHIR SLIDER =====
                 
-                // Tombol Edit/Hapus hanya untuk SuperAdmin
                 if (role === 'superadmin') {
                     html += '<td><button class="button button-primary button-extra-small" onclick="editIklan(' + i + ')"><i class="fas fa-edit"></i> Edit</button><button class="button button-danger button-extra-small" onclick="hapusIklan(' + i + ')"><i class="fas fa-trash"></i> Hapus</button></td>';
                 }
@@ -1970,7 +1970,6 @@ function hapusKTPUmum() {
             html += '</tbody></table></div></div>';
         }
 
-        // Form tambah/edit hanya untuk SuperAdmin
         if (role === 'superadmin') {
             html += '<div id="formIklanContainer" class="hidden" style="margin-top:20px;"><div class="card"><div class="card-header"><span id="formIklanTitle">Tambah Iklan Baru</span><button class="button button-danger button-small" onclick="tutupFormIklan()"><i class="fas fa-times"></i> Tutup</button></div>';
             html += '<div class="grid-2"><div><label class="form-label">Judul Iklan</label><input type="text" id="iklanJudul" class="form-input" placeholder="Judul iklan"></div>';
@@ -1985,11 +1984,10 @@ function hapusKTPUmum() {
 
         areaKonten.innerHTML = html;
         
-        // Event listener untuk upload banyak gambar (dipasang ulang setiap render)
+        // == EVENT LISTENER UPLOAD GAMBAR ==
         setTimeout(function() {
             var inputGambar = document.getElementById('iklanGambar');
             if (inputGambar) {
-                // Hapus event listener lama untuk menghindari duplikasi
                 var newInput = inputGambar.cloneNode(true);
                 inputGambar.parentNode.replaceChild(newInput, inputGambar);
                 
@@ -2002,7 +2000,7 @@ function hapusKTPUmum() {
                             if (i > 3) { namaFile += ' ...'; break; }
                         }
                         document.getElementById('iklanNamaGambar').textContent = namaFile + ' (' + files.length + ' file)';
-                        // Simpan sementara di localStorage (diubah menjadi array di fungsi simpan)
+                        
                         var tempData = [];
                         var total = files.length;
                         var selesai = 0;
@@ -2014,6 +2012,7 @@ function hapusKTPUmum() {
                                     selesai++;
                                     if (selesai === total) {
                                         localStorage.setItem('2r_iklan_gambar_temp', JSON.stringify(tempData));
+                                        console.log('Gambar berhasil dikonversi ke Base64. Total:', total, 'file');
                                     }
                                 };
                                 reader.readAsDataURL(file);
@@ -2037,6 +2036,7 @@ function hapusKTPUmum() {
         document.getElementById('formIklanContainer').scrollIntoView({ behavior: 'smooth' });
     }
     function tutupFormIklan() { document.getElementById('formIklanContainer').classList.add('hidden'); }
+    
     function simpanIklan() {
         var judul = document.getElementById('iklanJudul').value.trim();
         var deskripsi = document.getElementById('iklanDeskripsi').value.trim();
@@ -2046,26 +2046,32 @@ function hapusKTPUmum() {
         if (gambarTemp) {
             try {
                 gambarArray = JSON.parse(gambarTemp);
-            } catch (e) { gambarArray = []; }
+                console.log('Mengambil gambar dari temporary storage:', gambarArray.length + ' file');
+            } catch (e) { 
+                console.warn('Gagal parse gambarTemp:', e);
+                gambarArray = []; 
+            }
+        } else {
+            console.log('Tidak ada gambar temporary yang disimpan.');
         }
         var editIndex = parseInt(document.getElementById('iklanEditIndex').value);
         if (!judul || !deskripsi) { tampilkanToast('Judul dan deskripsi wajib diisi!', 'warning'); return; }
         var dataIklan = JSON.parse(localStorage.getItem('2r_iklan') || '[]');
         if (editIndex === -1) {
             dataIklan.push({ id: Date.now(), judul: judul, deskripsi: deskripsi, warna: warna, gambar: gambarArray });
-            tampilkanToast('Iklan berhasil ditambahkan!', 'success');
         } else {
             dataIklan[editIndex].judul = judul;
             dataIklan[editIndex].deskripsi = deskripsi;
             dataIklan[editIndex].warna = warna;
             if (gambarArray.length > 0) dataIklan[editIndex].gambar = gambarArray;
-            tampilkanToast('Iklan berhasil diperbarui!', 'success');
         }
         localStorage.setItem('2r_iklan', JSON.stringify(dataIklan));
         localStorage.removeItem('2r_iklan_gambar_temp');
+        tampilkanToast('Iklan berhasil disimpan!', 'success');
         tutupFormIklan();
         renderMenuIklan();
     }
+
     function editIklan(index) {
         var dataIklan = JSON.parse(localStorage.getItem('2r_iklan') || '[]');
         if (index < 0 || index >= dataIklan.length) { tampilkanToast('Iklan tidak ditemukan!', 'error'); return; }
@@ -2090,6 +2096,7 @@ function hapusKTPUmum() {
         tampilkanToast('Iklan dihapus!', 'success');
     }
     // ===== AKHIR BLOK 8.1.2 =====
+</script>
 
     // ===== BLOK 8.1.3 - TRANSFER MENU =====
     function renderTransferMenu() {
