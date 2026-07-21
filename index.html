@@ -2577,223 +2577,106 @@ function hapusKTPUmum() {
     }
     // ===== AKHIR BLOK 8.4.2 =====
 
-        <!-- ===== BLOK 8.4.3 - RENDER ULASAN & RATING (FITUR BARU) ===== -->
-<script>
-    // ===== FUNGSI UTAMA RENDER ULASAN =====
-    function renderUlasanRating(filterRole) {
+        // ===== BLOK 8.4.3 - RENDER PAPAN INFORMASI (GRID BESAR, CRUD KHUSUS SUPERADMIN) =====
+    function renderPapanInformasi() {
         var role = localStorage.getItem('2r_user_role');
-        var user = JSON.parse(localStorage.getItem('2r_user') || '{}');
         var areaKonten = document.getElementById('mainContent');
-        if (!areaKonten) return;
-
-        var dataUlasan = JSON.parse(localStorage.getItem('2r_ulasan') || '[]');
-        var html = '<div class="page-header"><h2>Ulasan & Rating</h2><p>Lihat ulasan dari pelanggan. SuperAdmin dan Staf dapat memoderasi.</p></div>';
-
-        // === 1. TAMBAH ULASAN (HANYA UNTUK CUSTOMER) ===
-        if (role === 'customer') {
-            html += `
-            <div class="card" style="border: 2px solid #FF6B00; margin-bottom:25px;">
-                <div class="card-header" style="color:#FF6B00;">Tulis Ulasan Baru</div>
-                <div class="grid-2">
-                    <div><label class="form-label">ID Toko/Ojek Target</label><input type="text" id="ulasanTargetId" class="form-input" placeholder="Contoh: TOKO-001"></div>
-                    <div><label class="form-label">Rating</label>
-                        <select id="ulasanRating" class="form-input">
-                            <option value="5">⭐ 5 - Sangat Puas</option>
-                            <option value="4">⭐ 4 - Puas</option>
-                            <option value="3">⭐ 3 - Biasa Saja</option>
-                            <option value="2">⭐ 2 - Kurang Puas</option>
-                            <option value="1">⭐ 1 - Sangat Tidak Puas</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group"><label class="form-label">Komentar Anda</label><textarea id="ulasanKomentar" class="form-input" rows="3" placeholder="Tulis pengalaman Anda..."></textarea></div>
-                <button class="button button-primary" onclick="simpanUlasan()"><i class="fas fa-paper-plane"></i> Kirim Ulasan</button>
-            </div>`;
+        var dataAnn = JSON.parse(localStorage.getItem('2r_announcements') || '[]');
+        
+        var html = '<div class="page-header"><h2>Papan Informasi</h2><p>Pengumuman resmi dari Staf Admin / SuperAdmin.</p></div>';
+        
+        // === HANYA SUPERADMIN YANG MELIHAT TOMBOL TAMBAH ===
+        if (role === 'superadmin') {
+            html += '<div style="margin-bottom:20px;"><button class="button button-primary" onclick="bukaFormAnnouncement()"><i class="fas fa-plus"></i> Tambah Pengumuman</button></div>';
         }
 
-        // === 2. FILTER UNTUK SUPERADMIN & STAF ===
-        if (role === 'superadmin' || role === 'staf_admin') {
-            var selectedFilter = filterRole || 'semua';
-            html += `<div style="margin-bottom:15px; display:flex; gap:10px; align-items:center;">
-                <label style="font-weight:600;">Filter Target Role:</label>
-                <select id="filterRoleUlasan" class="form-input" style="width:auto; min-width:150px;" onchange="renderUlasanRating(this.value)">
-                    <option value="semua" ${selectedFilter === 'semua' ? 'selected' : ''}>Semua Ulasan</option>
-                    <option value="toko" ${selectedFilter === 'toko' ? 'selected' : ''}>Ulasan ke Toko</option>
-                    <option value="ojek" ${selectedFilter === 'ojek' ? 'selected' : ''}>Ulasan ke Ojek</option>
-                    <option value="pedagang" ${selectedFilter === 'pedagang' ? 'selected' : ''}>Ulasan ke Pedagang</option>
-                </select>
-            </div>`;
-        }
-
-        // === 3. FILTER DATA BERDASARKAN ROLE ===
-        var dataFilter = [];
-        if (role === 'superadmin' || role === 'staf_admin') {
-            // Admin & Staf lihat semua, kecuali ada filter role
-            if (filterRole && filterRole !== 'semua') {
-                dataFilter = dataUlasan.filter(function(u) { return u.targetRole === filterRole; });
-            } else {
-                dataFilter = dataUlasan;
-            }
-        } else if (role === 'toko' || role === 'ojek' || role === 'pedagang') {
-            // Hanya lihat ulasan yang menargetkan akun mereka sendiri
-            dataFilter = dataUlasan.filter(function(u) { return u.targetId === user.id; });
+        // === GRID KARTU PAPAN INFORMASI ===
+        html += '<div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr)); gap:25px; padding:10px 0;">';
+        
+        if (dataAnn.length === 0) {
+            html += '<div class="card" style="grid-column:1/-1;"><div class="empty-state"><i class="fas fa-bullhorn"></i><h3>Belum ada pengumuman</h3></div></div>';
         } else {
-            // Customer melihat semua ulasan yang ada
-            dataFilter = dataUlasan;
-        }
+            for (var i = 0; i < dataAnn.length; i++) {
+                var a = dataAnn[i];
+                
+                // Mulai kartu
+                html += '<div style="background:white; border-radius:16px; box-shadow:0 4px 20px rgba(0,0,0,0.08); border:1px solid #e9ecef; overflow:hidden; display:flex; flex-direction:column; transition:transform 0.2s;">';
+                
+                // --- 1. GAMBAR (Tinggi tetap 300px, contain agar tidak terpotong) ---
+                html += '<div style="height:300px; background:#f8f9fa; display:flex; justify-content:center; align-items:center; border-bottom:1px solid #f0f0f0;">';
+                if (a.gambar) {
+                    html += '<img src="' + a.gambar + '" style="width:100%; height:100%; object-fit:contain; cursor:pointer;" onclick="previewGambar(\'' + a.gambar + '\',\'Preview Pengumuman\')">';
+                } else {
+                    html += '<div style="color:#ccc;"><i class="fas fa-image" style="font-size:48px;"></i></div>';
+                }
+                html += '</div>';
 
-        // === 4. RENDER GRID KARTU ULASAN ===
-        if (dataFilter.length === 0) {
-            html += '<div class="card"><div class="empty-state"><i class="fas fa-star-half-alt"></i><h3>Belum ada ulasan</h3></div></div>';
-        } else {
-            html += '<div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(300px, 1fr)); gap:20px;">';
-            for (var i = 0; i < dataFilter.length; i++) {
-                var u = dataFilter[i];
-                var bintang = '';
-                for (var b = 1; b <= 5; b++) {
-                    bintang += (b <= u.rating) ? '⭐' : '☆';
+                // --- 2. JUDUL & DESKRIPSI TEKS ---
+                html += '<div style="padding:20px 20px 15px 20px; flex:1; display:flex; flex-direction:column;">';
+                html += '<h3 style="font-size:18px; font-weight:700; color:#333; margin:0 0 8px 0;">' + escapeHtml(a.judul) + '</h3>';
+                html += '<p style="font-size:14px; color:#666; line-height:1.6; margin:0; flex:1;">' + escapeHtml(a.deskripsi) + '</p>';
+                html += '<div style="margin-top:10px; font-size:12px; color:#999;">' + (a.waktu ? new Date(a.waktu).toLocaleDateString('id-ID') : '') + '</div>';
+                html += '</div>';
+
+                // --- 3. TOMBOL AKSI (Hanya untuk Superadmin) ---
+                if (role === 'superadmin') {
+                    html += '<div style="padding:10px 20px 20px 20px; border-top:1px solid #f0f0f0; display:flex; gap:10px; justify-content:flex-end;">';
+                    html += '<button class="button button-primary button-extra-small" onclick="editAnnouncement(' + i + ')"><i class="fas fa-edit"></i> Edit</button>';
+                    html += '<button class="button button-danger button-extra-small" onclick="hapusAnnouncement(' + i + ')"><i class="fas fa-trash"></i> Hapus</button>';
+                    html += '</div>';
                 }
 
-                // Cek hak akses hapus
-                var bisaHapus = (role === 'superadmin' || role === 'staf_admin'); // Admin bisa hapus
-                if (role === 'customer' && u.pengirimId === user.id) { bisaHapus = true; } // Customer bisa hapus miliknya
-
-                // Cek hak akses balas (Hanya untuk Toko/Ojek yang menjadi target)
-                var tampilkanBalasan = false;
-                var formBalasan = '';
-                if ((role === 'toko' || role === 'ojek' || role === 'pedagang') && u.targetId === user.id) {
-                    tampilkanBalasan = true;
-                    if (!u.balasan) {
-                        formBalasan = `
-                            <div style="display:flex; gap:5px; margin-top:10px; border-top:1px solid #eee; padding-top:10px;">
-                                <input type="text" id="balasanInput_${i}" class="form-input" placeholder="Balas komentar ini..." style="flex:1;">
-                                <button class="button button-primary button-small" onclick="kirimBalasan('${u.id}', ${i})"><i class="fas fa-reply"></i> Balas</button>
-                            </div>`;
-                    }
-                }
-
-                // === KARTU HTML ===
-                html += `
-                <div style="background:white; border-radius:16px; box-shadow:0 4px 20px rgba(0,0,0,0.08); border:1px solid #e9ecef; overflow:hidden; display:flex; flex-direction:column; padding:20px;">
-                    
-                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:5px;">
-                        <div>
-                            <strong style="font-size:15px;">${escapeHtml(u.pengirimNama)}</strong>
-                            <span style="font-size:12px; color:#888; margin-left:10px;">→ ${escapeHtml(u.targetNama)}</span>
-                        </div>
-                        <div style="font-size:18px; letter-spacing:1px;">${bintang}</div>
-                    </div>
-                    
-                    <p style="font-size:15px; color:#333; line-height:1.6; margin:10px 0; flex:1;">"${escapeHtml(u.komentar)}"</p>
-                    
-                    <div style="font-size:12px; color:#999; margin-top:5px;">${new Date(u.waktu).toLocaleDateString('id-ID')}</div>
-
-                    ${u.balasan ? `
-                    <div style="background:#f1f8e9; padding:10px; border-radius:8px; margin-top:10px; border-left:4px solid #4CAF50;">
-                        <strong style="color:#2e7d32; font-size:13px;">Balasan ${escapeHtml(u.targetNama)}:</strong>
-                        <p style="font-size:14px; margin:3px 0 0 0;">${escapeHtml(u.balasan)}</p>
-                    </div>` : ''}
-
-                    ${formBalasan}
-
-                    <div style="display:flex; gap:8px; justify-content:flex-end; margin-top:15px; border-top:1px solid #f0f0f0; padding-top:12px;">
-                        ${bisaHapus ? `<button class="button button-danger button-extra-small" onclick="hapusUlasan('${u.id}')"><i class="fas fa-trash"></i> Hapus</button>` : ''}
-                    </div>
-                </div>`;
+                html += '</div>'; // Tutup kartu
             }
-            html += '</div>';
+        }
+        html += '</div>'; // Tutup grid
+
+        // === FORM TAMBAH/EDIT (HANYA SUPERADMIN) ===
+        if (role === 'superadmin') {
+            html += '<div id="formAnnouncementContainer" class="hidden" style="margin-top:30px;"><div class="card"><div class="card-header"><span id="formAnnouncementTitle">Tambah Pengumuman Baru</span><button class="button button-danger button-small" onclick="tutupFormAnnouncement()"><i class="fas fa-times"></i> Tutup</button></div>';
+            html += '<div class="grid-2"><div><label class="form-label">Judul Pengumuman</label><input type="text" id="annJudul" class="form-input" placeholder="Judul pengumuman"></div>';
+            html += '<div><label class="form-label">Gambar (1 Foto)</label><input type="file" id="annGambar" accept=".jpg,.jpeg,.png" style="display:none;">';
+            html += '<button class="button button-primary button-small" onclick="document.getElementById(\'annGambar\').click();">Pilih Gambar</button>';
+            html += '<span id="annNamaGambar" style="font-size:12px;color:#888;margin-left:10px;">Belum ada gambar</span></div></div>';
+            html += '<div class="form-group"><label class="form-label">Keterangan / Teks</label><textarea id="annDeskripsi" class="form-input" rows="4" placeholder="Isi detail pengumuman..."></textarea></div>';
+            html += '<input type="hidden" id="annEditIndex" value="-1">';
+            html += '<button class="button button-primary margin-top-10" onclick="simpanAnnouncement()"><i class="fas fa-save"></i> Simpan Pengumuman</button></div></div>';
         }
 
         areaKonten.innerHTML = html;
+
+                // === EVENT UPLOAD GAMBAR (DENGAN KOMPRESI OTOMATIS) ===
+        setTimeout(function() {
+            var inputGambar = document.getElementById('annGambar');
+            if (inputGambar) {
+                var newInput = inputGambar.cloneNode(true);
+                inputGambar.parentNode.replaceChild(newInput, inputGambar);
+                
+                newInput.addEventListener('change', async function(e) {
+                    var file = e.target.files[0];
+                    if (file) {
+                        document.getElementById('annNamaGambar').textContent = 'Sedang mengkompres...';
+                        
+                        try {
+                            // Kompres gambar ke lebar maksimal 800px, kualitas 70%
+                            const compressedBase64 = await compressImage(file, 800, 0.7);
+                            
+                            // Simpan hasil kompresi ke localStorage (ukurannya sudah kecil, aman!)
+                            localStorage.setItem('2r_announcement_gambar_temp', compressedBase64);
+                            
+                            document.getElementById('annNamaGambar').textContent = file.name + ' (Terkompresi)';
+                        } catch (err) {
+                            console.error('Error kompresi:', err);
+                            tampilkanToast('Gagal memproses gambar!', 'error');
+                            document.getElementById('annNamaGambar').textContent = 'Gagal upload';
+                            localStorage.removeItem('2r_announcement_gambar_temp');
+                        }
+                    }
+                });
+            }
+        }, 300);
     }
     // ===== AKHIR BLOK 8.4.3 =====
-</script>
-
-<!-- ===== BLOK 8.13 - JS_CRUD_ULASAN_RATING ===== -->
-<script>
-    // ===== 1. SIMPAN ULASAN BARU (CUSTOMER) =====
-    function simpanUlasan() {
-        var user = JSON.parse(localStorage.getItem('2r_user') || '{}');
-        var targetId = document.getElementById('ulasanTargetId').value.trim();
-        var rating = parseInt(document.getElementById('ulasanRating').value);
-        var komentar = document.getElementById('ulasanKomentar').value.trim();
-
-        if (!targetId) { tampilkanToast('Masukkan ID Toko/Ojek target!', 'warning'); return; }
-        if (!komentar) { tampilkanToast('Komentar wajib diisi!', 'warning'); return; }
-
-        // Cari nama target berdasarkan ID di data akun
-        var dataAkun = getDataAkun();
-        var targetAkun = null;
-        var targetRole = '';
-        var targetNama = '';
-        for (var i = 0; i < dataAkun.length; i++) {
-            if (dataAkun[i].id === targetId) {
-                targetAkun = dataAkun[i];
-                targetNama = targetAkun.nama || targetAkun.username;
-                targetRole = targetAkun.role;
-                break;
-            }
-        }
-        if (!targetAkun) { tampilkanToast('ID Akun target tidak ditemukan!', 'error'); return; }
-        if (targetAkun.role === 'superadmin' || targetAkun.role === 'customer') {
-            tampilkanToast('Anda tidak bisa memberi ulasan ke akun ini!', 'error');
-            return;
-        }
-
-        var dataUlasan = JSON.parse(localStorage.getItem('2r_ulasan') || '[]');
-        dataUlasan.push({
-            id: 'ULS-' + Date.now(),
-            pengirimId: user.id,
-            pengirimNama: user.nama || user.username,
-            targetId: targetId,
-            targetNama: targetNama,
-            targetRole: targetRole,
-            rating: rating,
-            komentar: komentar,
-            balasan: '',
-            waktu: new Date().toISOString()
-        });
-
-        localStorage.setItem('2r_ulasan', JSON.stringify(dataUlasan));
-        document.getElementById('ulasanTargetId').value = '';
-        document.getElementById('ulasanKomentar').value = '';
-        tampilkanToast('Ulasan berhasil dikirim!', 'success');
-        renderUlasanRating();
-    }
-
-    // ===== 2. KIRIM BALASAN (TOKO/OJEK) =====
-    function kirimBalasan(idUlasan, indexInput) {
-        var balasan = document.getElementById('balasanInput_' + indexInput).value.trim();
-        if (!balasan) { tampilkanToast('Tulis balasan Anda terlebih dahulu!', 'warning'); return; }
-
-        var dataUlasan = JSON.parse(localStorage.getItem('2r_ulasan') || '[]');
-        for (var i = 0; i < dataUlasan.length; i++) {
-            if (dataUlasan[i].id === idUlasan) {
-                dataUlasan[i].balasan = balasan;
-                break;
-            }
-        }
-        localStorage.setItem('2r_ulasan', JSON.stringify(dataUlasan));
-        tampilkanToast('Balasan berhasil dikirim!', 'success');
-        renderUlasanRating(); // Refresh halaman
-    }
-
-    // ===== 3. HAPUS ULASAN (ADMIN / CUSTOMER) =====
-    function hapusUlasan(idUlasan) {
-        if (!confirm('Yakin ingin menghapus ulasan ini?')) return;
-        var dataUlasan = JSON.parse(localStorage.getItem('2r_ulasan') || '[]');
-        var dataBaru = [];
-        for (var i = 0; i < dataUlasan.length; i++) {
-            if (dataUlasan[i].id !== idUlasan) {
-                dataBaru.push(dataUlasan[i]);
-            }
-        }
-        localStorage.setItem('2r_ulasan', JSON.stringify(dataBaru));
-        tampilkanToast('Ulasan berhasil dihapus!', 'success');
-        renderUlasanRating();
-    }
-</script>
-<!-- ===== AKHIR BLOK 8.13 ===== -->
 </script>
 <!-- ===== AKHIR BLOK 8.4 ===== -->
 
