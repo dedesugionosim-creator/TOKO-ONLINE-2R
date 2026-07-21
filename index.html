@@ -23,12 +23,12 @@
         <div class="authentication-box">
             
             <!-- ===== BLOK 2.1.1 - LOGO & JUDUL ===== -->
-            <div class="authentication-logo">
-                <i class="fas fa-store-alt"></i>
-                <h1>Toko Online <span style="color:#FF6B00;">2R</span></h1>
-                <p>Platform Belanja & Layanan Serba Ada</p>
-            </div>
-            <!-- ===== AKHIR BLOK 2.1.1 ===== -->
+<div class="authentication-logo">
+    <i id="loginAppIcon" class="fas fa-store-alt"></i>
+    <h1 id="loginAppTitle">Toko Online <span style="color:#FF6B00;">2R</span></h1>
+    <p id="loginAppTagline">Platform Belanja & Layanan Serba Ada</p>
+</div>
+<!-- ===== AKHIR BLOK 2.1.1 ===== -->
 
             <!-- ===== BLOK 2.1.2 - AREA PESAN ERROR ===== -->
             <div class="authentication-error" id="authenticationError">
@@ -866,14 +866,17 @@ body { font-family:'Poppins', sans-serif; background:var(--bg); min-height:100vh
         var html = '';
         html += '<div class="page-header"><h2>Profil SuperAdmin</h2><p>Kelola data aplikasi, keamanan akun, data pribadi, dan dokumen perusahaan.</p></div>';
 
-        // Data Aplikasi
+                // Data Aplikasi
         var dataAplikasi = JSON.parse(localStorage.getItem('2r_data_aplikasi') || '{}');
-        html += '<div class="card"><div class="card-header"><span><i class="fas fa-building" style="color:#FF6B00;"></i> Data Aplikasi</span><button class="button button-primary button-small" onclick="simpanDataAplikasi()"><i class="fas fa-save"></i> Simpan</button></div>';
+        html += '<div class="card"><div class="card-header"><span><i class="fas fa-building" style="color:#FF6B00;"></i> Data Aplikasi & Tampilan Login</span><button class="button button-primary button-small" onclick="simpanDataAplikasi()"><i class="fas fa-save"></i> Simpan</button></div>';
         html += '<div class="grid-2">';
-        html += '<div><label class="form-label">Nama Aplikasi</label><input type="text" id="appNama" class="form-input" value="' + escapeHtml(dataAplikasi.nama || '') + '"></div>';
+        html += '<div><label class="form-label">Nama Aplikasi (Login)</label><input type="text" id="appNama" class="form-input" value="' + escapeHtml(dataAplikasi.nama || 'Toko Online 2R') + '"></div>';
+        html += '<div><label class="form-label">Tagline / Sub Judul</label><input type="text" id="appTagline" class="form-input" value="' + escapeHtml(dataAplikasi.tagline || 'Platform Belanja & Layanan Serba Ada') + '"></div>';
         html += '<div><label class="form-label">Penerbit</label><input type="text" id="appPenerbit" class="form-input" value="' + escapeHtml(dataAplikasi.penerbit || '') + '"></div>';
         html += '<div><label class="form-label">Pemilik</label><input type="text" id="appPemilik" class="form-input" value="' + escapeHtml(dataAplikasi.pemilik || '') + '"></div>';
         html += '<div><label class="form-label">Pengelola</label><input type="text" id="appPengelola" class="form-input" value="' + escapeHtml(dataAplikasi.pengelola || '') + '"></div>';
+        html += '<div style="display:flex; align-items:center; gap:10px;"><div style="flex:1;"><label class="form-label">Ikon (FontAwesome)</label><input type="text" id="appIcon" class="form-input" value="' + escapeHtml(dataAplikasi.icon || 'fa-store-alt') + '"></div>';
+        html += '<div style="flex:1;"><label class="form-label">Warna Ikon</label><input type="color" id="appIconColor" class="form-input" value="' + (dataAplikasi.iconColor || '#FF6B00') + '" style="padding:2px;height:40px;"></div></div>';
         html += '</div></div>';
 
         // Keamanan
@@ -923,16 +926,41 @@ body { font-family:'Poppins', sans-serif; background:var(--bg); min-height:100vh
     }
     // ===== AKHIR BLOK 7.2.1 =====
 
-    // ===== BLOK 7.2.2 - SIMPAN DATA APLIKASI =====
+        // ===== BLOK 7.2.2 - SIMPAN DATA APLIKASI =====
     function simpanDataAplikasi() {
         var data = {
             nama: document.getElementById('appNama').value,
             penerbit: document.getElementById('appPenerbit').value,
             pemilik: document.getElementById('appPemilik').value,
-            pengelola: document.getElementById('appPengelola').value
+            pengelola: document.getElementById('appPengelola').value,
+            tagline: document.getElementById('appTagline').value,
+            icon: document.getElementById('appIcon').value,
+            iconColor: document.getElementById('appIconColor').value
         };
         localStorage.setItem('2r_data_aplikasi', JSON.stringify(data));
-        tampilkanToast('Data aplikasi disimpan!', 'success');
+        
+        // Update langsung halaman login secara realtime jika sedang dibuka di tab yang sama
+        var loginIcon = document.getElementById('loginAppIcon');
+        var loginTitle = document.getElementById('loginAppTitle');
+        var loginTagline = document.getElementById('loginAppTagline');
+        if (loginIcon) {
+            loginIcon.className = 'fas ' + data.icon;
+            loginIcon.style.color = data.iconColor;
+        }
+        if (loginTitle) {
+            var appNama = data.nama || 'Toko Online 2R';
+            var parts = appNama.split('2R');
+            if (parts.length > 1) {
+                loginTitle.innerHTML = parts[0] + '<span style="color:' + data.iconColor + ';">2R</span>' + parts.slice(1).join('');
+            } else {
+                loginTitle.innerHTML = appNama;
+            }
+        }
+        if (loginTagline) {
+            loginTagline.textContent = data.tagline || 'Platform Belanja & Layanan Serba Ada';
+        }
+
+        tampilkanToast('Data aplikasi dan tampilan login berhasil disimpan!', 'success');
     }
     // ===== AKHIR BLOK 7.2.2 =====
 
@@ -3221,8 +3249,32 @@ function tampilkanDashboard(user) {
 }
 // ===== AKHIR BLOK 8.6.1 =====
 
-    // ===== BLOK 8.6.2 - DOMContentLoaded =====
+        // ===== BLOK 8.6.2 - DOMContentLoaded =====
     document.addEventListener('DOMContentLoaded', async function() {
+        // --- TAMBAHAN BARU: LOAD DATA APLIKASI KE HALAMAN LOGIN ---
+        var dataAplikasi = JSON.parse(localStorage.getItem('2r_data_aplikasi') || '{}');
+        var loginIcon = document.getElementById('loginAppIcon');
+        var loginTitle = document.getElementById('loginAppTitle');
+        var loginTagline = document.getElementById('loginAppTagline');
+
+        if (loginIcon) {
+            loginIcon.className = 'fas ' + (dataAplikasi.icon || 'fa-store-alt');
+            loginIcon.style.color = dataAplikasi.iconColor || '#FF6B00';
+        }
+        if (loginTitle) {
+            var appNama = dataAplikasi.nama || 'Toko Online 2R';
+            var parts = appNama.split('2R');
+            if (parts.length > 1) {
+                loginTitle.innerHTML = parts[0] + '<span style="color:' + (dataAplikasi.iconColor || '#FF6B00') + ';">2R</span>' + parts.slice(1).join('');
+            } else {
+                loginTitle.innerHTML = appNama;
+            }
+        }
+        if (loginTagline) {
+            loginTagline.textContent = dataAplikasi.tagline || 'Platform Belanja & Layanan Serba Ada';
+        }
+        // --- AKHIR TAMBAHAN BARU ---
+
         await inisialisasiSuperAdmin();
         var dataUser = localStorage.getItem('2r_user');
         if (dataUser) {
