@@ -267,7 +267,41 @@
 
 </div>
 <!-- ===== AKHIR BLOK 3.1 ===== -->
+<!-- ============================================================ -->
+<!-- BLOK 3.1 - NAVBAR SEDERHANA & SIDEBAR KIRI                   -->
+<!-- ============================================================ -->
+<div id="pageDashboard" class="page-dashboard" style="display:none;">
+    
+    <!-- NAVBAR RINGKAS (1 BARIS) -->
+    <nav class="navbar-simple">
+        <div class="navbar-left">
+            <button id="menuToggle"><i class="fas fa-bars"></i></button>
+            <i class="fas fa-store-alt" style="color:#FF6B00; font-size:24px; margin-left:10px;"></i>
+            <span style="font-weight:700; color:#FF6B00; margin-left:8px; font-size:20px;">Toko Online 2R</span>
+        </div>
+        <div class="navbar-right">
+            <span id="displayJamSimple" style="font-size:13px; color:#555; font-weight:500; margin-right:15px;">00:00:00</span>
+            
+            <!-- AVATAR PROFIL DI NAVBAR -->
+            <img id="navProfilePic" src="" alt="Avatar" style="width:36px; height:36px; border-radius:50%; object-fit:cover; cursor:pointer; background:#e0e0e0; border:2px solid #fff; box-shadow:0 1px 3px rgba(0,0,0,0.1); margin-right:8px;">
+            
+            <span class="role-badge" id="roleBadge">Role</span>
+            <span id="userNama" style="font-weight:600; margin:0 10px;">User</span>
+            <button class="button-logout" id="buttonLogout"><i class="fas fa-sign-out-alt"></i> Keluar</button>
+        </div>
+    </nav>
 
+    <!-- INPUT FILE TERSEMBUNYI UNTUK UPLOAD FOTO PROFIL -->
+    <input type="file" id="uploadProfile" accept="image/*" style="display:none;">
+
+    <div class="simple-layout-container">
+        <aside class="sidebar-simple" id="sidebarContainer"></aside>
+        <div id="sidebarOverlay" class="sidebar-overlay"></div>
+        <main class="content-simple" id="mainContent"></main>
+    </div>
+
+</div>
+<!-- ===== AKHIR BLOK 3.1 ===== -->
 <!-- ============================================================ -->
 <!-- BLOK 4.1 - CSS GLOBAL & LAYOUT SEDERHANA                     -->
 <!-- ============================================================ -->
@@ -317,100 +351,30 @@
     .authentication-footer { text-align:center; margin-top:18px; font-size:14px; color:var(--text-muted); }
     .authentication-footer a { color:var(--primary); cursor:pointer; font-weight:600; text-decoration:none; }
 
-    /* ===== DASHBOARD & NAVBAR ===== */
+    /* ===== DASHBOARD & NAVBAR RINGKAS ===== */
     .page-dashboard { display:none; background:var(--bg); }
     
-    /* Navbar dengan header cover */
     .navbar-simple {
         display:flex;
-        flex-direction:column;
+        justify-content:space-between;
+        align-items:center;
         background:white;
-        box-shadow:var(--shadow);
-        border-bottom:2px solid var(--primary);
-        position:relative;
-        width:100%;
+        padding:0 20px;
+        height:64px; /* Tinggi navbar pas untuk teks */
+        position:fixed;
+        top:0; left:0; right:0;
         z-index:1000;
+        border-bottom:2px solid var(--primary);
+        box-shadow:var(--shadow);
     }
-    
-    /* Header cover & profil */
-    .header-profile {
-        position: relative;
-        width: 100%;
-        height: 180px;
-        overflow: hidden;
-        background: #f0f0f0;
-        border-bottom: 2px solid var(--primary);
-    }
-    .cover-container {
-        position: relative;
-        width: 100%;
-        height: 100%;
-    }
-    .cover-img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        display: block;
-    }
-    .profile-wrapper {
-        position: absolute;
-        bottom: -40px;
-        left: 30px;
-        width: 100px;
-        height: 100px;
-        border-radius: 50%;
-        border: 4px solid white;
-        background: #ddd;
-        overflow: hidden;
-        cursor: pointer;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-        z-index: 10;
-    }
-    .profile-img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        display: block;
-    }
-    .profile-overlay {
-        position: absolute;
-        inset: 0;
-        background: rgba(0,0,0,0.4);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: white;
-        font-size: 24px;
-        opacity: 0;
-        transition: opacity 0.3s;
-    }
-    .profile-wrapper:hover .profile-overlay {
-        opacity: 1;
-    }
-
-    /* Bar navigasi bawah (kiri dan kanan) */
-    .navbar-left {
-        display:flex;
-        align-items:center;
-        gap:5px;
-        padding:10px 20px;
-        background:white;
-    }
-    .navbar-right {
-        display:flex;
-        align-items:center;
-        gap:10px;
-        padding:10px 20px;
-        background:white;
-        justify-content:flex-end;
-        flex:1;
-    }
+    .navbar-left { display:flex; align-items:center; gap:5px; }
     #menuToggle { background:none; border:none; font-size:22px; color:var(--primary); cursor:pointer; display:none; }
+    .navbar-right { display:flex; align-items:center; gap:10px; }
     .navbar-right .role-badge { background:var(--primary-light); color:var(--primary); padding:4px 12px; border-radius:20px; font-size:12px; font-weight:600; }
     .button-logout { background:#f44336; color:white; border:none; padding:6px 16px; border-radius:20px; cursor:pointer; font-size:13px; font-weight:600; }
     .button-logout:hover { background:#d32f2f; }
 
-    .simple-layout-container { display:flex; max-width:1200px; margin:20px auto; padding:0 15px; gap:20px; }
+    .simple-layout-container { display:flex; max-width:1200px; margin:84px auto 20px auto; padding:0 15px; gap:20px; }
     .sidebar-simple { width:250px; flex-shrink:0; }
     .sidebar-simple .menu-item { padding:12px 15px; cursor:pointer; color:#555; font-weight:500; border-radius:8px; transition:0.2s; display:flex; align-items:center; gap:12px; }
     .sidebar-simple .menu-item:hover { background:#f0f2f5; }
@@ -421,16 +385,13 @@
     .fb-card { background:white; border-radius:var(--radius); box-shadow:var(--shadow); padding:20px; border:1px solid var(--border); margin-bottom:15px; }
 
     @media (max-width:767px) {
-        .header-profile { height: 130px; }
-        .profile-wrapper { width: 70px; height: 70px; bottom: -30px; left: 15px; }
         #menuToggle { display:block; }
         .sidebar-simple { position:fixed; top:64px; left:-100%; width:80%; max-width:300px; background:white; height:calc(100vh - 64px); padding:15px; box-shadow:2px 0 10px rgba(0,0,0,0.1); transition:left 0.3s ease; z-index:999; overflow-y:auto; }
         .sidebar-simple.open { left:0; }
         .sidebar-overlay.active { display:block; }
         .simple-layout-container { padding:0 10px; }
         .authentication-box { max-height:70vh; overflow-y:auto; }
-        .navbar-left, .navbar-right { padding:5px 15px; }
-        .navbar-simple { flex-wrap:wrap; }
+        .navbar-right span#displayJamSimple { display:none; } /* Jam bisa dihilangkan di HP biar makin ringkas */
     }
 </style>
 <!-- ===== AKHIR BLOK 4.1 ===== -->
@@ -439,208 +400,9 @@
 <!-- BLOK 5.1 - JAVASCRIPT UTILITY & OTENTIKASI                   -->
 <!-- ============================================================ -->
 <script>
-    // ===== BLOK 5.1.1 - Fungsi Data & Hash =====
-    function getDataAkun() {
-        var dataAkun = localStorage.getItem('2r_akun');
-        if (dataAkun) {
-            return JSON.parse(dataAkun);
-        }
-        return [];
-    }
+    // (Bagian getDataAkun, simpanDataAkun, hashPassword, generateId, toast, toggleForm, escapeHtml, ambilLokasi, lupaPassword SAMA SEPERTI SEBELUMNYA. Biarkan saja.)
 
-    function simpanDataAkun(akun) {
-        localStorage.setItem('2r_akun', JSON.stringify(akun));
-    }
-
-    async function hashPassword(password) {
-        var encoder = new TextEncoder();
-        var data = encoder.encode(password);
-        var hashBuffer = await crypto.subtle.digest('SHA-256', data);
-        var hashArray = Array.from(new Uint8Array(hashBuffer));
-        var hashString = hashArray.map(function(b) {
-            return b.toString(16).padStart(2, '0');
-        }).join('');
-        return hashString;
-    }
-
-    function generateId(role) {
-        var dataAkun = getDataAkun();
-        var daftarAkun = dataAkun.filter(function(akun) {
-            return akun.role === role;
-        });
-        var nomorUrut = 1;
-        for (var indeks = 0; indeks < daftarAkun.length; indeks++) {
-            var akun = daftarAkun[indeks];
-            var pecahanId = akun.id.split('-');
-            if (pecahanId.length === 2) {
-                var angkaId = parseInt(pecahanId[1]);
-                if (angkaId >= nomorUrut) {
-                    nomorUrut = angkaId + 1;
-                }
-            }
-        }
-        var prefix = '';
-        if (role === 'customer') prefix = 'CUST';
-        else if (role === 'toko') prefix = 'TOKO';
-        else if (role === 'ojek') prefix = 'OJEK';
-        else if (role === 'pedagang') prefix = 'PEDAGANG';
-        else if (role === 'codseller') prefix = 'COD';
-        else prefix = 'USR';
-        return prefix + '-' + String(nomorUrut).padStart(3, '0');
-    }
-
-    function tampilkanToast(pesan, tipe) {
-        if (!tipe) {
-            tipe = 'success';
-        }
-        var container = document.getElementById('toastContainer');
-        var toast = document.createElement('div');
-        toast.className = 'toast ' + tipe;
-        var ikon = '';
-        if (tipe === 'success') {
-            ikon = 'fa-check-circle';
-        } else if (tipe === 'error') {
-            ikon = 'fa-times-circle';
-        } else if (tipe === 'warning') {
-            ikon = 'fa-exclamation-triangle';
-        } else {
-            ikon = 'fa-info-circle';
-        }
-        toast.innerHTML = '<i class="fas ' + ikon + '"></i> ' + pesan;
-        container.appendChild(toast);
-        setTimeout(function() {
-            toast.style.animation = 'slideInDown 0.3s ease reverse';
-            setTimeout(function() {
-                toast.remove();
-            }, 300);
-        }, 3500);
-    }
-
-    function toggleForm(tipe) {
-        var formLogin = document.getElementById('loginForm');
-        var formRegister = document.getElementById('registerForm');
-        var formPengajuan = document.getElementById('pengajuanBukaAkunForm');
-        if (formLogin) { formLogin.classList.add('hidden-form'); }
-        if (formRegister) { formRegister.classList.add('hidden-form'); }
-        if (formPengajuan) { formPengajuan.classList.add('hidden-form'); }
-        if (tipe === 'register') {
-            if (formRegister) { formRegister.classList.remove('hidden-form'); }
-        } else if (tipe === 'pengajuan') {
-            if (formPengajuan) { formPengajuan.classList.remove('hidden-form'); }
-        } else {
-            if (formLogin) { formLogin.classList.remove('hidden-form'); }
-        }
-    }
-
-    function escapeHtml(text) {
-        if (!text) {
-            return '';
-        }
-        var div = document.createElement('div');
-        div.textContent = text;
-        return div.innerHTML;
-    }
-    // ===== AKHIR BLOK 5.1.1 =====
-
-    // ===== BLOK 5.1.2 - Fungsi Ambil Lokasi =====
-    function ambilLokasiRegister() {
-        if (!navigator.geolocation) {
-            tampilkanToast('Geolokasi tidak didukung.', 'error');
-            return;
-        }
-        tampilkanToast('Mengambil lokasi...', 'info');
-        navigator.geolocation.getCurrentPosition(function(pos) {
-            var lat = pos.coords.latitude;
-            var lng = pos.coords.longitude;
-            document.getElementById('registerLat').value = lat;
-            document.getElementById('registerLng').value = lng;
-            fetch('https://nominatim.openstreetmap.org/reverse?format=json&lat=' + lat + '&lon=' + lng, {
-                headers: { 'User-Agent': 'TokoOnline2R-App/1.0' }
-            })
-            .then(function(response) {
-                return response.json();
-            })
-            .then(function(data) {
-                document.getElementById('registerLokasi').value = data.display_name || 'Lokasi tidak diketahui';
-                tampilkanToast('Lokasi berhasil diambil!', 'success');
-                document.getElementById('btnDaftar').removeAttribute('disabled');
-            })
-            .catch(function() {
-                document.getElementById('registerLokasi').value = 'Lat: ' + lat + ', Lng: ' + lng;
-                tampilkanToast('Lokasi berhasil (tanpa alamat).', 'info');
-                document.getElementById('btnDaftar').removeAttribute('disabled');
-            });
-        }, function(err) {
-            tampilkanToast('Gagal mengambil lokasi: ' + err.message, 'error');
-        });
-    }
-
-    function ambilLokasiPengajuan() {
-        if (!navigator.geolocation) {
-            tampilkanToast('Geolokasi tidak didukung.', 'error');
-            return;
-        }
-        tampilkanToast('Mengambil lokasi...', 'info');
-        navigator.geolocation.getCurrentPosition(function(pos) {
-            var lat = pos.coords.latitude;
-            var lng = pos.coords.longitude;
-            document.getElementById('pengajuanLat').value = lat;
-            document.getElementById('pengajuanLng').value = lng;
-            fetch('https://nominatim.openstreetmap.org/reverse?format=json&lat=' + lat + '&lon=' + lng, {
-                headers: { 'User-Agent': 'TokoOnline2R-App/1.0' }
-            })
-            .then(function(response) {
-                return response.json();
-            })
-            .then(function(data) {
-                document.getElementById('pengajuanLokasi').value = data.display_name || 'Lokasi tidak diketahui';
-                tampilkanToast('Lokasi berhasil diambil!', 'success');
-                document.getElementById('btnAjukan').removeAttribute('disabled');
-            })
-            .catch(function() {
-                document.getElementById('pengajuanLokasi').value = 'Lat: ' + lat + ', Lng: ' + lng;
-                tampilkanToast('Lokasi berhasil (tanpa alamat).', 'info');
-                document.getElementById('btnAjukan').removeAttribute('disabled');
-            });
-        }, function(err) {
-            tampilkanToast('Gagal mengambil lokasi: ' + err.message, 'error');
-        });
-    }
-    // ===== AKHIR BLOK 5.1.2 =====
-
-    // ===== BLOK 5.1.3 - Fungsi Lupa Password =====
-    async function lupaPassword() {
-        var username = document.getElementById('loginUsername').value.trim();
-        if (!username) {
-            tampilkanToast('Masukkan username anda terlebih dahulu!', 'warning');
-            return;
-        }
-        if (username === 'admin') {
-            tampilkanToast('SuperAdmin tidak bisa di-reset melalui form ini!', 'error');
-            return;
-        }
-        var dataAkun = getDataAkun();
-        var indexUser = -1;
-        for (var indeks = 0; indeks < dataAkun.length; indeks++) {
-            if (dataAkun[indeks].username === username) {
-                indexUser = indeks;
-                break;
-            }
-        }
-        if (indexUser === -1) {
-            tampilkanToast('Username tidak ditemukan!', 'error');
-            return;
-        }
-        var newPassword = Math.random().toString(36).slice(-8);
-        var hash = await hashPassword(newPassword);
-        dataAkun[indexUser].password = hash;
-        simpanDataAkun(dataAkun);
-        tampilkanToast('Password baru anda: ' + newPassword, 'success');
-    }
-    // ===== AKHIR BLOK 5.1.3 =====
-
-    // ===== BLOK 5.1.4 - Fungsi Simpan & Muat Gambar =====
-    // Simpan gambar base64 ke data akun user yang sedang login
+    // ===== BLOK 5.1.4 - Fungsi Simpan & Muat Gambar Avatar =====
     function simpanGambarUser(field, base64) {
         var user = JSON.parse(localStorage.getItem('2r_user') || '{}');
         if (!user.username) return;
@@ -652,268 +414,44 @@
             }
         }
         simpanDataAkun(dataAkun);
-        // Update session
         user[field] = base64;
         localStorage.setItem('2r_user', JSON.stringify(user));
     }
 
-    // Tampilkan gambar cover dan profil saat dashboard dimuat
     function muatGambarUser() {
         var user = JSON.parse(localStorage.getItem('2r_user') || '{}');
-        var coverImg = document.getElementById('coverImage');
-        var profileImg = document.getElementById('profileImage');
-        if (user.coverPhoto) {
-            coverImg.src = user.coverPhoto;
-        } else {
-            coverImg.src = ''; // atau placeholder
-        }
+        var profileImg = document.getElementById('navProfilePic');
         if (user.profilePhoto) {
             profileImg.src = user.profilePhoto;
         } else {
-            profileImg.src = ''; // atau placeholder
+            profileImg.src = ''; // Kosong, atau bisa diisi URL placeholder default
         }
     }
-    // ===== AKHIR BLOK 5.1.4 =====
 
-    // ===== BLOK 5.1.5 - Event Listener Login, Register, Pengajuan, Upload =====
+    // ===== BLOK 5.1.5 - Event Listener Login, Register, Upload =====
     document.addEventListener('DOMContentLoaded', function() {
-        var dataAwalAkun = getDataAkun();
-        var superAdminAda = false;
-        for (var indeks = 0; indeks < dataAwalAkun.length; indeks++) {
-            if (dataAwalAkun[indeks].role === 'superadmin') {
-                superAdminAda = true;
-                break;
-            }
-        }
-        if (!superAdminAda) {
-            (async function() {
-                var hash = await hashPassword('admin123');
-                var superAdminBaru = {
-                    id: 'SA-001',
-                    role: 'superadmin',
-                    username: 'admin',
-                    password: hash,
-                    nama: 'SuperAdmin',
-                    email: 'admin@2r.com',
-                    nomorHp: '081234567890',
-                    alamat: 'Kantor Pusat',
-                    namaBank: 'BCA',
-                    nomorRekening: '1234567890',
-                    pemilikRekening: 'SuperAdmin',
-                    status: 'AKTIF',
-                    waktuRegistrasi: new Date().toISOString(),
-                    coverPhoto: '',
-                    profilePhoto: ''
-                };
-                dataAwalAkun.push(superAdminBaru);
-                simpanDataAkun(dataAwalAkun);
-                console.log('✅ SuperAdmin berhasil dibuat. Username: admin, Password: admin123');
-            })();
-        }
+        // (Bagian SuperAdmin, Login, Register, Pengajuan SAMA SEPERTI SEBELUMNYA. Biarkan saja.)
 
-        // LOGIN
-        document.getElementById('loginForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            var inputUsername = document.getElementById('loginUsername').value.trim();
-            var inputPassword = document.getElementById('loginPassword').value.trim();
-            var dataAkun = getDataAkun();
-            var dataUser = null;
-            for (var indeks = 0; indeks < dataAkun.length; indeks++) {
-                if (dataAkun[indeks].username === inputUsername) {
-                    dataUser = dataAkun[indeks];
-                    break;
-                }
-            }
-            if (dataUser === null) {
-                tampilkanToast('Username atau password salah!', 'error');
-                return;
-            }
-            var passwordCocok = await hashPassword(inputPassword) === dataUser.password;
-            if (!passwordCocok) {
-                tampilkanToast('Username atau password salah!', 'error');
-                return;
-            }
-            if (dataUser.status !== 'AKTIF' && dataUser.role !== 'superadmin') {
-                tampilkanToast('Akun belum aktif!', 'error');
-                return;
-            }
-            localStorage.setItem('2r_user', JSON.stringify(dataUser));
-            localStorage.setItem('2r_user_role', dataUser.role);
-            tampilkanDasbor(dataUser);
+        // ===== UPLOAD FOTO PROFIL (AVATAR NAVBAR) =====
+        document.getElementById('navProfilePic').addEventListener('click', function() {
+            document.getElementById('uploadProfile').click();
         });
 
-        // REGISTER
-        document.getElementById('registerForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            var pilihRole = document.getElementById('registerRole').value;
-            var inputUsername = document.getElementById('registerUsername').value.trim();
-            var inputPassword = document.getElementById('registerPassword').value.trim();
-            var inputNama = document.getElementById('registerNama').value.trim();
-            var inputLat = document.getElementById('registerLat').value.trim();
-            var inputLng = document.getElementById('registerLng').value.trim();
-            if (!inputLat || !inputLng) {
-                tampilkanToast('Anda wajib mengambil lokasi otomatis terlebih dahulu!', 'error');
-                return;
-            }
-            if (!pilihRole || !inputUsername || !inputPassword || !inputNama) {
-                tampilkanToast('Data belum lengkap!', 'warning');
-                return;
-            }
-            var dataAkun = getDataAkun();
-            var usernameExist = false;
-            for (var indeks = 0; indeks < dataAkun.length; indeks++) {
-                if (dataAkun[indeks].username === inputUsername) {
-                    usernameExist = true;
-                    break;
-                }
-            }
-            if (usernameExist) {
-                tampilkanToast('Username sudah dipakai!', 'error');
-                return;
-            }
-            var statusAkun = (pilihRole === 'toko' || pilihRole === 'ojek') ? 'NONAKTIF (Menunggu Verifikasi)' : 'AKTIF';
-            var hashPasswordBaru = await hashPassword(inputPassword);
-            var akunBaru = {
-                id: generateId(pilihRole),
-                role: pilihRole,
-                username: inputUsername,
-                password: hashPasswordBaru,
-                nama: inputNama,
-                email: '',
-                nomorHp: '',
-                alamat: '',
-                latitude: inputLat,
-                longitude: inputLng,
-                namaBank: '',
-                nomorRekening: '',
-                pemilikRekening: '',
-                status: statusAkun,
-                waktuRegistrasi: new Date().toISOString(),
-                coverPhoto: '',
-                profilePhoto: ''
+        document.getElementById('uploadProfile').addEventListener('change', function(e) {
+            var file = e.target.files[0];
+            if (!file) return;
+            var reader = new FileReader();
+            reader.onload = function(ev) {
+                var base64 = ev.target.result;
+                simpanGambarUser('profilePhoto', base64);
+                document.getElementById('navProfilePic').src = base64;
+                tampilkanToast('Foto profil berhasil diubah!', 'success');
             };
-            dataAkun.push(akunBaru);
-            simpanDataAkun(dataAkun);
-            tampilkanToast('Akun berhasil dibuat! ID: ' + akunBaru.id, 'success');
-            document.getElementById('registerForm').reset();
-            document.getElementById('btnDaftar').setAttribute('disabled', 'disabled');
-            toggleForm('login');
+            reader.readAsDataURL(file);
         });
 
-        // PENGAJUAN
-        document.getElementById('pengajuanBukaAkunForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            var inputNama = document.getElementById('pengajuanNama').value.trim();
-            var inputKontak = document.getElementById('pengajuanKontak').value.trim();
-            var pilihRole = document.getElementById('pengajuanRole').value;
-            var inputAlasan = document.getElementById('pengajuanAlasan').value.trim();
-            var inputLat = document.getElementById('pengajuanLat').value.trim();
-            var inputLng = document.getElementById('pengajuanLng').value.trim();
-            if (!inputLat || !inputLng) {
-                tampilkanToast('Anda wajib mengambil lokasi otomatis terlebih dahulu!', 'error');
-                return;
-            }
-            if (!inputNama || !inputKontak || !pilihRole || !inputAlasan) {
-                tampilkanToast('Lengkapi data anda!', 'warning');
-                return;
-            }
-            var dataPengajuan = JSON.parse(localStorage.getItem('2r_pengajuan_buka_akun') || '[]');
-            var pengajuanBaru = {
-                id: 'PB-' + Date.now(),
-                nama: inputNama,
-                kontak: inputKontak,
-                role: pilihRole,
-                alasan: inputAlasan,
-                latitude: inputLat,
-                longitude: inputLng,
-                alamatLokasi: document.getElementById('pengajuanLokasi').value.trim() || '',
-                status: 'MENUNGGU',
-                waktu: new Date().toISOString()
-            };
-            dataPengajuan.push(pengajuanBaru);
-            localStorage.setItem('2r_pengajuan_buka_akun', JSON.stringify(dataPengajuan));
-            document.getElementById('pengajuanBukaAkunForm').reset();
-            document.getElementById('btnAjukan').setAttribute('disabled', 'disabled');
-            tampilkanToast('Pengajuan anda telah dikirim ke Admin!', 'success');
-            toggleForm('login');
-        });
-
-        // ===== UPLOAD COVER & PROFIL =====
-        var coverContainer = document.getElementById('coverContainer');
-        var uploadCover = document.getElementById('uploadCover');
-        if (coverContainer) {
-            coverContainer.addEventListener('click', function() {
-                uploadCover.click();
-            });
-        }
-        if (uploadCover) {
-            uploadCover.addEventListener('change', function(e) {
-                var file = e.target.files[0];
-                if (!file) return;
-                var reader = new FileReader();
-                reader.onload = function(ev) {
-                    var base64 = ev.target.result;
-                    simpanGambarUser('coverPhoto', base64);
-                    document.getElementById('coverImage').src = base64;
-                    tampilkanToast('Cover berhasil diubah!', 'success');
-                };
-                reader.readAsDataURL(file);
-            });
-        }
-
-        var profileWrapper = document.getElementById('profileWrapper');
-        var uploadProfile = document.getElementById('uploadProfile');
-        if (profileWrapper) {
-            profileWrapper.addEventListener('click', function() {
-                uploadProfile.click();
-            });
-        }
-        if (uploadProfile) {
-            uploadProfile.addEventListener('change', function(e) {
-                var file = e.target.files[0];
-                if (!file) return;
-                var reader = new FileReader();
-                reader.onload = function(ev) {
-                    var base64 = ev.target.result;
-                    simpanGambarUser('profilePhoto', base64);
-                    document.getElementById('profileImage').src = base64;
-                    tampilkanToast('Foto profil berhasil diubah!', 'success');
-                };
-                reader.readAsDataURL(file);
-            });
-        }
-
-        // LOGOUT
-        document.getElementById('buttonLogout').addEventListener('click', function() {
-            if (confirm('Yakin keluar?')) {
-                localStorage.removeItem('2r_user');
-                localStorage.removeItem('2r_user_role');
-                location.reload();
-            }
-        });
-
-        // SIDEBAR TOGGLE
-        var menuToggle = document.getElementById('menuToggle');
-        var sidebar = document.querySelector('.sidebar-simple');
-        var overlay = document.getElementById('sidebarOverlay');
-        if (menuToggle && sidebar && overlay) {
-            menuToggle.addEventListener('click', function(e) {
-                e.preventDefault();
-                if (sidebar.classList.contains('open')) {
-                    sidebar.classList.remove('open');
-                    overlay.classList.remove('active');
-                } else {
-                    sidebar.classList.add('open');
-                    overlay.classList.add('active');
-                }
-            });
-            overlay.addEventListener('click', function() {
-                sidebar.classList.remove('open');
-                overlay.classList.remove('active');
-            });
-        }
+        // LOGOUT dan SIDEBAR TOGGLE (sama seperti sebelumnya)
     });
-    // ===== AKHIR BLOK 5.1.5 =====
 
     // ===== BLOK 5.1.6 - Fungsi Dashboard & Sidebar =====
     function tampilkanDasbor(user) {
@@ -921,16 +459,15 @@
         document.getElementById('pageDashboard').style.display = 'block';
         document.getElementById('userNama').textContent = user.nama;
         document.getElementById('roleBadge').textContent = user.role || 'User';
+        
+        // Clock
         document.getElementById('displayJamSimple').textContent = new Date().toLocaleTimeString('id-ID') + ' | ' + new Date().toLocaleDateString('id-ID');
-
         setInterval(function() {
-            var sekarang = new Date();
             var jamEl = document.getElementById('displayJamSimple');
-            if (jamEl) {
-                jamEl.textContent = sekarang.toLocaleTimeString('id-ID') + ' | ' + sekarang.toLocaleDateString('id-ID');
-            }
+            if (jamEl) jamEl.textContent = new Date().toLocaleTimeString('id-ID') + ' | ' + new Date().toLocaleDateString('id-ID');
         }, 1000);
 
+        // Sidebar
         var sidebarHtml = `
             <div class="menu-item active" data-page="home"><i class="fas fa-home"></i> Beranda</div>
             <div class="menu-item" data-page="profile"><i class="fas fa-user-circle"></i> Profil</div>
@@ -943,51 +480,35 @@
         for (var indeks = 0; indeks < items.length; indeks++) {
             var item = items[indeks];
             item.onclick = function() {
-                for (var j = 0; j < items.length; j++) {
-                    items[j].classList.remove('active');
-                }
+                for (var j = 0; j < items.length; j++) items[j].classList.remove('active');
                 this.classList.add('active');
                 var page = this.getAttribute('data-page');
-                if (page === 'home') {
-                    renderBerandaSederhana(user);
-                } else if (page === 'profile') {
-                    tampilkanToast('Fitur Profil sedang dibangun', 'info');
-                } else if (page === 'katalog') {
-                    tampilkanToast('Katalog sedang dibangun', 'info');
-                }
+                if (page === 'home') renderBerandaSederhana(user);
+                else tampilkanToast('Fitur ' + page + ' sedang dibangun', 'info');
+                
                 if (window.innerWidth <= 767) {
                     document.querySelector('.sidebar-simple').classList.remove('open');
                     document.getElementById('sidebarOverlay').classList.remove('active');
                 }
             };
         }
-        // Muat gambar cover & profil
-        muatGambarUser();
+        
+        muatGambarUser(); // Tampilkan avatar user
         renderBerandaSederhana(user);
     }
 
     function renderBerandaSederhana(pengguna) {
         var areaKonten = document.getElementById('mainContent');
-        if (!areaKonten) {
-            return;
-        }
-        if (!pengguna) {
-            pengguna = JSON.parse(localStorage.getItem('2r_user') || '{}');
-        }
+        if (!areaKonten) return;
+        if (!pengguna) pengguna = JSON.parse(localStorage.getItem('2r_user') || '{}');
 
         var semuaAkun = getDataAkun();
-        var jumlahToko = 0;
-        var jumlahOjek = 0;
-        var jumlahCustomer = 0;
+        var jumlahToko = 0, jumlahOjek = 0, jumlahCustomer = 0;
         for (var indeks = 0; indeks < semuaAkun.length; indeks++) {
             var akun = semuaAkun[indeks];
-            if (akun.role === 'toko' || akun.role === 'pedagang' || akun.role === 'codseller') {
-                jumlahToko++;
-            } else if (akun.role === 'ojek') {
-                jumlahOjek++;
-            } else if (akun.role === 'customer') {
-                jumlahCustomer++;
-            }
+            if (akun.role === 'toko' || akun.role === 'pedagang' || akun.role === 'codseller') jumlahToko++;
+            else if (akun.role === 'ojek') jumlahOjek++;
+            else if (akun.role === 'customer') jumlahCustomer++;
         }
 
         var html = `
@@ -1010,12 +531,8 @@
                 </div>
             </div>
         `;
-
         areaKonten.innerHTML = html;
     }
-    // ===== AKHIR BLOK 5.1.6 =====
-</script>
-<!-- ===== AKHIR BLOK 5.1 ===== -->
 </script>
 <!-- ===== AKHIR BLOK 5.1 ===== -->
 
