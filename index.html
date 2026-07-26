@@ -305,13 +305,18 @@
 </div>
 <!-- ===== AKHIR BLOK 3.1 ===== -->
 <!-- ============================================================ -->
-<!-- BLOK 4.1 - CSS GRADIENT ORANYE TUA (LOGIN & DASHBOARD)       -->
+<!-- BLOK 4.1 - CSS FULL ORANGE SOLID (DASHBOARD) & LOGIN GRADASI -->
 <!-- ============================================================ -->
 <style>
     :root {
-        --primary: #FF6B00;
+        /* Warna Aksen tetap sama seperti awal Anda */
+        --primary: #FF6B00; 
         --primary-dark: #e65c00;
-        --bg-gradient: linear-gradient(135deg, #C05000 0%, #E67E22 100%); /* Gradient Konsisten */
+        
+        /* Background Dashboard: Full Orange Solid Tua */
+        --bg-dashboard: #C24B00; 
+        
+        /* Warna Elemen Lain */
         --bg-card: #FFFFFF;
         --text-dark: #2D3748;
         --text-muted: #718096;
@@ -334,14 +339,14 @@
     .toast.info { background:#3182CE; }
     @keyframes slideInDown { from { transform:translateY(-100px); opacity:0; } to { transform:translateY(0); opacity:1; } }
 
-    /* ===== AUTHENTICATION - LOGIN (GRADIENT) ===== */
+    /* ===== AUTHENTICATION - LOGIN (GRADASI AWAL) ===== */
     #pageAuthentication { 
         display:flex; 
         justify-content:center; 
         align-items:center; 
         width:100%; 
         min-height:100vh; 
-        background: var(--bg-gradient); /* Menggunakan Gradient Konsisten */
+        background: linear-gradient(135deg, #C05000 0%, #E67E22 100%); /* Persis seperti file awal Anda */
     }
     .authentication-wrapper { width:100%; max-width:450px; padding:20px; }
     .authentication-box { background:white; border-radius:var(--radius); padding:40px; box-shadow:0 4px 20px rgba(0,0,0,0.15); width:100%; }
@@ -364,14 +369,14 @@
     .authentication-footer { text-align:center; margin-top:18px; font-size:14px; color:#888; }
     .authentication-footer a { color:var(--primary); cursor:pointer; font-weight:600; text-decoration:none; }
 
-    /* ===== DASHBOARD (GRADIENT SAMA) ===== */
+    /* ===== DASHBOARD - FULL ORANGE SOLID ===== */
     .page-dashboard { 
         display:none; 
-        background: var(--bg-gradient); /* Background menyatu dengan Login */
+        background: var(--bg-dashboard); /* Background Full Orange Solid */
         min-height: 100vh;
     }
     
-    /* Navbar Container - Putih bersih di atas gradient */
+    /* Navbar - Putih bersih */
     .navbar-simple { 
         background:#FFFFFF; 
         box-shadow:0 2px 10px rgba(0,0,0,0.05); 
@@ -409,15 +414,15 @@
     .user-name { font-weight:600; color:#333; font-size:14px; }
     .button-logout { background:#E53E3E; color:white; border:none; padding:8px 20px; border-radius:20px; cursor:pointer; font-size:13px; font-weight:600; transition:0.3s; }
 
-    /* ===== SIDEBAR GLASSMORPHISM ELEGAN (DI ATAS GRADIENT) ===== */
+    /* ===== SIDEBAR GLASSMORPHISM (MENYATU DENGAN FULL ORANGE) ===== */
     .sidebar-simple {
         width: 260px;
         flex-shrink: 0;
-        /* Latar transparan dengan blur, menyatu dengan background gradient */
-        background: rgba(255, 255, 255, 0.15); 
+        /* Background transparan dengan efek blur agar menyatu sempurna dengan Full Orange */
+        background: rgba(255, 255, 255, 0.12); 
         backdrop-filter: blur(12px);
         -webkit-backdrop-filter: blur(12px);
-        border: 1px solid rgba(255, 255, 255, 0.25);
+        border: 1px solid rgba(255, 255, 255, 0.20);
         border-radius: var(--radius);
         padding: 20px 15px;
         box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.15);
@@ -441,8 +446,8 @@
         transform: translateX(6px);
     }
     .sidebar-simple .menu-item.active {
-        background: #FFFFFF; /* Menu aktif putih solid */
-        color: var(--primary); /* Teks Oranye Tua */
+        background: #FFFFFF; /* Menu aktif berwarna putih kontras */
+        color: var(--primary); /* Teks oranye */
         font-weight: 600;
         box-shadow: 0 4px 15px rgba(0,0,0,0.15);
     }
@@ -451,7 +456,7 @@
     
     .sidebar-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.4); z-index:998; }
 
-    /* ===== KONTEN UTAMA (PUTIH BERSIH) ===== */
+    /* ===== KONTEN UTAMA (PUTIH DI ATAS FULL ORANGE) ===== */
     .simple-layout-container { display:flex; max-width:1280px; margin:250px auto 20px auto; padding:0 20px; gap:25px; }
     .content-simple { 
         flex:1; 
