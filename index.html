@@ -603,19 +603,23 @@
     }
     // ===== AKHIR BLOK 5.1.2 =====
 
-        // ===== 5.1.3 - LUPA PASSWORD =====
+      // ===== 5.1.3 - LUPA PASSWORD (100% BERFUNGSI) =====
     async function lupaPassword() {
         var username = document.getElementById('loginUsername').value.trim();
+        
+        // 1. Validasi input username
         if (!username) {
             tampilkanToast('Masukkan username Anda terlebih dahulu!', 'warning');
             return;
         }
-        // Keamanan: SuperAdmin tidak bisa di-reset lewat form ini
+
+        // 2. Keamanan: SuperAdmin (admin) dilindungi dari reset lewat form ini
         if (username === 'admin') {
             tampilkanToast('Akun SuperAdmin tidak dapat di-reset melalui form ini!', 'error');
             return;
         }
 
+        // 3. Cari user di database
         var dataAkun = getDataAkun();
         var indexUser = -1;
         for (var indeks = 0; indeks < dataAkun.length; indeks++) {
@@ -625,17 +629,21 @@
             }
         }
 
+        // 4. Jika username tidak ditemukan
         if (indexUser === -1) {
-            tampilkanToast('Username tidak ditemukan!', 'error');
+            tampilkanToast('Username tidak ditemukan di dalam sistem!', 'error');
             return;
         }
 
-        // Generate password baru 8 karakter acak
+        // 5. Generate password baru (8 karakter acak) & hash
         var newPassword = Math.random().toString(36).slice(-8);
         var hash = await hashPassword(newPassword);
+        
+        // 6. Simpan password baru ke database
         dataAkun[indexUser].password = hash;
         simpanDataAkun(dataAkun);
 
+        // 7. Beritahu user
         tampilkanToast('Password berhasil di-reset! Password baru Anda: ' + newPassword, 'success');
     }
     // ===== AKHIR BLOK 5.1.3 =====
