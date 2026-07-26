@@ -305,29 +305,30 @@
 </div>
 <!-- ===== AKHIR BLOK 3.1 ===== -->
 <!-- ============================================================ -->
-<!-- BLOK 4.1 - CSS PREMIUM TEMA ORANYE TUA                       -->
+<!-- BLOK 4.1 - CSS TEMA ORANYE MUDA (DASHBOARD)                  -->
 <!-- ============================================================ -->
 <style>
     :root {
-        --primary: #C24B00; /* Oranye Tua Elegan */
+        --primary: #C24B00; /* Oranye Tua (Tetap jadi aksen tombol & border) */
         --primary-dark: #8B3A00;
-        --primary-light: #FFF3EB;
-        --bg: #F5F7FA;
-        --text: #2D3748;
-        --text-muted: #718096;
-        --border: #E2E8F0;
-        --shadow: 0 4px 12px rgba(0,0,0,0.06);
-        --shadow-lg: 0 10px 25px rgba(0,0,0,0.1);
+        --bg: #FFF5EB; /* Background Utama Dashboard (Oranye Muda Lembut) */
+        --bg-sidebar: #FFEAD5; /* Sidebar lebih pekat sedikit dari body */
+        --bg-card: #FFFFFF; /* Kartu konten tetap putih agar kontras */
+        --text: #4A3B34; /* Warna teks gelap (coklat tua) agar nyaman dibaca di atas oranye muda */
+        --text-muted: #7A6B64;
+        --border: #EADCD0; /* Border tipis warna coklat muda */
+        --shadow: 0 4px 12px rgba(194, 75, 0, 0.06);
+        --shadow-lg: 0 10px 25px rgba(194, 75, 0, 0.12);
         --radius: 16px;
         --radius-sm: 8px;
     }
 
     * { margin:0; padding:0; box-sizing:border-box; }
-    body { font-family:'Poppins', sans-serif; background:var(--bg); min-height:100vh; color:var(--text); }
+    body { font-family:'Poppins', sans-serif; background:#F0F0F0; min-height:100vh; color:var(--text); }
     .hidden-form { display:none !important; }
     .grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:15px; }
 
-    /* TOAST */
+    /* TOAST NOTIFICATION */
     #toastContainer { position:fixed; top:20px; left:50%; transform:translateX(-50%); z-index:99999; display:flex; flex-direction:column; gap:10px; max-width:90%; width:auto; align-items:center; }
     .toast { padding:16px 24px; border-radius:var(--radius-sm); color:white; font-size:14px; font-weight:500; box-shadow:var(--shadow-lg); animation:slideInDown 0.4s ease; display:flex; align-items:center; gap:12px; width:100%; min-width:320px; justify-content:center; }
     .toast.success { background:#38A169; }
@@ -336,7 +337,7 @@
     .toast.info { background:#3182CE; }
     @keyframes slideInDown { from { transform:translateY(-100px); opacity:0; } to { transform:translateY(0); opacity:1; } }
 
-    /* AUTHENTICATION LOGIN */
+    /* ===== AUTHENTICATION - TETAP ORANYE TUA (DEFAULT) ===== */
     #pageAuthentication { display:flex; justify-content:center; align-items:center; width:100%; min-height:100vh; background:linear-gradient(135deg, #8B3A00 0%, #C24B00 100%); }
     .authentication-wrapper { width:100%; max-width:450px; padding:20px; }
     .authentication-box { background:white; border-radius:var(--radius); padding:40px; box-shadow:var(--shadow-lg); width:100%; }
@@ -360,14 +361,24 @@
     .authentication-footer { text-align:center; margin-top:18px; font-size:14px; color:var(--text-muted); }
     .authentication-footer a { color:var(--primary); cursor:pointer; font-weight:600; text-decoration:none; }
 
-    /* ===== DASHBOARD & NAVBAR ===== */
-    .page-dashboard { display:none; background:var(--bg); }
+    /* ===== DASHBOARD & NAVBAR (ORANYE MUDA) ===== */
+    .page-dashboard { 
+        display:none; 
+        background:var(--bg); /* Background Oranye Muda untuk seluruh dashboard */
+    }
     
-    /* Navbar Container */
-    .navbar-simple { background:white; box-shadow:var(--shadow); border-bottom:2px solid var(--primary); position:fixed; top:0; left:0; right:0; z-index:1000; }
+    /* Navbar Container - Putih Bersih di atas Oranye Muda */
+    .navbar-simple { 
+        background:#FFFFFF; 
+        box-shadow:0 2px 10px rgba(194, 75, 0, 0.05); 
+        border-bottom:2px solid var(--primary); 
+        position:fixed; 
+        top:0; left:0; right:0; 
+        z-index:1000; 
+    }
     
     /* Cover & Profil */
-    .header-profile { position:relative; width:100%; height:180px; background:#f0f0f0; border-bottom:1px solid var(--border); overflow:hidden; }
+    .header-profile { position:relative; width:100%; height:180px; background:var(--bg-sidebar); border-bottom:1px solid var(--border); overflow:hidden; }
     .cover-wrapper { position:relative; width:100%; height:100%; }
     .cover-img { width:100%; height:100%; object-fit:cover; display:block; }
     .cover-actions { position:absolute; top:12px; right:15px; display:flex; gap:8px; }
@@ -376,54 +387,44 @@
     .btn-icon.btn-delete { color:#E53E3E; }
     .btn-icon.btn-delete:hover { color:red; }
 
-    .profile-wrapper { position:absolute; bottom:-45px; left:30px; width:110px; height:110px; border-radius:50%; border:4px solid white; background:#ddd; box-shadow:0 4px 15px rgba(0,0,0,0.15); z-index:10; overflow:visible; }
+    .profile-wrapper { position:absolute; bottom:-45px; left:30px; width:110px; height:110px; border-radius:50%; border:4px solid #FFFFFF; background:#ddd; box-shadow:0 4px 15px rgba(194, 75, 0, 0.15); z-index:10; overflow:visible; }
     .profile-img { width:100%; height:100%; object-fit:cover; border-radius:50%; display:block; }
     .profile-actions { position:absolute; bottom:-35px; left:50%; transform:translateX(-50%); display:flex; gap:5px; background:rgba(0,0,0,0.7); padding:4px 12px; border-radius:20px; white-space:nowrap; backdrop-filter:blur(5px); }
     .profile-actions .btn-icon.small { background:transparent; border:none; color:white; font-size:13px; cursor:pointer; padding:2px 5px; }
     .profile-actions .btn-icon.small:hover { color:var(--primary); }
     .profile-actions .btn-delete { color:#FFB3B3; }
 
-    /* Navbar Bottom (Baris tulisan) */
-    .navbar-bottom { display:flex; justify-content:space-between; align-items:center; padding:0 20px; height:70px; background:white; }
+    /* Navbar Bottom (Baris kata-kata) */
+    .navbar-bottom { display:flex; justify-content:space-between; align-items:center; padding:0 20px; height:70px; background:#FFFFFF; }
     .navbar-left { display:flex; align-items:center; gap:10px; }
     #menuToggle { background:none; border:none; font-size:24px; color:var(--primary); cursor:pointer; display:none; transition:0.3s; }
     .brand-text { font-weight:700; color:var(--primary); font-size:22px; letter-spacing:0.5px; }
     
     .navbar-right { display:flex; align-items:center; gap:12px; }
-    .clock-display { font-size:13px; color:#4A5568; font-weight:500; margin-right:5px; }
-    .nav-avatar { width:40px; height:40px; border-radius:50%; object-fit:cover; border:2px solid #fff; box-shadow:var(--shadow); background:#E2E8F0; cursor:pointer; transition:0.3s; }
+    .clock-display { font-size:13px; color:#7A6B64; font-weight:500; margin-right:5px; }
+    .nav-avatar { width:40px; height:40px; border-radius:50%; object-fit:cover; border:2px solid #fff; box-shadow:0 2px 8px rgba(194, 75, 0, 0.1); background:var(--bg-sidebar); cursor:pointer; transition:0.3s; }
     .nav-avatar:hover { transform:scale(1.05); border-color:var(--primary); }
-    .role-badge { background:var(--primary-light); color:var(--primary); padding:5px 14px; border-radius:20px; font-size:12px; font-weight:600; }
+    .role-badge { background:var(--bg-sidebar); color:var(--primary); padding:5px 14px; border-radius:20px; font-size:12px; font-weight:600; }
     .user-name { font-weight:600; color:var(--text); font-size:14px; }
     .button-logout { background:#E53E3E; color:white; border:none; padding:8px 20px; border-radius:20px; cursor:pointer; font-size:13px; font-weight:600; transition:0.3s; }
     .button-logout:hover { background:#C53030; transform:scale(1.02); }
 
-    /* ===== SIDEBAR ORANYE TUA ELEGAN ===== */
+    /* ===== SIDEBAR ORANYE MUDA (MENYATU DENGAN TEMA) ===== */
     .sidebar-simple {
         width: 260px;
         flex-shrink: 0;
-        background: linear-gradient(180deg, #C24B00 0%, #A33D00 100%);
+        background: var(--bg-sidebar); /* Background Oranye Muda Sidebar */
         border-radius: var(--radius);
         padding: 20px 15px;
-        box-shadow: 0 10px 25px rgba(194, 75, 0, 0.3);
+        box-shadow: var(--shadow); /* Bayangan halus */
+        border: 1px solid rgba(194, 75, 0, 0.08); /* Border tipis aksen oranye */
         height: fit-content;
         position: relative;
-        overflow: hidden;
-    }
-    /* Efek dekorasi di sidebar */
-    .sidebar-simple::before {
-        content: '';
-        position: absolute;
-        top: -50px; right: -50px;
-        width: 150px; height: 150px;
-        background: rgba(255,255,255,0.05);
-        border-radius: 50%;
-        pointer-events: none;
     }
     .sidebar-simple .menu-item {
         padding: 14px 18px;
         cursor: pointer;
-        color: rgba(255,255,255,0.85);
+        color: var(--text); /* Warna teks gelap agar mudah dibaca */
         font-weight: 500;
         border-radius: var(--radius-sm);
         transition: all 0.3s ease;
@@ -432,36 +433,57 @@
         gap: 14px;
         margin-bottom: 6px;
         position: relative;
-        z-index: 1;
     }
     .sidebar-simple .menu-item:hover {
-        background: rgba(255,255,255,0.15);
-        color: #fff;
-        transform: translateX(6px);
+        background: rgba(194, 75, 0, 0.08); /* Efek transparan oranye tua saat hover */
+        color: var(--primary);
+        transform: translateX(4px);
     }
     .sidebar-simple .menu-item.active {
-        background: rgba(255,255,255,0.20);
-        color: #fff;
+        background: var(--primary); /* Tombol Aktif berwarna Oranye Tua */
+        color: #FFFFFF;
         font-weight: 600;
-        box-shadow: inset 0 0 0 1px rgba(255,255,255,0.2);
-        backdrop-filter: blur(4px);
+        box-shadow: 0 4px 10px rgba(194, 75, 0, 0.2);
     }
     .sidebar-simple .menu-item i {
         font-size: 18px;
         width: 24px;
         text-align: center;
-        color: rgba(255,255,255,0.9);
     }
-    .sidebar-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:998; }
+    .sidebar-simple .menu-item.active i {
+        color: #FFFFFF;
+    }
+    .sidebar-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.4); z-index:998; }
 
-    /* ===== KONTEN UTAMA ===== */
+    /* ===== KONTEN UTAMA DI ATAS ORANYE MUDA ===== */
     .simple-layout-container { display:flex; max-width:1280px; margin:250px auto 20px auto; padding:0 20px; gap:25px; }
-    .content-simple { flex:1; min-width:0; background:white; border-radius:var(--radius); box-shadow:var(--shadow); padding:25px; border:1px solid var(--border); }
-    .fb-card { background:white; border-radius:var(--radius); padding:25px; border:1px solid var(--border); margin-bottom:20px; }
+    .content-simple { 
+        flex:1; 
+        min-width:0; 
+        background:var(--bg-card); /* Kartu Putih Bersih */
+        border-radius:var(--radius); 
+        box-shadow:var(--shadow); 
+        padding:25px; 
+        border:1px solid var(--border); 
+    }
+    .fb-card { 
+        background:var(--bg-card); 
+        border-radius:var(--radius); 
+        padding:25px; 
+        border:1px solid var(--border); 
+        margin-bottom:20px; 
+    }
     
     /* Kartu Statistik */
     .stat-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(150px,1fr)); gap:15px; margin-top:15px; }
-    .stat-card { text-align:center; padding:20px; background:#FAFBFC; border-radius:var(--radius-sm); border:1px solid var(--border); transition:0.3s; }
+    .stat-card { 
+        text-align:center; 
+        padding:20px; 
+        background:#FCF8F5; /* Sangat muda, hampir putih untuk kontras halus */
+        border-radius:var(--radius-sm); 
+        border:1px solid var(--border); 
+        transition:0.3s; 
+    }
     .stat-card:hover { transform:translateY(-4px); box-shadow:var(--shadow); border-color:var(--primary); }
     .stat-number { font-size:28px; font-weight:700; margin-bottom:5px; }
     .stat-label { font-size:14px; color:var(--text-muted); }
@@ -481,7 +503,7 @@
         .profile-wrapper { width:80px; height:80px; bottom:-35px; left:15px; }
         .profile-actions { bottom:-25px; padding:2px 8px; font-size:11px; }
         #menuToggle { display:block; }
-        .sidebar-simple { position:fixed; top:0; left:-100%; width:80%; max-width:300px; background:var(--primary); height:100vh; padding:80px 20px 20px; border-radius:0; transition:left 0.3s ease; z-index:999; overflow-y:auto; }
+        .sidebar-simple { position:fixed; top:0; left:-100%; width:80%; max-width:300px; height:100vh; padding:80px 20px 20px; border-radius:0; transition:left 0.3s ease; z-index:999; overflow-y:auto; border-right:2px solid var(--primary); }
         .sidebar-simple.open { left:0; }
         .sidebar-overlay.active { display:block; }
         .simple-layout-container { margin-top:200px; padding:0 12px; gap:15px; }
@@ -491,7 +513,6 @@
     }
 </style>
 <!-- ===== AKHIR BLOK 4.1 ===== -->
-<!-- ============================================================ -->
 <!-- BLOK 5.1 - JAVASCRIPT UTILITY, CROP & LOGIC                  -->
 <!-- ============================================================ -->
 <script>
