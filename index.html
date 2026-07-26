@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aplikasi Multi Role - Toko Online 2R</title>
+    <title>Toko Online 2R - Aplikasi Multi Role</title>
 <!-- ===== AKHIR BLOK 1.1 ===== -->
 
 <!-- ============================================================ -->
@@ -222,29 +222,74 @@
 <!-- ===== AKHIR BLOK 2.1 (PENUTUP WRAPPER LOGIN) ===== -->
 
 <!-- ============================================================ -->
-<!-- BLOK 3.1 - DASHBOARD & SIDEBAR (TANPA NAVBAR ATAS)           -->
+<!-- BLOK 3.1 - NAVBAR & LAYOUT 3 KOLOM (SEPERTI FACEBOOK)       -->
 <!-- ============================================================ -->
 <div id="pageDashboard" class="page-dashboard" style="display:none;">
-    <aside class="sidebar" id="sidebarContainer"></aside>
-    <div id="sidebarOverlay" class="sidebar-overlay"></div>
-    <main class="content" id="mainContent"></main>
+    
+    <!-- NAVBAR ATAS -->
+    <nav class="navbar-fb">
+        <div class="navbar-fb-left">
+            <button id="menuToggle"><i class="fas fa-bars"></i></button>
+            <i class="fas fa-store-alt" style="color:var(--primary); font-size:24px; margin-left:5px;"></i>
+            <span style="font-weight:700; color:var(--primary); margin-left:5px;">Toko 2R</span>
+        </div>
+        <div class="navbar-fb-center">
+            <div class="search-bar">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Cari produk, toko, atau ojek...">
+            </div>
+        </div>
+        <div class="navbar-fb-right">
+            <span id="displayJamFB" style="font-size:12px; color:#555; font-weight:500; margin-right:15px;">00:00:00</span>
+            <span class="role-badge" id="roleBadge">Role</span>
+            <span id="userNama" style="font-weight:600; margin:0 10px;">User</span>
+            <button class="button-logout" id="buttonLogout"><i class="fas fa-sign-out-alt"></i> Keluar</button>
+        </div>
+    </nav>
+
+    <!-- LAYOUT UTAMA 3 KOLOM -->
+    <div class="fb-layout-container">
+        
+        <!-- SIDEBAR KIRI -->
+        <aside class="sidebar-fb-left" id="sidebarContainer"></aside>
+        <div id="sidebarOverlay" class="sidebar-overlay"></div>
+
+        <!-- KONTEN TENGAH (FEED) -->
+        <main class="content-fb-center" id="mainContent"></main>
+
+        <!-- SIDEBAR KANAN -->
+        <aside class="sidebar-fb-right" id="sidebarRightContainer">
+            <div class="fb-card" style="margin-bottom:15px;">
+                <div style="font-weight:600; font-size:13px; color:#555; margin-bottom:10px;">Role Online</div>
+                <div style="display:flex; align-items:center; gap:10px; padding:8px 0; border-bottom:1px solid #f0f0f0;"><div style="width:8px; height:8px; background:#4CAF50; border-radius:50%;"></div><span style="font-size:13px;">Toko Demo 2R</span></div>
+                <div style="display:flex; align-items:center; gap:10px; padding:8px 0;"><div style="width:8px; height:8px; background:#4CAF50; border-radius:50%;"></div><span style="font-size:13px;">Ojek Demo</span></div>
+            </div>
+            <div class="fb-card">
+                <div style="font-weight:600; font-size:13px; color:#555; margin-bottom:10px;">Iklan Sponsor</div>
+                <div style="height:150px; background:#f0f0f0; border-radius:8px; display:flex; justify-content:center; align-items:center; color:#aaa;">Iklan 1</div>
+                <div style="height:150px; background:#f0f0f0; border-radius:8px; display:flex; justify-content:center; align-items:center; color:#aaa; margin-top:10px;">Iklan 2</div>
+            </div>
+        </aside>
+
+    </div>
+
 </div>
 <!-- ===== AKHIR BLOK 3.1 ===== -->
 
 <!-- ============================================================ -->
-<!-- BLOK 4.1 - CSS GLOBAL & LOGIN                                 -->
+<!-- BLOK 4.1 - CSS GLOBAL, LOGIN & LAYOUT FACEBOOK               -->
 <!-- ============================================================ -->
 <style>
     :root {
         --primary: #FF6B00;
         --primary-dark: #e65c00;
         --primary-light: #fff5f0;
-        --bg: #f8f9fa;
+        --bg: #f0f2f5; /* Background ala Facebook */
         --text: #333333;
         --text-muted: #888888;
         --border: #e9ecef;
-        --shadow: 0 4px 20px rgba(0,0,0,0.08);
-        --radius: 12px;
+        --shadow: 0 1px 2px rgba(0,0,0,0.1);
+        --radius: 8px;
     }
 
     * { margin:0; padding:0; box-sizing:border-box; }
@@ -253,17 +298,19 @@
     .grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:15px; }
     .button-small { padding:6px 14px; font-size:12px; width:100%; border:none; border-radius:var(--radius); background:var(--primary); color:white; cursor:pointer; }
 
+    /* --- TOAST --- */
     #toastContainer { position:fixed; top:20px; left:50%; transform:translateX(-50%); z-index:99999; display:flex; flex-direction:column; gap:10px; max-width:90%; width:auto; align-items:center; }
-    .toast { padding:14px 20px; border-radius:var(--radius); color:white; font-size:14px; font-weight:500; box-shadow:var(--shadow); animation:slideInDown 0.4s ease; display:flex; align-items:center; gap:12px; width:100%; min-width:300px; justify-content:center; }
+    .toast { padding:14px 20px; border-radius:var(--radius); color:white; font-size:14px; font-weight:500; box-shadow:0 4px 10px rgba(0,0,0,0.2); animation:slideInDown 0.4s ease; display:flex; align-items:center; gap:12px; width:100%; min-width:300px; justify-content:center; }
     .toast.success { background:#4CAF50; }
     .toast.error { background:#F44336; }
     .toast.warning { background:#FF9800; }
     .toast.info { background:#2196F3; }
     @keyframes slideInDown { from { transform:translateY(-100px); opacity:0; } to { transform:translateY(0); opacity:1; } }
 
+    /* --- LOGIN --- */
     #pageAuthentication { display:flex; justify-content:center; align-items:center; width:100%; min-height:100vh; background:linear-gradient(135deg, #C05000 0%, #E67E22 100%); }
     .authentication-wrapper { width:100%; max-width:450px; padding:20px; }
-    .authentication-box { background:white; border-radius:var(--radius); padding:35px; box-shadow:var(--shadow); border:1px solid var(--border); width:100%; }
+    .authentication-box { background:white; border-radius:var(--radius); padding:35px; box-shadow:0 4px 20px rgba(0,0,0,0.15); border:1px solid var(--border); width:100%; }
     .authentication-logo { text-align:center; margin-bottom:25px; }
     .authentication-logo i { font-size:45px; color:var(--primary); }
     .authentication-logo h1 { font-size:26px; font-weight:700; }
@@ -279,67 +326,74 @@
     .button-submit:hover { background:var(--primary-dark); transform:scale(1.02); }
     .authentication-footer { text-align:center; margin-top:18px; font-size:14px; color:var(--text-muted); }
     .authentication-footer a { color:var(--primary); cursor:pointer; font-weight:600; text-decoration:none; }
+
+    /* --- LAYOUT FACEBOOK --- */
+    .page-dashboard { display:none; background:var(--bg); }
+    
+    /* NAVBAR */
+    .navbar-fb {
+        display:flex; justify-content:space-between; align-items:center;
+        background:white; padding:8px 16px; height:60px;
+        position:sticky; top:0; z-index:999;
+        border-bottom:1px solid var(--border); box-shadow:var(--shadow);
+    }
+    .navbar-fb-left { display:flex; align-items:center; gap:10px; }
+    #menuToggle { background:none; border:none; font-size:22px; color:var(--primary); cursor:pointer; display:none; }
+    .navbar-fb-center { flex:1; max-width:600px; margin:0 20px; }
+    .search-bar { display:flex; align-items:center; background:#f0f2f5; border-radius:20px; padding:8px 15px; }
+    .search-bar i { color:#888; margin-right:10px; }
+    .search-bar input { border:none; background:transparent; outline:none; width:100%; font-family:'Poppins', sans-serif; font-size:14px; }
+    .navbar-fb-right { display:flex; align-items:center; gap:10px; }
+    .navbar-fb-right .role-badge { background:var(--primary-light); color:var(--primary); padding:4px 12px; border-radius:20px; font-size:12px; font-weight:600; }
+    .button-logout { background:#f44336; color:white; border:none; padding:8px 16px; border-radius:20px; cursor:pointer; font-size:13px; font-weight:600; }
+    .button-logout:hover { background:#d32f2f; }
+
+    /* CONTAINER 3 KOLOM */
+    .fb-layout-container {
+        display:flex; max-width:1200px; margin:20px auto; padding:0 15px; gap:20px;
+    }
+
+    /* SIDEBAR KIRI */
+    .sidebar-fb-left { width:250px; flex-shrink:0; }
+    .sidebar-fb-left .menu-item { padding:12px 15px; cursor:pointer; color:#555; font-weight:500; border-radius:8px; transition:0.2s; display:flex; align-items:center; gap:12px; }
+    .sidebar-fb-left .menu-item:hover { background:#f0f2f5; }
+    .sidebar-fb-left .menu-item.active { background:var(--primary-light); color:var(--primary); }
+    
+    .sidebar-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:998; }
+
+    /* KONTEN TENGAH (FEED) */
+    .content-fb-center { flex:1; min-width:0; }
+    
+    /* KARTU FEED */
+    .fb-card { background:white; border-radius:var(--radius); box-shadow:var(--shadow); padding:20px; border:1px solid var(--border); margin-bottom:15px; }
+    .fb-card-header { font-weight:600; font-size:15px; border-bottom:1px solid var(--border); padding-bottom:12px; margin-bottom:15px; }
+
+    /* SIDEBAR KANAN */
+    .sidebar-fb-right { width:300px; flex-shrink:0; }
+
+    /* RESPONSIVE */
+    @media (max-width:992px) {
+        .sidebar-fb-right { display:none; }
+        .fb-layout-container { padding:0 10px; }
+    }
+    @media (max-width:767px) {
+        #menuToggle { display:block; }
+        .sidebar-fb-left { position:fixed; top:60px; left:-100%; width:80%; max-width:300px; background:white; height:calc(100vh - 60px); padding:15px; box-shadow:2px 0 10px rgba(0,0,0,0.1); transition:left 0.3s ease; z-index:999; overflow-y:auto; }
+        .sidebar-fb-left.open { left:0; }
+        .sidebar-overlay.active { display:block; }
+        .navbar-fb-center { display:none; }
+        .navbar-fb-right .role-badge, .navbar-fb-right span { font-size:12px; }
+        .authentication-box { max-height:70vh; overflow-y:auto; }
+    }
+</style>
 <!-- ===== AKHIR BLOK 4.1 ===== -->
 
 <!-- ============================================================ -->
-<!-- BLOK 4.2 - CSS SIDEBAR & HOMEPAGE COVER                       -->
-<!-- ============================================================ -->
-    .page-dashboard { display:none; }
-    .sidebar { position:fixed; top:0; left:0; bottom:0; width:250px; background:white; border-right:1px solid var(--border); padding-top:20px; overflow-y:auto; z-index:999; transition:left 0.3s ease-in-out; }
-    .sidebar-menu-title { font-size:11px; text-transform:uppercase; color:#aaa; padding:15px 25px 8px; font-weight:700; letter-spacing:1.5px; }
-    .sidebar-menu-item { padding:12px 25px; cursor:pointer; color:#555; font-weight:500; display:flex; align-items:center; gap:14px; font-size:14px; border-left:4px solid transparent; transition:all 0.2s; }
-    .sidebar-menu-item:hover { background:#fafafa; color:var(--primary); transform:translateX(4px); }
-    .sidebar-menu-item.active { background:var(--primary-light); color:var(--primary); border-left-color:var(--primary); font-weight:600; }
-    #menuToggle { display:none; background:none; border:none; font-size:24px; cursor:pointer; color:white; padding:0; position:absolute; top:15px; left:15px; z-index:20; text-shadow:0 2px 4px rgba(0,0,0,0.5); }
-    .sidebar-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:998; transition:opacity 0.3s; }
-    .sidebar-overlay.active { display:block; }
-
-    .content { margin-left:0; margin-top:0; padding:0; min-height:100vh; background:var(--bg); }
-
-    .homepage-header-card { position:relative; width:100%; padding:0; margin:0; background:white; overflow:hidden; }
-    .cover-photo-wrapper { position:relative; width:100%; height:280px; background:#e9ecef; overflow:hidden; cursor:pointer; border-bottom:3px solid var(--primary); }
-    .cover-photo-wrapper img { width:100%; height:100%; object-fit:cover; }
-    .cover-photo-placeholder { position:absolute; top:0; left:0; width:100%; height:100%; display:flex; flex-direction:column; justify-content:center; align-items:center; color:#999; background:#f8f9fa; font-size:16px; }
-    
-    .header-controls { position:absolute; top:15px; right:15px; z-index:20; display:flex; flex-direction:row; align-items:center; gap:15px; }
-    .header-controls .header-time { color:white; font-size:12px; text-shadow:0 1px 3px rgba(0,0,0,0.5); white-space:nowrap; }
-    .header-controls .button-logout { background:#f44336; color:white; border:none; padding:6px 14px; border-radius:var(--radius); cursor:pointer; font-size:13px; font-weight:600; }
-    .header-controls .button-logout:hover { background:#d32f2f; }
-
-    .profile-info-wrapper { position:relative; padding:20px 25px 25px 25px; display:flex; flex-direction:column; align-items:center; background:white; }
-    .profile-avatar-wrapper { margin-top:-70px; width:130px; height:130px; border-radius:50%; border:5px solid white; box-shadow:var(--shadow); background:#f0f0f0; overflow:hidden; flex-shrink:0; cursor:pointer; position:relative; z-index:10; transition:transform 0.2s; }
-    .profile-avatar-wrapper:hover { transform:scale(1.05); }
-    .profile-avatar-wrapper img { width:100%; height:100%; object-fit:cover; }
-    .profile-avatar-placeholder { width:100%; height:100%; display:flex; justify-content:center; align-items:center; color:#aaa; background:#f8f9fa; font-size:60px; }
-    .profile-info-text { text-align:center; margin-top:10px; }
-    .profile-info-text h2 { font-size:24px; font-weight:700; color:var(--text); }
-    .profile-info-text p { font-size:14px; color:var(--text-muted); }
-
-    @media (max-width:767px) {
-        #menuToggle { display:block !important; }
-        .sidebar { width:80%; max-width:300px; left:-100%; transition:left 0.3s ease-in-out; }
-        .sidebar.open { left:0; }
-        .cover-photo-wrapper { height:180px; }
-        .profile-avatar-wrapper { width:100px; height:100px; margin-top:-55px; }
-        .header-controls { right:10px; gap:8px; }
-        .header-controls .header-time { font-size:10px; }
-        .authentication-box { max-height:70vh; overflow-y:auto; }
-    }
-<!-- ===== AKHIR BLOK 4.2 ===== -->
-</style>
-<!-- ===== AKHIR BLOK 4.2 & AKHIR CSS ===== -->
-
-<!-- ============================================================ -->
-<!-- BLOK 5.1 - JAVASCRIPT UTILITY & AUTH                         -->
+<!-- BLOK 5.1 - JAVASCRIPT UTILITY                                -->
 <!-- ============================================================ -->
 <script>
-    function getDataAkun() {
-        var dataAkun = localStorage.getItem('2r_akun');
-        return dataAkun ? JSON.parse(dataAkun) : [];
-    }
-    function simpanDataAkun(akun) {
-        localStorage.setItem('2r_akun', JSON.stringify(akun));
-    }
+    function getDataAkun() { var dataAkun = localStorage.getItem('2r_akun'); return dataAkun ? JSON.parse(dataAkun) : []; }
+    function simpanDataAkun(akun) { localStorage.setItem('2r_akun', JSON.stringify(akun)); }
     async function hashPassword(password) {
         var encoder = new TextEncoder();
         var data = encoder.encode(password);
@@ -370,16 +424,11 @@
         else if (tipe === 'pengajuan') document.getElementById('pengajuanBukaAkunForm').classList.remove('hidden-form');
         else document.getElementById('loginForm').classList.remove('hidden-form');
     }
-    function escapeHtml(text) {
-        if (!text) return '';
-        var div = document.createElement('div');
-        div.textContent = text;
-        return div.innerHTML;
-    }
+    function escapeHtml(text) { if (!text) return ''; var div = document.createElement('div'); div.textContent = text; return div.innerHTML; }
 <!-- ===== AKHIR BLOK 5.1 ===== -->
 
 <!-- ============================================================ -->
-<!-- BLOK 5.2 - JAVASCRIPT AMBIL LOKASI & LUPA PASSWORD           -->
+<!-- BLOK 5.2 - AMBIL LOKASI & LUPA PASSWORD                      -->
 <!-- ============================================================ -->
     function ambilLokasiRegister() {
         if (!navigator.geolocation) { tampilkanToast('Geolokasi tidak didukung.', 'error'); return; }
@@ -438,7 +487,7 @@
 <!-- ===== AKHIR BLOK 5.2 ===== -->
 
 <!-- ============================================================ -->
-<!-- BLOK 5.3 - JAVASCRIPT LOGIN, REGISTER, PENGAJUAN             -->
+<!-- BLOK 5.3 - LOGIN, REGISTER, PENGAJUAN & SIDEBAR TOGGLE      -->
 <!-- ============================================================ -->
     document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('loginForm').addEventListener('submit', async function(e) {
@@ -502,7 +551,7 @@
         });
 
         var menuToggle = document.getElementById('menuToggle');
-        var sidebar = document.querySelector('.sidebar');
+        var sidebar = document.querySelector('.sidebar-fb-left');
         var overlay = document.getElementById('sidebarOverlay');
         if (menuToggle && sidebar && overlay) {
             menuToggle.addEventListener('click', function(e) {
@@ -526,40 +575,52 @@
 <!-- ===== AKHIR BLOK 5.3 ===== -->
 
 <!-- ============================================================ -->
-<!-- BLOK 5.4 - JAVASCRIPT TAMPILKAN DASHBOARD & HOMEPAGE         -->
+<!-- BLOK 5.4 - TAMPILKAN DASHBOARD & RENDER FEED (TIMELINE)     -->
 <!-- ============================================================ -->
     function tampilkanDasbor(user) {
         document.getElementById('pageAuthentication').style.display = 'none';
         document.getElementById('pageDashboard').style.display = 'block';
+        document.getElementById('userNama').textContent = user.nama;
+        document.getElementById('roleBadge').textContent = user.role || 'User';
+        document.getElementById('displayJamFB').textContent = new Date().toLocaleTimeString('id-ID') + ' | ' + new Date().toLocaleDateString('id-ID');
+
+        setInterval(() => {
+            var now = new Date();
+            var jamEl = document.getElementById('displayJamFB');
+            if (jamEl) jamEl.textContent = now.toLocaleTimeString('id-ID') + ' | ' + now.toLocaleDateString('id-ID');
+        }, 1000);
 
         var sidebarHtml = `
-            <div class="sidebar-menu-title">Menu</div>
-            <div class="sidebar-menu-item active" data-page="home"><i class="fas fa-home"></i><span>Beranda</span></div>
-            <div class="sidebar-menu-item" data-page="profile"><i class="fas fa-user-circle"></i><span>Profil</span></div>
-            <div class="sidebar-menu-item" data-page="katalog"><i class="fas fa-box"></i><span>Katalog</span></div>
+            <div class="menu-item active" data-page="home"><i class="fas fa-home"></i> Beranda</div>
+            <div class="menu-item" data-page="profile"><i class="fas fa-user-circle"></i> Profil</div>
+            <div class="menu-item" data-page="katalog"><i class="fas fa-box"></i> Katalog</div>
+            <div class="menu-item" data-page="toko"><i class="fas fa-store"></i> Toko</div>
+            <div class="menu-item" data-page="ojek"><i class="fas fa-motorcycle"></i> Ojek</div>
+            <div class="menu-item" data-page="logout" onclick="document.getElementById('buttonLogout').click();"><i class="fas fa-sign-out-alt"></i> Keluar</div>
         `;
         document.getElementById('sidebarContainer').innerHTML = sidebarHtml;
 
-        var items = document.querySelectorAll('.sidebar-menu-item');
+        var items = document.querySelectorAll('.sidebar-fb-left .menu-item');
         items.forEach(function(item) {
             item.onclick = function() {
                 items.forEach(m => m.classList.remove('active'));
                 this.classList.add('active');
                 var page = this.getAttribute('data-page');
-                if (page === 'home') renderHalamanBerandaDefault(user);
+                if (page === 'home') renderFeedBeranda(user);
                 else if (page === 'profile') tampilkanToast('Fitur Profil sedang dibangun', 'info');
                 else if (page === 'katalog') tampilkanToast('Katalog sedang dibangun', 'info');
-                if (window.innerWidth <= 767) { document.querySelector('.sidebar').classList.remove('open'); document.getElementById('sidebarOverlay').classList.remove('active'); }
+                else if (page === 'toko') tampilkanToast('Fitur Toko sedang dibangun', 'info');
+                else if (page === 'ojek') tampilkanToast('Fitur Ojek sedang dibangun', 'info');
+                if (window.innerWidth <= 767) { document.querySelector('.sidebar-fb-left').classList.remove('open'); document.getElementById('sidebarOverlay').classList.remove('active'); }
             };
         });
-        renderHalamanBerandaDefault(user);
+        renderFeedBeranda(user);
     }
 
-    function renderHalamanBerandaDefault(pengguna) {
+    function renderFeedBeranda(pengguna) {
         var areaKonten = document.getElementById('mainContent');
         if (!areaKonten) return;
         if (!pengguna) pengguna = JSON.parse(localStorage.getItem('2r_user') || '{}');
-        if (!pengguna.id) { tampilkanToast('User tidak ditemukan', 'error'); return; }
 
         var semuaAkun = getDataAkun();
         var jmlToko = semuaAkun.filter(a => a.role==='toko'||a.role==='pedagang'||a.role==='codseller').length;
@@ -567,87 +628,45 @@
         var jmlCustomer = semuaAkun.filter(a => a.role==='customer').length;
 
         var html = `
-        <div class="homepage-header-card">
-            <div class="cover-photo-wrapper" onclick="document.getElementById('inputUploadSampul').click();">
-                <img id="fotoSampulPreview" src="" style="width:100%; height:100%; object-fit:cover; display:none;">
-                <div class="cover-photo-placeholder"><i class="fas fa-camera"></i><span>Klik untuk Unggah Sampul</span></div>
-                <input type="file" id="inputUploadSampul" accept="image/jpeg,image/png,image/webp" style="display:none;" onchange="prosesUnggahGambar('sampul', this)">
-                
-                <div class="header-controls">
-                    <span class="header-time" id="displayJamHeader">00:00:00 | Senin, 01 Jan 2026</span>
-                    <button class="button-logout" onclick="document.getElementById('buttonLogout').click();"><i class="fas fa-sign-out-alt"></i> Keluar</button>
+            <!-- PROFIL PENGGUNA -->
+            <div class="fb-card" style="display:flex; align-items:center; gap:15px; padding:15px;">
+                <div style="width:60px; height:60px; border-radius:50%; background:#f0f0f0; display:flex; justify-content:center; align-items:center; color:#aaa; font-size:30px; overflow:hidden; border:2px solid #fff; box-shadow:var(--shadow);">
+                    <img id="fotoProfilFeed" src="" style="width:100%; height:100%; object-fit:cover; display:none;">
+                    <i id="fotoProfilFeedPlaceholder" class="fas fa-user-circle" style="font-size:50px; color:#ccc;"></i>
                 </div>
-                <button id="menuToggle"><i class="fas fa-bars"></i></button>
-            </div>
-
-            <div class="profile-info-wrapper">
-                <div class="profile-avatar-wrapper" onclick="document.getElementById('inputUploadAvatar').click();">
-                    <img id="fotoProfilPreview" src="" style="width:100%; height:100%; object-fit:cover; display:none;">
-                    <div class="profile-avatar-placeholder"><i class="fas fa-user-circle"></i></div>
-                    <input type="file" id="inputUploadAvatar" accept="image/jpeg,image/png,image/webp" style="display:none;" onchange="prosesUnggahGambar('profil', this)">
-                </div>
-                <div class="profile-info-text">
-                    <h2>${escapeHtml(pengguna.nama||pengguna.username||'Pengguna')}</h2>
-                    <p><span class="role-badge">${escapeHtml(pengguna.role||'User')}</span></p>
+                <div>
+                    <h2 style="margin:0; font-size:20px; font-weight:700;">${escapeHtml(pengguna.nama||pengguna.username||'User')}</h2>
+                    <p style="margin:0; font-size:13px; color:#888;">${escapeHtml(pengguna.role||'User')}</p>
                 </div>
             </div>
-        </div>
 
-        <div style="padding:20px;">
-            <div class="kategori-grid" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(180px,1fr)); gap:15px; margin-bottom:25px;">
-                <div class="card" onclick="tampilkanToast('Fitur Lihat Toko', 'info')"><i class="fas fa-store" style="color:var(--primary); font-size:45px; display:block; margin-bottom:10px;"></i><h4>Toko</h4><button class="button button-primary button-small" onclick="event.stopPropagation(); tampilkanToast('Fitur Toko', 'info')">Lihat Semua</button></div>
-                <div class="card" onclick="tampilkanToast('Fitur Lihat Ojek', 'info')"><i class="fas fa-motorcycle" style="color:#2196F3; font-size:45px; display:block; margin-bottom:10px;"></i><h4>Ojek</h4><button class="button button-primary button-small" onclick="event.stopPropagation(); tampilkanToast('Fitur Ojek', 'info')">Lihat Semua</button></div>
-                <div class="card" onclick="tampilkanToast('Fitur Pedagang Pasar', 'info')"><i class="fas fa-shopping-basket" style="color:#4CAF50; font-size:45px; display:block; margin-bottom:10px;"></i><h4>Pedagang</h4><button class="button button-primary button-small" onclick="event.stopPropagation(); tampilkanToast('Fitur Pedagang', 'info')">Lihat Semua</button></div>
+            <!-- POSTINGAN STATUS -->
+            <div class="fb-card">
+                <div style="font-weight:600; margin-bottom:5px;">Apa yang sedang Anda pikirkan?</div>
+                <div style="background:#f0f2f5; border-radius:20px; padding:10px 15px; color:#888; cursor:pointer;" onclick="tampilkanToast('Fitur Buat Status belum siap', 'info')">Tulis status Anda...</div>
             </div>
 
-            <div class="widget-grid" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(150px,1fr)); gap:15px; margin-bottom:25px;">
-                <div class="widget-card" style="background:white; border-radius:12px; padding:20px; box-shadow:var(--shadow); text-align:center;"><div class="widget-icon" style="color:var(--primary); font-size:35px;"><i class="fas fa-store"></i></div><div class="widget-number" style="font-size:28px; font-weight:700;">${jmlToko}</div><div class="widget-label">Toko Terdaftar</div></div>
-                <div class="widget-card" style="background:white; border-radius:12px; padding:20px; box-shadow:var(--shadow); text-align:center;"><div class="widget-icon" style="color:#2196F3; font-size:35px;"><i class="fas fa-motorcycle"></i></div><div class="widget-number" style="font-size:28px; font-weight:700;">${jmlOjek}</div><div class="widget-label">Ojek Terdaftar</div></div>
-                <div class="widget-card" style="background:white; border-radius:12px; padding:20px; box-shadow:var(--shadow); text-align:center;"><div class="widget-icon" style="color:#4CAF50; font-size:35px;"><i class="fas fa-user"></i></div><div class="widget-number" style="font-size:28px; font-weight:700;">${jmlCustomer}</div><div class="widget-label">Customer Terdaftar</div></div>
+            <!-- STATISTIK & PRODUK UNGGULAN -->
+            <div class="fb-card">
+                <div class="fb-card-header">Statistik Terkini</div>
+                <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(100px,1fr)); gap:10px;">
+                    <div style="text-align:center; padding:10px; background:#f8f9fa; border-radius:8px;"><div style="font-size:20px; font-weight:700; color:var(--primary);">${jmlToko}</div><div style="font-size:12px; color:#888;">Toko</div></div>
+                    <div style="text-align:center; padding:10px; background:#f8f9fa; border-radius:8px;"><div style="font-size:20px; font-weight:700; color:#2196F3;">${jmlOjek}</div><div style="font-size:12px; color:#888;">Ojek</div></div>
+                    <div style="text-align:center; padding:10px; background:#f8f9fa; border-radius:8px;"><div style="font-size:20px; font-weight:700; color:#4CAF50;">${jmlCustomer}</div><div style="font-size:12px; color:#888;">Pelanggan</div></div>
+                </div>
             </div>
-        </div>
         `;
 
         areaKonten.innerHTML = html;
 
-        var sampul = localStorage.getItem('2r_cover_foto_' + pengguna.id);
         var avatar = localStorage.getItem('2r_user_avatar_' + pengguna.id);
-        if (sampul) { document.getElementById('fotoSampulPreview').src = sampul; document.getElementById('fotoSampulPreview').style.display = 'block'; document.getElementById('fotoSampulPlaceholder').style.display = 'none'; }
-        if (avatar) { document.getElementById('fotoProfilPreview').src = avatar; document.getElementById('fotoProfilPreview').style.display = 'block'; document.getElementById('fotoProfilPlaceholder').style.display = 'none'; }
-
-        function updateJam() {
-            var now = new Date();
-            var jamEl = document.getElementById('displayJamHeader');
-            if (jamEl) {
-                var jam = String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0')+':'+String(now.getSeconds()).padStart(2,'0');
-                var hari = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'][now.getDay()];
-                var bulan = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'][now.getMonth()];
-                jamEl.textContent = jam + ' | ' + hari + ', ' + String(now.getDate()).padStart(2,'0') + ' ' + bulan + ' ' + now.getFullYear();
-            }
+        if (avatar) {
+            document.getElementById('fotoProfilFeed').src = avatar;
+            document.getElementById('fotoProfilFeed').style.display = 'block';
+            document.getElementById('fotoProfilFeedPlaceholder').style.display = 'none';
         }
-        updateJam();
-        setInterval(updateJam, 1000);
     }
 <!-- ===== AKHIR BLOK 5.4 ===== -->
-
-<!-- ============================================================ -->
-<!-- BLOK 5.5 - JAVASCRIPT UNGGAH GAMBAR & PENUTUP                -->
-<!-- ============================================================ -->
-    function prosesUnggahGambar(tipe, elemen) {
-        var file = elemen.files[0];
-        if (!file) return;
-        var user = JSON.parse(localStorage.getItem('2r_user') || '{}');
-        var reader = new FileReader();
-        reader.onload = function(e) {
-            var key = (tipe === 'sampul') ? '2r_cover_foto_' + user.id : '2r_user_avatar_' + user.id;
-            localStorage.setItem(key, e.target.result);
-            tampilkanToast('Foto '+tipe+' berhasil diunggah!', 'success');
-            renderHalamanBerandaDefault(user);
-        };
-        reader.readAsDataURL(file);
-    }
-</script>
-<!-- ===== AKHIR BLOK 5.5 ===== -->
 
 <!-- ============================================================ -->
 <!-- PENUTUP HTML                                                 -->
