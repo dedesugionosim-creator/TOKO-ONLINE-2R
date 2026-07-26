@@ -1,5 +1,5 @@
 <!-- ============================================================ -->
-<!-- BAGIAN 1: HALAMAN LOGIN (HTML & CSS LOGIN)                   -->
+<!-- BLOK 1.1 - TAG HTML & META                                    -->
 <!-- ============================================================ -->
 <!DOCTYPE html>
 <html lang="id">
@@ -7,338 +7,332 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aplikasi Multi Role - Toko Online 2R</title>
+<!-- ===== AKHIR BLOK 1.1 ===== -->
+
+<!-- ============================================================ -->
+<!-- BLOK 1.2 - LINK FONTAWESOME & GOOGLE FONTS                   -->
+<!-- ============================================================ -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<!-- ===== AKHIR BLOK 1.2 ===== -->
+
+<!-- ============================================================ -->
+<!-- BLOK 1.3 - FAVICON                                            -->
+<!-- ============================================================ -->
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛒</text></svg>">
-    
-    <!-- CSS GLOBAL & LOGIN -->
-    <style>
-        :root {
-            --primary: #FF6B00;
-            --primary-dark: #e65c00;
-            --primary-light: #fff5f0;
-            --bg: #f8f9fa;
-            --text: #333333;
-            --text-muted: #888888;
-            --border: #e9ecef;
-            --shadow: 0 4px 20px rgba(0,0,0,0.08);
-            --radius: 12px;
-        }
+    <link rel="shortcut icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛒</text></svg>">
+<!-- ===== AKHIR BLOK 1.3 ===== -->
 
-        * { margin:0; padding:0; box-sizing:border-box; }
-        body {
-            font-family:'Poppins', sans-serif;
-            min-height:100vh;
-            display:flex;
-            justify-content:center;
-            align-items:center;
-            background:linear-gradient(135deg, #C05000 0%, #E67E22 100%);
-        }
-        .hidden-form { display:none !important; }
-        .grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:15px; }
-        .button-small { padding:6px 14px; font-size:12px; width:100%; border:none; border-radius:var(--radius); background:var(--primary); color:white; cursor:pointer; }
-
-        /* TOAST */
-        #toastContainer {
-            position:fixed;
-            top:20px;
-            left:50%;
-            transform:translateX(-50%);
-            z-index:99999;
-            display:flex;
-            flex-direction:column;
-            gap:10px;
-            max-width:90%;
-            width:auto;
-            align-items:center;
-        }
-        .toast {
-            padding:14px 20px;
-            border-radius:var(--radius);
-            color:white;
-            font-size:14px;
-            font-weight:500;
-            box-shadow:var(--shadow);
-            animation:slideInDown 0.4s ease;
-            display:flex;
-            align-items:center;
-            gap:12px;
-            width:100%;
-            min-width:300px;
-            justify-content:center;
-        }
-        .toast.success { background:#4CAF50; }
-        .toast.error { background:#F44336; }
-        .toast.warning { background:#FF9800; }
-        .toast.info { background:#2196F3; }
-        @keyframes slideInDown {
-            from { transform:translateY(-100px); opacity:0; }
-            to { transform:translateY(0); opacity:1; }
-        }
-
-        /* LOGIN BOX */
-        #pageAuthentication {
-            display:flex;
-            justify-content:center;
-            align-items:center;
-            width:100%;
-            min-height:100vh;
-            background:linear-gradient(135deg, #C05000 0%, #E67E22 100%);
-        }
-        .authentication-wrapper { width:100%; max-width:450px; padding:20px; }
-        .authentication-box {
-            background:white;
-            border-radius:var(--radius);
-            padding:35px;
-            box-shadow:var(--shadow);
-            border:1px solid var(--border);
-            width:100%;
-        }
-        .authentication-logo { text-align:center; margin-bottom:25px; }
-        .authentication-logo i { font-size:45px; color:var(--primary); }
-        .authentication-logo h1 { font-size:26px; font-weight:700; }
-        .authentication-logo p { color:var(--text-muted); font-size:14px; }
-        .authentication-error { display:none; background:#ffebee; color:#d32f2f; padding:12px 16px; border-radius:var(--radius); margin-bottom:15px; font-size:14px; border-left:4px solid #d32f2f; }
-        .form-group { margin-bottom:15px; }
-        .form-group label { display:block; font-weight:600; font-size:13px; color:#555; }
-        .input-group { display:flex; align-items:center; background:#f8f9fa; border-radius:var(--radius); padding:0 14px; border:2px solid transparent; transition:0.3s; }
-        .input-group:focus-within { border-color:var(--primary); background:white; box-shadow:0 0 0 4px rgba(255,107,0,0.1); }
-        .input-group i { color:#aaa; font-size:16px; width:30px; text-align:center; }
-        .input-group input, .input-group select { border:none; background:transparent; padding:13px 0; font-size:14px; width:100%; outline:none; font-family:'Poppins', sans-serif; }
-        .button-submit { width:100%; padding:14px; background:var(--primary); color:white; border:none; border-radius:var(--radius); font-size:16px; font-weight:700; cursor:pointer; transition:0.3s; }
-        .button-submit:hover { background:var(--primary-dark); transform:scale(1.02); }
-        .authentication-footer { text-align:center; margin-top:18px; font-size:14px; color:var(--text-muted); }
-        .authentication-footer a { color:var(--primary); cursor:pointer; font-weight:600; text-decoration:none; }
-        .authentication-footer a:hover { text-decoration:underline; color:var(--primary-dark); }
-    </style>
+<!-- ============================================================ -->
+<!-- BLOK 1.4 - PENUTUP HEAD & PEMBUKA BODY                       -->
+<!-- ============================================================ -->
 </head>
 <body>
+<!-- ===== AKHIR BLOK 1.4 ===== -->
 
-<!-- TOAST CONTAINER -->
-<div id="toastContainer"></div>
+<!-- ============================================================ -->
+<!-- BLOK 1.5 - WADAH NOTIFIKASI TOAST                             -->
+<!-- ============================================================ -->
+    <div id="toastContainer"></div>
+<!-- ===== AKHIR BLOK 1.5 ===== -->
 
-<!-- HALAMAN LOGIN -->
-<div id="pageAuthentication">
-    <div class="authentication-wrapper">
-        <div class="authentication-box">
+<!-- ============================================================ -->
+<!-- BLOK 2.1 - WRAPPER & KOTAK LOGIN                              -->
+<!-- ============================================================ -->
+    <div id="pageAuthentication">
+        <div class="authentication-wrapper">
+            <div class="authentication-box">
+<!-- ===== AKHIR BLOK 2.1 ===== -->
 
-            <div class="authentication-logo">
-                <i class="fas fa-store-alt"></i>
-                <h1>Toko Online <span style="color:#FF6B00;">2R</span></h1>
-                <p>Platform Belanja & Layanan Serba Ada</p>
-            </div>
+<!-- ===== BLOK 2.2 - LOGO & JUDUL APLIKASI ===== -->
+                <div class="authentication-logo">
+                    <i class="fas fa-store-alt"></i>
+                    <h1>Toko Online <span style="color:#FF6B00;">2R</span></h1>
+                    <p>Platform Belanja & Layanan Serba Ada</p>
+                </div>
+<!-- ===== AKHIR BLOK 2.2 ===== -->
 
-            <div class="authentication-error" id="authenticationError">
-                <i class="fas fa-exclamation-circle"></i> <span id="authenticationErrorText"></span>
-            </div>
+<!-- ============================================================ -->
+<!-- BLOK 2.3 - AREA PESAN ERROR                                   -->
+<!-- ============================================================ -->
+                <div class="authentication-error" id="authenticationError">
+                    <i class="fas fa-exclamation-circle"></i> 
+                    <span id="authenticationErrorText"></span>
+                </div>
+<!-- ===== AKHIR BLOK 2.3 ===== -->
 
-            <!-- LOGIN FORM -->
-            <form class="authentication-form" id="loginForm">
-                <div class="form-group">
-                    <label>Username</label>
-                    <div class="input-group"><i class="fas fa-user"></i><input type="text" id="loginUsername" placeholder="Masukkan username" required></div>
-                </div>
-                <div class="form-group">
-                    <label>Password</label>
-                    <div class="input-group"><i class="fas fa-lock"></i><input type="password" id="loginPassword" placeholder="Masukkan password" required></div>
-                </div>
-                <button type="submit" class="button-submit"><i class="fas fa-sign-in-alt"></i> Login</button>
-            </form>
-
-            <!-- REGISTER FORM -->
-            <form class="authentication-form hidden-form" id="registerForm">
-                <div class="form-group">
-                    <label>Pilih Role</label>
-                    <div class="input-group"><i class="fas fa-user-tag"></i>
-                        <select id="registerRole">
-                            <option value="customer">Customer</option>
-                            <option value="toko">Toko</option>
-                            <option value="ojek">Ojek</option>
-                            <option value="pedagang">Pedagang Pasar</option>
-                            <option value="codseller">COD Seller</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>ID Akun (Otomatis)</label>
-                    <div class="input-group"><i class="fas fa-id-card"></i><input type="text" id="registerIdPreview" class="form-input" value="Akan dibuat otomatis" disabled style="background:#f0f0f0; color:#666;"></div>
-                </div>
-                <div class="form-group">
-                    <label>Username</label>
-                    <div class="input-group"><i class="fas fa-user"></i><input type="text" id="registerUsername" placeholder="Buat username" required></div>
-                </div>
-                <div class="form-group">
-                    <label>Password</label>
-                    <div class="input-group"><i class="fas fa-lock"></i><input type="password" id="registerPassword" placeholder="Buat password" required></div>
-                </div>
-                <div class="form-group">
-                    <label>Nama Lengkap</label>
-                    <div class="input-group"><i class="fas fa-id-card"></i><input type="text" id="registerNama" placeholder="Nama lengkap Anda" required></div>
-                </div>
-
-                <div class="grid-2">
+<!-- ============================================================ -->
+<!-- BLOK 2.4 - FORM LOGIN                                         -->
+<!-- ============================================================ -->
+                <form class="authentication-form" id="loginForm">
                     <div class="form-group">
-                        <label>Alamat / Lokasi</label>
-                        <div class="input-group"><i class="fas fa-map-pin"></i><input type="text" id="registerLokasi" class="form-input" placeholder="Ketik atau klik Ambil Lokasi"></div>
+                        <label>Username</label>
+                        <div class="input-group">
+                            <i class="fas fa-user"></i>
+                            <input type="text" id="loginUsername" placeholder="Masukkan username" required>
+                        </div>
                     </div>
-                    <div class="form-group" style="display:flex; align-items:flex-end;">
-                        <button type="button" class="button-small" onclick="ambilLokasiRegister()">Ambil Lokasi Otomatis</button>
-                    </div>
-                </div>
-                <input type="hidden" id="registerLat" value="">
-                <input type="hidden" id="registerLng" value="">
-
-                <button type="submit" class="button-submit" id="btnDaftar" disabled><i class="fas fa-user-plus"></i> Daftar</button>
-                <div class="authentication-footer">Sudah punya akun? <a onclick="toggleForm('login')">Login di sini</a></div>
-            </form>
-
-            <!-- PENGAJUAN FORM -->
-            <form class="authentication-form hidden-form" id="pengajuanBukaAkunForm">
-                <div class="form-group">
-                    <label>Nama Lengkap</label>
-                    <div class="input-group"><i class="fas fa-user"></i><input type="text" id="pengajuanNama" placeholder="Nama lengkap" required></div>
-                </div>
-                <div class="form-group">
-                    <label>Email / Nomor HP</label>
-                    <div class="input-group"><i class="fas fa-envelope"></i><input type="text" id="pengajuanKontak" placeholder="Email atau HP" required></div>
-                </div>
-                <div class="form-group">
-                    <label>Role yang Diinginkan</label>
-                    <div class="input-group"><i class="fas fa-user-tag"></i>
-                        <select id="pengajuanRole">
-                            <option value="toko">Toko</option>
-                            <option value="pedagang">Pedagang Pasar</option>
-                            <option value="codseller">COD Seller</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>Alasan Pembuatan Akun</label>
-                    <div class="input-group"><i class="fas fa-comment"></i><input type="text" id="pengajuanAlasan" placeholder="Misal: Ingin berjualan online" required></div>
-                </div>
-
-                <div class="grid-2">
                     <div class="form-group">
-                        <label>Alamat / Lokasi</label>
-                        <div class="input-group"><i class="fas fa-map-pin"></i><input type="text" id="pengajuanLokasi" class="form-input" placeholder="Ketik alamat"></div>
+                        <label>Password</label>
+                        <div class="input-group">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" id="loginPassword" placeholder="Masukkan password" required>
+                        </div>
                     </div>
-                    <div class="form-group" style="display:flex; align-items:flex-end;">
-                        <button type="button" class="button-small" onclick="ambilLokasiPengajuan()">Ambil Lokasi Otomatis</button>
+                    <button type="submit" class="button-submit">
+                        <i class="fas fa-sign-in-alt"></i> Login
+                    </button>
+                </form>
+<!-- ===== AKHIR BLOK 2.4 ===== -->
+
+<!-- ============================================================ -->
+<!-- BLOK 2.5 - FORM REGISTER                                      -->
+<!-- ============================================================ -->
+                <form class="authentication-form hidden-form" id="registerForm">
+                    <div class="form-group">
+                        <label>Pilih Role</label>
+                        <div class="input-group">
+                            <i class="fas fa-user-tag"></i>
+                            <select id="registerRole">
+                                <option value="customer">Customer</option>
+                                <option value="toko">Toko</option>
+                                <option value="ojek">Ojek</option>
+                                <option value="pedagang">Pedagang Pasar</option>
+                                <option value="codseller">COD Seller</option>
+                            </select>
+                        </div>
                     </div>
+                    <div class="form-group">
+                        <label>ID Akun (Otomatis)</label>
+                        <div class="input-group">
+                            <i class="fas fa-id-card"></i>
+                            <input type="text" id="registerIdPreview" class="form-input" value="Akan dibuat otomatis" disabled style="background:#f0f0f0; color:#666;">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Username</label>
+                        <div class="input-group">
+                            <i class="fas fa-user"></i>
+                            <input type="text" id="registerUsername" placeholder="Buat username" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <div class="input-group">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" id="registerPassword" placeholder="Buat password" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Nama Lengkap</label>
+                        <div class="input-group">
+                            <i class="fas fa-id-card"></i>
+                            <input type="text" id="registerNama" placeholder="Nama lengkap Anda" required>
+                        </div>
+                    </div>
+
+                    <div class="grid-2">
+                        <div class="form-group">
+                            <label>Alamat / Lokasi</label>
+                            <div class="input-group">
+                                <i class="fas fa-map-pin"></i>
+                                <input type="text" id="registerLokasi" class="form-input" placeholder="Ketik atau klik Ambil Lokasi">
+                            </div>
+                        </div>
+                        <div class="form-group" style="display:flex; align-items:flex-end;">
+                            <button type="button" class="button-small" onclick="ambilLokasiRegister()">Ambil Lokasi Otomatis</button>
+                        </div>
+                    </div>
+                    <input type="hidden" id="registerLat" value="">
+                    <input type="hidden" id="registerLng" value="">
+
+                    <button type="submit" class="button-submit" id="btnDaftar" disabled>
+                        <i class="fas fa-user-plus"></i> Daftar
+                    </button>
+                    <div class="authentication-footer">
+                        Sudah punya akun? <a onclick="toggleForm('login')">Login di sini</a>
+                    </div>
+                </form>
+<!-- ===== AKHIR BLOK 2.5 ===== -->
+
+<!-- ============================================================ -->
+<!-- BLOK 2.6 - FORM PENGAJUAN BUKA AKUN                          -->
+<!-- ============================================================ -->
+                <form class="authentication-form hidden-form" id="pengajuanBukaAkunForm">
+                    <div class="form-group">
+                        <label>Nama Lengkap</label>
+                        <div class="input-group"><i class="fas fa-user"></i><input type="text" id="pengajuanNama" placeholder="Nama lengkap" required></div>
+                    </div>
+                    <div class="form-group">
+                        <label>Email / Nomor HP</label>
+                        <div class="input-group"><i class="fas fa-envelope"></i><input type="text" id="pengajuanKontak" placeholder="Email atau HP" required></div>
+                    </div>
+                    <div class="form-group">
+                        <label>Role yang Diinginkan</label>
+                        <div class="input-group"><i class="fas fa-user-tag"></i>
+                            <select id="pengajuanRole">
+                                <option value="toko">Toko</option>
+                                <option value="pedagang">Pedagang Pasar</option>
+                                <option value="codseller">COD Seller</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Alasan Pembuatan Akun</label>
+                        <div class="input-group"><i class="fas fa-comment"></i><input type="text" id="pengajuanAlasan" placeholder="Misal: Ingin berjualan online" required></div>
+                    </div>
+
+                    <div class="grid-2">
+                        <div class="form-group">
+                            <label>Alamat / Lokasi</label>
+                            <div class="input-group">
+                                <i class="fas fa-map-pin"></i>
+                                <input type="text" id="pengajuanLokasi" class="form-input" placeholder="Ketik alamat">
+                            </div>
+                        </div>
+                        <div class="form-group" style="display:flex; align-items:flex-end;">
+                            <button type="button" class="button-small" onclick="ambilLokasiPengajuan()">Ambil Lokasi Otomatis</button>
+                        </div>
+                    </div>
+                    <input type="hidden" id="pengajuanLat" value="">
+                    <input type="hidden" id="pengajuanLng" value="">
+
+                    <button type="submit" class="button-submit" id="btnAjukan" disabled>
+                        <i class="fas fa-paper-plane"></i> Ajukan ke Admin
+                    </button>
+                    <div class="authentication-footer">Sudah punya akun? <a onclick="toggleForm('login')">Login di sini</a></div>
+                </form>
+<!-- ===== AKHIR BLOK 2.6 ===== -->
+
+<!-- ============================================================ -->
+<!-- BLOK 2.7 - FOOTER & NAVIGASI FORM (LUPA PASSWORD)            -->
+<!-- ============================================================ -->
+                <div class="authentication-footer">
+                    <a onclick="lupaPassword()" style="cursor:pointer; color:#d32f2f; font-weight:600;">Lupa Password?</a>
+                    <br><br>
+                    Belum punya akun? <a onclick="toggleForm('register')">Daftar di sini</a>
+                    <br>
+                    <a onclick="toggleForm('pengajuan')">Ajukan buka akun</a>
                 </div>
-                <input type="hidden" id="pengajuanLat" value="">
-                <input type="hidden" id="pengajuanLng" value="">
+<!-- ===== AKHIR BLOK 2.7 ===== -->
 
-                <button type="submit" class="button-submit" id="btnAjukan" disabled><i class="fas fa-paper-plane"></i> Ajukan ke Admin</button>
-                <div class="authentication-footer">Sudah punya akun? <a onclick="toggleForm('login')">Login di sini</a></div>
-            </form>
-
-            <!-- FOOTER NAVIGASI -->
-            <div class="authentication-footer">
-                <a onclick="lupaPassword()" style="cursor:pointer; color:#d32f2f; font-weight:600;">Lupa Password?</a>
-                <br><br>
-                Belum punya akun? <a onclick="toggleForm('register')">Daftar di sini</a><br>
-                <a onclick="toggleForm('pengajuan')">Ajukan buka akun</a>
             </div>
-
         </div>
     </div>
-</div>
-<!-- ===== AKHIR BAGIAN 1 ===== -->
-<!-- ============================================================ -->
-<!-- BAGIAN 2: DASHBOARD & NAVIGASI (HTML & CSS DASHBOARD)        -->
-<!-- ============================================================ -->
+<!-- ===== AKHIR BLOK 2.1 (PENUTUP WRAPPER LOGIN) ===== -->
 
-<!-- DASHBOARD WRAPPER -->
+<!-- ============================================================ -->
+<!-- BLOK 3.1 - DASHBOARD & SIDEBAR (TANPA NAVBAR ATAS)           -->
+<!-- ============================================================ -->
 <div id="pageDashboard" class="page-dashboard" style="display:none;">
-
-    <!-- NAVBAR -->
-    <nav class="navbar">
-        <div class="navbar-brand">
-            <button id="menuToggle"><i class="fas fa-bars"></i></button>
-            <i class="fas fa-store-alt"></i> Toko Online 2R
-        </div>
-        <div class="navbar-user">
-            <div class="navbar-time">
-                <span id="displayJam" style="font-weight:600; font-size:14px;">00:00:00</span>
-                <span id="displayTanggal" style="font-size:11px;">Senin, 01 Jan 2026</span>
-            </div>
-            <img id="userAvatar" src="" style="display:none; width:32px; height:32px; border-radius:50%; object-fit:cover; border:2px solid var(--primary);">
-            <span id="userAvatarPlaceholder" style="width:32px; height:32px; border-radius:50%; background:#eee; text-align:center; line-height:32px; color:#aaa;"><i class="fas fa-user"></i></span>
-            <span class="role-badge" id="roleBadge">Role</span>
-            <span id="userNama" style="font-weight:600;">User</span>
-            <button class="button-logout" id="buttonLogout"><i class="fas fa-sign-out-alt"></i> Keluar</button>
-        </div>
-    </nav>
-
-    <!-- SIDEBAR -->
     <aside class="sidebar" id="sidebarContainer"></aside>
     <div id="sidebarOverlay" class="sidebar-overlay"></div>
-
-    <!-- MAIN CONTENT -->
     <main class="content" id="mainContent"></main>
-
 </div>
-<!-- ===== AKHIR BAGIAN 2 ===== -->
-<!-- ============================================================ -->
-<!-- BAGIAN 3: JAVASCRIPT & HALAMAN DEFAULT                       -->
-<!-- ============================================================ -->
+<!-- ===== AKHIR BLOK 3.1 ===== -->
 
+<!-- ============================================================ -->
+<!-- BLOK 4.1 - CSS GLOBAL & LOGIN                                 -->
+<!-- ============================================================ -->
 <style>
-    /* CSS DASHBOARD & HOMEPAGE */
+    :root {
+        --primary: #FF6B00;
+        --primary-dark: #e65c00;
+        --primary-light: #fff5f0;
+        --bg: #f8f9fa;
+        --text: #333333;
+        --text-muted: #888888;
+        --border: #e9ecef;
+        --shadow: 0 4px 20px rgba(0,0,0,0.08);
+        --radius: 12px;
+    }
+
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family:'Poppins', sans-serif; background:var(--bg); min-height:100vh; color:var(--text); }
+    .hidden-form { display:none !important; }
+    .grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:15px; }
+    .button-small { padding:6px 14px; font-size:12px; width:100%; border:none; border-radius:var(--radius); background:var(--primary); color:white; cursor:pointer; }
+
+    #toastContainer { position:fixed; top:20px; left:50%; transform:translateX(-50%); z-index:99999; display:flex; flex-direction:column; gap:10px; max-width:90%; width:auto; align-items:center; }
+    .toast { padding:14px 20px; border-radius:var(--radius); color:white; font-size:14px; font-weight:500; box-shadow:var(--shadow); animation:slideInDown 0.4s ease; display:flex; align-items:center; gap:12px; width:100%; min-width:300px; justify-content:center; }
+    .toast.success { background:#4CAF50; }
+    .toast.error { background:#F44336; }
+    .toast.warning { background:#FF9800; }
+    .toast.info { background:#2196F3; }
+    @keyframes slideInDown { from { transform:translateY(-100px); opacity:0; } to { transform:translateY(0); opacity:1; } }
+
+    #pageAuthentication { display:flex; justify-content:center; align-items:center; width:100%; min-height:100vh; background:linear-gradient(135deg, #C05000 0%, #E67E22 100%); }
+    .authentication-wrapper { width:100%; max-width:450px; padding:20px; }
+    .authentication-box { background:white; border-radius:var(--radius); padding:35px; box-shadow:var(--shadow); border:1px solid var(--border); width:100%; }
+    .authentication-logo { text-align:center; margin-bottom:25px; }
+    .authentication-logo i { font-size:45px; color:var(--primary); }
+    .authentication-logo h1 { font-size:26px; font-weight:700; }
+    .authentication-logo p { color:var(--text-muted); font-size:14px; }
+    .authentication-error { display:none; background:#ffebee; color:#d32f2f; padding:12px 16px; border-radius:var(--radius); margin-bottom:15px; border-left:4px solid #d32f2f; }
+    .form-group { margin-bottom:15px; }
+    .form-group label { display:block; font-weight:600; font-size:13px; color:#555; }
+    .input-group { display:flex; align-items:center; background:#f8f9fa; border-radius:var(--radius); padding:0 14px; border:2px solid transparent; }
+    .input-group:focus-within { border-color:var(--primary); background:white; box-shadow:0 0 0 4px rgba(255,107,0,0.1); }
+    .input-group i { color:#aaa; font-size:16px; width:30px; text-align:center; }
+    .input-group input, .input-group select { border:none; background:transparent; padding:13px 0; font-size:14px; width:100%; outline:none; font-family:'Poppins', sans-serif; }
+    .button-submit { width:100%; padding:14px; background:var(--primary); color:white; border:none; border-radius:var(--radius); font-size:16px; font-weight:700; cursor:pointer; }
+    .button-submit:hover { background:var(--primary-dark); transform:scale(1.02); }
+    .authentication-footer { text-align:center; margin-top:18px; font-size:14px; color:var(--text-muted); }
+    .authentication-footer a { color:var(--primary); cursor:pointer; font-weight:600; text-decoration:none; }
+<!-- ===== AKHIR BLOK 4.1 ===== -->
+
+<!-- ============================================================ -->
+<!-- BLOK 4.2 - CSS SIDEBAR & HOMEPAGE COVER                       -->
+<!-- ============================================================ -->
     .page-dashboard { display:none; }
-    .navbar { background:white; padding:12px 30px; display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid var(--primary); position:fixed; top:0; left:0; right:0; z-index:1000; height:64px; box-shadow:0 2px 10px rgba(0,0,0,0.05); }
-    .navbar-brand { font-size:20px; font-weight:700; color:var(--primary); display:flex; align-items:center; gap:10px; }
-    .navbar-user { display:flex; align-items:center; gap:15px; }
-    .navbar-user .role-badge { background:var(--primary-light); color:var(--primary); padding:4px 12px; border-radius:var(--radius); font-size:12px; font-weight:600; }
-    .button-logout { background:#f44336; color:white; border:none; padding:8px 16px; border-radius:var(--radius); cursor:pointer; font-weight:600; font-size:13px; transition:background 0.3s; }
-    .button-logout:hover { background:#d32f2f; }
-    .sidebar { position:fixed; top:64px; left:0; bottom:0; width:250px; background:white; border-right:1px solid var(--border); padding-top:15px; overflow-y:auto; z-index:999; transition:left 0.3s ease-in-out; }
+    .sidebar { position:fixed; top:0; left:0; bottom:0; width:250px; background:white; border-right:1px solid var(--border); padding-top:20px; overflow-y:auto; z-index:999; transition:left 0.3s ease-in-out; }
     .sidebar-menu-title { font-size:11px; text-transform:uppercase; color:#aaa; padding:15px 25px 8px; font-weight:700; letter-spacing:1.5px; }
     .sidebar-menu-item { padding:12px 25px; cursor:pointer; color:#555; font-weight:500; display:flex; align-items:center; gap:14px; font-size:14px; border-left:4px solid transparent; transition:all 0.2s; }
     .sidebar-menu-item:hover { background:#fafafa; color:var(--primary); transform:translateX(4px); }
     .sidebar-menu-item.active { background:var(--primary-light); color:var(--primary); border-left-color:var(--primary); font-weight:600; }
-    .content { margin-left:250px; margin-top:64px; padding:25px; min-height:calc(100vh - 64px); background:var(--bg); transition:margin-left 0.3s ease-in-out; }
-    .page-header { margin-bottom:20px; }
-    .page-header h2 { font-size:22px; font-weight:700; }
-    .page-header p { font-size:14px; color:var(--text-muted); }
-    .card { background:white; border-radius:var(--radius); box-shadow:var(--shadow); margin-bottom:20px; padding:20px; border:1px solid var(--border); }
-    .card-header { font-weight:600; font-size:15px; border-bottom:1px solid var(--border); padding-bottom:12px; margin-bottom:15px; display:flex; justify-content:space-between; align-items:center; }
-    .widget-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(200px,1fr)); gap:15px; margin-bottom:25px; }
-    .widget-card { background:white; border-radius:var(--radius); padding:20px; box-shadow:var(--shadow); border:1px solid var(--border); text-align:center; transition:transform 0.2s; }
-    .widget-card:hover { transform:translateY(-4px); }
-    .widget-card .widget-icon { font-size:35px; margin-bottom:10px; }
-    .widget-card .widget-number { font-size:28px; font-weight:700; color:#333; }
-    .widget-card .widget-label { font-size:13px; color:#888; }
-    .grid-2 { display:grid; grid-template-columns:repeat(auto-fit, minmax(220px,1fr)); gap:15px; }
-    .table-container { overflow-x:auto; }
-    .table { width:100%; border-collapse:collapse; font-size:13px; }
-    .table thead { background:#f8f9fa; }
-    .table thead th { padding:12px 14px; font-weight:600; color:#555; border-bottom:2px solid #eee; }
-    .table tbody td { padding:10px 14px; border-bottom:1px solid #f5f5f5; }
-    .badge { display:inline-block; padding:4px 12px; border-radius:12px; font-size:11px; font-weight:600; }
-    .badge-success { background:#e8f5e9; color:#2e7d32; }
-    .badge-warning { background:#fff3e0; color:#e65100; }
-    .badge-danger { background:#ffebee; color:#c62828; }
-    #menuToggle { display:none; background:none; border:none; font-size:22px; cursor:pointer; color:var(--primary); padding:0; transition:transform 0.3s; }
+    #menuToggle { display:none; background:none; border:none; font-size:24px; cursor:pointer; color:white; padding:0; position:absolute; top:15px; left:15px; z-index:20; text-shadow:0 2px 4px rgba(0,0,0,0.5); }
     .sidebar-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:998; transition:opacity 0.3s; }
     .sidebar-overlay.active { display:block; }
 
+    .content { margin-left:0; margin-top:0; padding:0; min-height:100vh; background:var(--bg); }
+
+    .homepage-header-card { position:relative; width:100%; padding:0; margin:0; background:white; overflow:hidden; }
+    .cover-photo-wrapper { position:relative; width:100%; height:280px; background:#e9ecef; overflow:hidden; cursor:pointer; }
+    .cover-photo-wrapper img { width:100%; height:100%; object-fit:cover; }
+    .cover-photo-placeholder { position:absolute; top:0; left:0; width:100%; height:100%; display:flex; flex-direction:column; justify-content:center; align-items:center; color:#999; background:#f8f9fa; font-size:16px; }
+    .profile-info-wrapper { position:relative; padding:20px 25px 25px 25px; display:flex; flex-direction:column; align-items:center; background:white; }
+    .profile-avatar-wrapper { margin-top:-70px; width:130px; height:130px; border-radius:50%; border:5px solid white; box-shadow:var(--shadow); background:#f0f0f0; overflow:hidden; flex-shrink:0; cursor:pointer; position:relative; z-index:10; transition:transform 0.2s; }
+    .profile-avatar-wrapper:hover { transform:scale(1.05); }
+    .profile-avatar-wrapper img { width:100%; height:100%; object-fit:cover; }
+    .profile-avatar-placeholder { width:100%; height:100%; display:flex; justify-content:center; align-items:center; color:#aaa; background:#f8f9fa; font-size:60px; }
+    .profile-info-text { text-align:center; margin-top:10px; }
+    .profile-info-text h2 { font-size:24px; font-weight:700; color:var(--text); }
+    .profile-info-text p { font-size:14px; color:var(--text-muted); }
+    .header-controls { position:absolute; top:15px; right:15px; z-index:20; display:flex; gap:10px; }
+    .header-controls .button-logout { background:#f44336; color:white; border:none; padding:6px 14px; border-radius:var(--radius); cursor:pointer; font-size:13px; font-weight:600; }
+    .header-controls .button-logout:hover { background:#d32f2f; }
+    .header-time { position:absolute; top:15px; right:80px; z-index:20; color:white; font-size:12px; text-shadow:0 1px 3px rgba(0,0,0,0.5); }
+<!-- ===== AKHIR BLOK 4.2 ===== -->
+
+<!-- ============================================================ -->
+<!-- BLOK 4.3 - CSS RESPONSIVE HP                                  -->
+<!-- ============================================================ -->
     @media (max-width:767px) {
-        .navbar { padding:10px 15px; }
-        .navbar-brand { font-size:16px; }
-        .button-logout { padding:6px 12px; font-size:12px; }
         #menuToggle { display:block !important; }
-        .sidebar { width:80%; max-width:300px; top:64px; left:-100%; transition:left 0.3s ease-in-out; }
+        .sidebar { width:80%; max-width:300px; left:-100%; transition:left 0.3s ease-in-out; }
         .sidebar.open { left:0; }
-        .content { margin-left:0; padding:15px; margin-top:64px; }
-        .widget-grid { grid-template-columns:repeat(auto-fit, minmax(140px,1fr)); gap:10px; }
+        .cover-photo-wrapper { height:180px; }
+        .profile-avatar-wrapper { width:100px; height:100px; margin-top:-55px; }
+        .header-time { right:70px; }
         .authentication-box { max-height:70vh; overflow-y:auto; }
     }
 </style>
+<!-- ===== AKHIR BLOK 4.3 ===== -->
 
+<!-- ============================================================ -->
+<!-- BLOK 5.1 - JAVASCRIPT UTILITY & AUTH                         -->
+<!-- ============================================================ -->
 <script>
-    // --- UTILITY ---
     function getDataAkun() {
         var dataAkun = localStorage.getItem('2r_akun');
         return dataAkun ? JSON.parse(dataAkun) : [];
@@ -376,25 +370,12 @@
         else if (tipe === 'pengajuan') document.getElementById('pengajuanBukaAkunForm').classList.remove('hidden-form');
         else document.getElementById('loginForm').classList.remove('hidden-form');
     }
-    function loadAppConfig() {
-        var config = JSON.parse(localStorage.getItem('2r_aplikasi_setting') || '{"nama":"Toko Online 2R","deskripsi":"Platform Belanja & Layanan Serba Ada","logo":""}');
-        var namaEl = document.getElementById('appNamaDisplay');
-        if (namaEl) namaEl.innerHTML = config.nama + ' <span style="color:#FF6B00;">2R</span>';
-        var deskEl = document.getElementById('appDeskripsiDisplay');
-        if (deskEl) deskEl.textContent = config.deskripsi;
-        var iconEl = document.getElementById('appLogoIcon');
-        var imgEl = document.getElementById('appLogoImage');
-        if (config.logo) { if (iconEl) iconEl.style.display = 'none'; if (imgEl) { imgEl.src = config.logo; imgEl.style.display = 'block'; } }
-        else { if (iconEl) iconEl.style.display = 'block'; if (imgEl) imgEl.style.display = 'none'; }
-    }
-    function escapeHtml(text) {
-        if (!text) return '';
-        var div = document.createElement('div');
-        div.textContent = text;
-        return div.innerHTML;
-    }
+    function escapeHtml(text) { if (!text) return ''; var div = document.createElement('div'); div.textContent = text; return div.innerHTML; }
+<!-- ===== AKHIR BLOK 5.1 ===== -->
 
-    // --- AMBIL LOKASI ---
+<!-- ============================================================ -->
+<!-- BLOK 5.2 - JAVASCRIPT AMBIL LOKASI & LUPA PASSWORD           -->
+<!-- ============================================================ -->
     function ambilLokasiRegister() {
         if (!navigator.geolocation) { tampilkanToast('Geolokasi tidak didukung.', 'error'); return; }
         tampilkanToast('Mengambil lokasi...', 'info');
@@ -437,8 +418,6 @@
                 });
         }, err => tampilkanToast('Gagal mengambil lokasi: '+err.message, 'error'));
     }
-
-    // --- LUPA PASSWORD ---
     async function lupaPassword() {
         var username = document.getElementById('loginUsername').value.trim();
         if (!username) { tampilkanToast('Masukkan username dulu!', 'warning'); return; }
@@ -451,12 +430,12 @@
         simpanDataAkun(dataAkun);
         tampilkanToast('Password baru Anda: ' + newPassword, 'success');
     }
+<!-- ===== AKHIR BLOK 5.2 ===== -->
 
-    // --- EVENT LISTENER LOGIN, REGISTER, PENGAJUAN ---
+<!-- ============================================================ -->
+<!-- BLOK 5.3 - JAVASCRIPT LOGIN, REGISTER, PENGAJUAN             -->
+<!-- ============================================================ -->
     document.addEventListener('DOMContentLoaded', function() {
-        loadAppConfig();
-
-        // Login
         document.getElementById('loginForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             var username = document.getElementById('loginUsername').value.trim();
@@ -472,7 +451,6 @@
             tampilkanDasbor(user);
         });
 
-        // Register
         document.getElementById('registerForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             var role = document.getElementById('registerRole').value;
@@ -495,7 +473,6 @@
             toggleForm('login');
         });
 
-        // Pengajuan
         document.getElementById('pengajuanBukaAkunForm').addEventListener('submit', function(e) {
             e.preventDefault();
             var nama = document.getElementById('pengajuanNama').value.trim();
@@ -515,16 +492,10 @@
             toggleForm('login');
         });
 
-        // Logout
         document.getElementById('buttonLogout').addEventListener('click', function() {
-            if (confirm('Yakin keluar?')) {
-                localStorage.removeItem('2r_user');
-                localStorage.removeItem('2r_user_role');
-                location.reload();
-            }
+            if (confirm('Yakin keluar?')) { localStorage.removeItem('2r_user'); localStorage.removeItem('2r_user_role'); location.reload(); }
         });
 
-        // Sidebar toggle (buka/tutup)
         var menuToggle = document.getElementById('menuToggle');
         var sidebar = document.querySelector('.sidebar');
         var overlay = document.getElementById('sidebarOverlay');
@@ -534,21 +505,28 @@
                 if (sidebar.classList.contains('open')) { sidebar.classList.remove('open'); overlay.classList.remove('active'); }
                 else { sidebar.classList.add('open'); overlay.classList.add('active'); }
             });
-            overlay.addEventListener('click', function() {
-                sidebar.classList.remove('open');
-                overlay.classList.remove('active');
-            });
+            overlay.addEventListener('click', function() { sidebar.classList.remove('open'); overlay.classList.remove('active'); });
+        }
+
+        var dataAkun = getDataAkun();
+        if (!dataAkun.find(a => a.role === 'superadmin')) {
+            (async function() {
+                var hash = await hashPassword('admin123');
+                dataAkun.push({ id:'SA-001', role:'superadmin', username:'admin', password:hash, nama:'SuperAdmin', email:'admin@2r.com', nomorHp:'081234567890', alamat:'Kantor Pusat', namaBank:'BCA', nomorRekening:'1234567890', pemilikRekening:'SuperAdmin', status:'AKTIF', waktuRegistrasi: new Date().toISOString() });
+                simpanDataAkun(dataAkun);
+                console.log('SuperAdmin: admin / admin123');
+            })();
         }
     });
+<!-- ===== AKHIR BLOK 5.3 ===== -->
 
-    // --- TAMPILKAN DASHBOARD ---
+<!-- ============================================================ -->
+<!-- BLOK 5.4 - JAVASCRIPT TAMPILKAN DASHBOARD & HOMEPAGE         -->
+<!-- ============================================================ -->
     function tampilkanDasbor(user) {
         document.getElementById('pageAuthentication').style.display = 'none';
         document.getElementById('pageDashboard').style.display = 'block';
-        document.getElementById('userNama').textContent = user.nama;
-        document.getElementById('roleBadge').textContent = user.role || 'User';
 
-        // Sidebar sederhana (untuk demo homepage)
         var sidebarHtml = `
             <div class="sidebar-menu-title">Menu</div>
             <div class="sidebar-menu-item active" data-page="home"><i class="fas fa-home"></i><span>Beranda</span></div>
@@ -556,32 +534,28 @@
             <div class="sidebar-menu-item" data-page="katalog"><i class="fas fa-box"></i><span>Katalog</span></div>
         `;
         document.getElementById('sidebarContainer').innerHTML = sidebarHtml;
-        // Setup navigasi sidebar
+
         var items = document.querySelectorAll('.sidebar-menu-item');
         items.forEach(function(item) {
             item.onclick = function() {
                 items.forEach(m => m.classList.remove('active'));
                 this.classList.add('active');
                 var page = this.getAttribute('data-page');
-                if (page === 'home') renderHalamanBerandaDefault();
+                if (page === 'home') renderHalamanBerandaDefault(user);
                 else if (page === 'profile') tampilkanToast('Fitur Profil sedang dibangun', 'info');
                 else if (page === 'katalog') tampilkanToast('Katalog sedang dibangun', 'info');
                 if (window.innerWidth <= 767) { document.querySelector('.sidebar').classList.remove('open'); document.getElementById('sidebarOverlay').classList.remove('active'); }
             };
         });
-
-        renderHalamanBerandaDefault();
+        renderHalamanBerandaDefault(user);
     }
 
-    // --- HALAMAN DEFAULT (HOMEPAGE) ---
-    function renderHalamanBerandaDefault() {
+    function renderHalamanBerandaDefault(pengguna) {
         var areaKonten = document.getElementById('mainContent');
         if (!areaKonten) return;
-        var pengguna = JSON.parse(localStorage.getItem('2r_user') || '{}');
+        if (!pengguna) pengguna = JSON.parse(localStorage.getItem('2r_user') || '{}');
         if (!pengguna.id) { tampilkanToast('User tidak ditemukan', 'error'); return; }
-        var konfigurasi = JSON.parse(localStorage.getItem('2r_aplikasi_setting') || '{"nama":"Toko Online 2R","deskripsi":"Platform Belanja & Layanan Serba Ada","logo":""}');
 
-        // Hitung statistik
         var semuaAkun = getDataAkun();
         var jmlToko = semuaAkun.filter(a => a.role==='toko'||a.role==='pedagang'||a.role==='codseller').length;
         var jmlOjek = semuaAkun.filter(a => a.role==='ojek').length;
@@ -593,7 +567,14 @@
                 <img id="fotoSampulPreview" src="" style="width:100%; height:100%; object-fit:cover; display:none;">
                 <div class="cover-photo-placeholder"><i class="fas fa-camera"></i><span>Klik untuk Unggah Sampul</span></div>
                 <input type="file" id="inputUploadSampul" accept="image/jpeg,image/png,image/webp" style="display:none;" onchange="prosesUnggahGambar('sampul', this)">
+                
+                <div class="header-controls">
+                    <span class="header-time" id="displayJamHeader">00:00:00 | Senin, 01 Jan 2026</span>
+                    <button class="button-logout" onclick="document.getElementById('buttonLogout').click();"><i class="fas fa-sign-out-alt"></i> Keluar</button>
+                </div>
+                <button id="menuToggle"><i class="fas fa-bars"></i></button>
             </div>
+
             <div class="profile-info-wrapper">
                 <div class="profile-avatar-wrapper" onclick="document.getElementById('inputUploadAvatar').click();">
                     <img id="fotoProfilPreview" src="" style="width:100%; height:100%; object-fit:cover; display:none;">
@@ -602,86 +583,51 @@
                 </div>
                 <div class="profile-info-text">
                     <h2>${escapeHtml(pengguna.nama||pengguna.username||'Pengguna')}</h2>
-                    <p><span class="role-badge">${escapeHtml(pengguna.role||'User')}</span> <span><i class="fas fa-clock"></i> <span id="displayJamHome">00:00:00</span> <span id="displayTanggalHome">Senin, 01 Jan 2026</span></span></p>
-                </div>
-                <div class="app-logo-wrapper-home">
-                    <i class="fas fa-store-alt" id="appLogoIconHome" style="font-size:35px; color:var(--primary);"></i>
-                    <img id="appLogoImageHome" src="" style="display:none; max-height:45px; object-fit:contain;">
-                    <div class="app-logo-text"><span>${escapeHtml(konfigurasi.nama)}</span><span>${escapeHtml(konfigurasi.deskripsi)}</span></div>
+                    <p><span class="role-badge">${escapeHtml(pengguna.role||'User')}</span></p>
                 </div>
             </div>
         </div>
 
-        <div class="kategori-grid">
-            <div class="card" onclick="navigasiKeHalaman('lihatTokoTerdekat')">
-                <i class="icon-kategori fas fa-store" style="color:var(--primary);"></i><h4>Toko</h4>
-                <button class="button button-primary button-small" onclick="event.stopPropagation(); navigasiKeHalaman('lihatTokoTerdekat')">Lihat Semua</button>
+        <div style="padding:20px;">
+            <div class="kategori-grid" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(180px,1fr)); gap:15px; margin-bottom:25px;">
+                <div class="card" onclick="tampilkanToast('Fitur Lihat Toko', 'info')"><i class="fas fa-store" style="color:var(--primary); font-size:45px; display:block; margin-bottom:10px;"></i><h4>Toko</h4><button class="button button-primary button-small" onclick="event.stopPropagation(); tampilkanToast('Fitur Toko', 'info')">Lihat Semua</button></div>
+                <div class="card" onclick="tampilkanToast('Fitur Lihat Ojek', 'info')"><i class="fas fa-motorcycle" style="color:#2196F3; font-size:45px; display:block; margin-bottom:10px;"></i><h4>Ojek</h4><button class="button button-primary button-small" onclick="event.stopPropagation(); tampilkanToast('Fitur Ojek', 'info')">Lihat Semua</button></div>
+                <div class="card" onclick="tampilkanToast('Fitur Pedagang Pasar', 'info')"><i class="fas fa-shopping-basket" style="color:#4CAF50; font-size:45px; display:block; margin-bottom:10px;"></i><h4>Pedagang</h4><button class="button button-primary button-small" onclick="event.stopPropagation(); tampilkanToast('Fitur Pedagang', 'info')">Lihat Semua</button></div>
             </div>
-            <div class="card" onclick="navigasiKeHalaman('lihatOjekTerdekat')">
-                <i class="icon-kategori fas fa-motorcycle" style="color:#2196F3;"></i><h4>Ojek</h4>
-                <button class="button button-primary button-small" onclick="event.stopPropagation(); navigasiKeHalaman('lihatOjekTerdekat')">Lihat Semua</button>
-            </div>
-            <div class="card" onclick="navigasiKeHalaman('lihatPedagangPasar')">
-                <i class="icon-kategori fas fa-shopping-basket" style="color:#4CAF50;"></i><h4>Pedagang Pasar</h4>
-                <p>Pasar Induk, Jl. Merdeka</p>
-                <button class="button button-primary button-small" onclick="event.stopPropagation(); navigasiKeHalaman('lihatPedagangPasar')">Lihat Semua</button>
-            </div>
-            <div class="card" onclick="navigasiKeHalaman('lihatPedagangMakanan')">
-                <i class="icon-kategori fas fa-utensils" style="color:#FF9800;"></i><h4>Pedagang Makanan</h4>
-                <button class="button button-primary button-small" onclick="event.stopPropagation(); navigasiKeHalaman('lihatPedagangMakanan')">Lihat Pedagang</button>
-            </div>
-            <div class="card" onclick="navigasiKeHalaman('lihatPedagangMinuman')">
-                <i class="icon-kategori fas fa-glass-water" style="color:#00BCD4;"></i><h4>Pedagang Minuman</h4>
-                <button class="button button-primary button-small" onclick="event.stopPropagation(); navigasiKeHalaman('lihatPedagangMinuman')">Lihat Pedagang</button>
+
+            <div class="widget-grid" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(150px,1fr)); gap:15px; margin-bottom:25px;">
+                <div class="widget-card" style="background:white; border-radius:12px; padding:20px; box-shadow:var(--shadow); text-align:center;"><div class="widget-icon" style="color:var(--primary); font-size:35px;"><i class="fas fa-store"></i></div><div class="widget-number" style="font-size:28px; font-weight:700;">${jmlToko}</div><div class="widget-label">Toko Terdaftar</div></div>
+                <div class="widget-card" style="background:white; border-radius:12px; padding:20px; box-shadow:var(--shadow); text-align:center;"><div class="widget-icon" style="color:#2196F3; font-size:35px;"><i class="fas fa-motorcycle"></i></div><div class="widget-number" style="font-size:28px; font-weight:700;">${jmlOjek}</div><div class="widget-label">Ojek Terdaftar</div></div>
+                <div class="widget-card" style="background:white; border-radius:12px; padding:20px; box-shadow:var(--shadow); text-align:center;"><div class="widget-icon" style="color:#4CAF50; font-size:35px;"><i class="fas fa-user"></i></div><div class="widget-number" style="font-size:28px; font-weight:700;">${jmlCustomer}</div><div class="widget-label">Customer Terdaftar</div></div>
             </div>
         </div>
-
-        <div class="widget-grid">
-            <div class="widget-card"><div class="widget-icon" style="color:var(--primary);"><i class="fas fa-store"></i></div><div class="widget-number">${jmlToko}</div><div class="widget-label">Toko Terdaftar</div></div>
-            <div class="widget-card"><div class="widget-icon" style="color:#2196F3;"><i class="fas fa-motorcycle"></i></div><div class="widget-number">${jmlOjek}</div><div class="widget-label">Ojek Terdaftar</div></div>
-            <div class="widget-card"><div class="widget-icon" style="color:#4CAF50;"><i class="fas fa-user"></i></div><div class="widget-number">${jmlCustomer}</div><div class="widget-label">Customer Terdaftar</div></div>
-        </div>
-
-        <div class="card">
-            <div class="card-header">Pencarian Cepat</div>
-            <div class="grid-2">
-                <div class="form-group"><label>Cari Produk</label><div class="input-group"><i class="fas fa-box"></i><input type="text" id="inputCariProduk" class="form-input" placeholder="Nama produk..."><button class="button button-primary button-small" onclick="cariProduk()">Cari</button></div></div>
-                <div class="form-group"><label>Cari Toko</label><div class="input-group"><i class="fas fa-store"></i><input type="text" id="inputCariToko" class="form-input" placeholder="Nama toko..."><button class="button button-primary button-small" onclick="cariToko()">Cari</button></div></div>
-                <div class="form-group"><label>Cari Ojek</label><div class="input-group"><i class="fas fa-motorcycle"></i><input type="text" id="inputCariOjek" class="form-input" placeholder="Nama ojek..."><button class="button button-primary button-small" onclick="cariOjek()">Cari</button></div></div>
-            </div>
-        </div>
-
-        <div class="card"><div class="card-header">Iklan</div><div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px,1fr)); gap:15px;"><div class="empty-state"><i class="fas fa-ad"></i><h3>Belum ada iklan</h3></div></div></div>
         `;
 
         areaKonten.innerHTML = html;
 
-        // Load logo & gambar
-        var logoHome = document.getElementById('appLogoImageHome');
-        if (konfigurasi.logo) { logoHome.src = konfigurasi.logo; logoHome.style.display = 'block'; document.getElementById('appLogoIconHome').style.display = 'none'; }
-        // Muat sampul & avatar
         var sampul = localStorage.getItem('2r_cover_foto_' + pengguna.id);
         var avatar = localStorage.getItem('2r_user_avatar_' + pengguna.id);
         if (sampul) { document.getElementById('fotoSampulPreview').src = sampul; document.getElementById('fotoSampulPreview').style.display = 'block'; document.getElementById('fotoSampulPlaceholder').style.display = 'none'; }
         if (avatar) { document.getElementById('fotoProfilPreview').src = avatar; document.getElementById('fotoProfilPreview').style.display = 'block'; document.getElementById('fotoProfilPlaceholder').style.display = 'none'; }
 
-        // Jam
         function updateJam() {
             var now = new Date();
-            var jamEl = document.getElementById('displayJamHome');
-            var tglEl = document.getElementById('displayTanggalHome');
-            if (jamEl) jamEl.textContent = String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0')+':'+String(now.getSeconds()).padStart(2,'0');
-            if (tglEl) {
+            var jamEl = document.getElementById('displayJamHeader');
+            if (jamEl) {
+                var jam = String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0')+':'+String(now.getSeconds()).padStart(2,'0');
                 var hari = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'][now.getDay()];
                 var bulan = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'][now.getMonth()];
-                tglEl.textContent = hari + ', ' + String(now.getDate()).padStart(2,'0') + ' ' + bulan + ' ' + now.getFullYear();
+                jamEl.textContent = jam + ' | ' + hari + ', ' + String(now.getDate()).padStart(2,'0') + ' ' + bulan + ' ' + now.getFullYear();
             }
         }
         updateJam();
         setInterval(updateJam, 1000);
     }
+<!-- ===== AKHIR BLOK 5.4 ===== -->
 
-    // --- FUNGSI BANTUAN HOMEPAGE ---
+<!-- ============================================================ -->
+<!-- BLOK 5.5 - JAVASCRIPT UNGGAH GAMBAR & PENUTUP                -->
+<!-- ============================================================ -->
     function prosesUnggahGambar(tipe, elemen) {
         var file = elemen.files[0];
         if (!file) return;
@@ -691,41 +637,16 @@
             var key = (tipe === 'sampul') ? '2r_cover_foto_' + user.id : '2r_user_avatar_' + user.id;
             localStorage.setItem(key, e.target.result);
             tampilkanToast('Foto '+tipe+' berhasil diunggah!', 'success');
-            renderHalamanBerandaDefault();
+            renderHalamanBerandaDefault(user);
         };
         reader.readAsDataURL(file);
     }
-
-    function navigasiKeHalaman(halaman) {
-        if (halaman === 'lihatTokoTerdekat') tampilkanToast('Fitur Lihat Toko Terdekat sedang dibangun.', 'info');
-        else if (halaman === 'lihatOjekTerdekat') tampilkanToast('Fitur Lihat Ojek Terdekat sedang dibangun.', 'info');
-        else if (halaman === 'lihatPedagangPasar') tampilkanToast('Fitur Lihat Pedagang Pasar sedang dibangun.', 'info');
-        else if (halaman === 'lihatPedagangMakanan') tampilkanToast('Fitur Lihat Pedagang Makanan sedang dibangun.', 'info');
-        else if (halaman === 'lihatPedagangMinuman') tampilkanToast('Fitur Lihat Pedagang Minuman sedang dibangun.', 'info');
-    }
-
-    function cariProduk() { var kata = document.getElementById('inputCariProduk').value.trim(); if (!kata) { tampilkanToast('Masukkan kata kunci!', 'warning'); return; } tampilkanToast('Mencari produk: '+kata, 'info'); }
-    function cariToko() { var kata = document.getElementById('inputCariToko').value.trim(); if (!kata) { tampilkanToast('Masukkan kata kunci!', 'warning'); return; } tampilkanToast('Mencari toko: '+kata, 'info'); }
-    function cariOjek() { var kata = document.getElementById('inputCariOjek').value.trim(); if (!kata) { tampilkanToast('Masukkan kata kunci!', 'warning'); return; } tampilkanToast('Mencari ojek: '+kata, 'info'); }
-
-    // --- DUMMY FUNGSI MODAL (AGAR TIDAK ERROR) ---
-    function tutupModal(id) { /* Halaman default tidak pakai modal, fungsi dummy ini mencegah error jika ada onclick di HTML yang lupa dihapus */ }
-    function bukaModal(id) { /* Dummy */ }
-    function eksekusiTolakAkun() { tampilkanToast('Fitur Admin belum aktif.', 'info'); }
-
-    // --- PASTIKAN SUPERVER ADMIN ADA ---
-    (function initSuperAdmin() {
-        var dataAkun = getDataAkun();
-        if (!dataAkun.find(a => a.role === 'superadmin')) {
-            (async function() {
-                var hash = await hashPassword('admin123');
-                dataAkun.push({ id:'SA-001', role:'superadmin', username:'admin', password:hash, nama:'SuperAdmin', email:'admin@2r.com', nomorHp:'081234567890', alamat:'Kantor Pusat', namaBank:'BCA', nomorRekening:'1234567890', pemilikRekening:'SuperAdmin', status:'AKTIF', waktuRegistrasi: new Date().toISOString() });
-                simpanDataAkun(dataAkun);
-                console.log('SuperAdmin berhasil dibuat! Username: admin, Password: admin123');
-            })();
-        }
-    })();
 </script>
+<!-- ===== AKHIR BLOK 5.5 ===== -->
+
+<!-- ============================================================ -->
+<!-- PENUTUP HTML                                                 -->
+<!-- ============================================================ -->
 </body>
 </html>
-<!-- ===== AKHIR BAGIAN 3 ===== -->
+<!-- ===== AKHIR PENUTUP HTML ===== -->
