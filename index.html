@@ -914,7 +914,7 @@
     });
     // ===== AKHIR 5.1.5 =====
 
-    // ===== 5.1.6 - DASHBOARD & SIDEBAR GENERATOR =====
+        // ===== 5.1.6 - DASHBOARD & SIDEBAR GENERATOR =====
     function tampilkanDasbor(user) {
         document.getElementById('pageAuthentication').style.display = 'none';
         document.getElementById('pageDashboard').style.display = 'block';
@@ -940,8 +940,12 @@
                 items.forEach(el => el.classList.remove('active'));
                 this.classList.add('active');
                 var page = this.getAttribute('data-page');
+                
+                // --- PERBAIKAN PENTING: PINDAHKAN TOMBOL KE DALAM KARTU PUTIH ---
                 if (page === 'home') renderBerandaSederhana(user);
-                else tampilkanToast('Fitur ' + page + ' sedang dibangun', 'info');
+                else if (page === 'profile') renderProfilSederhana(user); // Fungsi baru
+                else if (page === 'katalog') tampilkanToast('Katalog sedang dibangun', 'info');
+                
                 if (window.innerWidth <= 767) {
                     document.querySelector('.sidebar-simple').classList.remove('open');
                     document.getElementById('sidebarOverlay').classList.remove('active');
@@ -952,6 +956,46 @@
         renderBerandaSederhana(user);
     }
 
+    // ===== FUNGSI BARU: HALAMAN PROFIL (Tombol Ada di Dalam Kartu Putih) =====
+    function renderProfilSederhana(pengguna) {
+        var areaKonten = document.getElementById('mainContent');
+        if (!areaKonten) return;
+        if (!pengguna) pengguna = JSON.parse(localStorage.getItem('2r_user') || '{}');
+
+        var html = `
+            <div class="fb-card">
+                <h3 style="margin-bottom:15px; font-size:20px;">Pengaturan Profil Saya</h3>
+                
+                <!-- Contoh Form Edit Profil -->
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label>Nama Lengkap</label>
+                        <div class="input-group" style="border:1px solid #ddd; padding:0 14px;">
+                            <i class="fas fa-user" style="color:#aaa;"></i>
+                            <input type="text" value="${escapeHtml(pengguna.nama||pengguna.username||'')}" style="padding:12px 0;">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Email / Kontak</label>
+                        <div class="input-group" style="border:1px solid #ddd; padding:0 14px;">
+                            <i class="fas fa-envelope" style="color:#aaa;"></i>
+                            <input type="text" value="${escapeHtml(pengguna.email||'Belum diisi')}" style="padding:12px 0;">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- === INI DIA TOMBOL YANG DIPINDAHKAN KE DALAM KARTU PUTIH === -->
+                <div class="action-bar">
+                    <button class="btn-batal" onclick="tampilkanToast('Batal menyimpan perubahan', 'info')">Batal</button>
+                    <button class="btn-simpan" onclick="tampilkanToast('Profil berhasil disimpan!', 'success')"><i class="fas fa-check"></i> Simpan Profil</button>
+                </div>
+                <!-- ============================================================ -->
+            </div>
+        `;
+        areaKonten.innerHTML = html;
+    }
+
+    // (Fungsi renderBerandaSederhana tetap sama seperti kode sebelumnya)
     function renderBerandaSederhana(pengguna) {
         var areaKonten = document.getElementById('mainContent');
         if (!areaKonten) return;
