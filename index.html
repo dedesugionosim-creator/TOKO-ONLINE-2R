@@ -682,11 +682,121 @@ body { font-family:'Poppins', sans-serif; background:var(--bg); min-height:100vh
     }
 }
 /* ===== AKHIR BLOK 4.5 ===== */
-/* ===== BLOK 4.6 - CSS_HAMBURGER_OVERLAY ===== */
-#menuToggle { display:none; background:none; border:none; font-size:22px; cursor:pointer; color:var(--primary); padding:0; margin-right:10px; transition:transform 0.3s; }
-#menuToggle:active { transform:scale(0.9); }
-.sidebar-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:998; }
-.sidebar-overlay.active { display:block; }
+/* ====================================================== */
+/* BLOK 4.6 – CSS HAMBURGER, SIDEBAR MOBILE & OVERLAY    */
+/* ====================================================== */
+
+/* -------- TOMBOL HAMBURGER (GARIS TIGA) -------- */
+#menuToggle {
+    display: none !important; /* Sembunyikan di desktop */
+    background: none;
+    border: none;
+    font-size: 22px;
+    cursor: pointer;
+    color: var(--primary);
+    padding: 0;
+    margin-right: 10px;
+    transition: transform 0.3s;
+}
+#menuToggle:active {
+    transform: scale(0.9);
+}
+
+/* -------- SIDEBAR MOBILE (DRAWER) -------- */
+.sidebar {
+    position: fixed;
+    top: 64px;          /* di bawah navbar */
+    left: -100%;        /* tersembunyi di luar layar kiri */
+    width: 80%;         /* lebar sidebar di mobile */
+    max-width: 300px;
+    bottom: 0;
+    background: white;
+    border-right: 1px solid var(--border);
+    padding-top: 15px;
+    overflow-y: auto;
+    z-index: 999;
+    box-shadow: 2px 0 10px rgba(0,0,0,0.03);
+    transition: left 0.3s ease-in-out;
+}
+.sidebar.open {
+    left: 0;            /* muncul saat dibuka */
+}
+
+/* -------- OVERLAY (LATAR BELAKANG GELAP) -------- */
+.sidebar-overlay {
+    display: none;      /* default tersembunyi */
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 998;
+}
+.sidebar-overlay.active {
+    display: block;     /* tampil saat aktif */
+}
+
+/* -------- KONTEN UTAMA SAAT SIDEBAR TERBUKA (OPSIONAL) -------- */
+/* Pada mobile, konten tetap di bawah overlay, tidak perlu geser */
+.content {
+    margin-left: 0;
+}
+
+/* ====================================================== */
+/* RESPONSIVE HP (max-width: 767px) – SEMUA ATURAN MOBILE */
+/* ====================================================== */
+@media (max-width: 767px) {
+    /* Tampilkan tombol hamburger hanya di HP */
+    #menuToggle {
+        display: block !important;
+    }
+
+    /* Sidebar menjadi drawer full height */
+    .sidebar {
+        width: 80%;
+        top: 64px;
+        left: -100%;
+        transition: left 0.3s ease-in-out;
+    }
+    .sidebar.open {
+        left: 0;
+    }
+
+    /* Overlay aktif */
+    .sidebar-overlay.active {
+        display: block;
+    }
+
+    /* Konten utama tidak perlu margin-left (0) */
+    .content {
+        margin-left: 0;
+        padding: 15px;
+        margin-top: 64px;
+    }
+
+    /* Penyesuaian grid dan tabel agar lebih responsif */
+    .widget-grid {
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 10px;
+    }
+    .widget-card .widget-number {
+        font-size: 22px;
+    }
+    .grid-2 {
+        grid-template-columns: 1fr;
+    }
+    .table {
+        font-size: 12px;
+    }
+    .modal {
+        width: 95%;
+        padding: 15px;
+    }
+    .authentication-wrapper {
+        padding: 10px;
+    }
+    .authentication-box {
+        padding: 20px;
+    }
+}
 
 /* ===== BLOK 4.7 - CSS_BADGE_NOTIFIKASI ===== */
 .sidebar-menu-item .notif-badge { background:#f44336; color:white; border-radius:50%; padding:2px 8px; font-size:10px; margin-left:8px; display:inline-block; font-weight:700; min-width:20px; text-align:center; line-height:1.4; }
@@ -4690,6 +4800,25 @@ function tampilkanDashboard(user) {
             <p style="color:#888;">Fungsi renderSemuaProduk belum didefinisikan.</p>
         </div>
         `;
+    }
+
+    // ============================================
+    // TAMBAHAN: EVENT LISTENER UNTUK TOMBOL HAMBURGER
+    // ============================================
+    var menuToggle = document.getElementById('menuToggle');
+    var sidebar = document.querySelector('.sidebar');
+    var overlay = document.getElementById('sidebarOverlay');
+
+    if (menuToggle && sidebar && overlay) {
+        // Hapus listener lama jika ada (mencegah duplikasi)
+        menuToggle.onclick = function() {
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('active');
+        };
+        overlay.onclick = function() {
+            sidebar.classList.remove('open');
+            overlay.classList.remove('active');
+        };
     }
 }
 // ============================================================
