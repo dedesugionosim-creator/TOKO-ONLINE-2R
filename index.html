@@ -297,9 +297,15 @@
     .content { margin-left:0; margin-top:0; padding:0; min-height:100vh; background:var(--bg); }
 
     .homepage-header-card { position:relative; width:100%; padding:0; margin:0; background:white; overflow:hidden; }
-    .cover-photo-wrapper { position:relative; width:100%; height:280px; background:#e9ecef; overflow:hidden; cursor:pointer; border-bottom:3px solid var(--primary); } /* <--- PERBAIKAN: GARIS PEMBATAS NAVBAR DISINI */
+    .cover-photo-wrapper { position:relative; width:100%; height:280px; background:#e9ecef; overflow:hidden; cursor:pointer; border-bottom:3px solid var(--primary); }
     .cover-photo-wrapper img { width:100%; height:100%; object-fit:cover; }
     .cover-photo-placeholder { position:absolute; top:0; left:0; width:100%; height:100%; display:flex; flex-direction:column; justify-content:center; align-items:center; color:#999; background:#f8f9fa; font-size:16px; }
+    
+    .header-controls { position:absolute; top:15px; right:15px; z-index:20; display:flex; flex-direction:row; align-items:center; gap:15px; }
+    .header-controls .header-time { color:white; font-size:12px; text-shadow:0 1px 3px rgba(0,0,0,0.5); white-space:nowrap; }
+    .header-controls .button-logout { background:#f44336; color:white; border:none; padding:6px 14px; border-radius:var(--radius); cursor:pointer; font-size:13px; font-weight:600; }
+    .header-controls .button-logout:hover { background:#d32f2f; }
+
     .profile-info-wrapper { position:relative; padding:20px 25px 25px 25px; display:flex; flex-direction:column; align-items:center; background:white; }
     .profile-avatar-wrapper { margin-top:-70px; width:130px; height:130px; border-radius:50%; border:5px solid white; box-shadow:var(--shadow); background:#f0f0f0; overflow:hidden; flex-shrink:0; cursor:pointer; position:relative; z-index:10; transition:transform 0.2s; }
     .profile-avatar-wrapper:hover { transform:scale(1.05); }
@@ -308,26 +314,20 @@
     .profile-info-text { text-align:center; margin-top:10px; }
     .profile-info-text h2 { font-size:24px; font-weight:700; color:var(--text); }
     .profile-info-text p { font-size:14px; color:var(--text-muted); }
-    .header-controls { position:absolute; top:15px; right:15px; z-index:20; display:flex; gap:10px; }
-    .header-controls .button-logout { background:#f44336; color:white; border:none; padding:6px 14px; border-radius:var(--radius); cursor:pointer; font-size:13px; font-weight:600; }
-    .header-controls .button-logout:hover { background:#d32f2f; }
-    .header-time { position:absolute; top:15px; right:95px; z-index:20; color:white; font-size:12px; text-shadow:0 1px 3px rgba(0,0,0,0.5); white-space:nowrap; text-align:right; } /* <--- PERBAIKAN: AGAR JAM TIDAK PATAH KE BAWAH */
-<!-- ===== AKHIR BLOK 4.2 ===== -->
 
-<!-- ============================================================ -->
-<!-- BLOK 4.3 - CSS RESPONSIVE HP                                  -->
-<!-- ============================================================ -->
     @media (max-width:767px) {
         #menuToggle { display:block !important; }
         .sidebar { width:80%; max-width:300px; left:-100%; transition:left 0.3s ease-in-out; }
         .sidebar.open { left:0; }
         .cover-photo-wrapper { height:180px; }
         .profile-avatar-wrapper { width:100px; height:100px; margin-top:-55px; }
-        .header-time { right:70px; }
+        .header-controls { right:10px; gap:8px; }
+        .header-controls .header-time { font-size:10px; }
         .authentication-box { max-height:70vh; overflow-y:auto; }
     }
+<!-- ===== AKHIR BLOK 4.2 ===== -->
 </style>
-<!-- ===== AKHIR BLOK 4.3 ===== -->
+<!-- ===== AKHIR BLOK 4.2 & AKHIR CSS ===== -->
 
 <!-- ============================================================ -->
 <!-- BLOK 5.1 - JAVASCRIPT UTILITY & AUTH                         -->
@@ -370,7 +370,12 @@
         else if (tipe === 'pengajuan') document.getElementById('pengajuanBukaAkunForm').classList.remove('hidden-form');
         else document.getElementById('loginForm').classList.remove('hidden-form');
     }
-    function escapeHtml(text) { if (!text) return ''; var div = document.createElement('div'); div.textContent = text; return div.innerHTML; }
+    function escapeHtml(text) {
+        if (!text) return '';
+        var div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
 <!-- ===== AKHIR BLOK 5.1 ===== -->
 
 <!-- ============================================================ -->
