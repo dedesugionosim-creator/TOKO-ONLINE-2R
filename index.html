@@ -1059,89 +1059,240 @@
     // ===== AKHIR SUB BLOK 6.4 =====
 
 
-    // ===== SUB BLOK 6.5 - Fungsi Navigasi ke Halaman SuperAdmin =====
+    <!-- ===== SUB BLOK 6.5 - Fungsi Navigasi ke Halaman SuperAdmin (VERSI LENGKAP & DIPERBAIKI) ===== -->
+<script>
+
+    // ===== Fungsi Navigasi Utama =====
     function navigasiKeHalamanSuperAdmin(namaHalaman) {
         var areaKonten = document.getElementById('mainContent');
         if (!areaKonten) {
             return;
         }
 
-        // Tentukan konten apa yang akan ditampilkan berdasarkan nama halaman yang diklik
-        if (namaHalaman === 'dashboard') {
-            // Jika menu Dasbor diklik, panggil fungsi render dasbor (akan dibuat di BLOK 8)
-            // Untuk sementara, karena fungsi renderDasborSuperAdmin belum dibuat, kita tampilkan pesan placeholder
-            areaKonten.innerHTML = '<div class="fb-card"><h3>Dasbor SuperAdmin</h3><p>Halaman ini sedang dalam pengembangan. Fungsi renderDasborSuperAdmin akan segera dibuat.</p></div>';
-            
-        } else if (namaHalaman === 'profile') {
-            areaKonten.innerHTML = '<div class="fb-card"><h3>Profil SuperAdmin</h3><p>Fitur Profil SuperAdmin sedang dalam pengembangan.</p></div>';
-            
-        } else if (namaHalaman === 'daftarAkunBaru') {
-            areaKonten.innerHTML = '<div class="fb-card"><h3>Daftar Akun Baru</h3><p>Fitur Daftar Akun Baru sedang dalam pengembangan.</p></div>';
-            
-        } else if (namaHalaman === 'persetujuanAkun') {
-            areaKonten.innerHTML = '<div class="fb-card"><h3>Persetujuan Akun</h3><p>Fitur Persetujuan Akun sedang dalam pengembangan.</p></div>';
-            
-        } else if (namaHalaman === 'pengajuanBukaAkun') {
-            areaKonten.innerHTML = '<div class="fb-card"><h3>Pengajuan Buka Akun</h3><p>Fitur Pengajuan Buka Akun sedang dalam pengembangan.</p></div>';
-            
-        } else if (namaHalaman === 'kelolaSemuaAkun') {
-            areaKonten.innerHTML = '<div class="fb-card"><h3>Kelola Semua Akun</h3><p>Fitur Kelola Semua Akun sedang dalam pengembangan.</p></div>';
-            
-        } else if (namaHalaman === 'transferMenu') {
-            areaKonten.innerHTML = '<div class="fb-card"><h3>Transfer Menu</h3><p>Fitur Transfer Menu sedang dalam pengembangan.</p></div>';
-            
-        } else if (namaHalaman === 'settingRekening') {
-            areaKonten.innerHTML = '<div class="fb-card"><h3>Setting Rekening</h3><p>Fitur Setting Rekening sedang dalam pengembangan.</p></div>';
-            
-        } else if (namaHalaman === 'settingHargaAplikasi') {
-            areaKonten.innerHTML = '<div class="fb-card"><h3>Setting Harga Aplikasi</h3><p>Fitur Setting Harga Aplikasi sedang dalam pengembangan.</p></div>';
-            
-        } else if (namaHalaman === 'menuIklan') {
-            areaKonten.innerHTML = '<div class="fb-card"><h3>Menu Iklan</h3><p>Fitur Menu Iklan sedang dalam pengembangan.</p></div>';
-            
-        } else if (namaHalaman === 'papanInformasi') {
-            areaKonten.innerHTML = '<div class="fb-card"><h3>Papan Informasi</h3><p>Fitur Papan Informasi sedang dalam pengembangan.</p></div>';
-            
-        } else if (namaHalaman === 'pengajuanUploadProduk') {
-            areaKonten.innerHTML = '<div class="fb-card"><h3>Pengajuan Upload Produk</h3><p>Fitur Pengajuan Upload Produk sedang dalam pengembangan.</p></div>';
-            
-        } else if (namaHalaman === 'dataPenagihan') {
-            areaKonten.innerHTML = '<div class="fb-card"><h3>Data Penagihan</h3><p>Fitur Data Penagihan sedang dalam pengembangan.</p></div>';
-            
-        } else if (namaHalaman === 'reviewPengajuanAktivasi') {
-            areaKonten.innerHTML = '<div class="fb-card"><h3>Review Pengajuan Aktivasi</h3><p>Fitur Review Pengajuan Aktivasi sedang dalam pengembangan.</p></div>';
-            
-        } else if (namaHalaman === 'katalogProduk') {
-            areaKonten.innerHTML = '<div class="fb-card"><h3>Katalog Produk</h3><p>Fitur Katalog Produk sedang dalam pengembangan.</p></div>';
-            
-        } else if (namaHalaman === 'manajemenKatalog') {
-            areaKonten.innerHTML = '<div class="fb-card"><h3>Manajemen Katalog</h3><p>Fitur Manajemen Katalog sedang dalam pengembangan.</p></div>';
-            
-        } else if (namaHalaman === 'penataanProduk') {
-            areaKonten.innerHTML = '<div class="fb-card"><h3>Penataan Produk</h3><p>Fitur Penataan Produk sedang dalam pengembangan.</p></div>';
-            
-        } else if (namaHalaman === 'bantuanFAQ') {
-            areaKonten.innerHTML = '<div class="fb-card"><h3>Bantuan & FAQ</h3><p>Fitur Bantuan dan FAQ sedang dalam pengembangan.</p></div>';
-            
-        } else if (namaHalaman === 'notepadPlus') {
-            areaKonten.innerHTML = '<div class="fb-card"><h3>Notepad+</h3><p>Fitur Notepad+ sedang dalam pengembangan.</p></div>';
-            
-        } else if (namaHalaman === 'backupRestore') {
-            areaKonten.innerHTML = '<div class="fb-card"><h3>Backup & Restore</h3><p>Fitur Backup dan Restore sedang dalam pengembangan.</p></div>';
-            
-        } else if (namaHalaman === 'resetCleanup') {
-            areaKonten.innerHTML = '<div class="fb-card"><h3>Reset & Pembersihan</h3><p>Fitur Reset dan Pembersihan sedang dalam pengembangan.</p></div>';
-            
-        } else if (namaHalaman === 'broadcastNotifikasi') {
-            areaKonten.innerHTML = '<div class="fb-card"><h3>Siaran Massal / Notifikasi</h3><p>Fitur Siaran Massal sedang dalam pengembangan.</p></div>';
-            
-        } else {
-            // Jika halaman tidak ditemukan, tampilkan pesan default
-            areaKonten.innerHTML = '<div class="fb-card"><h3>Halaman Tidak Ditemukan</h3><p>Maaf, halaman ' + namaHalaman + ' belum tersedia.</p></div>';
+        // Gunakan switch case untuk memanggil fungsi render yang sesuai
+        switch (namaHalaman) {
+            case 'dashboard':
+                renderDasborSuperAdmin();
+                break;
+            case 'profile':
+                renderProfilSuperAdmin();
+                break;
+            case 'daftarAkunBaru':
+                renderDaftarAkunBaru();
+                break;
+            case 'persetujuanAkun':
+                renderPersetujuanAkun();
+                break;
+            case 'pengajuanBukaAkun':
+                renderPengajuanBukaAkunSuperAdmin(); // Fungsi baru (lihat di bawah)
+                break;
+            case 'kelolaSemuaAkun':
+                renderKelolaSemuaAkun();
+                break;
+            case 'transferMenu':
+                renderTransferMenu();
+                break;
+            case 'settingRekening':
+                renderSettingRekening(); // <-- PERBAIKAN UTAMA: memanggil fungsi setting rekening agar form muncul
+                break;
+            case 'settingHargaAplikasi':
+                renderSettingHargaAplikasi();
+                break;
+            case 'menuIklan':
+                renderMenuIklan();
+                break;
+            case 'papanInformasi':
+                renderPapanInformasi();
+                break;
+            case 'pengajuanUploadProduk':
+                renderPengajuanUploadProduk();
+                break;
+            case 'dataPenagihan':
+                renderDataPenagihan();
+                break;
+            case 'reviewPengajuanAktivasi':
+                renderReviewPengajuanAktivasi();
+                break;
+            case 'katalogProduk':
+                renderKatalogProduk();
+                break;
+            case 'manajemenKatalog':
+                renderManajemenKatalog();
+                break;
+            case 'penataanProduk':
+                renderPenataanProduk();
+                break;
+            case 'bantuanFAQ':
+                renderBantuanFAQ();
+                break;
+            case 'notepadPlus':
+                renderNotepadPlus();
+                break;
+            case 'backupRestore':
+                renderBackupRestore();
+                break;
+            case 'resetCleanup':
+                renderResetCleanup();
+                break;
+            case 'broadcastNotifikasi':
+                renderBroadcastNotifikasi();
+                break;
+            case 'dataPendaftaran':
+                renderDataPendaftaran(); // Jika Anda menambahkan menu Data Pendaftaran
+                break;
+            default:
+                // Jika menu belum terdaftar, tampilkan pesan fallback
+                areaKonten.innerHTML = '<div class="fb-card"><h3>Halaman Tidak Ditemukan</h3><p>Maaf, halaman ' + namaHalaman + ' belum tersedia.</p></div>';
+                break;
         }
     }
     // ===== AKHIR SUB BLOK 6.5 =====
 
+
+    // ===== TAMBAHAN: FUNGSI RENDER UNTUK PENGAJUAN BUKA AKUN (AGAR TIDAK ERROR SAAT DIKLIK) =====
+    // Jika Anda ingin membuat tampilan yang lebih kompleks, Anda bisa mengembangkan fungsi ini di BLOK lain.
+    // Saat ini fungsi ini akan menampilkan daftar pengajuan dari localStorage '2r_pengajuan_buka_akun' yang tersimpan di BLOK 2.6.
+    function renderPengajuanBukaAkunSuperAdmin() {
+        var areaKonten = document.getElementById('mainContent');
+        if (!areaKonten) { return; }
+
+        // Ambil data pengajuan yang tersimpan di localStorage
+        var dataPengajuan = JSON.parse(localStorage.getItem('2r_pengajuan_buka_akun') || '[]');
+        
+        var html = '';
+
+        // Header
+        html += '<div class="page-header">';
+        html += '<h2>Pengajuan Buka Akun</h2>';
+        html += '<p>Daftar pengajuan pembuatan akun baru dari calon pengguna (Toko, Pedagang, COD Seller).</p>';
+        html += '</div>';
+
+        if (dataPengajuan.length === 0) {
+            html += '<div class="fb-card"><div class="empty-state"><i class="fas fa-inbox"></i><h3>Belum ada pengajuan</h3></div></div>';
+        } else {
+            html += '<div class="fb-card"><div class="table-container">';
+            html += '<table class="table-pengajuan-hapus">';
+            html += '<thead>';
+            html += '<tr>';
+            html += '<th>Nomor</th>';
+            html += '<th>Nama</th>';
+            html += '<th>Kontak</th>';
+            html += '<th>Role</th>';
+            html += '<th>Alasan</th>';
+            html += '<th>Lokasi</th>';
+            html += '<th>Status</th>';
+            html += '<th>Aksi</th>';
+            html += '</tr>';
+            html += '</thead>';
+            html += '<tbody>';
+
+            for (var i = 0; i < dataPengajuan.length; i++) {
+                var pengajuan = dataPengajuan[i];
+                var badgeStatus = 'badge-warning';
+                if (pengajuan.status === 'DISETUJUI') badgeStatus = 'badge-success';
+                else if (pengajuan.status === 'DITOLAK') badgeStatus = 'badge-danger';
+
+                var teksAksi = '';
+                if (pengajuan.status === 'MENUNGGU') {
+                    teksAksi = '<button class="tombol-setujui" onclick="setujuiPengajuanBukaAkun(\'' + pengajuan.id + '\')">Setujui</button> ' +
+                               '<button class="tombol-tolak" onclick="tolakPengajuanBukaAkun(\'' + pengajuan.id + '\')">Tolak</button>';
+                } else {
+                    teksAksi = '<span style="color:#888; font-size:12px;">Selesai</span>';
+                }
+
+                html += '<tr>';
+                html += '<td>' + (i + 1) + '</td>';
+                html += '<td>' + escapeHtml(pengajuan.nama) + '</td>';
+                html += '<td>' + escapeHtml(pengajuan.kontak) + '</td>';
+                html += '<td>' + escapeHtml(pengajuan.role) + '</td>';
+                html += '<td>' + escapeHtml(pengajuan.alasan) + '</td>';
+                html += '<td>' + escapeHtml(pengajuan.alamatLokasi || pengajuan.latitude + ',' + pengajuan.longitude) + '</td>';
+                html += '<td><span class="badge ' + badgeStatus + '">' + pengajuan.status + '</span></td>';
+                html += '<td>' + teksAksi + '</td>';
+                html += '</tr>';
+            }
+
+            html += '</tbody>';
+            html += '</table></div></div>';
+        }
+
+        areaKonten.innerHTML = html;
+    }
+
+    // ===== FUNGSI SETUJUI PENGAJUAN BUKA AKUN =====
+    function setujuiPengajuanBukaAkun(idPengajuan) {
+        if (!confirm('Yakin ingin menyetujui pengajuan ini? Akun pengguna akan dibuat secara otomatis.')) return;
+
+        var dataPengajuan = JSON.parse(localStorage.getItem('2r_pengajuan_buka_akun') || '[]');
+        var targetPengajuan = null;
+        var indexPengajuan = -1;
+
+        for (var i = 0; i < dataPengajuan.length; i++) {
+            if (dataPengajuan[i].id === idPengajuan) {
+                targetPengajuan = dataPengajuan[i];
+                indexPengajuan = i;
+                break;
+            }
+        }
+
+        if (!targetPengajuan) { tampilkanToast('Pengajuan tidak ditemukan!', 'error'); return; }
+
+        // Ubah status pengajuan
+        dataPengajuan[indexPengajuan].status = 'DISETUJUI';
+        localStorage.setItem('2r_pengajuan_buka_akun', JSON.stringify(dataPengajuan));
+
+        // Buat akun baru berdasarkan data pengajuan
+        (async function() {
+            var dataAkun = getDataAkun();
+            var hashPass = await hashPassword('123456'); // Default password 123456
+
+            var akunBaru = {
+                id: generateId(targetPengajuan.role),
+                role: targetPengajuan.role,
+                username: targetPengajuan.kontak, // Gunakan email/HP sebagai username sementara
+                password: hashPass,
+                nama: targetPengajuan.nama,
+                email: '',
+                nomorHp: targetPengajuan.kontak,
+                alamat: targetPengajuan.alamatLokasi || '',
+                latitude: targetPengajuan.latitude || '',
+                longitude: targetPengajuan.longitude || '',
+                namaBank: '',
+                nomorRekening: '',
+                pemilikRekening: '',
+                status: 'AKTIF',
+                coverPhoto: '',
+                profilePhoto: '',
+                waktuRegistrasi: new Date().toISOString()
+            };
+
+            dataAkun.push(akunBaru);
+            simpanDataAkun(dataAkun);
+
+            tampilkanToast('Pengajuan disetujui! Akun berhasil dibuat. Username: ' + akunBaru.username + ', Password: 123456', 'success');
+            renderPengajuanBukaAkunSuperAdmin();
+        })();
+    }
+
+    // ===== FUNGSI TOLAK PENGAJUAN BUKA AKUN =====
+    function tolakPengajuanBukaAkun(idPengajuan) {
+        if (!confirm('Yakin ingin menolak pengajuan ini? Data akan dihapus.')) return;
+
+        var dataPengajuan = JSON.parse(localStorage.getItem('2r_pengajuan_buka_akun') || '[]');
+        var dataBaru = [];
+        for (var i = 0; i < dataPengajuan.length; i++) {
+            if (dataPengajuan[i].id !== idPengajuan) {
+                dataBaru.push(dataPengajuan[i]);
+            }
+        }
+        localStorage.setItem('2r_pengajuan_buka_akun', JSON.stringify(dataBaru));
+        
+        tampilkanToast('Pengajuan ditolak dan dihapus.', 'success');
+        renderPengajuanBukaAkunSuperAdmin();
+    }
+
+</script>
+<!-- ===== AKHIR SUB BLOK 6.5 & TAMBAHAN FUNGSI PENGAJUAN ===== -->
 
     // ===== SUB BLOK 6.6 - Inisialisasi Sidebar SuperAdmin =====
     function inisialisasiSidebarSuperAdmin() {
