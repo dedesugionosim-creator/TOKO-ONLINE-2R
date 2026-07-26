@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Toko Online 2R - Aplikasi Multi Role</title>
+    <title>Toko Online 2R</title>
 <!-- ===== AKHIR BLOK 1.1 ===== -->
 
 <!-- ============================================================ -->
@@ -83,7 +83,7 @@
                         <i class="fas fa-sign-in-alt"></i> Login
                     </button>
 
-                    <!-- FOOTER NAVIGASI (LUPA PASSWORD) -->
+                    <!-- FOOTER NAVIGASI (LUPA PASSWORD, DAFTAR, AJUKAN) -->
                     <div class="authentication-footer">
                         <a href="javascript:void(0)" onclick="lupaPassword()" style="cursor:pointer; color:#d32f2f; font-weight:600;">Lupa Password?</a>
                         <br><br>
@@ -219,73 +219,51 @@
 <!-- ===== AKHIR BLOK 2.1 (PENUTUP WRAPPER LOGIN) ===== -->
 
 <!-- ============================================================ -->
-<!-- BLOK 3.1 - NAVBAR & LAYOUT 3 KOLOM (SEPERTI FACEBOOK)       -->
+<!-- BLOK 3.1 - NAVBAR SEDERHANA & SIDEBAR KIRI                   -->
 <!-- ============================================================ -->
 <div id="pageDashboard" class="page-dashboard" style="display:none;">
     
-    <!-- NAVBAR ATAS -->
-    <nav class="navbar-fb">
-        <div class="navbar-fb-left">
+    <!-- NAVBAR ATAS SEDERHANA -->
+    <nav class="navbar-simple">
+        <div class="navbar-left">
             <button id="menuToggle"><i class="fas fa-bars"></i></button>
-            <i class="fas fa-store-alt" style="color:var(--primary); font-size:24px; margin-left:5px;"></i>
-            <span style="font-weight:700; color:var(--primary); margin-left:5px;">Toko 2R</span>
+            <i class="fas fa-store-alt" style="color:var(--primary); font-size:24px; margin-left:10px;"></i>
+            <span style="font-weight:700; color:var(--primary); margin-left:8px; font-size:20px;">Toko Online 2R</span>
         </div>
-        <div class="navbar-fb-center">
-            <div class="search-bar">
-                <i class="fas fa-search"></i>
-                <input type="text" placeholder="Cari produk, toko, atau ojek...">
-            </div>
-        </div>
-        <div class="navbar-fb-right">
-            <span id="displayJamFB" style="font-size:12px; color:#555; font-weight:500; margin-right:15px;">00:00:00</span>
+        <div class="navbar-right">
+            <span id="displayJamSimple" style="font-size:13px; color:#555; font-weight:500; margin-right:15px;">00:00:00</span>
             <span class="role-badge" id="roleBadge">Role</span>
             <span id="userNama" style="font-weight:600; margin:0 10px;">User</span>
             <button class="button-logout" id="buttonLogout"><i class="fas fa-sign-out-alt"></i> Keluar</button>
         </div>
     </nav>
 
-    <!-- LAYOUT UTAMA 3 KOLOM -->
-    <div class="fb-layout-container">
-        
+    <!-- LAYOUT UTAMA 2 KOLOM (KIRI + KONTEN) -->
+    <div class="simple-layout-container">
         <!-- SIDEBAR KIRI -->
-        <aside class="sidebar-fb-left" id="sidebarContainer"></aside>
+        <aside class="sidebar-simple" id="sidebarContainer"></aside>
         <div id="sidebarOverlay" class="sidebar-overlay"></div>
 
-        <!-- KONTEN TENGAH (FEED) -->
-        <main class="content-fb-center" id="mainContent"></main>
-
-        <!-- SIDEBAR KANAN -->
-        <aside class="sidebar-fb-right" id="sidebarRightContainer">
-            <div class="fb-card" style="margin-bottom:15px;">
-                <div style="font-weight:600; font-size:13px; color:#555; margin-bottom:10px;">Role Online</div>
-                <div style="display:flex; align-items:center; gap:10px; padding:8px 0; border-bottom:1px solid #f0f0f0;"><div style="width:8px; height:8px; background:#4CAF50; border-radius:50%;"></div><span style="font-size:13px;">Toko Demo 2R</span></div>
-                <div style="display:flex; align-items:center; gap:10px; padding:8px 0;"><div style="width:8px; height:8px; background:#4CAF50; border-radius:50%;"></div><span style="font-size:13px;">Ojek Demo</span></div>
-            </div>
-            <div class="fb-card">
-                <div style="font-weight:600; font-size:13px; color:#555; margin-bottom:10px;">Iklan Sponsor</div>
-                <div style="height:150px; background:#f0f0f0; border-radius:8px; display:flex; justify-content:center; align-items:center; color:#aaa;">Iklan 1</div>
-                <div style="height:150px; background:#f0f0f0; border-radius:8px; display:flex; justify-content:center; align-items:center; color:#aaa; margin-top:10px;">Iklan 2</div>
-            </div>
-        </aside>
-
+        <!-- KONTEN TENGAH -->
+        <main class="content-simple" id="mainContent"></main>
     </div>
 
 </div>
 <!-- ===== AKHIR BLOK 3.1 ===== -->
 
 <!-- ============================================================ -->
-<!-- BLOK 4.1 - CSS GLOBAL, LOGIN & LAYOUT FACEBOOK               -->
+<!-- BLOK 4.1 - CSS GLOBAL & LAYOUT SEDERHANA                     -->
 <!-- ============================================================ -->
 <style>
     :root {
         --primary: #FF6B00;
         --primary-dark: #e65c00;
         --primary-light: #fff5f0;
-        --bg: #f0f2f5; /* Background ala Facebook */
+        --bg: #f8f9fa;
         --text: #333333;
         --text-muted: #888888;
         --border: #e9ecef;
-        --shadow: 0 1px 2px rgba(0,0,0,0.1);
+        --shadow: 0 1px 3px rgba(0,0,0,0.1);
         --radius: 8px;
     }
 
@@ -295,7 +273,7 @@
     .grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:15px; }
     .button-small { padding:6px 14px; font-size:12px; width:100%; border:none; border-radius:var(--radius); background:var(--primary); color:white; cursor:pointer; }
 
-    /* --- TOAST --- */
+    /* TOAST */
     #toastContainer { position:fixed; top:20px; left:50%; transform:translateX(-50%); z-index:99999; display:flex; flex-direction:column; gap:10px; max-width:90%; width:auto; align-items:center; }
     .toast { padding:14px 20px; border-radius:var(--radius); color:white; font-size:14px; font-weight:500; box-shadow:0 4px 10px rgba(0,0,0,0.2); animation:slideInDown 0.4s ease; display:flex; align-items:center; gap:12px; width:100%; min-width:300px; justify-content:center; }
     .toast.success { background:#4CAF50; }
@@ -304,7 +282,7 @@
     .toast.info { background:#2196F3; }
     @keyframes slideInDown { from { transform:translateY(-100px); opacity:0; } to { transform:translateY(0); opacity:1; } }
 
-    /* --- LOGIN --- */
+    /* LOGIN */
     #pageAuthentication { display:flex; justify-content:center; align-items:center; width:100%; min-height:100vh; background:linear-gradient(135deg, #C05000 0%, #E67E22 100%); }
     .authentication-wrapper { width:100%; max-width:450px; padding:20px; }
     .authentication-box { background:white; border-radius:var(--radius); padding:35px; box-shadow:0 4px 20px rgba(0,0,0,0.15); border:1px solid var(--border); width:100%; }
@@ -324,62 +302,38 @@
     .authentication-footer { text-align:center; margin-top:18px; font-size:14px; color:var(--text-muted); }
     .authentication-footer a { color:var(--primary); cursor:pointer; font-weight:600; text-decoration:none; }
 
-    /* --- LAYOUT FACEBOOK --- */
+    /* LAYOUT DASHBOARD SEDERHANA */
     .page-dashboard { display:none; background:var(--bg); }
     
-    /* NAVBAR */
-    .navbar-fb {
+    .navbar-simple {
         display:flex; justify-content:space-between; align-items:center;
-        background:white; padding:8px 16px; height:60px;
-        position:sticky; top:0; z-index:999;
-        border-bottom:1px solid var(--border); box-shadow:var(--shadow);
+        background:white; padding:0 20px; height:64px;
+        position:fixed; top:0; left:0; right:0; z-index:1000;
+        border-bottom:2px solid var(--primary); box-shadow:var(--shadow);
     }
-    .navbar-fb-left { display:flex; align-items:center; gap:10px; }
+    .navbar-left { display:flex; align-items:center; gap:5px; }
     #menuToggle { background:none; border:none; font-size:22px; color:var(--primary); cursor:pointer; display:none; }
-    .navbar-fb-center { flex:1; max-width:600px; margin:0 20px; }
-    .search-bar { display:flex; align-items:center; background:#f0f2f5; border-radius:20px; padding:8px 15px; }
-    .search-bar i { color:#888; margin-right:10px; }
-    .search-bar input { border:none; background:transparent; outline:none; width:100%; font-family:'Poppins', sans-serif; font-size:14px; }
-    .navbar-fb-right { display:flex; align-items:center; gap:10px; }
-    .navbar-fb-right .role-badge { background:var(--primary-light); color:var(--primary); padding:4px 12px; border-radius:20px; font-size:12px; font-weight:600; }
-    .button-logout { background:#f44336; color:white; border:none; padding:8px 16px; border-radius:20px; cursor:pointer; font-size:13px; font-weight:600; }
+    .navbar-right { display:flex; align-items:center; gap:10px; }
+    .navbar-right .role-badge { background:var(--primary-light); color:var(--primary); padding:4px 12px; border-radius:20px; font-size:12px; font-weight:600; }
+    .button-logout { background:#f44336; color:white; border:none; padding:6px 16px; border-radius:20px; cursor:pointer; font-size:13px; font-weight:600; }
     .button-logout:hover { background:#d32f2f; }
 
-    /* CONTAINER 3 KOLOM */
-    .fb-layout-container {
-        display:flex; max-width:1200px; margin:20px auto; padding:0 15px; gap:20px;
-    }
-
-    /* SIDEBAR KIRI */
-    .sidebar-fb-left { width:250px; flex-shrink:0; }
-    .sidebar-fb-left .menu-item { padding:12px 15px; cursor:pointer; color:#555; font-weight:500; border-radius:8px; transition:0.2s; display:flex; align-items:center; gap:12px; }
-    .sidebar-fb-left .menu-item:hover { background:#f0f2f5; }
-    .sidebar-fb-left .menu-item.active { background:var(--primary-light); color:var(--primary); }
-    
+    .simple-layout-container { display:flex; max-width:1200px; margin:84px auto 20px auto; padding:0 15px; gap:20px; }
+    .sidebar-simple { width:250px; flex-shrink:0; }
+    .sidebar-simple .menu-item { padding:12px 15px; cursor:pointer; color:#555; font-weight:500; border-radius:8px; transition:0.2s; display:flex; align-items:center; gap:12px; }
+    .sidebar-simple .menu-item:hover { background:#f0f2f5; }
+    .sidebar-simple .menu-item.active { background:var(--primary-light); color:var(--primary); }
     .sidebar-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:998; }
 
-    /* KONTEN TENGAH (FEED) */
-    .content-fb-center { flex:1; min-width:0; }
-    
-    /* KARTU FEED */
+    .content-simple { flex:1; min-width:0; background:white; border-radius:var(--radius); box-shadow:var(--shadow); padding:20px; border:1px solid var(--border); }
     .fb-card { background:white; border-radius:var(--radius); box-shadow:var(--shadow); padding:20px; border:1px solid var(--border); margin-bottom:15px; }
-    .fb-card-header { font-weight:600; font-size:15px; border-bottom:1px solid var(--border); padding-bottom:12px; margin-bottom:15px; }
 
-    /* SIDEBAR KANAN */
-    .sidebar-fb-right { width:300px; flex-shrink:0; }
-
-    /* RESPONSIVE */
-    @media (max-width:992px) {
-        .sidebar-fb-right { display:none; }
-        .fb-layout-container { padding:0 10px; }
-    }
     @media (max-width:767px) {
         #menuToggle { display:block; }
-        .sidebar-fb-left { position:fixed; top:60px; left:-100%; width:80%; max-width:300px; background:white; height:calc(100vh - 60px); padding:15px; box-shadow:2px 0 10px rgba(0,0,0,0.1); transition:left 0.3s ease; z-index:999; overflow-y:auto; }
-        .sidebar-fb-left.open { left:0; }
+        .sidebar-simple { position:fixed; top:64px; left:-100%; width:80%; max-width:300px; background:white; height:calc(100vh - 64px); padding:15px; box-shadow:2px 0 10px rgba(0,0,0,0.1); transition:left 0.3s ease; z-index:999; overflow-y:auto; }
+        .sidebar-simple.open { left:0; }
         .sidebar-overlay.active { display:block; }
-        .navbar-fb-center { display:none; }
-        .navbar-fb-right .role-badge, .navbar-fb-right span { font-size:12px; }
+        .simple-layout-container { padding:0 10px; }
         .authentication-box { max-height:70vh; overflow-y:auto; }
     }
 </style>
@@ -729,7 +683,7 @@
         });
 
         var menuToggle = document.getElementById('menuToggle');
-        var sidebar = document.querySelector('.sidebar-fb-left');
+        var sidebar = document.querySelector('.sidebar-simple');
         var overlay = document.getElementById('sidebarOverlay');
         if (menuToggle && sidebar && overlay) {
             menuToggle.addEventListener('click', function(e) {
@@ -751,7 +705,7 @@
 <!-- ===== AKHIR BLOK 5.3 ===== -->
 
 <!-- ============================================================ -->
-<!-- BLOK 5.4 - INIT SUPERADMIN (FIRST RUN) & TAMPILKAN DASHBOARD  -->
+<!-- BLOK 5.4 - INIT SUPERADMIN & TAMPILKAN DASHBOARD SEDERHANA   -->
 <!-- ============================================================ -->
 <script>
     // --- INISIALISASI SUPER ADMIN SAAT PERTAMA KALI BUKA ---
@@ -788,17 +742,17 @@
         buatSuperAdmin();
     }
 
-    // --- FUNGSI TAMPILKAN DASHBOARD & RENDER FEED ---
+    // --- FUNGSI TAMPILKAN DASHBOARD & RENDER BERANDA SEDERHANA ---
     function tampilkanDasbor(user) {
         document.getElementById('pageAuthentication').style.display = 'none';
         document.getElementById('pageDashboard').style.display = 'block';
         document.getElementById('userNama').textContent = user.nama;
         document.getElementById('roleBadge').textContent = user.role || 'User';
-        document.getElementById('displayJamFB').textContent = new Date().toLocaleTimeString('id-ID') + ' | ' + new Date().toLocaleDateString('id-ID');
+        document.getElementById('displayJamSimple').textContent = new Date().toLocaleTimeString('id-ID') + ' | ' + new Date().toLocaleDateString('id-ID');
 
         setInterval(function() {
             var sekarang = new Date();
-            var jamEl = document.getElementById('displayJamFB');
+            var jamEl = document.getElementById('displayJamSimple');
             if (jamEl) {
                 jamEl.textContent = sekarang.toLocaleTimeString('id-ID') + ' | ' + sekarang.toLocaleDateString('id-ID');
             }
@@ -808,13 +762,11 @@
             <div class="menu-item active" data-page="home"><i class="fas fa-home"></i> Beranda</div>
             <div class="menu-item" data-page="profile"><i class="fas fa-user-circle"></i> Profil</div>
             <div class="menu-item" data-page="katalog"><i class="fas fa-box"></i> Katalog</div>
-            <div class="menu-item" data-page="toko"><i class="fas fa-store"></i> Toko</div>
-            <div class="menu-item" data-page="ojek"><i class="fas fa-motorcycle"></i> Ojek</div>
             <div class="menu-item" data-page="logout" onclick="document.getElementById('buttonLogout').click();"><i class="fas fa-sign-out-alt"></i> Keluar</div>
         `;
         document.getElementById('sidebarContainer').innerHTML = sidebarHtml;
 
-        var items = document.querySelectorAll('.sidebar-fb-left .menu-item');
+        var items = document.querySelectorAll('.sidebar-simple .menu-item');
         for (var indeks = 0; indeks < items.length; indeks++) {
             var item = items[indeks];
             item.onclick = function() {
@@ -824,26 +776,22 @@
                 this.classList.add('active');
                 var page = this.getAttribute('data-page');
                 if (page === 'home') {
-                    renderFeedBeranda(user);
+                    renderBerandaSederhana(user);
                 } else if (page === 'profile') {
                     tampilkanToast('Fitur Profil sedang dibangun', 'info');
                 } else if (page === 'katalog') {
                     tampilkanToast('Katalog sedang dibangun', 'info');
-                } else if (page === 'toko') {
-                    tampilkanToast('Fitur Toko sedang dibangun', 'info');
-                } else if (page === 'ojek') {
-                    tampilkanToast('Fitur Ojek sedang dibangun', 'info');
                 }
                 if (window.innerWidth <= 767) {
-                    document.querySelector('.sidebar-fb-left').classList.remove('open');
+                    document.querySelector('.sidebar-simple').classList.remove('open');
                     document.getElementById('sidebarOverlay').classList.remove('active');
                 }
             };
         }
-        renderFeedBeranda(user);
+        renderBerandaSederhana(user);
     }
 
-    function renderFeedBeranda(pengguna) {
+    function renderBerandaSederhana(pengguna) {
         var areaKonten = document.getElementById('mainContent');
         if (!areaKonten) {
             return;
@@ -868,43 +816,27 @@
         }
 
         var html = `
-            <!-- PROFIL PENGGUNA -->
-            <div class="fb-card" style="display:flex; align-items:center; gap:15px; padding:15px;">
-                <div style="width:60px; height:60px; border-radius:50%; background:#f0f0f0; display:flex; justify-content:center; align-items:center; color:#aaa; font-size:30px; overflow:hidden; border:2px solid #fff; box-shadow:var(--shadow);">
-                    <img id="fotoProfilFeed" src="" style="width:100%; height:100%; object-fit:cover; display:none;">
-                    <i id="fotoProfilFeedPlaceholder" class="fas fa-user-circle" style="font-size:50px; color:#ccc;"></i>
-                </div>
-                <div>
-                    <h2 style="margin:0; font-size:20px; font-weight:700;">${escapeHtml(pengguna.nama||pengguna.username||'User')}</h2>
-                    <p style="margin:0; font-size:13px; color:#888;">${escapeHtml(pengguna.role||'User')}</p>
-                </div>
-            </div>
-
-            <!-- POSTINGAN STATUS -->
             <div class="fb-card">
-                <div style="font-weight:600; margin-bottom:5px;">Apa yang sedang Anda pikirkan?</div>
-                <div style="background:#f0f2f5; border-radius:20px; padding:10px 15px; color:#888; cursor:pointer;" onclick="tampilkanToast('Fitur Buat Status belum siap', 'info')">Tulis status Anda...</div>
-            </div>
-
-            <!-- STATISTIK & PRODUK UNGGULAN -->
-            <div class="fb-card">
-                <div class="fb-card-header">Statistik Terkini</div>
-                <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(100px,1fr)); gap:10px;">
-                    <div style="text-align:center; padding:10px; background:#f8f9fa; border-radius:8px;"><div style="font-size:20px; font-weight:700; color:var(--primary);">${jumlahToko}</div><div style="font-size:12px; color:#888;">Toko</div></div>
-                    <div style="text-align:center; padding:10px; background:#f8f9fa; border-radius:8px;"><div style="font-size:20px; font-weight:700; color:#2196F3;">${jumlahOjek}</div><div style="font-size:12px; color:#888;">Ojek</div></div>
-                    <div style="text-align:center; padding:10px; background:#f8f9fa; border-radius:8px;"><div style="font-size:20px; font-weight:700; color:#4CAF50;">${jumlahCustomer}</div><div style="font-size:12px; color:#888;">Pelanggan</div></div>
+                <h3 style="margin-bottom:10px;">Selamat Datang, ${escapeHtml(pengguna.nama||pengguna.username||'User')}</h3>
+                <p style="margin-bottom:10px; color:#888;">Role: ${escapeHtml(pengguna.role||'User')}</p>
+                <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(100px,1fr)); gap:15px; margin-top:15px;">
+                    <div style="text-align:center; padding:15px; background:#f8f9fa; border-radius:8px; border:1px solid #eee;">
+                        <div style="font-size:24px; font-weight:700; color:var(--primary);">${jumlahToko}</div>
+                        <div style="font-size:13px; color:#888;">Toko Terdaftar</div>
+                    </div>
+                    <div style="text-align:center; padding:15px; background:#f8f9fa; border-radius:8px; border:1px solid #eee;">
+                        <div style="font-size:24px; font-weight:700; color:#2196F3;">${jumlahOjek}</div>
+                        <div style="font-size:13px; color:#888;">Ojek Terdaftar</div>
+                    </div>
+                    <div style="text-align:center; padding:15px; background:#f8f9fa; border-radius:8px; border:1px solid #eee;">
+                        <div style="font-size:24px; font-weight:700; color:#4CAF50;">${jumlahCustomer}</div>
+                        <div style="font-size:13px; color:#888;">Customer Terdaftar</div>
+                    </div>
                 </div>
             </div>
         `;
 
         areaKonten.innerHTML = html;
-
-        var avatar = localStorage.getItem('2r_user_avatar_' + pengguna.id);
-        if (avatar) {
-            document.getElementById('fotoProfilFeed').src = avatar;
-            document.getElementById('fotoProfilFeed').style.display = 'block';
-            document.getElementById('fotoProfilFeedPlaceholder').style.display = 'none';
-        }
     }
 </script>
 <!-- ===== AKHIR BLOK 5.4 ===== -->
