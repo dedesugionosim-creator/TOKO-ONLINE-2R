@@ -1010,6 +1010,149 @@ html += `
     });
 </script>
 <!-- ===== AKHIR BLOK 7 & 8 ===== -->
+// ============================================================ //
+// BLOK 9 - HALAMAN DEFAULT (HALAMAN BERANDA) SEMUA PERAN AKUN   //
+// ============================================================ //
+
+// ===== BLOK 9.1 - STRUKTUR HYPER TEXT MARKUP LANGUAGE HALAMAN DEFAULT ===== //
+
+// ===== SUB BLOK 9.1.1 - BAGIAN HEADER & PROFIL PENGGUNA (SAMPUL DAN AVATAR) ===== //
+function renderHalamanBerandaDefault() {
+    var areaKonten = document.getElementById('mainContent');
+    if (!areaKonten) return;
+
+    // Ambil data pengguna yang sedang login
+    var pengguna = JSON.parse(localStorage.getItem('2r_user') || '{}');
+    if (!pengguna.id) {
+        tampilkanToast('Data pengguna tidak ditemukan!', 'error');
+        return;
+    }
+
+    // Ambil data konfigurasi logo aplikasi dari penyimpanan lokal
+    var konfigurasi = JSON.parse(localStorage.getItem('2r_aplikasi_setting') || '{"nama":"Toko Online 2R","deskripsi":"Platform Belanja & Layanan Serba Ada","logo":""}');
+
+    // Bangun Hypertext Markup Language untuk Header & Profil Pengguna
+    var htmlHeader = `
+    <div class="card" style="padding:0; overflow:hidden; border-radius:var(--radius) 12px 12px 12px; margin-bottom:20px; border:none;">
+        
+        <!-- BAGIAN FOTO SAMPUL -->
+        <div class="cover-photo-wrapper" style="position:relative; width:100%; height:220px; background:#f0f0f0; overflow:hidden; cursor:pointer;" onclick="document.getElementById('inputUploadSampul').click();">
+            <img id="fotoSampulPreview" src="" style="width:100%; height:100%; object-fit:cover; display:none;">
+            <div id="fotoSampulPlaceholder" style="position:absolute; top:0; left:0; width:100%; height:100%; display:flex; flex-direction:column; justify-content:center; align-items:center; color:#aaa; background:#f8f9fa;">
+                <i class="fas fa-camera" style="font-size:40px; margin-bottom:10px;"></i>
+                <span style="font-size:14px; font-weight:500;">Klik atau Seret untuk Unggah Foto Sampul</span>
+            </div>
+            <!-- Input tersembunyi untuk mengunggah file -->
+            <input type="file" id="inputUploadSampul" accept="image/jpeg,image/png,image/webp" style="display:none;" onchange="prosesUnggahGambar('sampul', this)">
+        </div>
+
+        <!-- BAGIAN FOTO PROFIL & INFO PENGGUNA -->
+        <div style="position:relative; padding: 20px 30px 30px 30px; display:flex; flex-wrap:wrap; align-items:flex-end; gap:15px; background:white;">
+            
+            <!-- FOTO PROFIL (AVATAR) -->
+            <div style="margin-top:-70px; width:130px; height:130px; border-radius:50%; border:5px solid white; box-shadow:var(--shadow); background:#f0f0f0; overflow:hidden; flex-shrink:0; cursor:pointer;" onclick="document.getElementById('inputUploadAvatar').click();">
+                <img id="fotoProfilPreview" src="" style="width:100%; height:100%; object-fit:cover; display:none;">
+                <div id="fotoProfilPlaceholder" style="width:100%; height:100%; display:flex; justify-content:center; align-items:center; color:#aaa; background:#f8f9fa; font-size:40px;">
+                    <i class="fas fa-user-circle"></i>
+                </div>
+                <!-- Input tersembunyi untuk mengunggah file -->
+                <input type="file" id="inputUploadAvatar" accept="image/jpeg,image/png,image/webp" style="display:none;" onchange="prosesUnggahGambar('profil', this)">
+            </div>
+
+            <!-- INFORMASI PENGGUNA DAN LOGO TOKO -->
+            <div style="flex:1; display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; min-width:200px;">
+                
+                <!-- NAMA & ROLE -->
+                <div>
+                    <h2 id="tampilanNamaPengguna" style="margin:0 0 5px 0; font-size:24px; font-weight:700; color:var(--text);">
+                        ${escapeHtml(pengguna.nama || pengguna.username || 'Pengguna')}
+                    </h2>
+                    <p style="margin:0; font-size:14px; color:var(--text-muted);">
+                        <span class="role-badge" style="background:var(--primary-light); color:var(--primary); padding:4px 12px; border-radius:12px; font-size:12px; font-weight:600;">
+                            ${escapeHtml(pengguna.role || 'User')}
+                        </span>
+                        <span style="margin-left:10px; font-size:13px;">
+                            <i class="fas fa-clock" style="color:#aaa;"></i> 
+                            <span id="displayJamHome" style="font-weight:500;">00:00:00</span>
+                            <span id="displayTanggalHome" style="color:#999;">Senin, 01 Januari 2026</span>
+                        </span>
+                    </p>
+                </div>
+
+                <!-- LOGO TOKO ONLINE 2R -->
+                <div id="appLogoWrapperHome" style="display:flex; align-items:center; gap:10px; margin-top:10px;">
+                    <!-- Ikon Default atau Logo yang sudah diunggah -->
+                    <i class="fas fa-store-alt" id="appLogoIconHome" style="font-size:35px; color:var(--primary); display:block;"></i>
+                    <img id="appLogoImageHome" src="" style="display:none; max-height:50px; object-fit:contain;">
+                    <div style="display:flex; flex-direction:column;">
+                        <span style="font-size:16px; font-weight:700; color:var(--primary);">${escapeHtml(konfigurasi.nama)}</span>
+                        <span style="font-size:11px; color:#888;">${escapeHtml(konfigurasi.deskripsi)}</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    `;
+
+    // Gabungkan ke dalam area konten (ini bagian awal, nanti kita akan menambahkan Sub Blok 9.1.2 sampai 9.1.5)
+    areaKonten.innerHTML = htmlHeader;
+
+    // --- PERSIAPAN LOGO, JAM, DAN FOTO AWAL ---
+    // Tampilkan logo jika ada data tersimpan
+    var logoHome = document.getElementById('appLogoImageHome');
+    var iconHome = document.getElementById('appLogoIconHome');
+    if (konfigurasi.logo) {
+        if (logoHome) { logoHome.src = konfigurasi.logo; logoHome.style.display = 'block'; }
+        if (iconHome) { iconHome.style.display = 'none'; }
+    }
+
+    // Sinkronisasi Jam dan Tanggal agar sama dengan di Navbar
+    function updateJamTanggalHome() {
+        var jamHome = document.getElementById('displayJamHome');
+        var tanggalHome = document.getElementById('displayTanggalHome');
+        if (!jamHome || !tanggalHome) return;
+        
+        var sekarang = new Date();
+        var jam = String(sekarang.getHours()).padStart(2, '0');
+        var menit = String(sekarang.getMinutes()).padStart(2, '0');
+        var detik = String(sekarang.getSeconds()).padStart(2, '0');
+        jamHome.textContent = jam + ':' + menit + ':' + detik;
+
+        var daftarHari = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+        var daftarBulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+        var hari = daftarHari[sekarang.getDay()];
+        var tanggal = String(sekarang.getDate()).padStart(2, '0');
+        var bulan = daftarBulan[sekarang.getMonth()];
+        var tahun = sekarang.getFullYear();
+        tanggalHome.textContent = hari + ', ' + tanggal + ' ' + bulan + ' ' + tahun;
+    }
+    updateJamTanggalHome();
+    setInterval(updateJamTanggalHome, 1000);
+
+    // --- FUNGSI PEMUATAN GAMBAR SAMPUL DAN PROFIL SAAT HALAMAN DIMUAT ---
+    var kunciSampul = '2r_cover_foto_' + pengguna.id;
+    var kunciAvatar = '2r_user_avatar_' + pengguna.id;
+    
+    var dataSampul = localStorage.getItem(kunciSampul);
+    var dataAvatar = localStorage.getItem(kunciAvatar);
+
+    // Tampilkan Sampul jika ada
+    if (dataSampul) {
+        document.getElementById('fotoSampulPreview').src = dataSampul;
+        document.getElementById('fotoSampulPreview').style.display = 'block';
+        document.getElementById('fotoSampulPlaceholder').style.display = 'none';
+    }
+
+    // Tampilkan Avatar jika ada
+    if (dataAvatar) {
+        document.getElementById('fotoProfilPreview').src = dataAvatar;
+        document.getElementById('fotoProfilPreview').style.display = 'block';
+        document.getElementById('fotoProfilPlaceholder').style.display = 'none';
+    }
+}
+// ===== AKHIR SUB BLOK 9.1.1 =====
+
 
 <!-- ============================================================ -->
 <!-- PENUTUP HTML                                                 -->
