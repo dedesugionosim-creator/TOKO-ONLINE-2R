@@ -1,5 +1,5 @@
 <!-- ============================================================ -->
-<!-- BLOK 1.1 - TAG HTML & META                                     -->
+<!-- BAGIAN 1: HALAMAN LOGIN (HTML & CSS LOGIN)                   -->
 <!-- ============================================================ -->
 <!DOCTYPE html>
 <html lang="id">
@@ -7,357 +7,308 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aplikasi Multi Role - Toko Online 2R</title>
-<!-- ===== AKHIR BLOK 1.1 ===== -->
-
-<!-- ============================================================ -->
-<!-- BLOK 1.2 - LINK FONTAWESOME & GOOGLE FONTS                   -->
-<!-- ============================================================ -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<!-- ===== AKHIR BLOK 1.2 ===== -->
-
-<!-- ============================================================ -->
-<!-- BLOK 1.3 - FAVICON                                            -->
-<!-- ============================================================ -->
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛒</text></svg>">
-    <link rel="shortcut icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛒</text></svg>">
-<!-- ===== AKHIR BLOK 1.3 ===== -->
+    
+    <!-- CSS GLOBAL & LOGIN (semua CSS disatukan di sini) -->
+    <style>
+        :root {
+            --primary: #FF6B00;
+            --primary-dark: #e65c00;
+            --primary-light: #fff5f0;
+            --bg: #f8f9fa;
+            --text: #333333;
+            --text-muted: #888888;
+            --border: #e9ecef;
+            --shadow: 0 4px 20px rgba(0,0,0,0.08);
+            --radius: 12px;
+        }
 
-<!-- ============================================================ -->
-<!-- BLOK 1.4 - PENUTUP HEAD & PEMBUKA BODY                       -->
-<!-- ============================================================ -->
+        /* --- RESET --- */
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            font-family:'Poppins', sans-serif;
+            min-height:100vh;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            background:linear-gradient(135deg, #C05000 0%, #E67E22 100%);
+        }
+        .hidden-form { display:none !important; }
+        .grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:15px; }
+        .button-small { padding:6px 14px; font-size:12px; width:100%; border:none; border-radius:var(--radius); background:var(--primary); color:white; cursor:pointer; }
+
+        /* --- TOAST --- */
+        #toastContainer {
+            position:fixed;
+            top:20px;
+            left:50%;
+            transform:translateX(-50%);
+            z-index:99999;
+            display:flex;
+            flex-direction:column;
+            gap:10px;
+            max-width:90%;
+            width:auto;
+            align-items:center;
+        }
+        .toast {
+            padding:14px 20px;
+            border-radius:var(--radius);
+            color:white;
+            font-size:14px;
+            font-weight:500;
+            box-shadow:var(--shadow);
+            animation:slideInDown 0.4s ease;
+            display:flex;
+            align-items:center;
+            gap:12px;
+            width:100%;
+            min-width:300px;
+            justify-content:center;
+        }
+        .toast.success { background:#4CAF50; }
+        .toast.error { background:#F44336; }
+        .toast.warning { background:#FF9800; }
+        .toast.info { background:#2196F3; }
+        @keyframes slideInDown {
+            from { transform:translateY(-100px); opacity:0; }
+            to { transform:translateY(0); opacity:1; }
+        }
+
+        /* --- LOGIN BOX --- */
+        #pageAuthentication {
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            width:100%;
+            min-height:100vh;
+            background:linear-gradient(135deg, #C05000 0%, #E67E22 100%);
+        }
+        .authentication-wrapper { width:100%; max-width:450px; padding:20px; }
+        .authentication-box {
+            background:white;
+            border-radius:var(--radius);
+            padding:35px;
+            box-shadow:var(--shadow);
+            border:1px solid var(--border);
+            width:100%;
+        }
+        .authentication-logo { text-align:center; margin-bottom:25px; }
+        .authentication-logo i { font-size:45px; color:var(--primary); }
+        .authentication-logo h1 { font-size:26px; font-weight:700; }
+        .authentication-logo p { color:var(--text-muted); font-size:14px; }
+        .authentication-error { display:none; background:#ffebee; color:#d32f2f; padding:12px 16px; border-radius:var(--radius); margin-bottom:15px; font-size:14px; border-left:4px solid #d32f2f; }
+        .form-group { margin-bottom:15px; }
+        .form-group label { display:block; font-weight:600; font-size:13px; color:#555; }
+        .input-group { display:flex; align-items:center; background:#f8f9fa; border-radius:var(--radius); padding:0 14px; border:2px solid transparent; transition:0.3s; }
+        .input-group:focus-within { border-color:var(--primary); background:white; box-shadow:0 0 0 4px rgba(255,107,0,0.1); }
+        .input-group i { color:#aaa; font-size:16px; width:30px; text-align:center; }
+        .input-group input, .input-group select { border:none; background:transparent; padding:13px 0; font-size:14px; width:100%; outline:none; font-family:'Poppins', sans-serif; }
+        .button-submit { width:100%; padding:14px; background:var(--primary); color:white; border:none; border-radius:var(--radius); font-size:16px; font-weight:700; cursor:pointer; transition:0.3s; }
+        .button-submit:hover { background:var(--primary-dark); transform:scale(1.02); }
+        .authentication-footer { text-align:center; margin-top:18px; font-size:14px; color:var(--text-muted); }
+        .authentication-footer a { color:var(--primary); cursor:pointer; font-weight:600; text-decoration:none; }
+        .authentication-footer a:hover { text-decoration:underline; color:var(--primary-dark); }
+    </style>
 </head>
 <body>
-<!-- ===== AKHIR BLOK 1.4 ===== -->
 
-<!-- ============================================================ -->
-<!-- BLOK 1.5 - WADAH NOTIFIKASI TOAST                             -->
-<!-- ============================================================ -->
-    <div id="toastContainer"></div>
-<!-- ===== AKHIR BLOK 1.5 ===== -->
+<!-- === TOAST CONTAINER === -->
+<div id="toastContainer"></div>
 
-<!-- ============================================================ -->
-<!-- BLOK 2.1 - WRAPPER & KOTAK LOGIN                              -->
-<!-- ============================================================ -->
-    <div id="pageAuthentication">
-        <div class="authentication-wrapper">
-            <div class="authentication-box">
-<!-- ===== AKHIR BLOK 2.1 ===== -->
+<!-- === HALAMAN LOGIN === -->
+<div id="pageAuthentication">
+    <div class="authentication-wrapper">
+        <div class="authentication-box">
 
-<!-- ===== BLOK 2.2 - LOGO & JUDUL APLIKASI (DINAMIS) ===== -->
-                <div class="authentication-logo" id="authLogoContainer">
-                    <!-- Tempat Logo: Default icon, bisa diganti gambar -->
-                    <div id="appLogoWrapper" style="display:flex; justify-content:center; align-items:center; flex-direction:column; margin-bottom:10px;">
-                        <i class="fas fa-store-alt" id="appLogoIcon" style="font-size:60px; color:var(--primary);"></i>
-                        <img id="appLogoImage" src="" style="display:none; max-width:120px; max-height:120px; object-fit:contain; border-radius:10px;">
-                    </div>
-                    
-                    <!-- Judul Aplikasi Dinamis -->
-                    <h1 id="appNamaDisplay">Toko Online <span style="color:#FF6B00;">2R</span></h1>
-                    
-                    <!-- Deskripsi Aplikasi Dinamis -->
-                    <p id="appDeskripsiDisplay">Platform Belanja & Layanan Serba Ada</p>
-                </div>
-<!-- ===== AKHIR BLOK 2.2 ===== -->
-
-<!-- ============================================================ -->
-<!-- BLOK 2.3 - AREA PESAN ERROR                                   -->
-<!-- ============================================================ -->
-                <div class="authentication-error" id="authenticationError">
-                    <i class="fas fa-exclamation-circle"></i> 
-                    <span id="authenticationErrorText"></span>
-                </div>
-<!-- ===== AKHIR BLOK 2.3 ===== -->
-
-<!-- ============================================================ -->
-<!-- BLOK 2.4 - FORM LOGIN                                         -->
-<!-- ============================================================ -->
-                <form class="authentication-form" id="loginForm">
-                    <div class="form-group">
-                        <label>Username</label>
-                        <div class="input-group">
-                            <i class="fas fa-user"></i>
-                            <input type="text" id="loginUsername" placeholder="Masukkan username" required>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label>Password</label>
-                        <div class="input-group">
-                            <i class="fas fa-lock"></i>
-                            <input type="password" id="loginPassword" placeholder="Masukkan password" required>
-                        </div>
-                    </div>
-                    <button type="submit" class="button-submit">
-                        <i class="fas fa-sign-in-alt"></i> Login
-                    </button>
-                </form>
-<!-- ===== AKHIR BLOK 2.4 ===== -->
-
-<!-- ============================================================ -->
-<!-- BLOK 2.5 - FORM REGISTER                                      -->
-<!-- ============================================================ -->
-                <form class="authentication-form hidden-form" id="registerForm">
-                    <div class="form-group">
-                        <label>Pilih Role</label>
-                        <div class="input-group">
-                            <i class="fas fa-user-tag"></i>
-                            <select id="registerRole">
-                                <option value="customer">Customer</option>
-                                <option value="toko">Toko</option>
-                                <option value="ojek">Ojek</option>
-                                <option value="pedagang">Pedagang Pasar</option>
-                                <option value="codseller">COD Seller</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label>ID Akun (Otomatis)</label>
-                        <div class="input-group">
-                            <i class="fas fa-id-card"></i>
-                            <input type="text" id="registerIdPreview" class="form-input" value="Akan dibuat otomatis" disabled style="background:#f0f0f0; color:#666;">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label>Username</label>
-                        <div class="input-group">
-                            <i class="fas fa-user"></i>
-                            <input type="text" id="registerUsername" placeholder="Buat username" required>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label>Password</label>
-                        <div class="input-group">
-                            <i class="fas fa-lock"></i>
-                            <input type="password" id="registerPassword" placeholder="Buat password" required>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label>Nama Lengkap</label>
-                        <div class="input-group">
-                            <i class="fas fa-id-card"></i>
-                            <input type="text" id="registerNama" placeholder="Nama lengkap Anda" required>
-                        </div>
-                    </div>
-
-                    <!-- TAMBAHAN LOKASI -->
-                    <div class="grid-2">
-                        <div class="form-group">
-                            <label>Alamat / Lokasi</label>
-                            <div class="input-group">
-                                <i class="fas fa-map-pin"></i>
-                                <input type="text" id="registerLokasi" class="form-input" placeholder="Ketik atau klik Ambil Lokasi">
-                            </div>
-                        </div>
-                        <div class="form-group" style="display:flex; align-items:flex-end;">
-                            <button type="button" class="button-small" onclick="ambilLokasiRegister()">Ambil Lokasi Otomatis</button>
-                        </div>
-                    </div>
-                    <input type="hidden" id="registerLat" value="">
-                    <input type="hidden" id="registerLng" value="">
-
-                    <button type="submit" class="button-submit" id="btnDaftar" disabled>
-                        <i class="fas fa-user-plus"></i> Daftar
-                    </button>
-                    <div class="authentication-footer">
-                        Sudah punya akun? <a onclick="toggleForm('login')">Login di sini</a>
-                    </div>
-                </form>
-<!-- ===== AKHIR BLOK 2.5 ===== -->
-
-<!-- ============================================================ -->
-<!-- BLOK 2.6 - FORM PENGAJUAN BUKA AKUN                          -->
-<!-- ============================================================ -->
-                <form class="authentication-form hidden-form" id="pengajuanBukaAkunForm">
-                    <div class="form-group">
-                        <label>Nama Lengkap</label>
-                        <div class="input-group"><i class="fas fa-user"></i><input type="text" id="pengajuanNama" placeholder="Nama lengkap" required></div>
-                    </div>
-                    <div class="form-group">
-                        <label>Email / Nomor HP</label>
-                        <div class="input-group"><i class="fas fa-envelope"></i><input type="text" id="pengajuanKontak" placeholder="Email atau HP" required></div>
-                    </div>
-                    <div class="form-group">
-                        <label>Role yang Diinginkan</label>
-                        <div class="input-group"><i class="fas fa-user-tag"></i>
-                            <select id="pengajuanRole">
-                                <option value="toko">Toko</option>
-                                <option value="pedagang">Pedagang Pasar</option>
-                                <option value="codseller">COD Seller</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label>Alasan Pembuatan Akun</label>
-                        <div class="input-group"><i class="fas fa-comment"></i><input type="text" id="pengajuanAlasan" placeholder="Misal: Ingin berjualan online" required></div>
-                    </div>
-
-                    <!-- TAMBAHAN LOKASI -->
-                    <div class="grid-2">
-                        <div class="form-group">
-                            <label>Alamat / Lokasi</label>
-                            <div class="input-group">
-                                <i class="fas fa-map-pin"></i>
-                                <input type="text" id="pengajuanLokasi" class="form-input" placeholder="Ketik alamat">
-                            </div>
-                        </div>
-                        <div class="form-group" style="display:flex; align-items:flex-end;">
-                            <button type="button" class="button-small" onclick="ambilLokasiPengajuan()">Ambil Lokasi Otomatis</button>
-                        </div>
-                    </div>
-                    <input type="hidden" id="pengajuanLat" value="">
-                    <input type="hidden" id="pengajuanLng" value="">
-
-                    <button type="submit" class="button-submit" id="btnAjukan" disabled>
-                        <i class="fas fa-paper-plane"></i> Ajukan ke Admin
-                    </button>
-                    <div class="authentication-footer">Sudah punya akun? <a onclick="toggleForm('login')">Login di sini</a></div>
-                </form>
-<!-- ===== AKHIR BLOK 2.6 ===== -->
-
-<!-- ============================================================ -->
-<!-- BLOK 2.7 - FOOTER & NAVIGASI FORM (LUPA PASSWORD)            -->
-<!-- ============================================================ -->
-                <div class="authentication-footer">
-                    <a onclick="lupaPassword()" style="cursor:pointer; color:#d32f2f; font-weight:600;">Lupa Password?</a>
-                    <br><br>
-                    Belum punya akun? <a onclick="toggleForm('register')">Daftar di sini</a>
-                    <br>
-                    <a onclick="toggleForm('pengajuan')">Ajukan buka akun</a>
-                </div>
-<!-- ===== AKHIR BLOK 2.7 ===== -->
-
+            <div class="authentication-logo">
+                <i class="fas fa-store-alt"></i>
+                <h1>Toko Online <span style="color:#FF6B00;">2R</span></h1>
+                <p>Platform Belanja & Layanan Serba Ada</p>
             </div>
+
+            <div class="authentication-error" id="authenticationError">
+                <i class="fas fa-exclamation-circle"></i> <span id="authenticationErrorText"></span>
+            </div>
+
+            <!-- LOGIN FORM -->
+            <form class="authentication-form" id="loginForm">
+                <div class="form-group">
+                    <label>Username</label>
+                    <div class="input-group"><i class="fas fa-user"></i><input type="text" id="loginUsername" placeholder="Masukkan username" required></div>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <div class="input-group"><i class="fas fa-lock"></i><input type="password" id="loginPassword" placeholder="Masukkan password" required></div>
+                </div>
+                <button type="submit" class="button-submit"><i class="fas fa-sign-in-alt"></i> Login</button>
+            </form>
+
+            <!-- REGISTER FORM -->
+            <form class="authentication-form hidden-form" id="registerForm">
+                <div class="form-group">
+                    <label>Pilih Role</label>
+                    <div class="input-group"><i class="fas fa-user-tag"></i>
+                        <select id="registerRole">
+                            <option value="customer">Customer</option>
+                            <option value="toko">Toko</option>
+                            <option value="ojek">Ojek</option>
+                            <option value="pedagang">Pedagang Pasar</option>
+                            <option value="codseller">COD Seller</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>ID Akun (Otomatis)</label>
+                    <div class="input-group"><i class="fas fa-id-card"></i><input type="text" id="registerIdPreview" class="form-input" value="Akan dibuat otomatis" disabled style="background:#f0f0f0; color:#666;"></div>
+                </div>
+                <div class="form-group">
+                    <label>Username</label>
+                    <div class="input-group"><i class="fas fa-user"></i><input type="text" id="registerUsername" placeholder="Buat username" required></div>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <div class="input-group"><i class="fas fa-lock"></i><input type="password" id="registerPassword" placeholder="Buat password" required></div>
+                </div>
+                <div class="form-group">
+                    <label>Nama Lengkap</label>
+                    <div class="input-group"><i class="fas fa-id-card"></i><input type="text" id="registerNama" placeholder="Nama lengkap Anda" required></div>
+                </div>
+
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label>Alamat / Lokasi</label>
+                        <div class="input-group"><i class="fas fa-map-pin"></i><input type="text" id="registerLokasi" class="form-input" placeholder="Ketik atau klik Ambil Lokasi"></div>
+                    </div>
+                    <div class="form-group" style="display:flex; align-items:flex-end;">
+                        <button type="button" class="button-small" onclick="ambilLokasiRegister()">Ambil Lokasi Otomatis</button>
+                    </div>
+                </div>
+                <input type="hidden" id="registerLat" value="">
+                <input type="hidden" id="registerLng" value="">
+
+                <button type="submit" class="button-submit" id="btnDaftar" disabled><i class="fas fa-user-plus"></i> Daftar</button>
+                <div class="authentication-footer">Sudah punya akun? <a onclick="toggleForm('login')">Login di sini</a></div>
+            </form>
+
+            <!-- PENGAJUAN FORM -->
+            <form class="authentication-form hidden-form" id="pengajuanBukaAkunForm">
+                <div class="form-group">
+                    <label>Nama Lengkap</label>
+                    <div class="input-group"><i class="fas fa-user"></i><input type="text" id="pengajuanNama" placeholder="Nama lengkap" required></div>
+                </div>
+                <div class="form-group">
+                    <label>Email / Nomor HP</label>
+                    <div class="input-group"><i class="fas fa-envelope"></i><input type="text" id="pengajuanKontak" placeholder="Email atau HP" required></div>
+                </div>
+                <div class="form-group">
+                    <label>Role yang Diinginkan</label>
+                    <div class="input-group"><i class="fas fa-user-tag"></i>
+                        <select id="pengajuanRole">
+                            <option value="toko">Toko</option>
+                            <option value="pedagang">Pedagang Pasar</option>
+                            <option value="codseller">COD Seller</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Alasan Pembuatan Akun</label>
+                    <div class="input-group"><i class="fas fa-comment"></i><input type="text" id="pengajuanAlasan" placeholder="Misal: Ingin berjualan online" required></div>
+                </div>
+
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label>Alamat / Lokasi</label>
+                        <div class="input-group"><i class="fas fa-map-pin"></i><input type="text" id="pengajuanLokasi" class="form-input" placeholder="Ketik alamat"></div>
+                    </div>
+                    <div class="form-group" style="display:flex; align-items:flex-end;">
+                        <button type="button" class="button-small" onclick="ambilLokasiPengajuan()">Ambil Lokasi Otomatis</button>
+                    </div>
+                </div>
+                <input type="hidden" id="pengajuanLat" value="">
+                <input type="hidden" id="pengajuanLng" value="">
+
+                <button type="submit" class="button-submit" id="btnAjukan" disabled><i class="fas fa-paper-plane"></i> Ajukan ke Admin</button>
+                <div class="authentication-footer">Sudah punya akun? <a onclick="toggleForm('login')">Login di sini</a></div>
+            </form>
+
+            <!-- FOOTER NAVIGASI (Lupa Password) -->
+            <div class="authentication-footer">
+                <a onclick="lupaPassword()" style="cursor:pointer; color:#d32f2f; font-weight:600;">Lupa Password?</a>
+                <br><br>
+                Belum punya akun? <a onclick="toggleForm('register')">Daftar di sini</a><br>
+                <a onclick="toggleForm('pengajuan')">Ajukan buka akun</a>
+            </div>
+
         </div>
     </div>
-<!-- ===== AKHIR BLOK 2.1 (PENUTUP WRAPPER LOGIN) ===== -->
+</div>
+<!-- ===== AKHIR BAGIAN 1 ===== -->
+<!-- ============================================================ -->
+<!-- BAGIAN 2: DASHBOARD & NAVIGASI (HTML & CSS DASHBOARD)        -->
+<!-- ============================================================ -->
 
-<!-- ============================================================ -->
-<!-- BLOK 3.1 - NAVBAR UTAMA (DASHBOARD)                          -->
-<!-- ============================================================ -->
-<div id="pageDashboard" class="page-dashboard">
+<!-- === DASHBOARD WRAPPER === -->
+<div id="pageDashboard" class="page-dashboard" style="display:none;">
+
+    <!-- NAVBAR -->
     <nav class="navbar">
         <div class="navbar-brand">
             <button id="menuToggle"><i class="fas fa-bars"></i></button>
             <i class="fas fa-store-alt"></i> Toko Online 2R
         </div>
         <div class="navbar-user">
-            <!-- Jam & Tanggal -->
-            <div class="navbar-time" style="display:flex; flex-direction:column; align-items:flex-end; margin-right:15px; font-size:12px; color:#555;">
+            <div class="navbar-time">
                 <span id="displayJam" style="font-weight:600; font-size:14px;">00:00:00</span>
-                <span id="displayTanggal" style="font-size:11px;">Senin, 01 Januari 2026</span>
+                <span id="displayTanggal" style="font-size:11px;">Senin, 01 Jan 2026</span>
             </div>
-
-            <!-- Avatar Foto Profil -->
-            <img id="userAvatar" src="" style="display:none; width:32px; height:32px; border-radius:50%; object-fit:cover; margin-right:8px; vertical-align:middle; border:2px solid var(--primary);">
-            <span id="userAvatarPlaceholder" style="display:inline-block; width:32px; height:32px; border-radius:50%; background:#eee; text-align:center; line-height:32px; color:#aaa; margin-right:8px; vertical-align:middle;">
-                <i class="fas fa-user"></i>
-            </span>
-
+            <img id="userAvatar" src="" style="display:none; width:32px; height:32px; border-radius:50%; object-fit:cover; border:2px solid var(--primary);">
+            <span id="userAvatarPlaceholder" style="width:32px; height:32px; border-radius:50%; background:#eee; text-align:center; line-height:32px; color:#aaa;"><i class="fas fa-user"></i></span>
             <span class="role-badge" id="roleBadge">Role</span>
             <span id="userNama" style="font-weight:600;">User</span>
             <button class="button-logout" id="buttonLogout"><i class="fas fa-sign-out-alt"></i> Keluar</button>
         </div>
     </nav>
-<!-- ===== AKHIR BLOK 3.1 ===== -->
 
-<!-- ============================================================ -->
-<!-- BLOK 3.2 - SIDEBAR CONTAINER & OVERLAY                       -->
-<!-- ============================================================ -->
+    <!-- SIDEBAR -->
     <aside class="sidebar" id="sidebarContainer"></aside>
     <div id="sidebarOverlay" class="sidebar-overlay"></div>
-<!-- ===== AKHIR BLOK 3.2 ===== -->
 
-<!-- ============================================================ -->
-<!-- BLOK 3.3 - AREA KONTEN UTAMA (MAIN CONTENT)                  -->
-<!-- ============================================================ -->
+    <!-- MAIN CONTENT -->
     <main class="content" id="mainContent"></main>
-<!-- ===== AKHIR BLOK 3.3 ===== -->
 
-<!-- ============================================================ -->
-<!-- BLOK 3.4 - MODAL KONFIRMASI TOLAK AKUN                       -->
-<!-- ============================================================ -->
+    <!-- MODALS -->
     <div class="modal-overlay" id="modalTolakAkun">
         <div class="modal">
-            <div class="modal-header">
-                <h3>Konfirmasi Penolakan</h3>
-                <button class="modal-close" onclick="tutupModal('modalTolakAkun')">&times;</button>
-            </div>
-            <div class="modal-body">
-                <p>Yakin ingin menolak akun ini?</p>
-                <input type="hidden" id="tolakIdAkun">
-            </div>
+            <div class="modal-header"><h3>Konfirmasi Penolakan</h3><button class="modal-close" onclick="tutupModal('modalTolakAkun')">&times;</button></div>
+            <div class="modal-body"><p>Yakin ingin menolak akun ini?</p><input type="hidden" id="tolakIdAkun"></div>
             <div class="modal-footer">
-                <button class="btn btn-extra-small" style="background:#eeeeee;" onclick="tutupModal('modalTolakAkun')">Batal</button>
+                <button class="btn btn-extra-small" style="background:#eee;" onclick="tutupModal('modalTolakAkun')">Batal</button>
                 <button class="btn btn-danger btn-extra-small" onclick="eksekusiTolakAkun()">Ya, Tolak</button>
             </div>
         </div>
     </div>
-<!-- ===== AKHIR BLOK 3.4 ===== -->
 
-<!-- ============================================================ -->
-<!-- BLOK 3.5 - MODAL PREVIEW GAMBAR                              -->
-<!-- ============================================================ -->
     <div class="modal-overlay" id="modalPreviewGambar">
         <div class="modal" style="background:transparent; box-shadow:none; max-width:800px;">
-            <div class="modal-header" style="background:white; border-radius:12px 12px 0 0;">
-                <h3 id="modalPreviewTitle">Preview</h3>
-                <button class="modal-close" onclick="tutupModal('modalPreviewGambar')">&times;</button>
-            </div>
-            <img id="modalPreviewImage" src="" style="width:100%; max-height:70vh; object-fit:contain; border-radius:0 0 12px 12px; background:#f0f0f0;">
+            <div class="modal-header" style="background:white; border-radius:12px 12px 0 0;"><h3 id="modalPreviewTitle">Preview</h3><button class="modal-close" onclick="tutupModal('modalPreviewGambar')">&times;</button></div>
+            <img id="modalPreviewImage" src="" style="width:100%; max-height:70vh; object-fit:contain; background:#f0f0f0;">
         </div>
     </div>
-<!-- ===== AKHIR BLOK 3.5 ===== -->
 
-<!-- ============================================================ -->
-<!-- BLOK 3.6 - MODAL FORM TAGIHAN (SUPERADMIN)                   -->
-<!-- ============================================================ -->
     <div class="modal-overlay" id="modalFormTagihan">
         <div class="modal" style="max-width:500px;">
-            <div class="modal-header">
-                <h3 id="modalTagihanTitle">Tambah Tagihan</h3>
-                <button class="modal-close" onclick="tutupModalTagihan()">&times;</button>
-            </div>
+            <div class="modal-header"><h3 id="modalTagihanTitle">Tambah Tagihan</h3><button class="modal-close" onclick="tutupModalTagihan()">&times;</button></div>
             <div class="modal-body">
-                <div class="form-group">
-                    <label>Akun</label>
-                    <select id="tagihanAkunId" class="form-input">
-                        <option value="">-- Pilih Akun --</option>
-                    </select>
-                </div>
+                <div class="form-group"><label>Akun</label><select id="tagihanAkunId" class="form-input"><option value="">-- Pilih Akun --</option></select></div>
                 <div class="grid-2">
-                    <div class="form-group">
-                        <label>Bulan</label>
-                        <select id="tagihanBulan" class="form-input">
-                            <option value="1">Januari</option>
-                            <option value="2">Februari</option>
-                            <option value="3">Maret</option>
-                            <option value="4">April</option>
-                            <option value="5">Mei</option>
-                            <option value="6">Juni</option>
-                            <option value="7">Juli</option>
-                            <option value="8">Agustus</option>
-                            <option value="9">September</option>
-                            <option value="10">Oktober</option>
-                            <option value="11">November</option>
-                            <option value="12">Desember</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Tahun</label>
-                        <input type="number" id="tagihanTahun" class="form-input" value="2026" min="2020" max="2030">
-                    </div>
+                    <div class="form-group"><label>Bulan</label><select id="tagihanBulan" class="form-input"><option value="1">Jan</option>... (opsi bulan)</select></div>
+                    <div class="form-group"><label>Tahun</label><input type="number" id="tagihanTahun" class="form-input" value="2026"></div>
                 </div>
-                <div class="form-group">
-                    <label>Jumlah Tagihan (Rp)</label>
-                    <input type="number" id="tagihanJumlah" class="form-input" placeholder="50000">
-                </div>
-                <div class="form-group">
-                    <label>Status</label>
-                    <select id="tagihanStatus" class="form-input">
-                        <option value="BELUM_BAYAR">BELUM_BAYAR</option>
-                        <option value="LUNAS">LUNAS</option>
-                    </select>
-                </div>
+                <div class="form-group"><label>Jumlah Tagihan (Rp)</label><input type="number" id="tagihanJumlah" class="form-input" placeholder="50000"></div>
+                <div class="form-group"><label>Status</label><select id="tagihanStatus" class="form-input"><option value="BELUM_BAYAR">BELUM_BAYAR</option><option value="LUNAS">LUNAS</option></select></div>
                 <input type="hidden" id="tagihanEditId" value="">
             </div>
             <div class="modal-footer">
@@ -366,252 +317,68 @@
             </div>
         </div>
     </div>
-<!-- ===== AKHIR BLOK 3.6 ===== -->
 
 </div>
-<!-- ===== AKHIR BLOK 3.1 (PENUTUP DASHBOARD) ===== -->
+<!-- ===== AKHIR BAGIAN 2 ===== -->
+<!-- ============================================================ -->
+<!-- BAGIAN 3: JAVASCRIPT & HALAMAN DEFAULT                       -->
+<!-- ============================================================ -->
 
-<!-- ============================================================ -->
-<!-- BLOK 4 - CSS GLOBAL & UTILITY (SEMUA CSS DISATUKAN DI SINI)  -->
-<!-- ============================================================ -->
 <style>
-    /* -------- VARIABEL WARNA -------- */
-    :root {
-        --primary: #FF6B00;
-        --primary-dark: #e65c00;
-        --primary-light: #fff5f0;
-        --bg: #f8f9fa;
-        --text: #333333;
-        --text-muted: #888888;
-        --border: #e9ecef;
-        --shadow: 0 4px 20px rgba(0,0,0,0.08);
-        --radius: 12px;
-    }
-
-    /* ============================================================ */
-    /* BLOK 4.1 - CSS RESET DASAR                                   */
-    /* ============================================================ */
-    * { margin:0; padding:0; box-sizing:border-box; }
-    body {
-        font-family:'Poppins', sans-serif;
-        background:var(--bg);
-        min-height:100vh;
-        color:var(--text);
-        display:flex;
-        justify-content:center;
-        align-items:center;
-        background:linear-gradient(135deg, #C05000 0%, #E67E22 100%);
-    }
-    .hidden-form { display:none !important; }
-    .grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:15px; }
-    .button-small { padding:6px 14px; font-size:12px; width:100%; border:none; border-radius:var(--radius); background:var(--primary); color:white; cursor:pointer; }
-    /* ===== AKHIR BLOK 4.1 ===== */
-
-    /* ============================================================ */
-    /* BLOK 4.1.3 – TOAST NOTIFICATION                              */
-    /* ============================================================ */
-    #toastContainer { 
-        position: fixed; 
-        top: 20px; 
-        left: 50%; 
-        transform: translateX(-50%); 
-        z-index: 99999; 
-        display: flex; 
-        flex-direction: column; 
-        gap: 10px; 
-        max-width: 90%; 
-        width: auto; 
-        align-items: center; 
-    }
-    .toast { 
-        padding: 14px 20px; 
-        border-radius: var(--radius); 
-        color: white; 
-        font-size: 14px; 
-        font-weight: 500; 
-        box-shadow: var(--shadow); 
-        animation: slideInDown 0.4s ease; 
-        display: flex; 
-        align-items: center; 
-        gap: 12px; 
-        backdrop-filter: blur(4px); 
-        width: 100%;
-        min-width: 300px;
-        justify-content: center; 
-    }
-    .toast.success { background:#4CAF50; }
-    .toast.error { background:#F44336; }
-    .toast.warning { background:#FF9800; }
-    .toast.info { background:#2196F3; }
-    
-    @keyframes slideInDown { 
-        from { transform: translateY(-100px); opacity: 0; } 
-        to { transform: translateY(0); opacity: 1; } 
-    }
-    /* ===== AKHIR BLOK 4.1.3 ===== */
-
-    /* ============================================================ */
-    /* BLOK 4.1.5 – HALAMAN LOGIN/REGISTER                          */
-    /* ============================================================ */
-    html, body { height:100%; margin:0; padding:0; }
-    #pageAuthentication { 
-        display: flex; 
-        justify-content: center; 
-        align-items: center; 
-        width: 100%;
-        min-height: 100vh; 
-        background: linear-gradient(135deg, #C05000 0%, #E67E22 100%);
-    }
-    /* ===== AKHIR BLOK 4.1.5 ===== */
-
-    /* ============================================================ */
-    /* BLOK 5.1 - CSS LOGIN & REGISTER (WRAPPER & BOX)              */
-    /* ============================================================ */
-    .authentication-wrapper { width:100%; max-width:450px; padding:20px; }
-    .authentication-box {
-        background:white;
-        border-radius:var(--radius);
-        padding:35px;
-        box-shadow:var(--shadow);
-        border:1px solid var(--border);
-        width:100%;
-    }
-    /* ===== AKHIR BLOK 5.1 ===== */
-
-    /* ============================================================ */
-    /* BLOK 5.2 - CSS LOGO & PESAN ERROR                            */
-    /* ============================================================ */
-    .authentication-logo { text-align:center; margin-bottom:25px; }
-    .authentication-logo i { font-size:45px; color:var(--primary); margin-bottom:10px; }
-    .authentication-logo h1 { font-size:26px; color:var(--text); font-weight:700; }
-    .authentication-logo p { color:var(--text-muted); font-size:14px; }
-    .authentication-error { display:none; background:#ffebee; color:#d32f2f; padding:12px 16px; border-radius:var(--radius); margin-bottom:15px; font-size:14px; border-left:4px solid #d32f2f; }
-    /* ===== AKHIR BLOK 5.2 ===== */
-
-    /* ============================================================ */
-    /* BLOK 5.3 - CSS INPUT, GROUP & TOMBOL                         */
-    /* ============================================================ */
-    .form-group { margin-bottom:15px; }
-    .form-group label { display:block; font-weight:600; font-size:13px; color:#555; margin-bottom:5px; }
-    .input-group { display:flex; align-items:center; background:#f8f9fa; border-radius:var(--radius); padding:0 14px; border:2px solid transparent; transition:0.3s; }
-    .input-group:focus-within { border-color:var(--primary); background:white; box-shadow:0 0 0 4px rgba(255,107,0,0.1); }
-    .input-group i { color:#aaa; font-size:16px; width:30px; text-align:center; }
-    .input-group input, .input-group select { border:none; background:transparent; padding:13px 0; font-size:14px; width:100%; outline:none; font-family:'Poppins', sans-serif; }
-    .button-submit { width:100%; padding:14px; background:var(--primary); color:white; border:none; border-radius:var(--radius); font-size:16px; font-weight:700; cursor:pointer; transition:0.3s; }
-    .button-submit:hover { background:var(--primary-dark); transform:scale(1.02); }
-    /* ===== AKHIR BLOK 5.3 ===== */
-
-    /* ============================================================ */
-    /* BLOK 5.4 - CSS FOOTER NAVIGASI                               */
-    /* ============================================================ */
-    .authentication-footer { text-align:center; margin-top:18px; font-size:14px; color:var(--text-muted); }
-    .authentication-footer a { color:var(--primary); cursor:pointer; font-weight:600; text-decoration:none; }
-    .authentication-footer a:hover { text-decoration:underline; color:var(--primary-dark); }
-    /* ===== AKHIR BLOK 5.4 ===== */
-
-    /* ============================================================ */
-    /* BLOK 6 – CSS DASHBOARD & RESPONSIVE HP                       */
-    /* ============================================================ */
+    /* CSS DASHBOARD & HOMEPAGE */
     .page-dashboard { display:none; }
-    
-    .navbar { 
-        background:white; 
-        padding:12px 30px; 
-        display:flex; 
-        justify-content:space-between; 
-        align-items:center; 
-        border-bottom:2px solid var(--primary); 
-        position:fixed; 
-        top:0; 
-        left:0; 
-        right:0; 
-        z-index:1000; 
-        height:64px; 
-        box-shadow:0 2px 10px rgba(0,0,0,0.05); 
-    }
+    .navbar { background:white; padding:12px 30px; display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid var(--primary); position:fixed; top:0; left:0; right:0; z-index:1000; height:64px; box-shadow:0 2px 10px rgba(0,0,0,0.05); }
     .navbar-brand { font-size:20px; font-weight:700; color:var(--primary); display:flex; align-items:center; gap:10px; }
     .navbar-user { display:flex; align-items:center; gap:15px; }
     .navbar-user .role-badge { background:var(--primary-light); color:var(--primary); padding:4px 12px; border-radius:var(--radius); font-size:12px; font-weight:600; }
     .button-logout { background:#f44336; color:white; border:none; padding:8px 16px; border-radius:var(--radius); cursor:pointer; font-weight:600; font-size:13px; transition:background 0.3s; }
     .button-logout:hover { background:#d32f2f; }
-
-    .sidebar { 
-        position:fixed; 
-        top:64px; 
-        left:0; 
-        bottom:0; 
-        width:250px; 
-        background:white; 
-        border-right:1px solid var(--border); 
-        padding-top:15px; 
-        overflow-y:auto; 
-        z-index:999; 
-        box-shadow:2px 0 10px rgba(0,0,0,0.03); 
-        transition:left 0.3s ease-in-out; 
-    }
+    .sidebar { position:fixed; top:64px; left:0; bottom:0; width:250px; background:white; border-right:1px solid var(--border); padding-top:15px; overflow-y:auto; z-index:999; transition:left 0.3s ease-in-out; }
     .sidebar-menu-title { font-size:11px; text-transform:uppercase; color:#aaa; padding:15px 25px 8px; font-weight:700; letter-spacing:1.5px; }
     .sidebar-menu-item { padding:12px 25px; cursor:pointer; color:#555; font-weight:500; display:flex; align-items:center; gap:14px; font-size:14px; border-left:4px solid transparent; transition:all 0.2s; }
     .sidebar-menu-item:hover { background:#fafafa; color:var(--primary); transform:translateX(4px); }
     .sidebar-menu-item.active { background:var(--primary-light); color:var(--primary); border-left-color:var(--primary); font-weight:600; }
-
     .content { margin-left:250px; margin-top:64px; padding:25px; min-height:calc(100vh - 64px); background:var(--bg); transition:margin-left 0.3s ease-in-out; }
-
     .page-header { margin-bottom:20px; }
-    .page-header h2 { font-size:22px; color:var(--text); font-weight:700; }
-    .page-header p { color:var(--text-muted); font-size:14px; }
-
+    .page-header h2 { font-size:22px; font-weight:700; }
+    .page-header p { font-size:14px; color:var(--text-muted); }
     .card { background:white; border-radius:var(--radius); box-shadow:var(--shadow); margin-bottom:20px; padding:20px; border:1px solid var(--border); }
     .card-header { font-weight:600; font-size:15px; border-bottom:1px solid var(--border); padding-bottom:12px; margin-bottom:15px; display:flex; justify-content:space-between; align-items:center; }
-    .widget-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:15px; margin-bottom:25px; }
+    .widget-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(200px,1fr)); gap:15px; margin-bottom:25px; }
     .widget-card { background:white; border-radius:var(--radius); padding:20px; box-shadow:var(--shadow); border:1px solid var(--border); text-align:center; transition:transform 0.2s; }
     .widget-card:hover { transform:translateY(-4px); }
     .widget-card .widget-icon { font-size:35px; margin-bottom:10px; }
     .widget-card .widget-number { font-size:28px; font-weight:700; color:#333; }
-    .widget-card .widget-label { font-size:13px; color:#888; margin-top:5px; }
-    .grid-2 { display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:15px; }
-
+    .widget-card .widget-label { font-size:13px; color:#888; }
+    .grid-2 { display:grid; grid-template-columns:repeat(auto-fit, minmax(220px,1fr)); gap:15px; }
     .table-container { overflow-x:auto; }
     .table { width:100%; border-collapse:collapse; font-size:13px; }
     .table thead { background:#f8f9fa; }
-    .table thead th { padding:12px 14px; text-align:left; font-weight:600; color:#555; border-bottom:2px solid #eee; }
+    .table thead th { padding:12px 14px; font-weight:600; color:#555; border-bottom:2px solid #eee; }
     .table tbody td { padding:10px 14px; border-bottom:1px solid #f5f5f5; }
     .badge { display:inline-block; padding:4px 12px; border-radius:12px; font-size:11px; font-weight:600; }
     .badge-success { background:#e8f5e9; color:#2e7d32; }
     .badge-warning { background:#fff3e0; color:#e65100; }
     .badge-danger { background:#ffebee; color:#c62828; }
-    .badge-secondary { background:#e9ecef; color:#555; }
-
-    #menuToggle { display:none; background:none; border:none; font-size:22px; cursor:pointer; color:var(--primary); padding:0; margin-right:10px; transition:transform 0.3s; }
-    #menuToggle:active { transform:scale(0.9); }
+    #menuToggle { display:none; background:none; border:none; font-size:22px; cursor:pointer; color:var(--primary); padding:0; transition:transform 0.3s; }
     .sidebar-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:998; transition:opacity 0.3s; }
     .sidebar-overlay.active { display:block; }
 
     @media (max-width:767px) {
         .navbar { padding:10px 15px; }
-        .navbar-brand { font-size:16px; gap:8px; }
-        .navbar-user .role-badge { font-size:10px; padding:2px 8px; }
-        .navbar-user span { font-size:13px; }
+        .navbar-brand { font-size:16px; }
         .button-logout { padding:6px 12px; font-size:12px; }
         #menuToggle { display:block !important; }
-        .sidebar { width:80%; max-width:300px; top:64px; bottom:0; z-index:999; position:fixed; left:-100%; transition:left 0.3s ease-in-out; }
+        .sidebar { width:80%; max-width:300px; top:64px; left:-100%; transition:left 0.3s ease-in-out; }
         .sidebar.open { left:0; }
         .content { margin-left:0; padding:15px; margin-top:64px; }
-        .widget-grid { grid-template-columns:repeat(auto-fit, minmax(140px, 1fr)); gap:10px; }
-        .widget-card .widget-number { font-size:22px; }
-        .grid-2 { grid-template-columns:1fr; }
-        .table { font-size:12px; }
-        .modal { width:95%; padding:15px; }
-        .authentication-wrapper { padding:10px; }
-        .authentication-box { padding:20px; max-height:70vh; overflow-y:auto; }
+        .widget-grid { grid-template-columns:repeat(auto-fit, minmax(140px,1fr)); gap:10px; }
+        .authentication-box { max-height:70vh; overflow-y:auto; }
     }
-    /* ===== AKHIR BLOK 6 ===== */
 </style>
-<!-- ===== AKHIR BLOK 4, 5, 6 (CSS LENGKAP) ===== -->
-<!-- ============================================================ -->
-<!-- BLOK 7 - JAVASCRIPT UTILITY DASAR (BEBAS ERROR)             -->
-<!-- ============================================================ -->
+
 <script>
-    // ===== BLOK 7.1 - DATA & HASH =====
+    // --- UTILITY ---
     function getDataAkun() {
         var dataAkun = localStorage.getItem('2r_akun');
         return dataAkun ? JSON.parse(dataAkun) : [];
@@ -619,642 +386,382 @@
     function simpanDataAkun(akun) {
         localStorage.setItem('2r_akun', JSON.stringify(akun));
     }
-
     async function hashPassword(password) {
         var encoder = new TextEncoder();
         var data = encoder.encode(password);
         var hashBuffer = await crypto.subtle.digest('SHA-256', data);
         var hashArray = Array.from(new Uint8Array(hashBuffer));
-        return hashArray.map(function(b) { return b.toString(16).padStart(2, '0'); }).join('');
+        return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
     }
-
     function generateId(role) {
         var dataAkun = getDataAkun();
-        var daftar = [];
-        for (var i = 0; i < dataAkun.length; i++) {
-            if (dataAkun[i].role === role) daftar.push(dataAkun[i]);
-        }
-        var nomorUrut = 1;
-        for (var j = 0; j < daftar.length; j++) {
-            var bagian = daftar[j].id.split('-');
-            if (bagian.length === 2) {
-                var nomor = parseInt(bagian[1]);
-                if (nomor >= nomorUrut) nomorUrut = nomor + 1;
-            }
-        }
-        var prefix = '';
-        if (role === 'customer') prefix = 'CUST';
-        else if (role === 'toko') prefix = 'TOKO';
-        else if (role === 'ojek') prefix = 'OJEK';
-        else if (role === 'pedagang') prefix = 'PEDAGANG';
-        else if (role === 'codseller') prefix = 'COD';
-        else prefix = 'USR';
-        return prefix + '-' + String(nomorUrut).padStart(3, '0');
+        var daftar = dataAkun.filter(a => a.role === role);
+        var nomor = 1;
+        daftar.forEach(a => { var n = parseInt(a.id.split('-')[1]); if (n >= nomor) nomor = n+1; });
+        var prefix = { customer:'CUST', toko:'TOKO', ojek:'OJEK', pedagang:'PEDAGANG', codseller:'COD' }[role] || 'USR';
+        return prefix + '-' + String(nomor).padStart(3, '0');
     }
-    // ===== AKHIR BLOK 7.1 =====
-        // ===== BLOK 7.1.2 - LOAD KONFIGURASI APLIKASI (LOGO, NAMA, DESKRIPSI) =====
-    function loadAppConfig() {
-        // Ambil data dari localStorage, jika kosong gunakan default
-        var config = JSON.parse(localStorage.getItem('2r_aplikasi_setting') || '{"nama":"Toko Online 2R","deskripsi":"Platform Belanja & Layanan Serba Ada","logo":""}');
-        
-        // Update judul
-        var namaEl = document.getElementById('appNamaDisplay');
-        if (namaEl) namaEl.innerHTML = config.nama + ' <span style="color:#FF6B00;">2R</span>';
-
-        // Update deskripsi
-        var deskEl = document.getElementById('appDeskripsiDisplay');
-        if (deskEl) deskEl.textContent = config.deskripsi;
-
-        // Update logo
-        var iconEl = document.getElementById('appLogoIcon');
-        var imgEl = document.getElementById('appLogoImage');
-        if (config.logo) {
-            if (iconEl) iconEl.style.display = 'none';
-            if (imgEl) {
-                imgEl.src = config.logo;
-                imgEl.style.display = 'block';
-            }
-        } else {
-            if (iconEl) iconEl.style.display = 'block';
-            if (imgEl) imgEl.style.display = 'none';
-        }
-    }
-    // ===== AKHIR BLOK 7.1.2 =====
-    // ===== BLOK 7.2.1 - TAMBAHAN BAGIAN PENGATURAN APLIKASI =====
-html += `
-<!-- === PENGATURAN APLIKASI === -->
-<div class="card" style="margin-top:20px; border:2px solid var(--primary);">
-    <div class="card-header" style="color:var(--primary); font-weight:700;">
-        <i class="fas fa-cog"></i> Pengaturan Aplikasi (Login Page)
-        <button class="button button-success button-small" onclick="simpanPengaturanApp()"><i class="fas fa-save"></i> Simpan Perubahan</button>
-    </div>
-    <div class="grid-2">
-        <div class="form-group">
-            <label>Nama Aplikasi</label>
-            <input type="text" id="editAppNama" class="form-input" placeholder="Toko Online 2R">
-        </div>
-        <div class="form-group">
-            <label>Deskripsi / Tagline</label>
-            <input type="text" id="editAppDeskripsi" class="form-input" placeholder="Platform Belanja & Layanan Serba Ada">
-        </div>
-    </div>
-    <div class="form-group">
-        <label>Upload Logo Baru (Kosongkan jika tetap pakai default)</label>
-        <input type="file" id="editAppLogo" accept=".jpg,.jpeg,.png,.svg" style="display:none;">
-        <button class="button button-primary button-small" onclick="document.getElementById('editAppLogo').click();">Pilih Gambar Logo</button>
-        <span id="editAppLogoName" style="font-size:12px; color:#888; margin-left:10px;">Belum ada file dipilih</span>
-        <div id="editAppLogoPreview" style="margin-top:10px; max-width:100px;"></div>
-    </div>
-</div>
-`;
-// ===== AKHIR BLOK 7.2.1 =====
-    // ===== BLOK 7.2.2 - SIMPAN PENGATURAN APLIKASI & EVENT LOGO =====
-    function simpanPengaturanApp() {
-        var nama = document.getElementById('editAppNama').value.trim();
-        var deskripsi = document.getElementById('editAppDeskripsi').value.trim();
-        var logo = localStorage.getItem('2r_app_logo_temp') || '';
-
-        if (!nama) { tampilkanToast('Nama aplikasi tidak boleh kosong!', 'warning'); return; }
-
-        var config = {
-            nama: nama,
-            deskripsi: deskripsi || 'Platform Belanja & Layanan Serba Ada',
-            logo: logo
-        };
-
-        localStorage.setItem('2r_aplikasi_setting', JSON.stringify(config));
-        localStorage.removeItem('2r_app_logo_temp');
-
-        tampilkanToast('Pengaturan Aplikasi berhasil disimpan!', 'success');
-        
-        // Refresh tampilan login atau profil
-        loadAppConfig(); 
-        if (typeof renderProfilSuperAdmin === 'function') renderProfilSuperAdmin();
-    }
-
-    // Event listener untuk preview gambar logo di form edit
-    document.addEventListener('DOMContentLoaded', function() {
-        var logoInput = document.getElementById('editAppLogo');
-        if (logoInput) {
-            logoInput.addEventListener('change', function(e) {
-                var file = e.target.files[0];
-                if (file) {
-                    document.getElementById('editAppLogoName').textContent = file.name;
-                    var reader = new FileReader();
-                    reader.onload = function(ev) {
-                        document.getElementById('editAppLogoPreview').innerHTML = '<img src="' + ev.target.result + '" style="max-width:100px; max-height:100px; object-fit:contain; border-radius:8px;">';
-                        localStorage.setItem('2r_app_logo_temp', ev.target.result);
-                    };
-                    reader.readAsDataURL(file);
-                }
-            });
-        }
-    });
-    // ===== AKHIR BLOK 7.2.2 =====
-    // ===== BLOK 7.3 - TOAST =====
     function tampilkanToast(pesan, tipe) {
         if (!tipe) tipe = 'success';
         var container = document.getElementById('toastContainer');
         var toast = document.createElement('div');
         toast.className = 'toast ' + tipe;
-        var ikon = '';
-        if (tipe === 'success') ikon = 'fa-check-circle';
-        else if (tipe === 'error') ikon = 'fa-times-circle';
-        else if (tipe === 'warning') ikon = 'fa-exclamation-triangle';
-        else ikon = 'fa-info-circle';
-        toast.innerHTML = '<i class="fas ' + ikon + '"></i> ' + pesan;
+        toast.innerHTML = '<i class="fas ' + ({success:'fa-check-circle', error:'fa-times-circle', warning:'fa-exclamation-triangle', info:'fa-info-circle'}[tipe]) + '"></i> ' + pesan;
         container.appendChild(toast);
-        setTimeout(function() {
-            toast.style.animation = 'slideInRight 0.3s ease reverse';
-            setTimeout(function() { toast.remove(); }, 300);
-        }, 3500);
+        setTimeout(() => { toast.style.animation = 'slideInDown 0.3s ease reverse'; setTimeout(() => toast.remove(), 300); }, 3500);
     }
-    // ===== AKHIR BLOK 7.3 =====
-
-    // ===== BLOK 8.26.1 - TOGGLE FORM =====
+    function bukaModal(id) { document.getElementById(id).classList.add('active'); }
+    function tutupModal(id) { document.getElementById(id).classList.remove('active'); }
     function toggleForm(tipe) {
-        var login = document.getElementById('loginForm');
-        var register = document.getElementById('registerForm');
-        var pengajuan = document.getElementById('pengajuanBukaAkunForm');
-
-        if (login) login.classList.add('hidden-form');
-        if (register) register.classList.add('hidden-form');
-        if (pengajuan) pengajuan.classList.add('hidden-form');
-
-        if (tipe === 'register') {
-            if (register) register.classList.remove('hidden-form');
-        } else if (tipe === 'pengajuan') {
-            if (pengajuan) pengajuan.classList.remove('hidden-form');
-        } else {
-            if (login) login.classList.remove('hidden-form');
-        }
+        ['loginForm','registerForm','pengajuanBukaAkunForm'].forEach(id => document.getElementById(id).classList.add('hidden-form'));
+        if (tipe === 'register') document.getElementById('registerForm').classList.remove('hidden-form');
+        else if (tipe === 'pengajuan') document.getElementById('pengajuanBukaAkunForm').classList.remove('hidden-form');
+        else document.getElementById('loginForm').classList.remove('hidden-form');
     }
-    // ===== AKHIR BLOK 8.26.1 =====
+    function loadAppConfig() {
+        var config = JSON.parse(localStorage.getItem('2r_aplikasi_setting') || '{"nama":"Toko Online 2R","deskripsi":"Platform Belanja & Layanan Serba Ada","logo":""}');
+        var namaEl = document.getElementById('appNamaDisplay');
+        if (namaEl) namaEl.innerHTML = config.nama + ' <span style="color:#FF6B00;">2R</span>';
+        var deskEl = document.getElementById('appDeskripsiDisplay');
+        if (deskEl) deskEl.textContent = config.deskripsi;
+        var iconEl = document.getElementById('appLogoIcon');
+        var imgEl = document.getElementById('appLogoImage');
+        if (config.logo) { if (iconEl) iconEl.style.display = 'none'; if (imgEl) { imgEl.src = config.logo; imgEl.style.display = 'block'; } }
+        else { if (iconEl) iconEl.style.display = 'block'; if (imgEl) imgEl.style.display = 'none'; }
+    }
+    function escapeHtml(text) {
+        if (!text) return '';
+        var div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
 
-    // ===== BLOK 8.56 - AMBIL LOKASI OTOMATIS =====
+    // --- AMBIL LOKASI ---
     function ambilLokasiRegister() {
-        if (!navigator.geolocation) {
-            tampilkanToast('Browser tidak mendukung geolokasi.', 'error');
-            return;
-        }
+        if (!navigator.geolocation) { tampilkanToast('Geolokasi tidak didukung.', 'error'); return; }
         tampilkanToast('Mengambil lokasi...', 'info');
-        navigator.geolocation.getCurrentPosition(function(pos) {
-            var lat = pos.coords.latitude;
-            var lng = pos.coords.longitude;
+        navigator.geolocation.getCurrentPosition(pos => {
+            var lat = pos.coords.latitude, lng = pos.coords.longitude;
             document.getElementById('registerLat').value = lat;
             document.getElementById('registerLng').value = lng;
-
-            fetch('https://nominatim.openstreetmap.org/reverse?format=json&lat=' + lat + '&lon=' + lng, {
-                headers: { 'User-Agent': 'TokoOnline2R-App/1.0' }
-            })
-            .then(function(response) { return response.json(); })
-            .then(function(data) {
-                document.getElementById('registerLokasi').value = data.display_name || 'Lokasi tidak diketahui';
-                tampilkanToast('Lokasi berhasil diambil!', 'success');
-                document.getElementById('btnDaftar').removeAttribute('disabled');
-            })
-            .catch(function() {
-                document.getElementById('registerLokasi').value = 'Lat: ' + lat + ', Lng: ' + lng;
-                tampilkanToast('Lokasi berhasil (tanpa alamat detail).', 'info');
-                document.getElementById('btnDaftar').removeAttribute('disabled');
-            });
-        }, function(err) {
-            tampilkanToast('Gagal mengambil lokasi: ' + err.message, 'error');
-        });
+            fetch('https://nominatim.openstreetmap.org/reverse?format=json&lat='+lat+'&lon='+lng, { headers:{'User-Agent':'TokoOnline2R-App/1.0'} })
+                .then(r => r.json())
+                .then(data => {
+                    document.getElementById('registerLokasi').value = data.display_name || 'Lokasi tidak diketahui';
+                    tampilkanToast('Lokasi berhasil diambil!', 'success');
+                    document.getElementById('btnDaftar').removeAttribute('disabled');
+                })
+                .catch(() => {
+                    document.getElementById('registerLokasi').value = 'Lat: '+lat+', Lng: '+lng;
+                    tampilkanToast('Lokasi berhasil (tanpa alamat).', 'info');
+                    document.getElementById('btnDaftar').removeAttribute('disabled');
+                });
+        }, err => tampilkanToast('Gagal mengambil lokasi: '+err.message, 'error'));
     }
-
     function ambilLokasiPengajuan() {
-        if (!navigator.geolocation) {
-            tampilkanToast('Browser tidak mendukung geolokasi.', 'error');
-            return;
-        }
+        if (!navigator.geolocation) { tampilkanToast('Geolokasi tidak didukung.', 'error'); return; }
         tampilkanToast('Mengambil lokasi...', 'info');
-        navigator.geolocation.getCurrentPosition(function(pos) {
-            var lat = pos.coords.latitude;
-            var lng = pos.coords.longitude;
+        navigator.geolocation.getCurrentPosition(pos => {
+            var lat = pos.coords.latitude, lng = pos.coords.longitude;
             document.getElementById('pengajuanLat').value = lat;
             document.getElementById('pengajuanLng').value = lng;
-
-            fetch('https://nominatim.openstreetmap.org/reverse?format=json&lat=' + lat + '&lon=' + lng, {
-                headers: { 'User-Agent': 'TokoOnline2R-App/1.0' }
-            })
-            .then(function(response) { return response.json(); })
-            .then(function(data) {
-                document.getElementById('pengajuanLokasi').value = data.display_name || 'Lokasi tidak diketahui';
-                tampilkanToast('Lokasi berhasil diambil!', 'success');
-                document.getElementById('btnAjukan').removeAttribute('disabled');
-            })
-            .catch(function() {
-                document.getElementById('pengajuanLokasi').value = 'Lat: ' + lat + ', Lng: ' + lng;
-                tampilkanToast('Lokasi berhasil (tanpa alamat detail).', 'info');
-                document.getElementById('btnAjukan').removeAttribute('disabled');
-            });
-        }, function(err) {
-            tampilkanToast('Gagal mengambil lokasi: ' + err.message, 'error');
-        });
+            fetch('https://nominatim.openstreetmap.org/reverse?format=json&lat='+lat+'&lon='+lng, { headers:{'User-Agent':'TokoOnline2R-App/1.0'} })
+                .then(r => r.json())
+                .then(data => {
+                    document.getElementById('pengajuanLokasi').value = data.display_name || 'Lokasi tidak diketahui';
+                    tampilkanToast('Lokasi berhasil diambil!', 'success');
+                    document.getElementById('btnAjukan').removeAttribute('disabled');
+                })
+                .catch(() => {
+                    document.getElementById('pengajuanLokasi').value = 'Lat: '+lat+', Lng: '+lng;
+                    tampilkanToast('Lokasi berhasil (tanpa alamat).', 'info');
+                    document.getElementById('btnAjukan').removeAttribute('disabled');
+                });
+        }, err => tampilkanToast('Gagal mengambil lokasi: '+err.message, 'error'));
     }
-    // ===== AKHIR BLOK 8.56 =====
 
-    // ===== BLOK 8.2.4 - LUPA PASSWORD =====
+    // --- LUPA PASSWORD ---
     async function lupaPassword() {
         var username = document.getElementById('loginUsername').value.trim();
-        if (!username) {
-            tampilkanToast('Masukkan username Anda terlebih dahulu!', 'warning');
-            return;
-        }
-        if (username === 'admin') {
-            tampilkanToast('Akun SuperAdmin tidak dapat di-reset melalui form ini!', 'error');
-            return;
-        }
-
+        if (!username) { tampilkanToast('Masukkan username dulu!', 'warning'); return; }
+        if (username === 'admin') { tampilkanToast('SuperAdmin tidak bisa di-reset lewat sini!', 'error'); return; }
         var dataAkun = getDataAkun();
-        var user = null;
-        var indexUser = -1;
-        for (var i = 0; i < dataAkun.length; i++) {
-            if (dataAkun[i].username === username) {
-                user = dataAkun[i];
-                indexUser = i;
-                break;
-            }
-        }
-
-        if (!user) {
-            tampilkanToast('Username tidak ditemukan!', 'error');
-            return;
-        }
-
+        var index = dataAkun.findIndex(a => a.username === username);
+        if (index === -1) { tampilkanToast('Username tidak ditemukan!', 'error'); return; }
         var newPassword = Math.random().toString(36).slice(-8);
-        var hash = await hashPassword(newPassword);
-        dataAkun[indexUser].password = hash;
+        dataAkun[index].password = await hashPassword(newPassword);
         simpanDataAkun(dataAkun);
-
-        tampilkanToast('Password berhasil di-reset! Password baru Anda: ' + newPassword, 'success');
+        tampilkanToast('Password baru Anda: ' + newPassword, 'success');
     }
-    // ===== AKHIR BLOK 8.2.4 =====
 
-    // ============================================================
-    // EVENT LISTENER (DIPASANG SAAT DOM SIAP)
-    // ============================================================
+    // --- EVENT LISTENER LOGIN, REGISTER, PENGAJUAN ---
     document.addEventListener('DOMContentLoaded', function() {
-        // --- REGISTER FORM LISTENER ---
-        var registerForm = document.getElementById('registerForm');
-        if (registerForm) {
-            registerForm.addEventListener('submit', async function(e) {
+        loadAppConfig();
+
+        // Login
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            var username = document.getElementById('loginUsername').value.trim();
+            var password = document.getElementById('loginPassword').value.trim();
+            var dataAkun = getDataAkun();
+            var user = dataAkun.find(a => a.username === username);
+            if (!user) { tampilkanToast('Username atau password salah!', 'error'); return; }
+            var cocok = await hashPassword(password) === user.password;
+            if (!cocok) { tampilkanToast('Username atau password salah!', 'error'); return; }
+            if (user.status !== 'AKTIF' && user.role !== 'superadmin') { tampilkanToast('Akun belum aktif!', 'error'); return; }
+            localStorage.setItem('2r_user', JSON.stringify(user));
+            localStorage.setItem('2r_user_role', user.role);
+            tampilkanDasbor(user);
+        });
+
+        // Register
+        document.getElementById('registerForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            var role = document.getElementById('registerRole').value;
+            var username = document.getElementById('registerUsername').value.trim();
+            var password = document.getElementById('registerPassword').value.trim();
+            var nama = document.getElementById('registerNama').value.trim();
+            var lat = document.getElementById('registerLat').value.trim();
+            var lng = document.getElementById('registerLng').value.trim();
+            if (!lat || !lng) { tampilkanToast('Ambil lokasi dulu!', 'error'); return; }
+            if (!role || !username || !password || !nama) { tampilkanToast('Data belum lengkap!', 'warning'); return; }
+            var dataAkun = getDataAkun();
+            if (dataAkun.find(a => a.username === username)) { tampilkanToast('Username sudah dipakai!', 'error'); return; }
+            var status = (role === 'toko' || role === 'ojek') ? 'NONAKTIF (Menunggu Verifikasi)' : 'AKTIF';
+            var akunBaru = { id: generateId(role), role, username, password: await hashPassword(password), nama, email:'', nomorHp:'', alamat:'', latitude:lat, longitude:lng, namaBank:'', nomorRekening:'', pemilikRekening:'', status, waktuRegistrasi: new Date().toISOString() };
+            dataAkun.push(akunBaru);
+            simpanDataAkun(dataAkun);
+            tampilkanToast('Akun berhasil! ID: '+akunBaru.id, 'success');
+            document.getElementById('registerForm').reset();
+            document.getElementById('btnDaftar').setAttribute('disabled', 'disabled');
+            toggleForm('login');
+        });
+
+        // Pengajuan
+        document.getElementById('pengajuanBukaAkunForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            var nama = document.getElementById('pengajuanNama').value.trim();
+            var kontak = document.getElementById('pengajuanKontak').value.trim();
+            var role = document.getElementById('pengajuanRole').value;
+            var alasan = document.getElementById('pengajuanAlasan').value.trim();
+            var lat = document.getElementById('pengajuanLat').value.trim();
+            var lng = document.getElementById('pengajuanLng').value.trim();
+            if (!lat || !lng) { tampilkanToast('Ambil lokasi dulu!', 'error'); return; }
+            if (!nama || !kontak || !role || !alasan) { tampilkanToast('Lengkapi data!', 'warning'); return; }
+            var data = JSON.parse(localStorage.getItem('2r_pengajuan_buka_akun') || '[]');
+            data.push({ id:'PB-'+Date.now(), nama, kontak, role, alasan, latitude:lat, longitude:lng, alamatLokasi: document.getElementById('pengajuanLokasi').value.trim()||'', status:'MENUNGGU', waktu:new Date().toISOString() });
+            localStorage.setItem('2r_pengajuan_buka_akun', JSON.stringify(data));
+            document.getElementById('pengajuanBukaAkunForm').reset();
+            document.getElementById('btnAjukan').setAttribute('disabled', 'disabled');
+            tampilkanToast('Pengajuan terkirim ke Admin!', 'success');
+            toggleForm('login');
+        });
+
+        // Logout
+        document.getElementById('buttonLogout').addEventListener('click', function() {
+            if (confirm('Yakin keluar?')) {
+                localStorage.removeItem('2r_user');
+                localStorage.removeItem('2r_user_role');
+                location.reload();
+            }
+        });
+
+        // Sidebar toggle
+        var menuToggle = document.getElementById('menuToggle');
+        var sidebar = document.querySelector('.sidebar');
+        var overlay = document.getElementById('sidebarOverlay');
+        if (menuToggle && sidebar && overlay) {
+            menuToggle.addEventListener('click', function(e) {
                 e.preventDefault();
-                
-                var role = document.getElementById('registerRole').value;
-                var username = document.getElementById('registerUsername').value.trim();
-                var password = document.getElementById('registerPassword').value.trim();
-                var nama = document.getElementById('registerNama').value.trim();
-                var lat = document.getElementById('registerLat').value.trim();
-                var lng = document.getElementById('registerLng').value.trim();
-
-                if (lat === '' || lng === '') {
-                    tampilkanToast('Anda WAJIB mengambil lokasi otomatis terlebih dahulu!', 'error');
-                    return;
-                }
-
-                if (!role || !username || !password || !nama) {
-                    tampilkanToast('Data belum lengkap!', 'warning');
-                    return;
-                }
-                if (username.length < 4) { tampilkanToast('Username minimal 4 karakter!', 'warning'); return; }
-                if (password.length < 6) { tampilkanToast('Password minimal 6 karakter!', 'warning'); return; }
-
-                var dataAkun = getDataAkun();
-                for (var i = 0; i < dataAkun.length; i++) {
-                    if (dataAkun[i].username === username) {
-                        tampilkanToast('Username sudah digunakan!', 'error');
-                        return;
-                    }
-                }
-
-                var status = (role === 'toko' || role === 'ojek') ? 'NONAKTIF (Menunggu Verifikasi)' : 'AKTIF';
-                var hash = await hashPassword(password);
-                var akunBaru = {
-                    id: generateId(role),
-                    role: role,
-                    username: username,
-                    password: hash,
-                    nama: nama,
-                    email: '',
-                    nomorHp: '',
-                    alamat: '',
-                    latitude: lat,
-                    longitude: lng,
-                    namaBank: '',
-                    nomorRekening: '',
-                    pemilikRekening: '',
-                    status: status,
-                    waktuRegistrasi: new Date().toISOString()
-                };
-                dataAkun.push(akunBaru);
-                simpanDataAkun(dataAkun);
-                tampilkanToast('Akun berhasil dibuat! ID: ' + akunBaru.id + '\nStatus: ' + status, 'success');
-                
-                document.getElementById('registerForm').reset();
-                document.getElementById('btnDaftar').setAttribute('disabled', 'disabled');
-                toggleForm('login');
+                if (sidebar.classList.contains('open')) { sidebar.classList.remove('open'); overlay.classList.remove('active'); }
+                else { sidebar.classList.add('open'); overlay.classList.add('active'); }
             });
-        } else {
-            console.warn('Elemen #registerForm tidak ditemukan!');
-        }
-
-        // --- PENGAJUAN FORM LISTENER ---
-        var pengajuanForm = document.getElementById('pengajuanBukaAkunForm');
-        if (pengajuanForm) {
-            pengajuanForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                var nama = document.getElementById('pengajuanNama').value.trim();
-                var kontak = document.getElementById('pengajuanKontak').value.trim();
-                var role = document.getElementById('pengajuanRole').value;
-                var alasan = document.getElementById('pengajuanAlasan').value.trim();
-                var lat = document.getElementById('pengajuanLat').value.trim();
-                var lng = document.getElementById('pengajuanLng').value.trim();
-
-                if (lat === '' || lng === '') {
-                    tampilkanToast('Anda WAJIB mengambil lokasi otomatis terlebih dahulu!', 'error');
-                    return;
-                }
-
-                if (!nama || !kontak || !role || !alasan) {
-                    tampilkanToast('Semua data wajib diisi!', 'warning');
-                    return;
-                }
-
-                var dataPengajuan = JSON.parse(localStorage.getItem('2r_pengajuan_buka_akun') || '[]');
-                dataPengajuan.push({
-                    id: 'PB-' + Date.now(),
-                    nama: nama,
-                    kontak: kontak,
-                    role: role,
-                    alasan: alasan,
-                    latitude: lat,
-                    longitude: lng,
-                    alamatLokasi: document.getElementById('pengajuanLokasi').value.trim() || '',
-                    status: 'MENUNGGU',
-                    waktu: new Date().toISOString()
-                });
-                localStorage.setItem('2r_pengajuan_buka_akun', JSON.stringify(dataPengajuan));
-
-                document.getElementById('pengajuanBukaAkunForm').reset();
-                document.getElementById('btnAjukan').setAttribute('disabled', 'disabled');
-                tampilkanToast('Pengajuan Anda telah dikirim ke Staf Admin!', 'success');
-                toggleForm('login');
+            overlay.addEventListener('click', function() {
+                sidebar.classList.remove('open');
+                overlay.classList.remove('active');
             });
-        } else {
-            console.warn('Elemen #pengajuanBukaAkunForm tidak ditemukan!');
         }
     });
-</script>
-<!-- ===== AKHIR BLOK 7 & 8 ===== -->
-// ============================================================ //
-// BLOK 9 - HALAMAN DEFAULT (HALAMAN BERANDA) SEMUA PERAN AKUN   //
-// ============================================================ //
 
-// ===== SUB BLOK 9.1.1 - 9.1.5 - HALAMAN BERANDA LENGKAP ===== //
-function renderHalamanBerandaDefault() {
-    var areaKonten = document.getElementById('mainContent');
-    if (!areaKonten) return;
+    // --- TAMPILKAN DASHBOARD ---
+    function tampilkanDasbor(user) {
+        document.getElementById('pageAuthentication').style.display = 'none';
+        document.getElementById('pageDashboard').style.display = 'block';
+        document.getElementById('userNama').textContent = user.nama;
+        document.getElementById('roleBadge').textContent = user.role || 'User';
 
-    // Ambil data pengguna yang sedang login
-    var pengguna = JSON.parse(localStorage.getItem('2r_user') || '{}');
-    if (!pengguna.id) {
-        tampilkanToast('Data pengguna tidak ditemukan!', 'error');
-        return;
-    }
+        // Sidebar sederhana (untuk demo)
+        var sidebarHtml = `
+            <div class="sidebar-menu-title">Menu</div>
+            <div class="sidebar-menu-item active" data-page="home"><i class="fas fa-home"></i><span>Beranda</span></div>
+            <div class="sidebar-menu-item" data-page="profile"><i class="fas fa-user-circle"></i><span>Profil</span></div>
+            <div class="sidebar-menu-item" data-page="katalog"><i class="fas fa-box"></i><span>Katalog</span></div>
+        `;
+        document.getElementById('sidebarContainer').innerHTML = sidebarHtml;
+        // Setup navigasi sidebar
+        var items = document.querySelectorAll('.sidebar-menu-item');
+        items.forEach(function(item) {
+            item.onclick = function() {
+                items.forEach(m => m.classList.remove('active'));
+                this.classList.add('active');
+                var page = this.getAttribute('data-page');
+                if (page === 'home') renderHalamanBerandaDefault();
+                else if (page === 'profile') tampilkanToast('Fitur Profil sedang dibangun', 'info');
+                else if (page === 'katalog') tampilkanToast('Katalog sedang dibangun', 'info');
+                if (window.innerWidth <= 767) { document.querySelector('.sidebar').classList.remove('open'); document.getElementById('sidebarOverlay').classList.remove('active'); }
+            };
+        });
 
-    // Ambil data konfigurasi logo aplikasi
-    var konfigurasi = JSON.parse(localStorage.getItem('2r_aplikasi_setting') || '{"nama":"Toko Online 2R","deskripsi":"Platform Belanja & Layanan Serba Ada","logo":""}');
-
-    // --- HITUNG STATISTIK (SUB BLOK 9.1.3) ---
-    var semuaAkun = getDataAkun();
-    var jumlahToko = 0;
-    var jumlahOjek = 0;
-    var jumlahCustomer = 0;
-    for (var i = 0; i < semuaAkun.length; i++) {
-        var akun = semuaAkun[i];
-        if (akun.role === 'toko' || akun.role === 'pedagang' || akun.role === 'codseller') jumlahToko++;
-        else if (akun.role === 'ojek') jumlahOjek++;
-        else if (akun.role === 'customer') jumlahCustomer++;
-    }
-
-    // --- AMBIL DATA IKLAN (SUB BLOK 9.1.5) ---
-    var dataIklan = JSON.parse(localStorage.getItem('2r_iklan') || '[]');
-    var iklanTampil = dataIklan.slice(0, 3);
-
-    // --- BAGIAN 1: HEADER & PROFIL PENGGUNA (SUB BLOK 9.1.1) ---
-    var htmlHeader = `
-    <div class="homepage-header-card">
-        <!-- FOTO SAMPUL -->
-        <div class="cover-photo-wrapper" onclick="document.getElementById('inputUploadSampul').click();">
-            <img id="fotoSampulPreview" src="" style="width:100%; height:100%; object-fit:cover; display:none;">
-            <div id="fotoSampulPlaceholder" class="cover-photo-placeholder">
-                <i class="fas fa-camera"></i>
-                <span>Klik atau Seret untuk Unggah Foto Sampul</span>
-            </div>
-            <input type="file" id="inputUploadSampul" accept="image/jpeg,image/png,image/webp" style="display:none;" onchange="prosesUnggahGambar('sampul', this)">
-        </div>
-
-        <!-- FOTO PROFIL & INFO PENGGUNA -->
-        <div class="profile-info-wrapper">
-            <div class="profile-avatar-wrapper" onclick="document.getElementById('inputUploadAvatar').click();">
-                <img id="fotoProfilPreview" src="" style="width:100%; height:100%; object-fit:cover; display:none;">
-                <div id="fotoProfilPlaceholder" class="profile-avatar-placeholder">
-                    <i class="fas fa-user-circle"></i>
-                </div>
-                <input type="file" id="inputUploadAvatar" accept="image/jpeg,image/png,image/webp" style="display:none;" onchange="prosesUnggahGambar('profil', this)">
-            </div>
-
-            <div class="profile-info-text">
-                <h2 id="tampilanNamaPengguna">${escapeHtml(pengguna.nama || pengguna.username || 'Pengguna')}</h2>
-                <p>
-                    <span class="role-badge">${escapeHtml(pengguna.role || 'User')}</span>
-                    <span style="margin-left:10px;"><i class="fas fa-clock"></i> <span id="displayJamHome">00:00:00</span> <span id="displayTanggalHome">Senin, 01 Jan 2026</span></span>
-                </p>
-            </div>
-
-            <div class="app-logo-wrapper-home">
-                <i class="fas fa-store-alt" id="appLogoIconHome" style="font-size:35px; color:var(--primary);"></i>
-                <img id="appLogoImageHome" src="" style="display:none; max-height:45px; object-fit:contain;">
-                <div class="app-logo-text">
-                    <span>${escapeHtml(konfigurasi.nama)}</span>
-                    <span>${escapeHtml(konfigurasi.deskripsi)}</span>
-                </div>
-            </div>
-        </div>
-    </div>
-    `;
-
-    // --- BAGIAN 2: MENU PINTASAN KATEGORI (SUB BLOK 9.1.2) ---
-    var htmlKategori = `
-    <div class="kategori-grid">
-        <div class="card" onclick="navigasiKeHalaman('lihatTokoTerdekat')">
-            <i class="icon-kategori fas fa-store" style="color:var(--primary);"></i>
-            <h4>Toko</h4>
-            <button class="button button-primary button-small" onclick="event.stopPropagation(); navigasiKeHalaman('lihatTokoTerdekat')">Lihat Semua Toko & Produk</button>
-        </div>
-        <div class="card" onclick="navigasiKeHalaman('lihatOjekTerdekat')">
-            <i class="icon-kategori fas fa-motorcycle" style="color:#2196F3;"></i>
-            <h4>Ojek</h4>
-            <button class="button button-primary button-small" onclick="event.stopPropagation(); navigasiKeHalaman('lihatOjekTerdekat')">Lihat Semua Ojek Online</button>
-        </div>
-        <div class="card" onclick="navigasiKeHalaman('lihatPedagangPasar')">
-            <i class="icon-kategori fas fa-shopping-basket" style="color:#4CAF50;"></i>
-            <h4>Pedagang Pasar</h4>
-            <p>Nama Pasar: Pasar Induk | Jl. Merdeka No.1</p>
-            <button class="button button-primary button-small" onclick="event.stopPropagation(); navigasiKeHalaman('lihatPedagangPasar')">Lihat Semua Pedagang Pasar</button>
-        </div>
-        <div class="card" onclick="navigasiKeHalaman('lihatPedagangMakanan')">
-            <i class="icon-kategori fas fa-utensils" style="color:#FF9800;"></i>
-            <h4>Pedagang Makanan</h4>
-            <button class="button button-primary button-small" onclick="event.stopPropagation(); navigasiKeHalaman('lihatPedagangMakanan')">Lihat Pedagang Makanan</button>
-        </div>
-        <div class="card" onclick="navigasiKeHalaman('lihatPedagangMinuman')">
-            <i class="icon-kategori fas fa-glass-water" style="color:#00BCD4;"></i>
-            <h4>Pedagang Minuman</h4>
-            <button class="button button-primary button-small" onclick="event.stopPropagation(); navigasiKeHalaman('lihatPedagangMinuman')">Lihat Pedagang Minuman</button>
-        </div>
-    </div>
-    `;
-
-    // --- BAGIAN 3: STATISTIK REAL-TIME (SUB BLOK 9.1.3) ---
-    var htmlStatistik = `
-    <div class="widget-grid">
-        <div class="widget-card"><div class="widget-icon" style="color:var(--primary);"><i class="fas fa-store"></i></div><div class="widget-number">${jumlahToko}</div><div class="widget-label">Toko Terdaftar</div></div>
-        <div class="widget-card"><div class="widget-icon" style="color:#2196F3;"><i class="fas fa-motorcycle"></i></div><div class="widget-number">${jumlahOjek}</div><div class="widget-label">Ojek Terdaftar</div></div>
-        <div class="widget-card"><div class="widget-icon" style="color:#4CAF50;"><i class="fas fa-user"></i></div><div class="widget-number">${jumlahCustomer}</div><div class="widget-label">Customer Terdaftar</div></div>
-    </div>
-    `;
-
-    // --- BAGIAN 4: BILAH PENCARIAN (SUB BLOK 9.1.4) ---
-    var htmlPencarian = `
-    <div class="card">
-        <div class="card-header">Pencarian Cepat</div>
-        <div class="grid-2">
-            <div class="form-group"><label>Cari Produk (Semua Toko)</label><div class="input-group"><i class="fas fa-box"></i><input type="text" id="inputCariProduk" class="form-input" placeholder="Nama produk..."><button class="button button-primary button-small" onclick="cariProduk()">Cari</button></div></div>
-            <div class="form-group"><label>Cari Toko (Semua Toko Online)</label><div class="input-group"><i class="fas fa-store"></i><input type="text" id="inputCariToko" class="form-input" placeholder="Nama toko..."><button class="button button-primary button-small" onclick="cariToko()">Cari</button></div></div>
-            <div class="form-group"><label>Cari Ojek (Semua Akun Tukang Ojek Online)</label><div class="input-group"><i class="fas fa-motorcycle"></i><input type="text" id="inputCariOjek" class="form-input" placeholder="Nama ojek..."><button class="button button-primary button-small" onclick="cariOjek()">Cari</button></div></div>
-        </div>
-    </div>
-    `;
-
-    // --- BAGIAN 5: IKLAN (SUB BLOK 9.1.5) ---
-    var htmlIklan = `<div class="card"><div class="card-header">Iklan</div><div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:15px;">`;
-    if (iklanTampil.length === 0) {
-        htmlIklan += `<div class="empty-state"><i class="fas fa-ad"></i><h3>Belum ada iklan</h3></div>`;
-    } else {
-        for (var i = 0; i < iklanTampil.length; i++) {
-            var iklan = iklanTampil[i];
-            var gambarIklan = (iklan.gambar && Array.isArray(iklan.gambar) && iklan.gambar.length > 0) ? iklan.gambar[0] : '';
-            htmlIklan += `
-            <div class="card" style="padding:10px; text-align:center; cursor:pointer;" onclick="previewGambar('${gambarIklan}', '${escapeHtml(iklan.judul)}')">
-                ${gambarIklan ? `<img src="${gambarIklan}" style="width:100%; height:150px; object-fit:cover; border-radius:8px; margin-bottom:10px;">` : `<div style="height:150px; background:#f0f0f0; display:flex; align-items:center; justify-content:center; color:#aaa;"><i class="fas fa-image" style="font-size:40px;"></i></div>`}
-                <h4 style="font-size:15px; margin:5px 0;">${escapeHtml(iklan.judul)}</h4>
-                <p style="font-size:13px; color:#888;">${escapeHtml(iklan.deskripsi || '')}</p>
-            </div>
-            `;
-        }
-    }
-    htmlIklan += `</div></div>`;
-
-    // --- GABUNGKAN SEMUA BAGIAN ---
-    var htmlLengkap = htmlHeader + htmlKategori + htmlStatistik + htmlPencarian + htmlIklan;
-    areaKonten.innerHTML = htmlLengkap;
-
-    // --- PERSIAPAN LOGO & JAM ---
-    var logoHome = document.getElementById('appLogoImageHome');
-    var iconHome = document.getElementById('appLogoIconHome');
-    if (konfigurasi.logo) {
-        if (logoHome) { logoHome.src = konfigurasi.logo; logoHome.style.display = 'block'; }
-        if (iconHome) { iconHome.style.display = 'none'; }
-    }
-
-    function updateJamTanggalHome() {
-        var jamHome = document.getElementById('displayJamHome');
-        var tanggalHome = document.getElementById('displayTanggalHome');
-        if (!jamHome || !tanggalHome) return;
-        var sekarang = new Date();
-        jamHome.textContent = String(sekarang.getHours()).padStart(2,'0')+':'+String(sekarang.getMinutes()).padStart(2,'0')+':'+String(sekarang.getSeconds()).padStart(2,'0');
-        var daftarHari = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
-        var daftarBulan = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
-        tanggalHome.textContent = daftarHari[sekarang.getDay()] + ', ' + String(sekarang.getDate()).padStart(2,'0') + ' ' + daftarBulan[sekarang.getMonth()] + ' ' + sekarang.getFullYear();
-    }
-    updateJamTanggalHome();
-    setInterval(updateJamTanggalHome, 1000);
-
-    // --- PEMUATAN GAMBAR SAMPUL DAN PROFIL ---
-    var kunciSampul = '2r_cover_foto_' + pengguna.id;
-    var kunciAvatar = '2r_user_avatar_' + pengguna.id;
-    var dataSampul = localStorage.getItem(kunciSampul);
-    var dataAvatar = localStorage.getItem(kunciAvatar);
-
-    if (dataSampul) {
-        document.getElementById('fotoSampulPreview').src = dataSampul;
-        document.getElementById('fotoSampulPreview').style.display = 'block';
-        document.getElementById('fotoSampulPlaceholder').style.display = 'none';
-    }
-    if (dataAvatar) {
-        document.getElementById('fotoProfilPreview').src = dataAvatar;
-        document.getElementById('fotoProfilPreview').style.display = 'block';
-        document.getElementById('fotoProfilPlaceholder').style.display = 'none';
-    }
-}
-// ===== AKHIR SUB BLOK 9.1.1 - 9.1.5 =====
-
-// ===== SUB BLOK 9.3.4 - FUNGSI NAVIGASI & PENCARIAN =====
-function cariProduk() {
-    var kata = document.getElementById('inputCariProduk').value.trim();
-    if (!kata) { tampilkanToast('Masukkan nama produk!', 'warning'); return; }
-    // Fungsi pencarian produk (bisa diarahkan ke halaman katalog dengan filter)
-    tampilkanToast('Mencari produk: ' + kata, 'info');
-    // Contoh logika: navigasiKeHalaman('katalogProduk');
-}
-
-function cariToko() {
-    var kata = document.getElementById('inputCariToko').value.trim();
-    if (!kata) { tampilkanToast('Masukkan nama toko!', 'warning'); return; }
-    tampilkanToast('Mencari toko: ' + kata, 'info');
-}
-
-function cariOjek() {
-    var kata = document.getElementById('inputCariOjek').value.trim();
-    if (!kata) { tampilkanToast('Masukkan nama ojek!', 'warning'); return; }
-    tampilkanToast('Mencari ojek: ' + kata, 'info');
-}
-
-// Fungsi placeholder untuk halaman yang belum dibuat
-function navigasiKeHalaman(halaman) {
-    if (halaman === 'lihatTokoTerdekat') { tampilkanToast('Fitur Lihat Toko Terdekat sedang dikembangkan.', 'info'); }
-    else if (halaman === 'lihatOjekTerdekat') { tampilkanToast('Fitur Lihat Ojek Terdekat sedang dikembangkan.', 'info'); }
-    else if (halaman === 'lihatPedagangPasar') { tampilkanToast('Fitur Lihat Pedagang Pasar sedang dikembangkan.', 'info'); }
-    else if (halaman === 'lihatPedagangMakanan') { tampilkanToast('Fitur Lihat Pedagang Makanan sedang dikembangkan.', 'info'); }
-    else if (halaman === 'lihatPedagangMinuman') { tampilkanToast('Fitur Lihat Pedagang Minuman sedang dikembangkan.', 'info'); }
-    else if (halaman === 'katalogProduk') { tampilkanToast('Fitur Katalog Produk sedang dikembangkan.', 'info'); }
-}
-// ===== AKHIR SUB BLOK 9.3.4 =====
-
-// ===== SUB BLOK 9.3.3 - FUNGSI UNGGAH GAMBAR (SAMPUL & PROFIL) =====
-function prosesUnggahGambar(tipe, elemenInput) {
-    var file = elemenInput.files[0];
-    if (!file) return;
-
-    var pengguna = JSON.parse(localStorage.getItem('2r_user') || '{}');
-    var pembaca = new FileReader();
-    pembaca.onload = function(e) {
-        var dataGambar = e.target.result;
-        var kunci = (tipe === 'sampul') ? '2r_cover_foto_' + pengguna.id : '2r_user_avatar_' + pengguna.id;
-        localStorage.setItem(kunci, dataGambar);
-        tampilkanToast('Foto ' + tipe + ' berhasil diunggah!', 'success');
         renderHalamanBerandaDefault();
-    };
-    pembaca.readAsDataURL(file);
-}
-// ===== AKHIR SUB BLOK 9.3.3 =====
-<!-- ============================================================ -->
-<!-- PENUTUP HTML                                                 -->
-<!-- ============================================================ -->
+    }
+
+    // --- HALAMAN DEFAULT (HOMEPAGE) ---
+    function renderHalamanBerandaDefault() {
+        var areaKonten = document.getElementById('mainContent');
+        if (!areaKonten) return;
+        var pengguna = JSON.parse(localStorage.getItem('2r_user') || '{}');
+        if (!pengguna.id) { tampilkanToast('User tidak ditemukan', 'error'); return; }
+        var konfigurasi = JSON.parse(localStorage.getItem('2r_aplikasi_setting') || '{"nama":"Toko Online 2R","deskripsi":"Platform Belanja & Layanan Serba Ada","logo":""}');
+
+        // Hitung statistik
+        var semuaAkun = getDataAkun();
+        var jmlToko = semuaAkun.filter(a => a.role==='toko'||a.role==='pedagang'||a.role==='codseller').length;
+        var jmlOjek = semuaAkun.filter(a => a.role==='ojek').length;
+        var jmlCustomer = semuaAkun.filter(a => a.role==='customer').length;
+
+        var html = `
+        <div class="homepage-header-card">
+            <div class="cover-photo-wrapper" onclick="document.getElementById('inputUploadSampul').click();">
+                <img id="fotoSampulPreview" src="" style="width:100%; height:100%; object-fit:cover; display:none;">
+                <div class="cover-photo-placeholder"><i class="fas fa-camera"></i><span>Klik untuk Unggah Sampul</span></div>
+                <input type="file" id="inputUploadSampul" accept="image/jpeg,image/png,image/webp" style="display:none;" onchange="prosesUnggahGambar('sampul', this)">
+            </div>
+            <div class="profile-info-wrapper">
+                <div class="profile-avatar-wrapper" onclick="document.getElementById('inputUploadAvatar').click();">
+                    <img id="fotoProfilPreview" src="" style="width:100%; height:100%; object-fit:cover; display:none;">
+                    <div class="profile-avatar-placeholder"><i class="fas fa-user-circle"></i></div>
+                    <input type="file" id="inputUploadAvatar" accept="image/jpeg,image/png,image/webp" style="display:none;" onchange="prosesUnggahGambar('profil', this)">
+                </div>
+                <div class="profile-info-text">
+                    <h2>${escapeHtml(pengguna.nama||pengguna.username||'Pengguna')}</h2>
+                    <p><span class="role-badge">${escapeHtml(pengguna.role||'User')}</span> <span><i class="fas fa-clock"></i> <span id="displayJamHome">00:00:00</span> <span id="displayTanggalHome">Senin, 01 Jan 2026</span></span></p>
+                </div>
+                <div class="app-logo-wrapper-home">
+                    <i class="fas fa-store-alt" id="appLogoIconHome" style="font-size:35px; color:var(--primary);"></i>
+                    <img id="appLogoImageHome" src="" style="display:none; max-height:45px; object-fit:contain;">
+                    <div class="app-logo-text"><span>${escapeHtml(konfigurasi.nama)}</span><span>${escapeHtml(konfigurasi.deskripsi)}</span></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="kategori-grid">
+            <div class="card" onclick="navigasiKeHalaman('lihatTokoTerdekat')">
+                <i class="icon-kategori fas fa-store" style="color:var(--primary);"></i><h4>Toko</h4>
+                <button class="button button-primary button-small" onclick="event.stopPropagation(); navigasiKeHalaman('lihatTokoTerdekat')">Lihat Semua</button>
+            </div>
+            <div class="card" onclick="navigasiKeHalaman('lihatOjekTerdekat')">
+                <i class="icon-kategori fas fa-motorcycle" style="color:#2196F3;"></i><h4>Ojek</h4>
+                <button class="button button-primary button-small" onclick="event.stopPropagation(); navigasiKeHalaman('lihatOjekTerdekat')">Lihat Semua</button>
+            </div>
+            <div class="card" onclick="navigasiKeHalaman('lihatPedagangPasar')">
+                <i class="icon-kategori fas fa-shopping-basket" style="color:#4CAF50;"></i><h4>Pedagang Pasar</h4>
+                <p>Pasar Induk, Jl. Merdeka</p>
+                <button class="button button-primary button-small" onclick="event.stopPropagation(); navigasiKeHalaman('lihatPedagangPasar')">Lihat Semua</button>
+            </div>
+            <div class="card" onclick="navigasiKeHalaman('lihatPedagangMakanan')">
+                <i class="icon-kategori fas fa-utensils" style="color:#FF9800;"></i><h4>Pedagang Makanan</h4>
+                <button class="button button-primary button-small" onclick="event.stopPropagation(); navigasiKeHalaman('lihatPedagangMakanan')">Lihat Pedagang</button>
+            </div>
+            <div class="card" onclick="navigasiKeHalaman('lihatPedagangMinuman')">
+                <i class="icon-kategori fas fa-glass-water" style="color:#00BCD4;"></i><h4>Pedagang Minuman</h4>
+                <button class="button button-primary button-small" onclick="event.stopPropagation(); navigasiKeHalaman('lihatPedagangMinuman')">Lihat Pedagang</button>
+            </div>
+        </div>
+
+        <div class="widget-grid">
+            <div class="widget-card"><div class="widget-icon" style="color:var(--primary);"><i class="fas fa-store"></i></div><div class="widget-number">${jmlToko}</div><div class="widget-label">Toko Terdaftar</div></div>
+            <div class="widget-card"><div class="widget-icon" style="color:#2196F3;"><i class="fas fa-motorcycle"></i></div><div class="widget-number">${jmlOjek}</div><div class="widget-label">Ojek Terdaftar</div></div>
+            <div class="widget-card"><div class="widget-icon" style="color:#4CAF50;"><i class="fas fa-user"></i></div><div class="widget-number">${jmlCustomer}</div><div class="widget-label">Customer Terdaftar</div></div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">Pencarian Cepat</div>
+            <div class="grid-2">
+                <div class="form-group"><label>Cari Produk</label><div class="input-group"><i class="fas fa-box"></i><input type="text" id="inputCariProduk" class="form-input" placeholder="Nama produk..."><button class="button button-primary button-small" onclick="cariProduk()">Cari</button></div></div>
+                <div class="form-group"><label>Cari Toko</label><div class="input-group"><i class="fas fa-store"></i><input type="text" id="inputCariToko" class="form-input" placeholder="Nama toko..."><button class="button button-primary button-small" onclick="cariToko()">Cari</button></div></div>
+                <div class="form-group"><label>Cari Ojek</label><div class="input-group"><i class="fas fa-motorcycle"></i><input type="text" id="inputCariOjek" class="form-input" placeholder="Nama ojek..."><button class="button button-primary button-small" onclick="cariOjek()">Cari</button></div></div>
+            </div>
+        </div>
+
+        <div class="card"><div class="card-header">Iklan</div><div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px,1fr)); gap:15px;"><div class="empty-state"><i class="fas fa-ad"></i><h3>Belum ada iklan</h3></div></div></div>
+        `;
+
+        areaKonten.innerHTML = html;
+
+        // Load logo & gambar
+        var logoHome = document.getElementById('appLogoImageHome');
+        if (konfigurasi.logo) { logoHome.src = konfigurasi.logo; logoHome.style.display = 'block'; document.getElementById('appLogoIconHome').style.display = 'none'; }
+        // Muat sampul & avatar
+        var sampul = localStorage.getItem('2r_cover_foto_' + pengguna.id);
+        var avatar = localStorage.getItem('2r_user_avatar_' + pengguna.id);
+        if (sampul) { document.getElementById('fotoSampulPreview').src = sampul; document.getElementById('fotoSampulPreview').style.display = 'block'; document.getElementById('fotoSampulPlaceholder').style.display = 'none'; }
+        if (avatar) { document.getElementById('fotoProfilPreview').src = avatar; document.getElementById('fotoProfilPreview').style.display = 'block'; document.getElementById('fotoProfilPlaceholder').style.display = 'none'; }
+
+        // Jam
+        function updateJam() {
+            var now = new Date();
+            var jamEl = document.getElementById('displayJamHome');
+            var tglEl = document.getElementById('displayTanggalHome');
+            if (jamEl) jamEl.textContent = String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0')+':'+String(now.getSeconds()).padStart(2,'0');
+            if (tglEl) {
+                var hari = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'][now.getDay()];
+                var bulan = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'][now.getMonth()];
+                tglEl.textContent = hari + ', ' + String(now.getDate()).padStart(2,'0') + ' ' + bulan + ' ' + now.getFullYear();
+            }
+        }
+        updateJam();
+        setInterval(updateJam, 1000);
+    }
+
+    // --- FUNGSI BANTUAN HOMEPAGE ---
+    function prosesUnggahGambar(tipe, elemen) {
+        var file = elemen.files[0];
+        if (!file) return;
+        var user = JSON.parse(localStorage.getItem('2r_user') || '{}');
+        var reader = new FileReader();
+        reader.onload = function(e) {
+            var key = (tipe === 'sampul') ? '2r_cover_foto_' + user.id : '2r_user_avatar_' + user.id;
+            localStorage.setItem(key, e.target.result);
+            tampilkanToast('Foto '+tipe+' berhasil diunggah!', 'success');
+            renderHalamanBerandaDefault();
+        };
+        reader.readAsDataURL(file);
+    }
+
+    function navigasiKeHalaman(halaman) {
+        if (halaman === 'lihatTokoTerdekat') tampilkanToast('Fitur Lihat Toko Terdekat sedang dibangun.', 'info');
+        else if (halaman === 'lihatOjekTerdekat') tampilkanToast('Fitur Lihat Ojek Terdekat sedang dibangun.', 'info');
+        else if (halaman === 'lihatPedagangPasar') tampilkanToast('Fitur Lihat Pedagang Pasar sedang dibangun.', 'info');
+        else if (halaman === 'lihatPedagangMakanan') tampilkanToast('Fitur Lihat Pedagang Makanan sedang dibangun.', 'info');
+        else if (halaman === 'lihatPedagangMinuman') tampilkanToast('Fitur Lihat Pedagang Minuman sedang dibangun.', 'info');
+    }
+
+    function cariProduk() { var kata = document.getElementById('inputCariProduk').value.trim(); if (!kata) { tampilkanToast('Masukkan kata kunci!', 'warning'); return; } tampilkanToast('Mencari produk: '+kata, 'info'); }
+    function cariToko() { var kata = document.getElementById('inputCariToko').value.trim(); if (!kata) { tampilkanToast('Masukkan kata kunci!', 'warning'); return; } tampilkanToast('Mencari toko: '+kata, 'info'); }
+    function cariOjek() { var kata = document.getElementById('inputCariOjek').value.trim(); if (!kata) { tampilkanToast('Masukkan kata kunci!', 'warning'); return; } tampilkanToast('Mencari ojek: '+kata, 'info'); }
+
+    // --- PASTIKAN SUPERVER ADMIN ADA ---
+    (function initSuperAdmin() {
+        var dataAkun = getDataAkun();
+        if (!dataAkun.find(a => a.role === 'superadmin')) {
+            (async function() {
+                var hash = await hashPassword('admin123');
+                dataAkun.push({ id:'SA-001', role:'superadmin', username:'admin', password:hash, nama:'SuperAdmin', email:'admin@2r.com', nomorHp:'081234567890', alamat:'Kantor Pusat', namaBank:'BCA', nomorRekening:'1234567890', pemilikRekening:'SuperAdmin', status:'AKTIF', waktuRegistrasi: new Date().toISOString() });
+                simpanDataAkun(dataAkun);
+                console.log('SuperAdmin berhasil dibuat! Username: admin, Password: admin123');
+            })();
+        }
+    })();
+</script>
 </body>
 </html>
-<!-- ===== AKHIR PENUTUP HTML ===== -->
