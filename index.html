@@ -547,9 +547,49 @@
 <!-- ===== AKHIR BLOK 5.2 ===== -->
 
 <!-- ============================================================ -->
-<!-- BLOK 5.3 - LOGIN, REGISTER, PENGAJUAN & SIDEBAR TOGGLE       -->
+<!-- BLOK 5.3 - LOGIN, REGISTER, PENGAJUAN & INIT SUPERADMIN      -->
 <!-- ============================================================ -->
     document.addEventListener('DOMContentLoaded', function() {
+        
+        // --- INISIALISASI SUPER ADMIN SAAT PERTAMA KALI BUKA ---
+        var dataAwalAkun = getDataAkun();
+        var superAdminAda = false;
+        for (var indeks = 0; indeks < dataAwalAkun.length; indeks++) {
+            if (dataAwalAkun[indeks].role === 'superadmin') {
+                superAdminAda = true;
+                break;
+            }
+        }
+        if (!superAdminAda) {
+            // Gunakan fungsi async yang aman
+            (async function() {
+                try {
+                    var hash = await hashPassword('admin123');
+                    var superAdminBaru = {
+                        id: 'SA-001',
+                        role: 'superadmin',
+                        username: 'admin',
+                        password: hash,
+                        nama: 'SuperAdmin',
+                        email: 'admin@2r.com',
+                        nomorHp: '081234567890',
+                        alamat: 'Kantor Pusat',
+                        namaBank: 'BCA',
+                        nomorRekening: '1234567890',
+                        pemilikRekening: 'SuperAdmin',
+                        status: 'AKTIF',
+                        waktuRegistrasi: new Date().toISOString()
+                    };
+                    dataAwalAkun.push(superAdminBaru);
+                    simpanDataAkun(dataAwalAkun);
+                    console.log('✅ SuperAdmin berhasil dibuat. Username: admin, Password: admin123');
+                } catch (error) {
+                    console.error('Gagal membuat SuperAdmin:', error);
+                }
+            })();
+        }
+
+        // --- LOGIN ---
         document.getElementById('loginForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             var inputUsername = document.getElementById('loginUsername').value.trim();
@@ -580,6 +620,7 @@
             tampilkanDasbor(dataUser);
         });
 
+        // --- REGISTER ---
         document.getElementById('registerForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             var pilihRole = document.getElementById('registerRole').value;
@@ -636,6 +677,7 @@
             toggleForm('login');
         });
 
+        // --- PENGAJUAN ---
         document.getElementById('pengajuanBukaAkunForm').addEventListener('submit', function(e) {
             e.preventDefault();
             var inputNama = document.getElementById('pengajuanNama').value.trim();
@@ -674,6 +716,7 @@
             toggleForm('login');
         });
 
+        // --- LOGOUT ---
         document.getElementById('buttonLogout').addEventListener('click', function() {
             if (confirm('Yakin keluar?')) {
                 localStorage.removeItem('2r_user');
@@ -682,6 +725,7 @@
             }
         });
 
+        // --- TOGGLE SIDEBAR (HAMBURGER) ---
         var menuToggle = document.getElementById('menuToggle');
         var sidebar = document.querySelector('.sidebar-simple');
         var overlay = document.getElementById('sidebarOverlay');
@@ -703,144 +747,6 @@
         }
     });
 <!-- ===== AKHIR BLOK 5.3 ===== -->
-
-<!-- ============================================================ -->
-<!-- BLOK 5.4 - INIT SUPERADMIN & TAMPILKAN DASHBOARD SEDERHANA   -->
-<!-- ============================================================ -->
-<script>
-    // --- INISIALISASI SUPER ADMIN SAAT PERTAMA KALI BUKA ---
-    var dataAwalAkun = getDataAkun();
-    var superAdminAda = false;
-    for (var indeks = 0; indeks < dataAwalAkun.length; indeks++) {
-        if (dataAwalAkun[indeks].role === 'superadmin') {
-            superAdminAda = true;
-            break;
-        }
-    }
-    if (!superAdminAda) {
-        async function buatSuperAdmin() {
-            var hash = await hashPassword('admin123');
-            var superAdminBaru = {
-                id: 'SA-001',
-                role: 'superadmin',
-                username: 'admin',
-                password: hash,
-                nama: 'SuperAdmin',
-                email: 'admin@2r.com',
-                nomorHp: '081234567890',
-                alamat: 'Kantor Pusat',
-                namaBank: 'BCA',
-                nomorRekening: '1234567890',
-                pemilikRekening: 'SuperAdmin',
-                status: 'AKTIF',
-                waktuRegistrasi: new Date().toISOString()
-            };
-            dataAwalAkun.push(superAdminBaru);
-            simpanDataAkun(dataAwalAkun);
-            console.log('SuperAdmin sudah dibuat. Username: admin, Password: admin123');
-        }
-        buatSuperAdmin();
-    }
-
-    // --- FUNGSI TAMPILKAN DASHBOARD & RENDER BERANDA SEDERHANA ---
-    function tampilkanDasbor(user) {
-        document.getElementById('pageAuthentication').style.display = 'none';
-        document.getElementById('pageDashboard').style.display = 'block';
-        document.getElementById('userNama').textContent = user.nama;
-        document.getElementById('roleBadge').textContent = user.role || 'User';
-        document.getElementById('displayJamSimple').textContent = new Date().toLocaleTimeString('id-ID') + ' | ' + new Date().toLocaleDateString('id-ID');
-
-        setInterval(function() {
-            var sekarang = new Date();
-            var jamEl = document.getElementById('displayJamSimple');
-            if (jamEl) {
-                jamEl.textContent = sekarang.toLocaleTimeString('id-ID') + ' | ' + sekarang.toLocaleDateString('id-ID');
-            }
-        }, 1000);
-
-        var sidebarHtml = `
-            <div class="menu-item active" data-page="home"><i class="fas fa-home"></i> Beranda</div>
-            <div class="menu-item" data-page="profile"><i class="fas fa-user-circle"></i> Profil</div>
-            <div class="menu-item" data-page="katalog"><i class="fas fa-box"></i> Katalog</div>
-            <div class="menu-item" data-page="logout" onclick="document.getElementById('buttonLogout').click();"><i class="fas fa-sign-out-alt"></i> Keluar</div>
-        `;
-        document.getElementById('sidebarContainer').innerHTML = sidebarHtml;
-
-        var items = document.querySelectorAll('.sidebar-simple .menu-item');
-        for (var indeks = 0; indeks < items.length; indeks++) {
-            var item = items[indeks];
-            item.onclick = function() {
-                for (var j = 0; j < items.length; j++) {
-                    items[j].classList.remove('active');
-                }
-                this.classList.add('active');
-                var page = this.getAttribute('data-page');
-                if (page === 'home') {
-                    renderBerandaSederhana(user);
-                } else if (page === 'profile') {
-                    tampilkanToast('Fitur Profil sedang dibangun', 'info');
-                } else if (page === 'katalog') {
-                    tampilkanToast('Katalog sedang dibangun', 'info');
-                }
-                if (window.innerWidth <= 767) {
-                    document.querySelector('.sidebar-simple').classList.remove('open');
-                    document.getElementById('sidebarOverlay').classList.remove('active');
-                }
-            };
-        }
-        renderBerandaSederhana(user);
-    }
-
-    function renderBerandaSederhana(pengguna) {
-        var areaKonten = document.getElementById('mainContent');
-        if (!areaKonten) {
-            return;
-        }
-        if (!pengguna) {
-            pengguna = JSON.parse(localStorage.getItem('2r_user') || '{}');
-        }
-
-        var semuaAkun = getDataAkun();
-        var jumlahToko = 0;
-        var jumlahOjek = 0;
-        var jumlahCustomer = 0;
-        for (var indeks = 0; indeks < semuaAkun.length; indeks++) {
-            var akun = semuaAkun[indeks];
-            if (akun.role === 'toko' || akun.role === 'pedagang' || akun.role === 'codseller') {
-                jumlahToko++;
-            } else if (akun.role === 'ojek') {
-                jumlahOjek++;
-            } else if (akun.role === 'customer') {
-                jumlahCustomer++;
-            }
-        }
-
-        var html = `
-            <div class="fb-card">
-                <h3 style="margin-bottom:10px;">Selamat Datang, ${escapeHtml(pengguna.nama||pengguna.username||'User')}</h3>
-                <p style="margin-bottom:10px; color:#888;">Role: ${escapeHtml(pengguna.role||'User')}</p>
-                <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(100px,1fr)); gap:15px; margin-top:15px;">
-                    <div style="text-align:center; padding:15px; background:#f8f9fa; border-radius:8px; border:1px solid #eee;">
-                        <div style="font-size:24px; font-weight:700; color:var(--primary);">${jumlahToko}</div>
-                        <div style="font-size:13px; color:#888;">Toko Terdaftar</div>
-                    </div>
-                    <div style="text-align:center; padding:15px; background:#f8f9fa; border-radius:8px; border:1px solid #eee;">
-                        <div style="font-size:24px; font-weight:700; color:#2196F3;">${jumlahOjek}</div>
-                        <div style="font-size:13px; color:#888;">Ojek Terdaftar</div>
-                    </div>
-                    <div style="text-align:center; padding:15px; background:#f8f9fa; border-radius:8px; border:1px solid #eee;">
-                        <div style="font-size:24px; font-weight:700; color:#4CAF50;">${jumlahCustomer}</div>
-                        <div style="font-size:13px; color:#888;">Customer Terdaftar</div>
-                    </div>
-                </div>
-            </div>
-        `;
-
-        areaKonten.innerHTML = html;
-    }
-</script>
-<!-- ===== AKHIR BLOK 5.4 ===== -->
-
 <!-- ============================================================ -->
 <!-- PENUTUP HTML                                                 -->
 <!-- ============================================================ -->
