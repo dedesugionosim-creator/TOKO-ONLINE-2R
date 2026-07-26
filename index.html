@@ -7303,8 +7303,375 @@
 
 </script>
 <!-- ===== AKHIR BLOK 31.2 ===== -->
+<!-- ============================================================ -->
+<!-- BLOK 31.2 - MENU PROFIL TOKO (DATA PRIBADI & FOTO PROFIL)     -->
+<!-- ============================================================ -->
+<script>
+
+    // ===== SUB BLOK 31.2.1 - HTML & CSS Form Profil Toko =====
+    // ===== SUB BLOK 31.2.2 - Java Script Render & Simpan Profil =====
+    function renderProfilToko() {
+        var areaKonten = document.getElementById('mainContent');
+        if (!areaKonten) {
+            return;
+        }
+
+        // Ambil data pengguna yang sedang login
+        var dataPengguna = JSON.parse(localStorage.getItem('2r_user') || '{}');
+        var dataAkun = getDataAkun();
+        var dataToko = null;
+        for (var indeks = 0; indeks < dataAkun.length; indeks++) {
+            if (dataAkun[indeks].id === dataPengguna.id) {
+                dataToko = dataAkun[indeks];
+                break;
+            }
+        }
+
+        if (!dataToko) {
+            tampilkanToast('Data akun tidak ditemukan!', 'error');
+            return;
+        }
+
+        // Bangun Hypertext Markup Language untuk halaman Profil Toko
+        var htmlProfil = '';
+
+        // Header Halaman
+        htmlProfil += '<div class="page-header">';
+        htmlProfil += '<h2>Profil Toko</h2>';
+        htmlProfil += '<p>Kelola data pribadi dan foto profil Anda.</p>';
+        htmlProfil += '</div>';
+
+        // --- Kartu Formulir Profil ---
+        htmlProfil += '<div class="fb-card">';
+        htmlProfil += '<div class="card-header" style="font-weight:600; font-size:16px; border-bottom:1px solid #eee; padding-bottom:10px; margin-bottom:15px;">';
+        htmlProfil += '<span><i class="fas fa-user-circle" style="color:var(--primary);"></i> Data Pribadi & Rekening</span>';
+        htmlProfil += '<button class="tombol-setujui" onclick="simpanProfilToko()"><i class="fas fa-save"></i> Simpan Profil</button>';
+        htmlProfil += '</div>';
+
+        htmlProfil += '<div class="grid-2">';
+        htmlProfil += '<div class="form-group"><label for="profilNama">Nama Lengkap</label><div class="input-group"><i class="fas fa-user"></i><input type="text" id="profilNama" class="form-input" value="' + escapeHtml(dataToko.nama || '') + '"></div></div>';
+        htmlProfil += '<div class="form-group"><label for="profilEmail">Email</label><div class="input-group"><i class="fas fa-envelope"></i><input type="email" id="profilEmail" class="form-input" value="' + escapeHtml(dataToko.email || '') + '"></div></div>';
+        htmlProfil += '<div class="form-group"><label for="profilHp">Nomor HP</label><div class="input-group"><i class="fas fa-phone"></i><input type="text" id="profilHp" class="form-input" value="' + escapeHtml(dataToko.nomorHp || '') + '"></div></div>';
+        htmlProfil += '<div class="form-group"><label for="profilAlamat">Alamat</label><div class="input-group"><i class="fas fa-map-pin"></i><input type="text" id="profilAlamat" class="form-input" value="' + escapeHtml(dataToko.alamat || '') + '"></div></div>';
+        htmlProfil += '<div class="form-group"><label for="profilBank">Nama Bank</label><div class="input-group"><i class="fas fa-university"></i><input type="text" id="profilBank" class="form-input" value="' + escapeHtml(dataToko.namaBank || '') + '"></div></div>';
+        htmlProfil += '<div class="form-group"><label for="profilRekening">Nomor Rekening</label><div class="input-group"><i class="fas fa-credit-card"></i><input type="text" id="profilRekening" class="form-input" value="' + escapeHtml(dataToko.nomorRekening || '') + '"></div></div>';
+        htmlProfil += '<div class="form-group"><label for="profilPemilikRek">Nama Pemilik Rekening</label><div class="input-group"><i class="fas fa-id-card"></i><input type="text" id="profilPemilikRek" class="form-input" value="' + escapeHtml(dataToko.pemilikRekening || '') + '"></div></div>';
+        htmlProfil += '</div>';
+        htmlProfil += '</div>';
+
+        // --- Kartu Foto Profil ---
+        htmlProfil += '<div class="fb-card">';
+        htmlProfil += '<div class="card-header" style="font-weight:600; font-size:16px; border-bottom:1px solid #eee; padding-bottom:10px; margin-bottom:15px;">';
+        htmlProfil += '<span><i class="fas fa-camera" style="color:var(--primary);"></i> Foto Profil</span>';
+        htmlProfil += '</div>';
+        htmlProfil += '<div class="upload-area" id="uploadFotoProfilToko" style="padding:20px; border:2px dashed #ddd; border-radius:8px; text-align:center; cursor:pointer; transition:border-color 0.3s;">';
+        htmlProfil += '<div id="fotoProfilPreviewToko">';
+        if (dataPengguna.fotoProfil) {
+            htmlProfil += '<img src="' + dataPengguna.fotoProfil + '" class="preview-image" style="max-width:150px; max-height:150px; border-radius:50%; object-fit:cover;">';
+        } else {
+            htmlProfil += '<i class="fas fa-user-circle" style="font-size:60px; color:#ddd;"></i>';
+            htmlProfil += '<p style="margin-top:10px;">Klik untuk upload foto profil</p>';
+        }
+        htmlProfil += '</div>';
+        htmlProfil += '<input type="file" id="inputFotoProfilToko" accept=".jpg,.jpeg,.png" style="display:none;">';
+        htmlProfil += '</div>';
+        htmlProfil += '<button class="tombol-setujui" onclick="simpanFotoProfilToko()" style="margin-top:10px;"><i class="fas fa-save"></i> Simpan Foto</button>';
+        htmlProfil += '</div>';
+
+        // Masukkan ke dalam area konten utama
+        areaKonten.innerHTML = htmlProfil;
+
+        // --- Setup Event Listener untuk Upload Foto Profil ---
+        var areaUpload = document.getElementById('uploadFotoProfilToko');
+        var inputFoto = document.getElementById('inputFotoProfilToko');
+        if (areaUpload && inputFoto) {
+            areaUpload.onclick = function() {
+                inputFoto.click();
+            };
+            inputFoto.onchange = function(e) {
+                var file = e.target.files[0];
+                if (file) {
+                    var pembaca = new FileReader();
+                    pembaca.onload = function(ev) {
+                        var dataGambar = ev.target.result;
+                        document.getElementById('fotoProfilPreviewToko').innerHTML = '<img src="' + dataGambar + '" class="preview-image" style="max-width:150px; max-height:150px; border-radius:50%; object-fit:cover;">';
+                        localStorage.setItem('2r_foto_profil_toko_temp', dataGambar);
+                        tampilkanToast('Foto berhasil dipilih! Klik "Simpan Foto" untuk menyimpan.', 'info');
+                    };
+                    pembaca.readAsDataURL(file);
+                }
+            };
+        }
+    }
+    // ===== AKHIR SUB BLOK 31.2.1 & 31.2.2 =====
 
 
+    // ===== SUB BLOK 31.2.3 - Fungsi Simpan Profil Toko =====
+    function simpanProfilToko() {
+        var dataPengguna = JSON.parse(localStorage.getItem('2r_user') || '{}');
+        var dataAkun = getDataAkun();
+
+        var nama = document.getElementById('profilNama').value.trim();
+        var email = document.getElementById('profilEmail').value.trim();
+        var hp = document.getElementById('profilHp').value.trim();
+        var alamat = document.getElementById('profilAlamat').value.trim();
+        var bank = document.getElementById('profilBank').value.trim();
+        var rekening = document.getElementById('profilRekening').value.trim();
+        var pemilikRek = document.getElementById('profilPemilikRek').value.trim();
+
+        if (!nama) {
+            tampilkanToast('Nama lengkap tidak boleh kosong!', 'warning');
+            return;
+        }
+
+        dataPengguna.nama = nama;
+        dataPengguna.email = email || '';
+        dataPengguna.nomorHp = hp || '';
+        dataPengguna.alamat = alamat || '';
+        dataPengguna.namaBank = bank || '';
+        dataPengguna.nomorRekening = rekening || '';
+        dataPengguna.pemilikRekening = pemilikRek || '';
+
+        for (var indeks = 0; indeks < dataAkun.length; indeks++) {
+            if (dataAkun[indeks].id === dataPengguna.id) {
+                dataAkun[indeks].nama = nama;
+                dataAkun[indeks].email = email || '';
+                dataAkun[indeks].nomorHp = hp || '';
+                dataAkun[indeks].alamat = alamat || '';
+                dataAkun[indeks].namaBank = bank || '';
+                dataAkun[indeks].nomorRekening = rekening || '';
+                dataAkun[indeks].pemilikRekening = pemilikRek || '';
+                break;
+            }
+        }
+
+        simpanDataAkun(dataAkun);
+        localStorage.setItem('2r_user', JSON.stringify(dataPengguna));
+        tampilkanToast('Data profil berhasil disimpan!', 'success');
+        renderProfilToko();
+    }
+    // ===== AKHIR SUB BLOK 31.2.3 =====
+
+
+    // ===== SUB BLOK 31.2.4 - Fungsi Simpan Foto Profil Toko =====
+    function simpanFotoProfilToko() {
+        var foto = localStorage.getItem('2r_foto_profil_toko_temp');
+        if (!foto) {
+            tampilkanToast('Pilih foto terlebih dahulu!', 'warning');
+            return;
+        }
+
+        var dataPengguna = JSON.parse(localStorage.getItem('2r_user') || '{}');
+        var dataAkun = getDataAkun();
+
+        dataPengguna.fotoProfil = foto;
+        for (var indeks = 0; indeks < dataAkun.length; indeks++) {
+            if (dataAkun[indeks].id === dataPengguna.id) {
+                dataAkun[indeks].fotoProfil = foto;
+                break;
+            }
+        }
+
+        simpanDataAkun(dataAkun);
+        localStorage.setItem('2r_user', JSON.stringify(dataPengguna));
+        localStorage.removeItem('2r_foto_profil_toko_temp');
+        tampilkanToast('Foto profil berhasil disimpan!', 'success');
+        renderProfilToko();
+    }
+    // ===== AKHIR SUB BLOK 31.2.4 =====
+
+</script>
+<!-- ===== AKHIR BLOK 31.2 ===== -->
+<!-- ============================================================ -->
+<!-- BLOK 31.3 - UPLOAD PRODUK PUBLIK (BATAS 5 PRODUK FREE)       -->
+<!-- ============================================================ -->
+<script>
+
+    // ===== SUB BLOK 31.3.1 - HTML & CSS Form Upload =====
+    // ===== SUB BLOK 31.3.2 - Java Script Render & Cek Batas =====
+    function renderUploadProdukPublik() {
+        var areaKonten = document.getElementById('mainContent');
+        if (!areaKonten) {
+            return;
+        }
+
+        // Ambil data pengguna yang sedang login
+        var dataPengguna = JSON.parse(localStorage.getItem('2r_user') || '{}');
+        var dataAkun = getDataAkun();
+        var dataToko = null;
+        for (var indeks = 0; indeks < dataAkun.length; indeks++) {
+            if (dataAkun[indeks].id === dataPengguna.id) {
+                dataToko = dataAkun[indeks];
+                break;
+            }
+        }
+
+        // Ambil produk yang sudah diupload oleh toko ini
+        var semuaProdukPublik = JSON.parse(localStorage.getItem('2r_produk_publik') || '[]');
+        var produkSaya = [];
+        for (var indeks = 0; indeks < semuaProdukPublik.length; indeks++) {
+            if (semuaProdukPublik[indeks].ownerId === dataPengguna.id) {
+                produkSaya.push(semuaProdukPublik[indeks]);
+            }
+        }
+
+        // Hitung batas maksimal produk
+        var batasMaksimal = 5; // Default untuk akun Free
+        if (dataToko && dataToko.fitur && dataToko.fitur.maksProdukPublik) {
+            batasMaksimal = dataToko.fitur.maksProdukPublik;
+        }
+
+        var sisaSlot = batasMaksimal - produkSaya.length;
+
+        // Bangun Hypertext Markup Language untuk halaman Upload Produk Publik
+        var htmlUpload = '';
+
+        // Header Halaman
+        htmlUpload += '<div class="page-header">';
+        htmlUpload += '<h2>Upload Produk Publik</h2>';
+        htmlUpload += '<p>Upload produk untuk ditampilkan di direktori publik. Batas maksimal: <strong>' + batasMaksimal + ' produk</strong> per akun.</p>';
+        htmlUpload += '</div>';
+
+        // Indikator Sisa Slot
+        htmlUpload += '<div class="fb-card" style="background:#e8f5e9; border:1px solid #c8e6c9;">';
+        htmlUpload += '<div style="display:flex; justify-content:space-between; align-items:center;">';
+        htmlUpload += '<span><strong>Slot tersedia:</strong> ' + sisaSlot + ' dari ' + batasMaksimal + ' produk</span>';
+        if (sisaSlot <= 0) {
+            htmlUpload += '<button class="tombol-tolak" onclick="tampilkanToast(\'Slot penuh! Ajukan tambah kapasitas ke SuperAdmin melalui menu Pengajuan Upload Produk.\', \'warning\')">Slot Penuh</button>';
+        }
+        htmlUpload += '</div>';
+        htmlUpload += '</div>';
+
+        // Form Upload (hanya jika slot masih tersedia)
+        if (sisaSlot > 0) {
+            htmlUpload += '<div class="fb-card">';
+            htmlUpload += '<div class="card-header" style="font-weight:600; font-size:16px; border-bottom:1px solid #eee; padding-bottom:10px; margin-bottom:15px;">Tambah Produk Baru</div>';
+            htmlUpload += '<div class="grid-2">';
+            htmlUpload += '<div class="form-group"><label for="produkJudul">Judul Produk</label><div class="input-group"><i class="fas fa-heading"></i><input type="text" id="produkJudul" class="form-input" placeholder="Judul produk"></div></div>';
+            htmlUpload += '<div class="form-group"><label for="produkKategori">Kategori</label><div class="input-group"><i class="fas fa-tags"></i><select id="produkKategori" class="form-input"><option value="Fashion">Fashion</option><option value="Elektronik">Elektronik</option><option value="Makanan">Makanan</option><option value="Lainnya">Lainnya</option></select></div></div>';
+            htmlUpload += '<div class="form-group"><label for="produkHarga">Harga (Rp)</label><div class="input-group"><i class="fas fa-money-bill-wave"></i><input type="number" id="produkHarga" class="form-input" placeholder="150000"></div></div>';
+            htmlUpload += '<div class="form-group"><label for="produkGambar">Gambar / Foto (maksimal 5)</label><div class="input-group"><i class="fas fa-image"></i><input type="file" id="produkGambar" multiple accept=".jpg,.jpeg,.png" style="display:none;"><button class="tombol-setujui" onclick="document.getElementById(\'produkGambar\').click();">Pilih Gambar</button><span id="produkNamaGambar" style="font-size:12px; color:#888; margin-left:10px;">Belum ada gambar</span></div></div>';
+            htmlUpload += '</div>';
+            htmlUpload += '<div class="form-group"><label for="produkDeskripsi">Deskripsi</label><div class="input-group" style="align-items:flex-start;"><i class="fas fa-align-left" style="margin-top:12px;"></i><textarea id="produkDeskripsi" class="form-input" rows="3" placeholder="Deskripsi produk"></textarea></div></div>';
+            htmlUpload += '<button class="tombol-setujui" onclick="simpanProdukPublik()" style="margin-top:15px;"><i class="fas fa-save"></i> Simpan Produk</button>';
+            htmlUpload += '</div>';
+        }
+
+        // Daftar Produk Saya
+        htmlUpload += '<div class="fb-card">';
+        htmlUpload += '<div class="card-header" style="font-weight:600; font-size:16px; border-bottom:1px solid #eee; padding-bottom:10px; margin-bottom:15px;">Daftar Produk Saya <span style="font-weight:normal;font-size:13px;color:#888;">(Total: ' + produkSaya.length + ')</span></div>';
+        if (produkSaya.length === 0) {
+            htmlUpload += '<div class="empty-state"><i class="fas fa-box-open"></i><h3>Belum ada produk</h3><p>Upload produk pertama Anda.</p></div>';
+        } else {
+            htmlUpload += '<div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(200px, 1fr)); gap:15px;">';
+            for (var indeks = 0; indeks < produkSaya.length; indeks++) {
+                var produk = produkSaya[indeks];
+                htmlUpload += '<div style="border:1px solid #eee; border-radius:8px; padding:15px; background:white;">';
+                htmlUpload += '<h4 style="font-size:14px; margin:0 0 5px;">' + escapeHtml(produk.judul) + '</h4>';
+                htmlUpload += '<p style="font-size:12px; color:#888;">Rp ' + produk.harga + ' | ' + escapeHtml(produk.kategori) + '</p>';
+                htmlUpload += '<p style="font-size:12px;">' + escapeHtml(produk.deskripsi.substring(0, 50)) + '...</p>';
+                htmlUpload += '<span style="font-size:11px; color:#888;">Gambar: ' + (produk.gambar ? produk.gambar.length : 0) + ' foto</span>';
+                htmlUpload += '</div>';
+            }
+            htmlUpload += '</div>';
+        }
+        htmlUpload += '</div>';
+
+        // Masukkan ke dalam area konten utama
+        areaKonten.innerHTML = htmlUpload;
+
+        // --- Setup Event Listener untuk Upload Gambar ---
+        var inputGambar = document.getElementById('produkGambar');
+        if (inputGambar) {
+            var inputBaru = inputGambar.cloneNode(true);
+            inputGambar.parentNode.replaceChild(inputBaru, inputGambar);
+            inputBaru.onchange = function(e) {
+                var file = e.target.files[0];
+                if (file) {
+                    document.getElementById('produkNamaGambar').textContent = file.name;
+                    var pembaca = new FileReader();
+                    pembaca.onload = function(ev) {
+                        localStorage.setItem('2r_produk_gambar_temp', ev.target.result);
+                    };
+                    pembaca.readAsDataURL(file);
+                }
+            };
+        }
+    }
+    // ===== AKHIR SUB BLOK 31.3.1 & 31.3.2 =====
+
+
+    // ===== SUB BLOK 31.3.3 - Fungsi Simpan Produk Publik =====
+    function simpanProdukPublik() {
+        var dataPengguna = JSON.parse(localStorage.getItem('2r_user') || '{}');
+        var dataAkun = getDataAkun();
+        var dataToko = null;
+        for (var indeks = 0; indeks < dataAkun.length; indeks++) {
+            if (dataAkun[indeks].id === dataPengguna.id) {
+                dataToko = dataAkun[indeks];
+                break;
+            }
+        }
+
+        var judul = document.getElementById('produkJudul').value.trim();
+        var kategori = document.getElementById('produkKategori').value;
+        var harga = document.getElementById('produkHarga').value.trim();
+        var deskripsi = document.getElementById('produkDeskripsi').value.trim();
+        var gambar = localStorage.getItem('2r_produk_gambar_temp') || '';
+
+        if (!judul || !harga || !deskripsi) {
+            tampilkanToast('Judul, harga, dan deskripsi wajib diisi!', 'warning');
+            return;
+        }
+
+        // Cek batas maksimal produk
+        var semuaProdukPublik = JSON.parse(localStorage.getItem('2r_produk_publik') || '[]');
+        var produkSaya = [];
+        for (var indeks = 0; indeks < semuaProdukPublik.length; indeks++) {
+            if (semuaProdukPublik[indeks].ownerId === dataPengguna.id) {
+                produkSaya.push(semuaProdukPublik[indeks]);
+            }
+        }
+
+        var batasMaksimal = 5;
+        if (dataToko && dataToko.fitur && dataToko.fitur.maksProdukPublik) {
+            batasMaksimal = dataToko.fitur.maksProdukPublik;
+        }
+
+        if (produkSaya.length >= batasMaksimal) {
+            tampilkanToast('Batas upload produk sudah penuh! Ajukan tambah kapasitas ke SuperAdmin.', 'warning');
+            return;
+        }
+
+        // Simpan produk
+        var produkBaru = {
+            id: Date.now(),
+            ownerId: dataPengguna.id,
+            judul: judul,
+            deskripsi: deskripsi,
+            harga: parseInt(harga),
+            kategori: kategori,
+            gambar: gambar ? [gambar] : [],
+            tanggalUpload: new Date().toISOString()
+        };
+
+        semuaProdukPublik.push(produkBaru);
+        localStorage.setItem('2r_produk_publik', JSON.stringify(semuaProdukPublik));
+        localStorage.removeItem('2r_produk_gambar_temp');
+
+        // Reset form
+        document.getElementById('produkJudul').value = '';
+        document.getElementById('produkHarga').value = '';
+        document.getElementById('produkDeskripsi').value = '';
+        document.getElementById('produkNamaGambar').textContent = 'Belum ada gambar';
+
+        tampilkanToast('Produk berhasil ditambahkan!', 'success');
+        renderUploadProdukPublik();
+    }
+    // ===== AKHIR SUB BLOK 31.3.3 =====
+
+</script>
+<!-- ===== AKHIR BLOK 31.3 ===== -->
 <!-- ============================================================ -->
 <!-- PENUTUP HTML                                                 -->
 <!-- ============================================================ -->
