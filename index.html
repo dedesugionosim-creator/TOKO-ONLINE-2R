@@ -305,7 +305,7 @@
 </div>
 <!-- ===== AKHIR BLOK 3.1 ===== -->
 <!-- ============================================================ -->
-<!-- BLOK 4.1 - CSS GRADASI SAMA (LOGIN & DASHBOARD)              -->
+<!-- BLOK 4.1 - CSS GRADASI SAMA & FITUR TOMBOL RAPI              -->
 <!-- ============================================================ -->
 <style>
     :root {
@@ -313,15 +313,14 @@
         --primary: #FF6B00; 
         --primary-dark: #e65c00;
         
-        /* --- INI KUNCI UTAMANYA --- */
-        /* Variable Gradasi Oranye Tua yang SAMA PERSIS untuk Login & Dashboard */
+        /* Variable Gradasi Oranye Tua untuk Login & Dashboard */
         --bg-gradient: linear-gradient(135deg, #C05000 0%, #E67E22 100%);
         
         /* Elemen Lainnya */
         --bg-card: #FFFFFF;
         --text-dark: #2D3748;
         --text-muted: #718096;
-        --shadow-card: 0 8px 30px rgba(0,0,0,0.2);
+        --shadow-card: 0 8px 30px rgba(0,0,0,0.12);
         --radius: 16px;
         --radius-sm: 8px;
     }
@@ -347,7 +346,7 @@
         align-items:center; 
         width:100%; 
         min-height:100vh; 
-        background: var(--bg-gradient); /* Menggunakan variable gradasi */
+        background: var(--bg-gradient);
     }
     .authentication-wrapper { width:100%; max-width:450px; padding:20px; }
     .authentication-box { background:white; border-radius:var(--radius); padding:40px; box-shadow:0 4px 20px rgba(0,0,0,0.15); width:100%; }
@@ -370,14 +369,14 @@
     .authentication-footer { text-align:center; margin-top:18px; font-size:14px; color:#888; }
     .authentication-footer a { color:var(--primary); cursor:pointer; font-weight:600; text-decoration:none; }
 
-        /* ===== DASHBOARD - GRADASI SAMA DENGAN LOGIN ===== */
+    /* ===== DASHBOARD - GRADASI SAMA DENGAN LOGIN ===== */
     .page-dashboard { 
         display:none; 
         background: var(--bg-gradient); 
         min-height: 100vh;
     }
     
-    /* Navbar - Putih bersih */
+    /* ===== NAVBAR ===== */
     .navbar-simple { 
         background:#FFFFFF; 
         box-shadow:0 2px 10px rgba(0,0,0,0.05); 
@@ -456,10 +455,29 @@
     
     .sidebar-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.4); z-index:998; }
 
-    /* ===== KONTEN UTAMA ===== */
-    .simple-layout-container { display:flex; max-width:1200px; margin:300px auto 20px auto; padding:0 20px; gap:25px; }
-    .content-simple { flex:1; min-width:0; background:var(--bg-card); border-radius:var(--radius); box-shadow:var(--shadow-card); padding:20px; }
-    .fb-card { background:var(--bg-card); border-radius:var(--radius); padding:20px; margin-bottom:20px; }
+    /* ===== KONTEN UTAMA (PENTING: PERBAIKAN MARGIN) ===== */
+    /* Hitungan: Cover 240px + Navbar Bottom 70px = 310px. Diberi jarak minimal 20px, jadi margin top 330px */
+    .simple-layout-container { 
+        display:flex; 
+        max-width:1280px; 
+        margin: 330px auto 20px auto; /* ------- DIPERBAIKI -------- */
+        padding:0 20px; 
+        gap:25px; 
+    }
+    .content-simple { 
+        flex:1; 
+        min-width:0; 
+        background:var(--bg-card); 
+        border-radius:var(--radius); 
+        box-shadow:var(--shadow-card); 
+        padding:20px; 
+    }
+    .fb-card { 
+        background:var(--bg-card); 
+        border-radius:var(--radius); 
+        padding:20px; 
+        margin-bottom:20px; 
+    }
     
     /* ===== STATISTIK & GRID ===== */
     .stat-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(140px,1fr)); gap:12px; margin-top:15px; }
@@ -468,35 +486,61 @@
     .stat-number { font-size:24px; font-weight:700; margin-bottom:5px; }
     .stat-label { font-size:13px; color:var(--text-muted); }
 
-    /* ===== KATEGORI GRID (TOKO, OJEK, DLL) ===== */
-    .kategori-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:15px; margin-bottom:20px; }
-    .kategori-grid .stat-card { padding:15px; }
-    .kategori-grid .stat-card h4 { font-size:16px; margin:5px 0; }
-    .kategori-grid .stat-card p { font-size:12px; margin:5px 0; color:#888; }
-    .kategori-grid .stat-card button { font-size:12px; padding:4px 10px; }
+    /* ===== TOMBOL AKSI PROFIL (Simpan/Batal) ===== */
+    .action-bar {
+        display: flex;
+        justify-content: flex-end;
+        gap: 12px;
+        margin-top: 25px;
+        padding-top: 20px;
+        border-top: 1px solid #eee;
+    }
+    .btn-simpan {
+        background: var(--primary);
+        color: white;
+        padding: 10px 30px;
+        border: none;
+        border-radius: var(--radius-sm);
+        font-weight: 600;
+        cursor: pointer;
+        transition: 0.3s;
+        font-size: 14px;
+    }
+    .btn-simpan:hover { background: var(--primary-dark); transform: translateY(-2px); box-shadow: 0 4px 10px rgba(255,107,0,0.3); }
+    .btn-batal {
+        background: #e2e8f0;
+        color: #4a5568;
+        padding: 10px 25px;
+        border: none;
+        border-radius: var(--radius-sm);
+        font-weight: 600;
+        cursor: pointer;
+        transition: 0.3s;
+        font-size: 14px;
+    }
+    .btn-batal:hover { background: #cbd5e0; transform: translateY(-2px); }
 
-    /* ===== PENCARIAN ===== */
-    .grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:15px; }
-    @media (max-width: 600px) { .grid-2 { grid-template-columns:1fr; } }
-    .form-group { margin-bottom:0; }
-    .form-group label { font-size:13px; margin-bottom:4px; display:block; font-weight:600; color:#555; }
-    .input-group { display:flex; align-items:center; background:#f8f9fa; border-radius:8px; padding:0 10px; border:1px solid #ddd; }
-    .input-group input { border:none; background:transparent; padding:8px 0; font-size:14px; width:100%; outline:none; font-family:'Poppins', sans-serif; }
-    .input-group button { background:var(--primary); color:white; border:none; padding:4px 12px; border-radius:6px; cursor:pointer; font-size:12px; font-weight:600; }
-
-    /* ===== RESPONSIVE HP ===== */
+    /* ===== RESPONSIVE HP (Navbar & Layout Diperbaiki) ===== */
     @media (max-width:767px) {
-        .header-profile { height:160px; }
+        .header-profile { height:160px; } /* Cover dikecilkan untuk HP */
         .profile-wrapper { width:80px; height:80px; bottom:-35px; left:15px; }
         .profile-actions { bottom:-25px; padding:2px 8px; font-size:11px; }
         #menuToggle { display:block; }
         .sidebar-simple { position:fixed; top:0; left:-100%; width:80%; max-width:300px; background:rgba(0,0,0,0.5); backdrop-filter:blur(12px); border-radius:0; height:100vh; padding:80px 20px 20px; transition:left 0.3s ease; z-index:999; overflow-y:auto; }
         .sidebar-simple.open { left:0; }
         .sidebar-overlay.active { display:block; }
-        .simple-layout-container { margin-top:210px; padding:0 12px; gap:15px; flex-direction:column; }
+        /* Di HP, tinggi total 160+70=230px. Diberi jarak 20px -> 250px */
+        .simple-layout-container { 
+            margin-top: 250px; 
+            padding:0 12px; 
+            gap:15px; 
+            flex-direction:column; 
+        }
         .clock-display { display:none; }
         .stat-number { font-size:20px; }
         .navbar-left .brand-text { font-size:18px; }
+        .action-bar { flex-direction: column-reverse; justify-content: center; }
+        .action-bar .btn-simpan, .action-bar .btn-batal { width: 100%; text-align: center; padding: 12px; }
     }
 </style>
 <!-- ===== AKHIR BLOK 4.1 ===== -->
