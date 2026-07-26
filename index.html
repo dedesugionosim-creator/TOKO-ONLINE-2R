@@ -11,7 +11,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛒</text></svg>">
     
-    <!-- CSS GLOBAL & LOGIN (semua CSS disatukan di sini) -->
+    <!-- CSS GLOBAL & LOGIN -->
     <style>
         :root {
             --primary: #FF6B00;
@@ -25,7 +25,6 @@
             --radius: 12px;
         }
 
-        /* --- RESET --- */
         * { margin:0; padding:0; box-sizing:border-box; }
         body {
             font-family:'Poppins', sans-serif;
@@ -39,7 +38,7 @@
         .grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:15px; }
         .button-small { padding:6px 14px; font-size:12px; width:100%; border:none; border-radius:var(--radius); background:var(--primary); color:white; cursor:pointer; }
 
-        /* --- TOAST --- */
+        /* TOAST */
         #toastContainer {
             position:fixed;
             top:20px;
@@ -77,7 +76,7 @@
             to { transform:translateY(0); opacity:1; }
         }
 
-        /* --- LOGIN BOX --- */
+        /* LOGIN BOX */
         #pageAuthentication {
             display:flex;
             justify-content:center;
@@ -115,10 +114,10 @@
 </head>
 <body>
 
-<!-- === TOAST CONTAINER === -->
+<!-- TOAST CONTAINER -->
 <div id="toastContainer"></div>
 
-<!-- === HALAMAN LOGIN === -->
+<!-- HALAMAN LOGIN -->
 <div id="pageAuthentication">
     <div class="authentication-wrapper">
         <div class="authentication-box">
@@ -234,7 +233,7 @@
                 <div class="authentication-footer">Sudah punya akun? <a onclick="toggleForm('login')">Login di sini</a></div>
             </form>
 
-            <!-- FOOTER NAVIGASI (Lupa Password) -->
+            <!-- FOOTER NAVIGASI -->
             <div class="authentication-footer">
                 <a onclick="lupaPassword()" style="cursor:pointer; color:#d32f2f; font-weight:600;">Lupa Password?</a>
                 <br><br>
@@ -250,7 +249,7 @@
 <!-- BAGIAN 2: DASHBOARD & NAVIGASI (HTML & CSS DASHBOARD)        -->
 <!-- ============================================================ -->
 
-<!-- === DASHBOARD WRAPPER === -->
+<!-- DASHBOARD WRAPPER -->
 <div id="pageDashboard" class="page-dashboard" style="display:none;">
 
     <!-- NAVBAR -->
@@ -278,45 +277,6 @@
 
     <!-- MAIN CONTENT -->
     <main class="content" id="mainContent"></main>
-
-    <!-- MODALS -->
-    <div class="modal-overlay" id="modalTolakAkun">
-        <div class="modal">
-            <div class="modal-header"><h3>Konfirmasi Penolakan</h3><button class="modal-close" onclick="tutupModal('modalTolakAkun')">&times;</button></div>
-            <div class="modal-body"><p>Yakin ingin menolak akun ini?</p><input type="hidden" id="tolakIdAkun"></div>
-            <div class="modal-footer">
-                <button class="btn btn-extra-small" style="background:#eee;" onclick="tutupModal('modalTolakAkun')">Batal</button>
-                <button class="btn btn-danger btn-extra-small" onclick="eksekusiTolakAkun()">Ya, Tolak</button>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal-overlay" id="modalPreviewGambar">
-        <div class="modal" style="background:transparent; box-shadow:none; max-width:800px;">
-            <div class="modal-header" style="background:white; border-radius:12px 12px 0 0;"><h3 id="modalPreviewTitle">Preview</h3><button class="modal-close" onclick="tutupModal('modalPreviewGambar')">&times;</button></div>
-            <img id="modalPreviewImage" src="" style="width:100%; max-height:70vh; object-fit:contain; background:#f0f0f0;">
-        </div>
-    </div>
-
-    <div class="modal-overlay" id="modalFormTagihan">
-        <div class="modal" style="max-width:500px;">
-            <div class="modal-header"><h3 id="modalTagihanTitle">Tambah Tagihan</h3><button class="modal-close" onclick="tutupModalTagihan()">&times;</button></div>
-            <div class="modal-body">
-                <div class="form-group"><label>Akun</label><select id="tagihanAkunId" class="form-input"><option value="">-- Pilih Akun --</option></select></div>
-                <div class="grid-2">
-                    <div class="form-group"><label>Bulan</label><select id="tagihanBulan" class="form-input"><option value="1">Jan</option>... (opsi bulan)</select></div>
-                    <div class="form-group"><label>Tahun</label><input type="number" id="tagihanTahun" class="form-input" value="2026"></div>
-                </div>
-                <div class="form-group"><label>Jumlah Tagihan (Rp)</label><input type="number" id="tagihanJumlah" class="form-input" placeholder="50000"></div>
-                <div class="form-group"><label>Status</label><select id="tagihanStatus" class="form-input"><option value="BELUM_BAYAR">BELUM_BAYAR</option><option value="LUNAS">LUNAS</option></select></div>
-                <input type="hidden" id="tagihanEditId" value="">
-            </div>
-            <div class="modal-footer">
-                <button class="button button-secondary" onclick="tutupModalTagihan()">Batal</button>
-                <button class="button button-primary" onclick="simpanTagihanManual()">Simpan</button>
-            </div>
-        </div>
-    </div>
 
 </div>
 <!-- ===== AKHIR BAGIAN 2 ===== -->
@@ -410,8 +370,6 @@
         container.appendChild(toast);
         setTimeout(() => { toast.style.animation = 'slideInDown 0.3s ease reverse'; setTimeout(() => toast.remove(), 300); }, 3500);
     }
-    function bukaModal(id) { document.getElementById(id).classList.add('active'); }
-    function tutupModal(id) { document.getElementById(id).classList.remove('active'); }
     function toggleForm(tipe) {
         ['loginForm','registerForm','pengajuanBukaAkunForm'].forEach(id => document.getElementById(id).classList.add('hidden-form'));
         if (tipe === 'register') document.getElementById('registerForm').classList.remove('hidden-form');
@@ -566,7 +524,7 @@
             }
         });
 
-        // Sidebar toggle
+        // Sidebar toggle (buka/tutup)
         var menuToggle = document.getElementById('menuToggle');
         var sidebar = document.querySelector('.sidebar');
         var overlay = document.getElementById('sidebarOverlay');
@@ -590,7 +548,7 @@
         document.getElementById('userNama').textContent = user.nama;
         document.getElementById('roleBadge').textContent = user.role || 'User';
 
-        // Sidebar sederhana (untuk demo)
+        // Sidebar sederhana (untuk demo homepage)
         var sidebarHtml = `
             <div class="sidebar-menu-title">Menu</div>
             <div class="sidebar-menu-item active" data-page="home"><i class="fas fa-home"></i><span>Beranda</span></div>
@@ -750,6 +708,11 @@
     function cariToko() { var kata = document.getElementById('inputCariToko').value.trim(); if (!kata) { tampilkanToast('Masukkan kata kunci!', 'warning'); return; } tampilkanToast('Mencari toko: '+kata, 'info'); }
     function cariOjek() { var kata = document.getElementById('inputCariOjek').value.trim(); if (!kata) { tampilkanToast('Masukkan kata kunci!', 'warning'); return; } tampilkanToast('Mencari ojek: '+kata, 'info'); }
 
+    // --- DUMMY FUNGSI MODAL (AGAR TIDAK ERROR) ---
+    function tutupModal(id) { /* Halaman default tidak pakai modal, fungsi dummy ini mencegah error jika ada onclick di HTML yang lupa dihapus */ }
+    function bukaModal(id) { /* Dummy */ }
+    function eksekusiTolakAkun() { tampilkanToast('Fitur Admin belum aktif.', 'info'); }
+
     // --- PASTIKAN SUPERVER ADMIN ADA ---
     (function initSuperAdmin() {
         var dataAkun = getDataAkun();
@@ -765,3 +728,4 @@
 </script>
 </body>
 </html>
+<!-- ===== AKHIR BAGIAN 3 ===== -->
