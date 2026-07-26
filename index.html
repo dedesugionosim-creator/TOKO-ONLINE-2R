@@ -1,111 +1,58 @@
-<!-- ============================================================ -->
-<!-- BLOK 1.1 - TAG HTML & META                                    -->
-<!-- ============================================================ -->
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Toko Online 2R</title>
-<!-- ===== AKHIR BLOK 1.1 ===== -->
 
-<!-- ============================================================ -->
-<!-- BLOK 1.2 - LINK FONTAWESOME, GOOGLE FONTS & CROPPER JS       -->
-<!-- ============================================================ -->
+    <!-- BLOK 1.2 - LINK FONTAWESOME, GOOGLE FONTS & CROPPER JS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- Tambahan: Cropper.js untuk fitur crop & drag gambar -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.js"></script>
-<!-- ===== AKHIR BLOK 1.2 ===== -->
 
-<!-- ============================================================ -->
-<!-- BLOK 1.3 - FAVICON                                            -->
-<!-- ============================================================ -->
+    <!-- BLOK 1.3 - FAVICON -->
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛒</text></svg>">
-    <link rel="shortcut icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛒</text></svg>">
-<!-- ===== AKHIR BLOK 1.3 ===== -->
-
-<!-- ============================================================ -->
-<!-- BLOK 1.4 - PENUTUP HEAD & PEMBUKA BODY                       -->
-<!-- ============================================================ -->
 </head>
 <body>
-<!-- ===== AKHIR BLOK 1.4 ===== -->
 
-<!-- ============================================================ -->
-<!-- BLOK 1.5 - WADAH NOTIFIKASI TOAST                             -->
-<!-- ============================================================ -->
+    <!-- BLOK 1.5 - WADAH NOTIFIKASI TOAST -->
     <div id="toastContainer"></div>
-<!-- ===== AKHIR BLOK 1.5 ===== -->
 
-<!-- ============================================================ -->
-<!-- BLOK 2.1 - WRAPPER & KOTAK LOGIN                              -->
-<!-- ============================================================ -->
+    <!-- BLOK 2.1 - 2.6 - HALAMAN LOGIN & REGISTER -->
     <div id="pageAuthentication">
         <div class="authentication-wrapper">
             <div class="authentication-box">
-<!-- ===== AKHIR BLOK 2.1 ===== -->
-
-<!-- ============================================================ -->
-<!-- BLOK 2.2 - LOGO & JUDUL APLIKASI                              -->
-<!-- ============================================================ -->
                 <div class="authentication-logo">
                     <i class="fas fa-store-alt"></i>
                     <h1>Toko Online <span style="color:#FF6B00;">2R</span></h1>
                     <p>Platform Belanja & Layanan Serba Ada</p>
                 </div>
-<!-- ===== AKHIR BLOK 2.2 ===== -->
-
-<!-- ============================================================ -->
-<!-- BLOK 2.3 - AREA PESAN ERROR                                   -->
-<!-- ============================================================ -->
                 <div class="authentication-error" id="authenticationError">
-                    <i class="fas fa-exclamation-circle"></i> 
-                    <span id="authenticationErrorText"></span>
+                    <i class="fas fa-exclamation-circle"></i> <span id="authenticationErrorText"></span>
                 </div>
-<!-- ===== AKHIR BLOK 2.3 ===== -->
 
-<!-- ============================================================ -->
-<!-- BLOK 2.4 - FORM LOGIN                                         -->
-<!-- ============================================================ -->
                 <form class="authentication-form" id="loginForm">
                     <div class="form-group">
                         <label>Username</label>
-                        <div class="input-group">
-                            <i class="fas fa-user"></i>
-                            <input type="text" id="loginUsername" placeholder="Masukkan username" required>
-                        </div>
+                        <div class="input-group"><i class="fas fa-user"></i><input type="text" id="loginUsername" placeholder="Masukkan username" required></div>
                     </div>
                     <div class="form-group">
                         <label>Password</label>
-                        <div class="input-group">
-                            <i class="fas fa-lock"></i>
-                            <input type="password" id="loginPassword" placeholder="Masukkan password" required>
-                        </div>
+                        <div class="input-group"><i class="fas fa-lock"></i><input type="password" id="loginPassword" placeholder="Masukkan password" required></div>
                     </div>
-                    <button type="submit" class="button-submit">
-                        <i class="fas fa-sign-in-alt"></i> Login
-                    </button>
+                    <button type="submit" class="button-submit"><i class="fas fa-sign-in-alt"></i> Login</button>
                     <div class="authentication-footer">
-                        <a href="javascript:void(0)" onclick="lupaPassword()" style="cursor:pointer; color:#d32f2f; font-weight:600;">Lupa Password?</a>
-                        <br><br>
-                        Belum punya akun? <a href="javascript:void(0)" onclick="toggleForm('register')">Daftar di sini</a>
-                        <br>
+                        <a href="javascript:void(0)" onclick="lupaPassword()" style="cursor:pointer; color:#d32f2f; font-weight:600;">Lupa Password?</a><br><br>
+                        Belum punya akun? <a href="javascript:void(0)" onclick="toggleForm('register')">Daftar di sini</a><br>
                         <a href="javascript:void(0)" onclick="toggleForm('pengajuan')">Ajukan buka akun</a>
                     </div>
                 </form>
-<!-- ===== AKHIR BLOK 2.4 ===== -->
 
-<!-- ============================================================ -->
-<!-- BLOK 2.5 - FORM REGISTER                                      -->
-<!-- ============================================================ -->
                 <form class="authentication-form hidden-form" id="registerForm">
                     <div class="form-group">
                         <label>Pilih Role</label>
-                        <div class="input-group">
-                            <i class="fas fa-user-tag"></i>
+                        <div class="input-group"><i class="fas fa-user-tag"></i>
                             <select id="registerRole">
                                 <option value="customer">Customer</option>
                                 <option value="toko">Toko</option>
@@ -117,917 +64,705 @@
                     </div>
                     <div class="form-group">
                         <label>ID Akun (Otomatis)</label>
-                        <div class="input-group">
-                            <i class="fas fa-id-card"></i>
-                            <input type="text" id="registerIdPreview" class="form-input" value="Akan dibuat otomatis" disabled style="background:#f0f0f0; color:#666;">
-                        </div>
+                        <div class="input-group"><i class="fas fa-id-card"></i><input type="text" id="registerIdPreview" class="form-input" value="Akan dibuat otomatis" disabled style="background:#f0f0f0; color:#666;"></div>
                     </div>
                     <div class="form-group">
                         <label>Username</label>
-                        <div class="input-group">
-                            <i class="fas fa-user"></i>
-                            <input type="text" id="registerUsername" placeholder="Buat username" required>
-                        </div>
+                        <div class="input-group"><i class="fas fa-user"></i><input type="text" id="registerUsername" placeholder="Buat username" required></div>
                     </div>
                     <div class="form-group">
                         <label>Password</label>
-                        <div class="input-group">
-                            <i class="fas fa-lock"></i>
-                            <input type="password" id="registerPassword" placeholder="Buat password" required>
-                        </div>
+                        <div class="input-group"><i class="fas fa-lock"></i><input type="password" id="registerPassword" placeholder="Buat password" required></div>
                     </div>
                     <div class="form-group">
                         <label>Nama Lengkap</label>
-                        <div class="input-group">
-                            <i class="fas fa-id-card"></i>
-                            <input type="text" id="registerNama" placeholder="Nama lengkap Anda" required>
-                        </div>
+                        <div class="input-group"><i class="fas fa-id-card"></i><input type="text" id="registerNama" placeholder="Nama lengkap Anda" required></div>
                     </div>
-
                     <div class="grid-2">
                         <div class="form-group">
                             <label>Alamat / Lokasi</label>
-                            <div class="input-group">
-                                <i class="fas fa-map-pin"></i>
-                                <input type="text" id="registerLokasi" class="form-input" placeholder="Ketik atau klik Ambil Lokasi">
-                            </div>
+                            <div class="input-group"><i class="fas fa-map-pin"></i><input type="text" id="registerLokasi" class="form-input" placeholder="Ketik atau klik Ambil Lokasi"></div>
                         </div>
-                        <div class="form-group" style="display:flex; align-items:flex-end;">
-                            <button type="button" class="button-small" onclick="ambilLokasiRegister()">Ambil Lokasi Otomatis</button>
-                        </div>
+                        <div class="form-group" style="display:flex; align-items:flex-end;"><button type="button" class="button-small" onclick="ambilLokasiRegister()">Ambil Lokasi Otomatis</button></div>
                     </div>
-                    <input type="hidden" id="registerLat" value="">
-                    <input type="hidden" id="registerLng" value="">
-
-                    <button type="submit" class="button-submit" id="btnDaftar" disabled>
-                        <i class="fas fa-user-plus"></i> Daftar
-                    </button>
-                    <div class="authentication-footer">
-                        Sudah punya akun? <a href="javascript:void(0)" onclick="toggleForm('login')">Login di sini</a>
-                    </div>
-                </form>
-<!-- ===== AKHIR BLOK 2.5 ===== -->
-
-<!-- ============================================================ -->
-<!-- BLOK 2.6 - FORM PENGAJUAN BUKA AKUN                          -->
-<!-- ============================================================ -->
-                <form class="authentication-form hidden-form" id="pengajuanBukaAkunForm">
-                    <div class="form-group">
-                        <label>Nama Lengkap</label>
-                        <div class="input-group"><i class="fas fa-user"></i><input type="text" id="pengajuanNama" placeholder="Nama lengkap" required></div>
-                    </div>
-                    <div class="form-group">
-                        <label>Email / Nomor HP</label>
-                        <div class="input-group"><i class="fas fa-envelope"></i><input type="text" id="pengajuanKontak" placeholder="Email atau HP" required></div>
-                    </div>
-                    <div class="form-group">
-                        <label>Role yang Diinginkan</label>
-                        <div class="input-group"><i class="fas fa-user-tag"></i>
-                            <select id="pengajuanRole">
-                                <option value="toko">Toko</option>
-                                <option value="pedagang">Pedagang Pasar</option>
-                                <option value="codseller">COD Seller</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label>Alasan Pembuatan Akun</label>
-                        <div class="input-group"><i class="fas fa-comment"></i><input type="text" id="pengajuanAlasan" placeholder="Misal: Ingin berjualan online" required></div>
-                    </div>
-
-                    <div class="grid-2">
-                        <div class="form-group">
-                            <label>Alamat / Lokasi</label>
-                            <div class="input-group">
-                                <i class="fas fa-map-pin"></i>
-                                <input type="text" id="pengajuanLokasi" class="form-input" placeholder="Ketik alamat">
-                            </div>
-                        </div>
-                        <div class="form-group" style="display:flex; align-items:flex-end;">
-                            <button type="button" class="button-small" onclick="ambilLokasiPengajuan()">Ambil Lokasi Otomatis</button>
-                        </div>
-                    </div>
-                    <input type="hidden" id="pengajuanLat" value="">
-                    <input type="hidden" id="pengajuanLng" value="">
-
-                    <button type="submit" class="button-submit" id="btnAjukan" disabled>
-                        <i class="fas fa-paper-plane"></i> Ajukan ke Admin
-                    </button>
+                    <input type="hidden" id="registerLat" value=""><input type="hidden" id="registerLng" value="">
+                    <button type="submit" class="button-submit" id="btnDaftar" disabled><i class="fas fa-user-plus"></i> Daftar</button>
                     <div class="authentication-footer">Sudah punya akun? <a href="javascript:void(0)" onclick="toggleForm('login')">Login di sini</a></div>
                 </form>
-<!-- ===== AKHIR BLOK 2.6 ===== -->
 
+                <form class="authentication-form hidden-form" id="pengajuanBukaAkunForm">
+                    <div class="form-group"><label>Nama Lengkap</label><div class="input-group"><i class="fas fa-user"></i><input type="text" id="pengajuanNama" placeholder="Nama lengkap" required></div></div>
+                    <div class="form-group"><label>Email / Nomor HP</label><div class="input-group"><i class="fas fa-envelope"></i><input type="text" id="pengajuanKontak" placeholder="Email atau HP" required></div></div>
+                    <div class="form-group"><label>Role yang Diinginkan</label><div class="input-group"><i class="fas fa-user-tag"></i><select id="pengajuanRole"><option value="toko">Toko</option><option value="pedagang">Pedagang Pasar</option><option value="codseller">COD Seller</option></select></div></div>
+                    <div class="form-group"><label>Alasan Pembuatan Akun</label><div class="input-group"><i class="fas fa-comment"></i><input type="text" id="pengajuanAlasan" placeholder="Misal: Ingin berjualan online" required></div></div>
+                    <div class="grid-2">
+                        <div class="form-group"><label>Alamat / Lokasi</label><div class="input-group"><i class="fas fa-map-pin"></i><input type="text" id="pengajuanLokasi" class="form-input" placeholder="Ketik alamat"></div></div>
+                        <div class="form-group" style="display:flex; align-items:flex-end;"><button type="button" class="button-small" onclick="ambilLokasiPengajuan()">Ambil Lokasi Otomatis</button></div>
+                    </div>
+                    <input type="hidden" id="pengajuanLat" value=""><input type="hidden" id="pengajuanLng" value="">
+                    <button type="submit" class="button-submit" id="btnAjukan" disabled><i class="fas fa-paper-plane"></i> Ajukan ke Admin</button>
+                    <div class="authentication-footer">Sudah punya akun? <a href="javascript:void(0)" onclick="toggleForm('login')">Login di sini</a></div>
+                </form>
             </div>
         </div>
     </div>
-<!-- ===== AKHIR BLOK 2.1 (PENUTUP WRAPPER LOGIN) ===== -->
-<!-- ============================================================ -->
-<!-- BLOK 3.1 - NAVBAR, SIDEBAR ORANYE TUA & MODAL CROP           -->
-<!-- ============================================================ -->
-<div id="pageDashboard" class="page-dashboard" style="display:none;">
-    
-    <!-- NAVBAR RINGKAS + HEADER COVER & PROFIL -->
-    <nav class="navbar-simple">
-        <!-- Area Cover & Profil -->
-        <div class="header-profile" id="headerProfileArea">
-            <div class="cover-wrapper">
-                <img id="coverImage" src="" alt="Cover" class="cover-img" style="display:block; width:100%; height:100%; object-fit:cover; background:#f0f0f0;">
-                <div class="cover-actions">
-                    <button class="btn-icon" onclick="triggerUpload('cover')" title="Edit/Ganti Cover"><i class="fas fa-edit"></i></button>
-                    <button class="btn-icon btn-delete" onclick="hapusGambar('cover')" title="Hapus Cover"><i class="fas fa-trash"></i></button>
+
+    <!-- BLOK 3.1 - NAVBAR, SIDEBAR, & MODAL CROP -->
+    <div id="pageDashboard" class="page-dashboard" style="display:none;">
+        <nav class="navbar-simple">
+            <div class="header-profile" id="headerProfileArea">
+                <div class="cover-wrapper">
+                    <img id="coverImage" src="" alt="Cover" class="cover-img" style="display:block; width:100%; height:100%; object-fit:cover; background:#f0f0f0;">
+                    <div class="cover-actions">
+                        <button class="btn-icon" onclick="triggerUpload('cover')" title="Edit/Ganti Cover"><i class="fas fa-edit"></i></button>
+                        <button class="btn-icon btn-delete" onclick="hapusGambar('cover')" title="Hapus Cover"><i class="fas fa-trash"></i></button>
+                    </div>
+                </div>
+                <div class="profile-wrapper" id="profileWrapper">
+                    <img id="profileImage" src="" alt="Profil" class="profile-img" style="display:block; width:100%; height:100%; object-fit:cover; border-radius:50%; background:#ddd;">
+                    <div class="profile-actions">
+                        <button class="btn-icon small" onclick="triggerUpload('profile')" title="Edit Profil"><i class="fas fa-edit"></i></button>
+                        <button class="btn-icon small btn-delete" onclick="hapusGambar('profile')" title="Hapus Profil"><i class="fas fa-trash"></i></button>
+                    </div>
                 </div>
             </div>
-            <div class="profile-wrapper" id="profileWrapper">
-                <img id="profileImage" src="" alt="Profil" class="profile-img" style="display:block; width:100%; height:100%; object-fit:cover; border-radius:50%; background:#ddd;">
-                <div class="profile-actions">
-                    <button class="btn-icon small" onclick="triggerUpload('profile')" title="Edit Profil"><i class="fas fa-edit"></i></button>
-                    <button class="btn-icon small btn-delete" onclick="hapusGambar('profile')" title="Hapus Profil"><i class="fas fa-trash"></i></button>
+            <div class="navbar-bottom">
+                <div class="navbar-left">
+                    <button id="menuToggle"><i class="fas fa-bars"></i></button>
+                    <i class="fas fa-store-alt" style="color:var(--primary); font-size:24px; margin-left:10px;"></i>
+                    <span class="brand-text">Toko Online 2R</span>
+                </div>
+                <div class="navbar-right">
+                    <span id="displayJamSimple" class="clock-display">00:00:00</span>
+                    <img id="navProfilePic" src="" alt="Avatar" class="nav-avatar">
+                    <span class="role-badge" id="roleBadge">Role</span>
+                    <span id="userNama" class="user-name">User</span>
+                    <button class="button-logout" id="buttonLogout"><i class="fas fa-sign-out-alt"></i> Keluar</button>
+                </div>
+            </div>
+        </nav>
+
+        <input type="file" id="fileInputCover" accept="image/*" style="display:none;">
+        <input type="file" id="fileInputProfile" accept="image/*" style="display:none;">
+
+        <div id="cropModalCover" class="crop-modal">
+            <div class="crop-modal-content">
+                <span class="crop-close" onclick="tutupModal('cover')">&times;</span>
+                <h3 style="color:var(--primary);">Atur Posisi Cover</h3>
+                <p style="font-size:13px; color:#666; margin-bottom:10px;">Geser & zoom gambar agar pas.</p>
+                <div class="img-container"><img id="cropImageCover" src="" alt="Gambar Cover"></div>
+                <div class="crop-actions">
+                    <button class="btn-primary" onclick="simpanHasilCrop('cover')"><i class="fas fa-check"></i> Simpan Cover</button>
+                    <button class="btn-secondary" onclick="tutupModal('cover')">Batal</button>
                 </div>
             </div>
         </div>
 
-        <!-- Baris Navigasi Bawah -->
-        <div class="navbar-bottom">
-            <div class="navbar-left">
-                <button id="menuToggle"><i class="fas fa-bars"></i></button>
-                <i class="fas fa-store-alt" style="color:var(--primary); font-size:24px; margin-left:10px;"></i>
-                <span class="brand-text">Toko Online 2R</span>
-            </div>
-            <div class="navbar-right">
-                <span id="displayJamSimple" class="clock-display">00:00:00</span>
-                <img id="navProfilePic" src="" alt="Avatar" class="nav-avatar">
-                <span class="role-badge" id="roleBadge">Role</span>
-                <span id="userNama" class="user-name">User</span>
-                <button class="button-logout" id="buttonLogout"><i class="fas fa-sign-out-alt"></i> Keluar</button>
+        <div id="cropModalProfile" class="crop-modal">
+            <div class="crop-modal-content">
+                <span class="crop-close" onclick="tutupModal('profile')">&times;</span>
+                <h3 style="color:var(--primary);">Atur Posisi Foto Profil</h3>
+                <p style="font-size:13px; color:#666; margin-bottom:10px;">Geser & zoom agar wajah pas di tengah.</p>
+                <div class="img-container"><img id="cropImageProfile" src="" alt="Gambar Profil"></div>
+                <div class="crop-actions">
+                    <button class="btn-primary" onclick="simpanHasilCrop('profile')"><i class="fas fa-check"></i> Simpan Profil</button>
+                    <button class="btn-secondary" onclick="tutupModal('profile')">Batal</button>
+                </div>
             </div>
         </div>
-    </nav>
 
-    <!-- Input File Tersembunyi -->
-    <input type="file" id="fileInputCover" accept="image/*" style="display:none;">
-    <input type="file" id="fileInputProfile" accept="image/*" style="display:none;">
-
-    <!-- MODAL CROP COVER -->
-    <div id="cropModalCover" class="crop-modal">
-        <div class="crop-modal-content">
-            <span class="crop-close" onclick="tutupModal('cover')">&times;</span>
-            <h3 style="color:var(--primary);">Atur Posisi Cover</h3>
-            <p style="font-size:13px; color:#666; margin-bottom:10px;">Geser & zoom gambar agar pas.</p>
-            <div class="img-container"><img id="cropImageCover" src="" alt="Gambar Cover"></div>
-            <div class="crop-actions">
-                <button class="btn-primary" onclick="simpanHasilCrop('cover')"><i class="fas fa-check"></i> Simpan Cover</button>
-                <button class="btn-secondary" onclick="tutupModal('cover')">Batal</button>
-            </div>
+        <div class="simple-layout-container">
+            <aside class="sidebar-simple" id="sidebarContainer"></aside>
+            <div id="sidebarOverlay" class="sidebar-overlay"></div>
+            <main class="content-simple" id="mainContent"></main>
         </div>
     </div>
 
-    <!-- MODAL CROP PROFIL -->
-    <div id="cropModalProfile" class="crop-modal">
-        <div class="crop-modal-content">
-            <span class="crop-close" onclick="tutupModal('profile')">&times;</span>
-            <h3 style="color:var(--primary);">Atur Posisi Foto Profil</h3>
-            <p style="font-size:13px; color:#666; margin-bottom:10px;">Geser & zoom agar wajah pas di tengah.</p>
-            <div class="img-container"><img id="cropImageProfile" src="" alt="Gambar Profil"></div>
-            <div class="crop-actions">
-                <button class="btn-primary" onclick="simpanHasilCrop('profile')"><i class="fas fa-check"></i> Simpan Profil</button>
-                <button class="btn-secondary" onclick="tutupModal('profile')">Batal</button>
-            </div>
-        </div>
-    </div>
+    <!-- BLOK 4.1 - CSS GRADASI & LAYOUT TOMBOL -->
+    <style>
+        :root {
+            --primary: #FF6B00; 
+            --primary-dark: #e65c00;
+            --bg-gradient: linear-gradient(135deg, #C05000 0%, #E67E22 100%);
+            --bg-card: #FFFFFF;
+            --text-dark: #2D3748;
+            --text-muted: #718096;
+            --shadow-card: 0 8px 30px rgba(0,0,0,0.12);
+            --radius: 16px;
+            --radius-sm: 8px;
+        }
 
-    <!-- LAYOUT DASHBOARD -->
-    <div class="simple-layout-container">
-        <!-- Sidebar Oranye Tua Elegan -->
-        <aside class="sidebar-simple" id="sidebarContainer"></aside>
-        <div id="sidebarOverlay" class="sidebar-overlay"></div>
-        <main class="content-simple" id="mainContent"></main>
-    </div>
-</div>
-<!-- ===== AKHIR BLOK 3.1 ===== -->
-<!-- ============================================================ -->
-<!-- BLOK 4.1 - CSS GRADASI SAMA & FITUR TOMBOL RAPI              -->
-<!-- ============================================================ -->
-<style>
-    :root {
-        /* Warna Aksen */
-        --primary: #FF6B00; 
-        --primary-dark: #e65c00;
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:'Poppins', sans-serif; min-height:100vh; color:var(--text-dark); }
+        .hidden-form { display:none !important; }
+        .grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:15px; }
+
+        #toastContainer { position:fixed; top:20px; left:50%; transform:translateX(-50%); z-index:99999; display:flex; flex-direction:column; gap:10px; max-width:90%; width:auto; align-items:center; }
+        .toast { padding:16px 24px; border-radius:var(--radius-sm); color:white; font-size:14px; font-weight:500; box-shadow:var(--shadow-card); animation:slideInDown 0.4s ease; display:flex; align-items:center; gap:12px; width:100%; min-width:320px; justify-content:center; }
+        .toast.success { background:#38A169; }
+        .toast.error { background:#E53E3E; }
+        .toast.warning { background:#DD6B20; }
+        .toast.info { background:#3182CE; }
+        @keyframes slideInDown { from { transform:translateY(-100px); opacity:0; } to { transform:translateY(0); opacity:1; } }
+
+        #pageAuthentication { display:flex; justify-content:center; align-items:center; width:100%; min-height:100vh; background:var(--bg-gradient); }
+        .authentication-wrapper { width:100%; max-width:450px; padding:20px; }
+        .authentication-box { background:white; border-radius:var(--radius); padding:40px; box-shadow:0 4px 20px rgba(0,0,0,0.15); width:100%; }
+        .authentication-logo { text-align:center; margin-bottom:25px; }
+        .authentication-logo i { font-size:50px; color:var(--primary); }
+        .authentication-logo h1 { font-size:28px; font-weight:700; color:#333; }
+        .authentication-logo h1 span { color:var(--primary); }
+        .authentication-logo p { color:#888; font-size:14px; }
+        .authentication-error { display:none; background:#ffebee; color:#d32f2f; padding:12px 16px; border-radius:var(--radius-sm); margin-bottom:15px; border-left:4px solid #d32f2f; }
+        .form-group { margin-bottom:18px; }
+        .form-group label { display:block; font-weight:600; font-size:13px; color:#555; margin-bottom:5px; }
+        .input-group { display:flex; align-items:center; background:#f8f9fa; border-radius:var(--radius-sm); padding:0 14px; border:2px solid transparent; transition:0.3s; }
+        .input-group:focus-within { border-color:var(--primary); background:white; box-shadow:0 0 0 4px rgba(255,107,0,0.1); }
+        .input-group i { color:#aaa; font-size:16px; width:30px; text-align:center; }
+        .input-group input, .input-group select { border:none; background:transparent; padding:14px 0; font-size:14px; width:100%; outline:none; font-family:'Poppins', sans-serif; color:#333; }
+        .btn-primary, .button-submit { width:100%; padding:14px; background:var(--primary); color:white; border:none; border-radius:var(--radius-sm); font-size:16px; font-weight:600; cursor:pointer; transition:0.3s; }
+        .btn-primary:hover, .button-submit:hover { background:var(--primary-dark); transform:translateY(-2px); }
+        .btn-secondary { padding:10px 20px; background:#A0AEC0; color:white; border:none; border-radius:var(--radius-sm); font-weight:600; cursor:pointer; }
+        .authentication-footer { text-align:center; margin-top:18px; font-size:14px; color:#888; }
+        .authentication-footer a { color:var(--primary); cursor:pointer; font-weight:600; text-decoration:none; }
+
+        .page-dashboard { display:none; background:var(--bg-gradient); min-height:100vh; }
+        .navbar-simple { background:#FFFFFF; box-shadow:0 2px 10px rgba(0,0,0,0.05); border-bottom:3px solid var(--primary); position:fixed; top:0; left:0; right:0; z-index:1000; }
+        .header-profile { position:relative; width:100%; height:240px; background:#E8E8E8; border-bottom:1px solid #ddd; overflow:hidden; }
+        .cover-wrapper { position:relative; width:100%; height:100%; }
+        .cover-img { width:100%; height:100%; object-fit:cover; display:block; }
+        .cover-actions { position:absolute; top:12px; right:15px; display:flex; gap:8px; }
+        .btn-icon { background:rgba(255,255,255,0.95); border:none; border-radius:50%; width:36px; height:36px; cursor:pointer; box-shadow:0 2px 5px rgba(0,0,0,0.1); color:#333; font-size:15px; transition:0.2s; }
+        .btn-icon:hover { transform:scale(1.1); }
+        .btn-icon.btn-delete { color:#E53E3E; }
+        .profile-wrapper { position:absolute; bottom:-45px; left:30px; width:110px; height:110px; border-radius:50%; border:4px solid #FFFFFF; background:#ddd; box-shadow:0 4px 15px rgba(0,0,0,0.2); z-index:10; overflow:visible; }
+        .profile-img { width:100%; height:100%; object-fit:cover; border-radius:50%; display:block; }
+        .profile-actions { position:absolute; bottom:-35px; left:50%; transform:translateX(-50%); display:flex; gap:5px; background:rgba(0,0,0,0.7); padding:4px 12px; border-radius:20px; white-space:nowrap; backdrop-filter:blur(5px); }
+        .profile-actions .btn-icon.small { background:transparent; border:none; color:white; font-size:13px; cursor:pointer; padding:2px 5px; }
+        .profile-actions .btn-icon.small:hover { color:var(--primary); }
+        .profile-actions .btn-delete { color:#FFB3B3; }
+
+        .navbar-bottom { display:flex; justify-content:space-between; align-items:center; padding:0 20px; height:70px; background:#FFFFFF; }
+        .navbar-left { display:flex; align-items:center; gap:10px; }
+        #menuToggle { background:none; border:none; font-size:24px; color:var(--primary); cursor:pointer; display:none; }
+        .brand-text { font-weight:700; color:var(--primary); font-size:22px; }
+        .navbar-right { display:flex; align-items:center; gap:12px; }
+        .clock-display { font-size:13px; color:#666; font-weight:500; }
+        .nav-avatar { width:40px; height:40px; border-radius:50%; object-fit:cover; border:2px solid #fff; box-shadow:0 2px 5px rgba(0,0,0,0.1); background:#ddd; cursor:pointer; }
+        .role-badge { background:#FFF3EB; color:var(--primary); padding:5px 14px; border-radius:20px; font-size:12px; font-weight:600; }
+        .user-name { font-weight:600; color:#333; font-size:14px; }
+        .button-logout { background:#E53E3E; color:white; border:none; padding:8px 20px; border-radius:20px; cursor:pointer; font-size:13px; font-weight:600; transition:0.3s; }
+
+        .sidebar-simple { width:260px; flex-shrink:0; background:rgba(255,255,255,0.15); backdrop-filter:blur(12px); border:1px solid rgba(255,255,255,0.25); border-radius:var(--radius); padding:20px 15px; box-shadow:0 8px 32px 0 rgba(0,0,0,0.2); height:fit-content; position:relative; }
+        .sidebar-simple .menu-item { padding:12px 16px; cursor:pointer; color:#FFFFFF; font-weight:500; font-size:15px; border-radius:var(--radius-sm); transition:all 0.3s ease; display:flex; align-items:center; gap:14px; margin-bottom:6px; }
+        .sidebar-simple .menu-item:hover { background:rgba(255,255,255,0.25); transform:translateX(6px); }
+        .sidebar-simple .menu-item.active { background:#FFFFFF; color:var(--primary); font-weight:600; box-shadow:0 4px 15px rgba(0,0,0,0.15); }
+        .sidebar-simple .menu-item i { font-size:18px; width:24px; text-align:center; }
+        .sidebar-simple .menu-item.active i { color:var(--primary); }
+        .sidebar-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.4); z-index:998; }
+
+        /* KONTEN UTAMA & TOMBOL RAPI DI DALAM KARTU */
+        .simple-layout-container { display:flex; max-width:1280px; margin:330px auto 20px auto; padding:0 20px; gap:25px; }
+        .content-simple { flex:1; min-width:0; background:var(--bg-card); border-radius:var(--radius); box-shadow:var(--shadow-card); padding:20px; }
+        .fb-card { background:var(--bg-card); border-radius:var(--radius); padding:20px; margin-bottom:20px; }
         
-        /* Variable Gradasi Oranye Tua untuk Login & Dashboard */
-        --bg-gradient: linear-gradient(135deg, #C05000 0%, #E67E22 100%);
-        
-        /* Elemen Lainnya */
-        --bg-card: #FFFFFF;
-        --text-dark: #2D3748;
-        --text-muted: #718096;
-        --shadow-card: 0 8px 30px rgba(0,0,0,0.12);
-        --radius: 16px;
-        --radius-sm: 8px;
-    }
+        .stat-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(140px,1fr)); gap:12px; margin-top:15px; }
+        .stat-card { text-align:center; padding:15px; background:#FAFBFC; border-radius:var(--radius-sm); border:1px solid #eee; transition:0.3s; }
+        .stat-card:hover { transform:translateY(-3px); box-shadow:var(--shadow-card); }
+        .stat-number { font-size:24px; font-weight:700; margin-bottom:5px; }
+        .stat-label { font-size:13px; color:var(--text-muted); }
 
-    * { margin:0; padding:0; box-sizing:border-box; }
-    body { font-family:'Poppins', sans-serif; min-height:100vh; color:var(--text-dark); }
-    .hidden-form { display:none !important; }
-    .grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:15px; }
-
-    /* ===== TOAST NOTIFICATION ===== */
-    #toastContainer { position:fixed; top:20px; left:50%; transform:translateX(-50%); z-index:99999; display:flex; flex-direction:column; gap:10px; max-width:90%; width:auto; align-items:center; }
-    .toast { padding:16px 24px; border-radius:var(--radius-sm); color:white; font-size:14px; font-weight:500; box-shadow:var(--shadow-card); animation:slideInDown 0.4s ease; display:flex; align-items:center; gap:12px; width:100%; min-width:320px; justify-content:center; }
-    .toast.success { background:#38A169; }
-    .toast.error { background:#E53E3E; }
-    .toast.warning { background:#DD6B20; }
-    .toast.info { background:#3182CE; }
-    @keyframes slideInDown { from { transform:translateY(-100px); opacity:0; } to { transform:translateY(0); opacity:1; } }
-
-    /* ===== AUTHENTICATION - LOGIN ===== */
-    #pageAuthentication { 
-        display:flex; 
-        justify-content:center; 
-        align-items:center; 
-        width:100%; 
-        min-height:100vh; 
-        background: var(--bg-gradient);
-    }
-    .authentication-wrapper { width:100%; max-width:450px; padding:20px; }
-    .authentication-box { background:white; border-radius:var(--radius); padding:40px; box-shadow:0 4px 20px rgba(0,0,0,0.15); width:100%; }
-    .authentication-logo { text-align:center; margin-bottom:25px; }
-    .authentication-logo i { font-size:50px; color:var(--primary); }
-    .authentication-logo h1 { font-size:28px; font-weight:700; color:#333; }
-    .authentication-logo h1 span { color:var(--primary); }
-    .authentication-logo p { color:#888; font-size:14px; }
-    .authentication-error { display:none; background:#ffebee; color:#d32f2f; padding:12px 16px; border-radius:var(--radius-sm); margin-bottom:15px; border-left:4px solid #d32f2f; }
-    
-    .form-group { margin-bottom:18px; }
-    .form-group label { display:block; font-weight:600; font-size:13px; color:#555; margin-bottom:5px; }
-    .input-group { display:flex; align-items:center; background:#f8f9fa; border-radius:var(--radius-sm); padding:0 14px; border:2px solid transparent; transition:0.3s; }
-    .input-group:focus-within { border-color:var(--primary); background:white; box-shadow:0 0 0 4px rgba(255,107,0,0.1); }
-    .input-group i { color:#aaa; font-size:16px; width:30px; text-align:center; }
-    .input-group input, .input-group select { border:none; background:transparent; padding:14px 0; font-size:14px; width:100%; outline:none; font-family:'Poppins', sans-serif; color:#333; }
-    .btn-primary, .button-submit { width:100%; padding:14px; background:var(--primary); color:white; border:none; border-radius:var(--radius-sm); font-size:16px; font-weight:600; cursor:pointer; transition:0.3s; }
-    .btn-primary:hover, .button-submit:hover { background:var(--primary-dark); transform:translateY(-2px); }
-    .btn-secondary { padding:10px 20px; background:#A0AEC0; color:white; border:none; border-radius:var(--radius-sm); font-weight:600; cursor:pointer; }
-    .authentication-footer { text-align:center; margin-top:18px; font-size:14px; color:#888; }
-    .authentication-footer a { color:var(--primary); cursor:pointer; font-weight:600; text-decoration:none; }
-
-    /* ===== DASHBOARD - GRADASI SAMA DENGAN LOGIN ===== */
-    .page-dashboard { 
-        display:none; 
-        background: var(--bg-gradient); 
-        min-height: 100vh;
-    }
-    
-    /* ===== NAVBAR ===== */
-    .navbar-simple { 
-        background:#FFFFFF; 
-        box-shadow:0 2px 10px rgba(0,0,0,0.05); 
-        border-bottom:3px solid var(--primary); 
-        position:fixed; 
-        top:0; left:0; right:0; 
-        z-index:1000; 
-    }
-    
-    /* Cover & Profil */
-    .header-profile { position:relative; width:100%; height:240px; background:#E8E8E8; border-bottom:1px solid #ddd; overflow:hidden; }
-    .cover-wrapper { position:relative; width:100%; height:100%; }
-    .cover-img { width:100%; height:100%; object-fit:cover; display:block; }
-    .cover-actions { position:absolute; top:12px; right:15px; display:flex; gap:8px; }
-    .btn-icon { background:rgba(255,255,255,0.95); border:none; border-radius:50%; width:36px; height:36px; cursor:pointer; box-shadow:0 2px 5px rgba(0,0,0,0.1); color:#333; font-size:15px; transition:0.2s; }
-    .btn-icon:hover { transform:scale(1.1); }
-    .btn-icon.btn-delete { color:#E53E3E; }
-    .profile-wrapper { position:absolute; bottom:-45px; left:30px; width:110px; height:110px; border-radius:50%; border:4px solid #FFFFFF; background:#ddd; box-shadow:0 4px 15px rgba(0,0,0,0.2); z-index:10; overflow:visible; }
-    .profile-img { width:100%; height:100%; object-fit:cover; border-radius:50%; display:block; }
-    .profile-actions { position:absolute; bottom:-35px; left:50%; transform:translateX(-50%); display:flex; gap:5px; background:rgba(0,0,0,0.7); padding:4px 12px; border-radius:20px; white-space:nowrap; backdrop-filter:blur(5px); }
-    .profile-actions .btn-icon.small { background:transparent; border:none; color:white; font-size:13px; cursor:pointer; padding:2px 5px; }
-    .profile-actions .btn-icon.small:hover { color:var(--primary); }
-    .profile-actions .btn-delete { color:#FFB3B3; }
-
-    .navbar-bottom { display:flex; justify-content:space-between; align-items:center; padding:0 20px; height:70px; background:#FFFFFF; }
-    .navbar-left { display:flex; align-items:center; gap:10px; }
-    #menuToggle { background:none; border:none; font-size:24px; color:var(--primary); cursor:pointer; display:none; }
-    .brand-text { font-weight:700; color:var(--primary); font-size:22px; }
-    
-    .navbar-right { display:flex; align-items:center; gap:12px; }
-    .clock-display { font-size:13px; color:#666; font-weight:500; }
-    .nav-avatar { width:40px; height:40px; border-radius:50%; object-fit:cover; border:2px solid #fff; box-shadow:0 2px 5px rgba(0,0,0,0.1); background:#ddd; cursor:pointer; }
-    .role-badge { background:#FFF3EB; color:var(--primary); padding:5px 14px; border-radius:20px; font-size:12px; font-weight:600; }
-    .user-name { font-weight:600; color:#333; font-size:14px; }
-    .button-logout { background:#E53E3E; color:white; border:none; padding:8px 20px; border-radius:20px; cursor:pointer; font-size:13px; font-weight:600; transition:0.3s; }
-
-    /* ===== SIDEBAR GLASSMORPHISM ===== */
-    .sidebar-simple {
-        width: 260px;
-        flex-shrink: 0;
-        background: rgba(255, 255, 255, 0.15); 
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        border: 1px solid rgba(255, 255, 255, 0.25);
-        border-radius: var(--radius);
-        padding: 20px 15px;
-        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
-        height: fit-content;
-        position: relative;
-    }
-    .sidebar-simple .menu-item {
-        padding: 12px 16px;
-        cursor: pointer;
-        color: #FFFFFF;
-        font-weight: 500;
-        font-size: 15px;
-        border-radius: var(--radius-sm);
-        transition: all 0.3s ease;
-        display: flex;
-        align-items: center;
-        gap: 14px;
-        margin-bottom: 6px;
-    }
-    .sidebar-simple .menu-item:hover {
-        background: rgba(255, 255, 255, 0.25);
-        transform: translateX(6px);
-    }
-    .sidebar-simple .menu-item.active {
-        background: #FFFFFF;
-        color: var(--primary);
-        font-weight: 600;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-    }
-    .sidebar-simple .menu-item i { font-size: 18px; width: 24px; text-align: center; }
-    .sidebar-simple .menu-item.active i { color: var(--primary); }
-    
-    .sidebar-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.4); z-index:998; }
-
-    /* ===== KONTEN UTAMA (PENTING: PERBAIKAN MARGIN) ===== */
-    /* Hitungan: Cover 240px + Navbar Bottom 70px = 310px. Diberi jarak minimal 20px, jadi margin top 330px */
-    .simple-layout-container { 
-        display:flex; 
-        max-width:1280px; 
-        margin: 330px auto 20px auto; /* ------- DIPERBAIKI -------- */
-        padding:0 20px; 
-        gap:25px; 
-    }
-    .content-simple { 
-        flex:1; 
-        min-width:0; 
-        background:var(--bg-card); 
-        border-radius:var(--radius); 
-        box-shadow:var(--shadow-card); 
-        padding:20px; 
-    }
-    .fb-card { 
-        background:var(--bg-card); 
-        border-radius:var(--radius); 
-        padding:20px; 
-        margin-bottom:20px; 
-    }
-    
-    /* ===== STATISTIK & GRID ===== */
-    .stat-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(140px,1fr)); gap:12px; margin-top:15px; }
-    .stat-card { text-align:center; padding:15px; background:#FAFBFC; border-radius:var(--radius-sm); border:1px solid #eee; transition:0.3s; }
-    .stat-card:hover { transform:translateY(-3px); box-shadow:var(--shadow-card); }
-    .stat-number { font-size:24px; font-weight:700; margin-bottom:5px; }
-    .stat-label { font-size:13px; color:var(--text-muted); }
-
-    /* ===== TOMBOL AKSI PROFIL (Simpan/Batal) ===== */
-    .action-bar {
-        display: flex;
-        justify-content: flex-end;
-        gap: 12px;
-        margin-top: 25px;
-        padding-top: 20px;
-        border-top: 1px solid #eee;
-    }
-    .btn-simpan {
-        background: var(--primary);
-        color: white;
-        padding: 10px 30px;
-        border: none;
-        border-radius: var(--radius-sm);
-        font-weight: 600;
-        cursor: pointer;
-        transition: 0.3s;
-        font-size: 14px;
-    }
-    .btn-simpan:hover { background: var(--primary-dark); transform: translateY(-2px); box-shadow: 0 4px 10px rgba(255,107,0,0.3); }
-    .btn-batal {
-        background: #e2e8f0;
-        color: #4a5568;
-        padding: 10px 25px;
-        border: none;
-        border-radius: var(--radius-sm);
-        font-weight: 600;
-        cursor: pointer;
-        transition: 0.3s;
-        font-size: 14px;
-    }
-    .btn-batal:hover { background: #cbd5e0; transform: translateY(-2px); }
-
-    /* ===== RESPONSIVE HP (Navbar & Layout Diperbaiki) ===== */
-    @media (max-width:767px) {
-        .header-profile { height:160px; } /* Cover dikecilkan untuk HP */
-        .profile-wrapper { width:80px; height:80px; bottom:-35px; left:15px; }
-        .profile-actions { bottom:-25px; padding:2px 8px; font-size:11px; }
-        #menuToggle { display:block; }
-        .sidebar-simple { position:fixed; top:0; left:-100%; width:80%; max-width:300px; background:rgba(0,0,0,0.5); backdrop-filter:blur(12px); border-radius:0; height:100vh; padding:80px 20px 20px; transition:left 0.3s ease; z-index:999; overflow-y:auto; }
-        .sidebar-simple.open { left:0; }
-        .sidebar-overlay.active { display:block; }
-        /* Di HP, tinggi total 160+70=230px. Diberi jarak 20px -> 250px */
-        .simple-layout-container { 
-            margin-top: 250px; 
-            padding:0 12px; 
-            gap:15px; 
-            flex-direction:column; 
+        /* TOMBOL AKSI PROFIL (DALAM KARTU PUTIH) */
+        .action-bar {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
         }
-        .clock-display { display:none; }
-        .stat-number { font-size:20px; }
-        .navbar-left .brand-text { font-size:18px; }
-        .action-bar { flex-direction: column-reverse; justify-content: center; }
-        .action-bar .btn-simpan, .action-bar .btn-batal { width: 100%; text-align: center; padding: 12px; }
-    }
-</style>
-<!-- ===== AKHIR BLOK 4.1 ===== -->
-<!-- ============================================================ -->
-<!-- BLOK 5.1 - JAVASCRIPT UTILITY, CROP & LOGIC (FINAL)         -->
-<!-- ============================================================ -->
-<script>
-    // ===== 5.1.1 Fungsi Data & Hash =====
-    function getDataAkun() { var dataAkun = localStorage.getItem('2r_akun'); return dataAkun ? JSON.parse(dataAkun) : []; }
-    function simpanDataAkun(akun) { localStorage.setItem('2r_akun', JSON.stringify(akun)); }
-    async function hashPassword(password) {
-        var encoder = new TextEncoder();
-        var data = encoder.encode(password);
-        var hashBuffer = await crypto.subtle.digest('SHA-256', data);
-        var hashArray = Array.from(new Uint8Array(hashBuffer));
-        return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-    }
-    function generateId(role) {
-        var dataAkun = getDataAkun();
-        var daftarAkun = dataAkun.filter(a => a.role === role);
-        var nomorUrut = 1;
-        for (var i=0; i<daftarAkun.length; i++) {
-            var angka = parseInt(daftarAkun[i].id.split('-')[1]);
-            if (angka >= nomorUrut) nomorUrut = angka + 1;
+        .btn-simpan {
+            background: var(--primary);
+            color: white;
+            padding: 10px 30px;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 14px;
+            transition: 0.3s;
+            box-shadow: 0 2px 5px rgba(255,107,0,0.2);
         }
-        var prefix = role === 'customer' ? 'CUST' : role === 'toko' ? 'TOKO' : role === 'ojek' ? 'OJEK' : role === 'pedagang' ? 'PEDAGANG' : role === 'codseller' ? 'COD' : 'USR';
-        return prefix + '-' + String(nomorUrut).padStart(3, '0');
-    }
-    function tampilkanToast(pesan, tipe='success') {
-        var container = document.getElementById('toastContainer');
-        var toast = document.createElement('div');
-        toast.className = 'toast ' + tipe;
-        var ikon = tipe==='success'?'fa-check-circle':tipe==='error'?'fa-times-circle':tipe==='warning'?'fa-exclamation-triangle':'fa-info-circle';
-        toast.innerHTML = '<i class="fas ' + ikon + '"></i> ' + pesan;
-        container.appendChild(toast);
-        setTimeout(() => {
-            toast.style.animation = 'slideInDown 0.3s ease reverse';
-            setTimeout(() => toast.remove(), 300);
-        }, 3500);
-    }
-    function toggleForm(tipe) {
-        document.getElementById('loginForm').classList.add('hidden-form');
-        document.getElementById('registerForm').classList.add('hidden-form');
-        document.getElementById('pengajuanBukaAkunForm').classList.add('hidden-form');
-        if(tipe==='register') document.getElementById('registerForm').classList.remove('hidden-form');
-        else if(tipe==='pengajuan') document.getElementById('pengajuanBukaAkunForm').classList.remove('hidden-form');
-        else document.getElementById('loginForm').classList.remove('hidden-form');
-    }
-    function escapeHtml(text) { if(!text) return ''; var div = document.createElement('div'); div.textContent = text; return div.innerHTML; }
-
-        // ===== 5.1.2 - AMBIL LOKASI OTOMATIS (REVISI AKURASI ALAMAT) =====
-    function ambilLokasiRegister() {
-        if (!navigator.geolocation) {
-            tampilkanToast('Browser tidak mendukung geolokasi.', 'error');
-            return;
+        .btn-simpan:hover { background: var(--primary-dark); transform: translateY(-2px); }
+        .btn-batal {
+            background: #e2e8f0;
+            color: #4a5568;
+            padding: 10px 25px;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 14px;
+            transition: 0.3s;
         }
-        tampilkanToast('Mengambil lokasi...', 'info');
-        navigator.geolocation.getCurrentPosition(function(pos) {
-            var lat = pos.coords.latitude;
-            var lng = pos.coords.longitude;
-            document.getElementById('registerLat').value = lat;
-            document.getElementById('registerLng').value = lng;
+        .btn-batal:hover { background: #cbd5e0; transform: translateY(-2px); }
 
-            fetch('https://nominatim.openstreetmap.org/reverse?format=json&lat='+lat+'&lon='+lng, {
-                headers: { 'User-Agent': 'TokoOnline2R-App/1.0' }
-            })
-            .then(function(response) { return response.json(); })
-            .then(function(data) {
-                // --- PERBAIKAN: SUSUN ALAMAT DARI KOMPONEN DETAIL ---
-                var alamatTampil = '';
-                if (data.address) {
-                    var dusun = data.address.village || data.address.hamlet || data.address.neighbourhood || '';
-                    var kecamatan = data.address.county || data.address.suburb || '';
-                    var kabupaten = data.address.state_district || '';
-                    var provinsi = data.address.state || '';
-                    
-                    alamatTampil = (dusun ? dusun + ', ' : '') + 
-                                   (kecamatan ? kecamatan + ', ' : '') + 
-                                   (kabupaten ? kabupaten + ', ' : '') + 
-                                   (provinsi ? provinsi : '');
-                }
-                // Jika gagal mendapatkan komponen detail, fallback ke display_name
-                if (!alamatTampil) alamatTampil = data.display_name || 'Lokasi tidak diketahui';
-                
-                document.getElementById('registerLokasi').value = alamatTampil;
-                tampilkanToast('Lokasi berhasil diambil!', 'success');
-                document.getElementById('btnDaftar').removeAttribute('disabled');
-            })
-            .catch(function() {
-                document.getElementById('registerLokasi').value = 'Lat: '+lat+', Lng: '+lng;
-                tampilkanToast('Lokasi berhasil (tanpa alamat detail).', 'info');
-                document.getElementById('btnDaftar').removeAttribute('disabled');
-            });
-        }, function(err) { tampilkanToast('Gagal mengambil lokasi: '+err.message, 'error'); });
-    }
-
-    function ambilLokasiPengajuan() {
-        if (!navigator.geolocation) {
-            tampilkanToast('Browser tidak mendukung geolokasi.', 'error');
-            return;
+        /* RESPONSIVE */
+        @media (max-width:767px) {
+            .header-profile { height:160px; }
+            .profile-wrapper { width:80px; height:80px; bottom:-35px; left:15px; }
+            .profile-actions { bottom:-25px; padding:2px 8px; font-size:11px; }
+            #menuToggle { display:block; }
+            .sidebar-simple { position:fixed; top:0; left:-100%; width:80%; max-width:300px; background:rgba(0,0,0,0.5); backdrop-filter:blur(12px); border-radius:0; height:100vh; padding:80px 20px 20px; transition:left 0.3s ease; z-index:999; overflow-y:auto; }
+            .sidebar-simple.open { left:0; }
+            .sidebar-overlay.active { display:block; }
+            .simple-layout-container { margin-top:250px; padding:0 12px; gap:15px; flex-direction:column; }
+            .clock-display { display:none; }
+            .stat-number { font-size:20px; }
+            .navbar-left .brand-text { font-size:18px; }
+            .action-bar { flex-direction: column-reverse; }
+            .btn-simpan, .btn-batal { width:100%; text-align:center; padding:12px; }
         }
-        tampilkanToast('Mengambil lokasi...', 'info');
-        navigator.geolocation.getCurrentPosition(function(pos) {
-            var lat = pos.coords.latitude;
-            var lng = pos.coords.longitude;
-            document.getElementById('pengajuanLat').value = lat;
-            document.getElementById('pengajuanLng').value = lng;
+    </style>
 
-            fetch('https://nominatim.openstreetmap.org/reverse?format=json&lat='+lat+'&lon='+lng, {
-                headers: { 'User-Agent': 'TokoOnline2R-App/1.0' }
-            })
-            .then(function(response) { return response.json(); })
-            .then(function(data) {
-                // --- PERBAIKAN: SUSUN ALAMAT DARI KOMPONEN DETAIL ---
-                var alamatTampil = '';
-                if (data.address) {
-                    var dusun = data.address.village || data.address.hamlet || data.address.neighbourhood || '';
-                    var kecamatan = data.address.county || data.address.suburb || '';
-                    var kabupaten = data.address.state_district || '';
-                    var provinsi = data.address.state || '';
-                    
-                    alamatTampil = (dusun ? dusun + ', ' : '') + 
-                                   (kecamatan ? kecamatan + ', ' : '') + 
-                                   (kabupaten ? kabupaten + ', ' : '') + 
-                                   (provinsi ? provinsi : '');
-                }
-                if (!alamatTampil) alamatTampil = data.display_name || 'Lokasi tidak diketahui';
-                
-                document.getElementById('pengajuanLokasi').value = alamatTampil;
-                tampilkanToast('Lokasi berhasil diambil!', 'success');
-                document.getElementById('btnAjukan').removeAttribute('disabled');
-            })
-            .catch(function() {
-                document.getElementById('pengajuanLokasi').value = 'Lat: '+lat+', Lng: '+lng;
-                tampilkanToast('Lokasi berhasil (tanpa alamat detail).', 'info');
-                document.getElementById('btnAjukan').removeAttribute('disabled');
-            });
-        }, function(err) { tampilkanToast('Gagal mengambil lokasi: '+err.message, 'error'); });
-    }
-    // ===== AKHIR BLOK 5.1.2 =====
-
-    // ===== 5.1.3 - LUPA PASSWORD =====
-    async function lupaPassword() {
-        var username = document.getElementById('loginUsername').value.trim();
-        if (!username) { tampilkanToast('Masukkan username Anda terlebih dahulu!', 'warning'); return; }
-        if (username === 'admin') { tampilkanToast('Akun SuperAdmin tidak dapat di-reset melalui form ini!', 'error'); return; }
-        var dataAkun = getDataAkun();
-        var indexUser = -1;
-        for (var i=0; i<dataAkun.length; i++) {
-            if (dataAkun[i].username === username) { indexUser = i; break; }
+    <!-- BLOK 5.1 - JAVASCRIPT LENGKAP -->
+    <script>
+        // ===== 5.1.1 - Fungsi Data & Hash =====
+        function getDataAkun() { var dataAkun = localStorage.getItem('2r_akun'); return dataAkun ? JSON.parse(dataAkun) : []; }
+        function simpanDataAkun(akun) { localStorage.setItem('2r_akun', JSON.stringify(akun)); }
+        async function hashPassword(password) {
+            var encoder = new TextEncoder();
+            var data = encoder.encode(password);
+            var hashBuffer = await crypto.subtle.digest('SHA-256', data);
+            var hashArray = Array.from(new Uint8Array(hashBuffer));
+            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
         }
-        if (indexUser === -1) { tampilkanToast('Username tidak ditemukan!', 'error'); return; }
-        var newPassword = Math.random().toString(36).slice(-8);
-        var hash = await hashPassword(newPassword);
-        dataAkun[indexUser].password = hash;
-        simpanDataAkun(dataAkun);
-        tampilkanToast('Password berhasil di-reset! Password baru Anda: ' + newPassword, 'success');
-    }
-    // ===== AKHIR 5.1.3 =====
-
-    // ===== 5.1.4 - FUNGSI CROP, SIMPAN, HAPUS GAMBAR =====
-    var cropperInstance = null;
-    function triggerUpload(tipe) {
-        var fileInput = tipe === 'cover' ? document.getElementById('fileInputCover') : document.getElementById('fileInputProfile');
-        fileInput.value = '';
-        fileInput.click();
-    }
-    function handleFileSelect(tipe, file) {
-        if (!file) return;
-        var reader = new FileReader();
-        reader.onload = function(e) {
-            var modalId = tipe === 'cover' ? 'cropModalCover' : 'cropModalProfile';
-            var imgId = tipe === 'cover' ? 'cropImageCover' : 'cropImageProfile';
-            document.getElementById(modalId).style.display = 'flex';
-            var img = document.getElementById(imgId);
-            img.src = e.target.result;
-            if (cropperInstance) { cropperInstance.destroy(); cropperInstance = null; }
+        function generateId(role) {
+            var dataAkun = getDataAkun();
+            var daftarAkun = dataAkun.filter(a => a.role === role);
+            var nomorUrut = 1;
+            for (var i=0; i<daftarAkun.length; i++) {
+                var angka = parseInt(daftarAkun[i].id.split('-')[1]);
+                if (angka >= nomorUrut) nomorUrut = angka + 1;
+            }
+            var prefix = role === 'customer' ? 'CUST' : role === 'toko' ? 'TOKO' : role === 'ojek' ? 'OJEK' : role === 'pedagang' ? 'PEDAGANG' : role === 'codseller' ? 'COD' : 'USR';
+            return prefix + '-' + String(nomorUrut).padStart(3, '0');
+        }
+        function tampilkanToast(pesan, tipe='success') {
+            var container = document.getElementById('toastContainer');
+            var toast = document.createElement('div');
+            toast.className = 'toast ' + tipe;
+            var ikon = tipe==='success'?'fa-check-circle':tipe==='error'?'fa-times-circle':tipe==='warning'?'fa-exclamation-triangle':'fa-info-circle';
+            toast.innerHTML = '<i class="fas ' + ikon + '"></i> ' + pesan;
+            container.appendChild(toast);
             setTimeout(() => {
-                cropperInstance = new Cropper(img, {
-                    viewMode: 1, dragMode: 'move',
-                    aspectRatio: tipe === 'cover' ? 16/9 : 1/1,
-                    autoCropArea: 0.5, center: true, background: false,
-                    minContainerWidth: 200, minContainerHeight: 200
+                toast.style.animation = 'slideInDown 0.3s ease reverse';
+                setTimeout(() => toast.remove(), 300);
+            }, 3500);
+        }
+        function toggleForm(tipe) {
+            document.getElementById('loginForm').classList.add('hidden-form');
+            document.getElementById('registerForm').classList.add('hidden-form');
+            document.getElementById('pengajuanBukaAkunForm').classList.add('hidden-form');
+            if(tipe==='register') document.getElementById('registerForm').classList.remove('hidden-form');
+            else if(tipe==='pengajuan') document.getElementById('pengajuanBukaAkunForm').classList.remove('hidden-form');
+            else document.getElementById('loginForm').classList.remove('hidden-form');
+        }
+        function escapeHtml(text) { if(!text) return ''; var div = document.createElement('div'); div.textContent = text; return div.innerHTML; }
+
+        // ===== 5.1.2 - Ambil Lokasi =====
+        function ambilLokasiRegister() {
+            if (!navigator.geolocation) { tampilkanToast('Browser tidak mendukung geolokasi.', 'error'); return; }
+            tampilkanToast('Mengambil lokasi...', 'info');
+            navigator.geolocation.getCurrentPosition(function(pos) {
+                var lat = pos.coords.latitude;
+                var lng = pos.coords.longitude;
+                document.getElementById('registerLat').value = lat;
+                document.getElementById('registerLng').value = lng;
+                fetch('https://nominatim.openstreetmap.org/reverse?format=json&lat='+lat+'&lon='+lng, { headers: { 'User-Agent': 'TokoOnline2R-App/1.0' } })
+                .then(function(response) { return response.json(); })
+                .then(function(data) {
+                    var alamatTampil = '';
+                    if (data.address) {
+                        var dusun = data.address.village || data.address.hamlet || data.address.neighbourhood || '';
+                        var kecamatan = data.address.county || data.address.suburb || '';
+                        var kabupaten = data.address.state_district || '';
+                        var provinsi = data.address.state || '';
+                        alamatTampil = (dusun ? dusun + ', ' : '') + (kecamatan ? kecamatan + ', ' : '') + (kabupaten ? kabupaten + ', ' : '') + (provinsi ? provinsi : '');
+                    }
+                    if (!alamatTampil) alamatTampil = data.display_name || 'Lokasi tidak diketahui';
+                    document.getElementById('registerLokasi').value = alamatTampil;
+                    tampilkanToast('Lokasi berhasil diambil!', 'success');
+                    document.getElementById('btnDaftar').removeAttribute('disabled');
+                })
+                .catch(function() {
+                    document.getElementById('registerLokasi').value = 'Lat: '+lat+', Lng: '+lng;
+                    tampilkanToast('Lokasi berhasil (tanpa alamat detail).', 'info');
+                    document.getElementById('btnDaftar').removeAttribute('disabled');
                 });
-            }, 100);
-        };
-        reader.readAsDataURL(file);
-    }
-    function tutupModal(tipe) {
-        var modalId = tipe === 'cover' ? 'cropModalCover' : 'cropModalProfile';
-        document.getElementById(modalId).style.display = 'none';
-        if (cropperInstance) { cropperInstance.destroy(); cropperInstance = null; }
-    }
-    function simpanHasilCrop(tipe) {
-        if (!cropperInstance) { tampilkanToast('Silakan atur gambar terlebih dahulu!', 'warning'); return; }
-        var canvas = cropperInstance.getCroppedCanvas({
-            width: tipe === 'cover' ? 1200 : 400,
-            height: tipe === 'cover' ? 675 : 400,
-            fillColor: '#fff', imageSmoothingEnabled: true, imageSmoothingQuality: 'high'
-        });
-        var base64 = canvas.toDataURL('image/jpeg', 0.9);
-        var field = tipe === 'cover' ? 'coverPhoto' : 'profilePhoto';
-        simpanGambarUser(field, base64);
-        var displayImg = tipe === 'cover' ? document.getElementById('coverImage') : document.getElementById('profileImage');
-        displayImg.src = base64;
-        if (tipe === 'profile') document.getElementById('navProfilePic').src = base64;
-        tampilkanToast('Gambar ' + tipe + ' berhasil dipasang!', 'success');
-        tutupModal(tipe);
-    }
-    function simpanGambarUser(field, base64) {
-        var user = JSON.parse(localStorage.getItem('2r_user') || '{}');
-        if (!user.username) return;
-        var dataAkun = getDataAkun();
-        for (var i=0; i<dataAkun.length; i++) {
-            if (dataAkun[i].username === user.username) {
-                dataAkun[i][field] = base64; break;
-            }
+            }, function(err) { tampilkanToast('Gagal mengambil lokasi: '+err.message, 'error'); });
         }
-        simpanDataAkun(dataAkun);
-        user[field] = base64;
-        localStorage.setItem('2r_user', JSON.stringify(user));
-    }
-    function hapusGambar(tipe) {
-        if (!confirm('Yakin ingin menghapus ' + (tipe === 'cover' ? 'Cover' : 'Foto Profil') + '?')) return;
-        var field = tipe === 'cover' ? 'coverPhoto' : 'profilePhoto';
-        var user = JSON.parse(localStorage.getItem('2r_user') || '{}');
-        if (!user.username) return;
-        var dataAkun = getDataAkun();
-        for (var i=0; i<dataAkun.length; i++) {
-            if (dataAkun[i].username === user.username) {
-                delete dataAkun[i][field]; break;
-            }
-        }
-        simpanDataAkun(dataAkun);
-        delete user[field];
-        localStorage.setItem('2r_user', JSON.stringify(user));
-        var displayImg = tipe === 'cover' ? document.getElementById('coverImage') : document.getElementById('profileImage');
-        displayImg.src = '';
-        if (tipe === 'profile') document.getElementById('navProfilePic').src = '';
-        tampilkanToast('Gambar ' + tipe + ' berhasil dihapus!', 'info');
-    }
-    function muatGambarUser() {
-        var user = JSON.parse(localStorage.getItem('2r_user') || '{}');
-        if (user.coverPhoto) document.getElementById('coverImage').src = user.coverPhoto;
-        else document.getElementById('coverImage').src = '';
-        if (user.profilePhoto) {
-            document.getElementById('profileImage').src = user.profilePhoto;
-            document.getElementById('navProfilePic').src = user.profilePhoto;
-        } else {
-            document.getElementById('profileImage').src = '';
-            document.getElementById('navProfilePic').src = '';
-        }
-    }
-    // ===== AKHIR 5.1.4 =====
-
-    // ===== 5.1.5 - DOMContentLoaded (Semua Event Listener) =====
-    document.addEventListener('DOMContentLoaded', function() {
-        // --- Inisialisasi SuperAdmin ---
-        var dataAwalAkun = getDataAkun();
-        if (!dataAwalAkun.some(a => a.role === 'superadmin')) {
-            (async function() {
-                var hash = await hashPassword('admin123');
-                dataAwalAkun.push({
-                    id: 'SA-001', role: 'superadmin', username: 'admin', password: hash, nama: 'SuperAdmin',
-                    email: 'admin@2r.com', nomorHp: '081234567890', alamat: 'Kantor Pusat',
-                    namaBank: 'BCA', nomorRekening: '1234567890', pemilikRekening: 'SuperAdmin',
-                    status: 'AKTIF', waktuRegistrasi: new Date().toISOString(),
-                    coverPhoto: '', profilePhoto: ''
+        function ambilLokasiPengajuan() {
+            if (!navigator.geolocation) { tampilkanToast('Browser tidak mendukung geolokasi.', 'error'); return; }
+            tampilkanToast('Mengambil lokasi...', 'info');
+            navigator.geolocation.getCurrentPosition(function(pos) {
+                var lat = pos.coords.latitude;
+                var lng = pos.coords.longitude;
+                document.getElementById('pengajuanLat').value = lat;
+                document.getElementById('pengajuanLng').value = lng;
+                fetch('https://nominatim.openstreetmap.org/reverse?format=json&lat='+lat+'&lon='+lng, { headers: { 'User-Agent': 'TokoOnline2R-App/1.0' } })
+                .then(function(response) { return response.json(); })
+                .then(function(data) {
+                    var alamatTampil = '';
+                    if (data.address) {
+                        var dusun = data.address.village || data.address.hamlet || data.address.neighbourhood || '';
+                        var kecamatan = data.address.county || data.address.suburb || '';
+                        var kabupaten = data.address.state_district || '';
+                        var provinsi = data.address.state || '';
+                        alamatTampil = (dusun ? dusun + ', ' : '') + (kecamatan ? kecamatan + ', ' : '') + (kabupaten ? kabupaten + ', ' : '') + (provinsi ? provinsi : '');
+                    }
+                    if (!alamatTampil) alamatTampil = data.display_name || 'Lokasi tidak diketahui';
+                    document.getElementById('pengajuanLokasi').value = alamatTampil;
+                    tampilkanToast('Lokasi berhasil diambil!', 'success');
+                    document.getElementById('btnAjukan').removeAttribute('disabled');
+                })
+                .catch(function() {
+                    document.getElementById('pengajuanLokasi').value = 'Lat: '+lat+', Lng: '+lng;
+                    tampilkanToast('Lokasi berhasil (tanpa alamat detail).', 'info');
+                    document.getElementById('btnAjukan').removeAttribute('disabled');
                 });
-                simpanDataAkun(dataAwalAkun);
-                console.log('✅ SuperAdmin siap. Username: admin, Password: admin123');
-            })();
+            }, function(err) { tampilkanToast('Gagal mengambil lokasi: '+err.message, 'error'); });
         }
 
-        // --- Login ---
-        document.getElementById('loginForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            var inputUsername = document.getElementById('loginUsername').value.trim();
-            var inputPassword = document.getElementById('loginPassword').value.trim();
+        // ===== 5.1.3 - Lupa Password =====
+        async function lupaPassword() {
+            var username = document.getElementById('loginUsername').value.trim();
+            if (!username) { tampilkanToast('Masukkan username Anda terlebih dahulu!', 'warning'); return; }
+            if (username === 'admin') { tampilkanToast('Akun SuperAdmin tidak dapat di-reset melalui form ini!', 'error'); return; }
             var dataAkun = getDataAkun();
-            var dataUser = dataAkun.find(a => a.username === inputUsername);
-            if (!dataUser) { tampilkanToast('Username atau password salah!', 'error'); return; }
-            if (await hashPassword(inputPassword) !== dataUser.password) { tampilkanToast('Username atau password salah!', 'error'); return; }
-            if (dataUser.status !== 'AKTIF' && dataUser.role !== 'superadmin') { tampilkanToast('Akun belum aktif!', 'error'); return; }
-            localStorage.setItem('2r_user', JSON.stringify(dataUser));
-            localStorage.setItem('2r_user_role', dataUser.role);
-            tampilkanDasbor(dataUser);
-        });
-
-        // --- Register ---
-        document.getElementById('registerForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            var pilihRole = document.getElementById('registerRole').value;
-            var inputUsername = document.getElementById('registerUsername').value.trim();
-            var inputPassword = document.getElementById('registerPassword').value.trim();
-            var inputNama = document.getElementById('registerNama').value.trim();
-            var inputLat = document.getElementById('registerLat').value.trim();
-            var inputLng = document.getElementById('registerLng').value.trim();
-            if (!inputLat || !inputLng) { tampilkanToast('Anda wajib mengambil lokasi otomatis terlebih dahulu!', 'error'); return; }
-            if (!pilihRole || !inputUsername || !inputPassword || !inputNama) { tampilkanToast('Data belum lengkap!', 'warning'); return; }
-            var dataAkun = getDataAkun();
-            if (dataAkun.some(a => a.username === inputUsername)) { tampilkanToast('Username sudah dipakai!', 'error'); return; }
-            var statusAkun = (pilihRole === 'toko' || pilihRole === 'ojek') ? 'NONAKTIF (Menunggu Verifikasi)' : 'AKTIF';
-            var hashPasswordBaru = await hashPassword(inputPassword);
-            var akunBaru = {
-                id: generateId(pilihRole), role: pilihRole, username: inputUsername, password: hashPasswordBaru,
-                nama: inputNama, email: '', nomorHp: '', alamat: '', latitude: inputLat, longitude: inputLng,
-                namaBank: '', nomorRekening: '', pemilikRekening: '', status: statusAkun,
-                coverPhoto: '', profilePhoto: '',
-                waktuRegistrasi: new Date().toISOString()
-            };
-            dataAkun.push(akunBaru);
+            var indexUser = -1;
+            for (var i=0; i<dataAkun.length; i++) {
+                if (dataAkun[i].username === username) { indexUser = i; break; }
+            }
+            if (indexUser === -1) { tampilkanToast('Username tidak ditemukan!', 'error'); return; }
+            var newPassword = Math.random().toString(36).slice(-8);
+            var hash = await hashPassword(newPassword);
+            dataAkun[indexUser].password = hash;
             simpanDataAkun(dataAkun);
-            tampilkanToast('Akun berhasil dibuat! ID: ' + akunBaru.id, 'success');
-            document.getElementById('registerForm').reset();
-            document.getElementById('btnDaftar').setAttribute('disabled', 'disabled');
-            toggleForm('login');
-        });
+            tampilkanToast('Password berhasil di-reset! Password baru Anda: ' + newPassword, 'success');
+        }
 
-        // --- Pengajuan (Ajukan ke Admin) ---
-        document.getElementById('pengajuanBukaAkunForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            var inputNama = document.getElementById('pengajuanNama').value.trim();
-            var inputKontak = document.getElementById('pengajuanKontak').value.trim();
-            var pilihRole = document.getElementById('pengajuanRole').value;
-            var inputAlasan = document.getElementById('pengajuanAlasan').value.trim();
-            var inputLat = document.getElementById('pengajuanLat').value.trim();
-            var inputLng = document.getElementById('pengajuanLng').value.trim();
-            if (!inputLat || !inputLng) { tampilkanToast('Anda wajib mengambil lokasi otomatis terlebih dahulu!', 'error'); return; }
-            if (!inputNama || !inputKontak || !pilihRole || !inputAlasan) { tampilkanToast('Semua data wajib diisi!', 'warning'); return; }
-            var dataPengajuan = JSON.parse(localStorage.getItem('2r_pengajuan_buka_akun') || '[]');
-            dataPengajuan.push({
-                id: 'PB-' + Date.now(), nama: inputNama, kontak: inputKontak, role: pilihRole,
-                alasan: inputAlasan, latitude: inputLat, longitude: inputLng,
-                alamatLokasi: document.getElementById('pengajuanLokasi').value.trim() || '',
-                status: 'MENUNGGU', waktu: new Date().toISOString()
+        // ===== 5.1.4 - Fungsi Crop, Simpan, Hapus Gambar =====
+        var cropperInstance = null;
+        function triggerUpload(tipe) {
+            var fileInput = tipe === 'cover' ? document.getElementById('fileInputCover') : document.getElementById('fileInputProfile');
+            fileInput.value = '';
+            fileInput.click();
+        }
+        function handleFileSelect(tipe, file) {
+            if (!file) return;
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                var modalId = tipe === 'cover' ? 'cropModalCover' : 'cropModalProfile';
+                var imgId = tipe === 'cover' ? 'cropImageCover' : 'cropImageProfile';
+                document.getElementById(modalId).style.display = 'flex';
+                var img = document.getElementById(imgId);
+                img.src = e.target.result;
+                if (cropperInstance) { cropperInstance.destroy(); cropperInstance = null; }
+                setTimeout(() => {
+                    cropperInstance = new Cropper(img, {
+                        viewMode: 1, dragMode: 'move',
+                        aspectRatio: tipe === 'cover' ? 16/9 : 1/1,
+                        autoCropArea: 0.5, center: true, background: false,
+                        minContainerWidth: 200, minContainerHeight: 200
+                    });
+                }, 100);
+            };
+            reader.readAsDataURL(file);
+        }
+        function tutupModal(tipe) {
+            var modalId = tipe === 'cover' ? 'cropModalCover' : 'cropModalProfile';
+            document.getElementById(modalId).style.display = 'none';
+            if (cropperInstance) { cropperInstance.destroy(); cropperInstance = null; }
+        }
+        function simpanHasilCrop(tipe) {
+            if (!cropperInstance) { tampilkanToast('Silakan atur gambar terlebih dahulu!', 'warning'); return; }
+            var canvas = cropperInstance.getCroppedCanvas({
+                width: tipe === 'cover' ? 1200 : 400,
+                height: tipe === 'cover' ? 675 : 400,
+                fillColor: '#fff', imageSmoothingEnabled: true, imageSmoothingQuality: 'high'
             });
-            localStorage.setItem('2r_pengajuan_buka_akun', JSON.stringify(dataPengajuan));
-            document.getElementById('pengajuanBukaAkunForm').reset();
-            document.getElementById('btnAjukan').setAttribute('disabled', 'disabled');
-            tampilkanToast('Pengajuan Anda telah dikirim ke Admin!', 'success');
-            toggleForm('login');
-        });
+            var base64 = canvas.toDataURL('image/jpeg', 0.9);
+            var field = tipe === 'cover' ? 'coverPhoto' : 'profilePhoto';
+            simpanGambarUser(field, base64);
+            var displayImg = tipe === 'cover' ? document.getElementById('coverImage') : document.getElementById('profileImage');
+            displayImg.src = base64;
+            if (tipe === 'profile') document.getElementById('navProfilePic').src = base64;
+            tampilkanToast('Gambar ' + tipe + ' berhasil dipasang!', 'success');
+            tutupModal(tipe);
+        }
+        function simpanGambarUser(field, base64) {
+            var user = JSON.parse(localStorage.getItem('2r_user') || '{}');
+            if (!user.username) return;
+            var dataAkun = getDataAkun();
+            for (var i=0; i<dataAkun.length; i++) {
+                if (dataAkun[i].username === user.username) {
+                    dataAkun[i][field] = base64; break;
+                }
+            }
+            simpanDataAkun(dataAkun);
+            user[field] = base64;
+            localStorage.setItem('2r_user', JSON.stringify(user));
+        }
+        function hapusGambar(tipe) {
+            if (!confirm('Yakin ingin menghapus ' + (tipe === 'cover' ? 'Cover' : 'Foto Profil') + '?')) return;
+            var field = tipe === 'cover' ? 'coverPhoto' : 'profilePhoto';
+            var user = JSON.parse(localStorage.getItem('2r_user') || '{}');
+            if (!user.username) return;
+            var dataAkun = getDataAkun();
+            for (var i=0; i<dataAkun.length; i++) {
+                if (dataAkun[i].username === user.username) {
+                    delete dataAkun[i][field]; break;
+                }
+            }
+            simpanDataAkun(dataAkun);
+            delete user[field];
+            localStorage.setItem('2r_user', JSON.stringify(user));
+            var displayImg = tipe === 'cover' ? document.getElementById('coverImage') : document.getElementById('profileImage');
+            displayImg.src = '';
+            if (tipe === 'profile') document.getElementById('navProfilePic').src = '';
+            tampilkanToast('Gambar ' + tipe + ' berhasil dihapus!', 'info');
+        }
+        function muatGambarUser() {
+            var user = JSON.parse(localStorage.getItem('2r_user') || '{}');
+            if (user.coverPhoto) document.getElementById('coverImage').src = user.coverPhoto;
+            else document.getElementById('coverImage').src = '';
+            if (user.profilePhoto) {
+                document.getElementById('profileImage').src = user.profilePhoto;
+                document.getElementById('navProfilePic').src = user.profilePhoto;
+            } else {
+                document.getElementById('profileImage').src = '';
+                document.getElementById('navProfilePic').src = '';
+            }
+        }
 
-        // --- Logout ---
-        document.getElementById('buttonLogout').addEventListener('click', function() {
-            if (confirm('Yakin keluar?')) {
-                localStorage.removeItem('2r_user');
-                localStorage.removeItem('2r_user_role');
-                location.reload();
+        // ===== 5.1.5 - DOMContentLoaded (Event Listener) =====
+        document.addEventListener('DOMContentLoaded', function() {
+            var dataAwalAkun = getDataAkun();
+            if (!dataAwalAkun.some(a => a.role === 'superadmin')) {
+                (async function() {
+                    var hash = await hashPassword('admin123');
+                    dataAwalAkun.push({
+                        id: 'SA-001', role: 'superadmin', username: 'admin', password: hash, nama: 'SuperAdmin',
+                        email: 'admin@2r.com', nomorHp: '081234567890', alamat: 'Kantor Pusat',
+                        namaBank: 'BCA', nomorRekening: '1234567890', pemilikRekening: 'SuperAdmin',
+                        status: 'AKTIF', waktuRegistrasi: new Date().toISOString(),
+                        coverPhoto: '', profilePhoto: ''
+                    });
+                    simpanDataAkun(dataAwalAkun);
+                    console.log('✅ SuperAdmin siap. Username: admin, Password: admin123');
+                })();
+            }
+
+            document.getElementById('loginForm').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                var inputUsername = document.getElementById('loginUsername').value.trim();
+                var inputPassword = document.getElementById('loginPassword').value.trim();
+                var dataAkun = getDataAkun();
+                var dataUser = dataAkun.find(a => a.username === inputUsername);
+                if (!dataUser) { tampilkanToast('Username atau password salah!', 'error'); return; }
+                if (await hashPassword(inputPassword) !== dataUser.password) { tampilkanToast('Username atau password salah!', 'error'); return; }
+                if (dataUser.status !== 'AKTIF' && dataUser.role !== 'superadmin') { tampilkanToast('Akun belum aktif!', 'error'); return; }
+                localStorage.setItem('2r_user', JSON.stringify(dataUser));
+                localStorage.setItem('2r_user_role', dataUser.role);
+                tampilkanDasbor(dataUser);
+            });
+
+            document.getElementById('registerForm').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                var pilihRole = document.getElementById('registerRole').value;
+                var inputUsername = document.getElementById('registerUsername').value.trim();
+                var inputPassword = document.getElementById('registerPassword').value.trim();
+                var inputNama = document.getElementById('registerNama').value.trim();
+                var inputLat = document.getElementById('registerLat').value.trim();
+                var inputLng = document.getElementById('registerLng').value.trim();
+                if (!inputLat || !inputLng) { tampilkanToast('Anda wajib mengambil lokasi otomatis terlebih dahulu!', 'error'); return; }
+                if (!pilihRole || !inputUsername || !inputPassword || !inputNama) { tampilkanToast('Data belum lengkap!', 'warning'); return; }
+                var dataAkun = getDataAkun();
+                if (dataAkun.some(a => a.username === inputUsername)) { tampilkanToast('Username sudah dipakai!', 'error'); return; }
+                var statusAkun = (pilihRole === 'toko' || pilihRole === 'ojek') ? 'NONAKTIF (Menunggu Verifikasi)' : 'AKTIF';
+                var hashPasswordBaru = await hashPassword(inputPassword);
+                var akunBaru = {
+                    id: generateId(pilihRole), role: pilihRole, username: inputUsername, password: hashPasswordBaru,
+                    nama: inputNama, email: '', nomorHp: '', alamat: '', latitude: inputLat, longitude: inputLng,
+                    namaBank: '', nomorRekening: '', pemilikRekening: '', status: statusAkun,
+                    coverPhoto: '', profilePhoto: '',
+                    waktuRegistrasi: new Date().toISOString()
+                };
+                dataAkun.push(akunBaru);
+                simpanDataAkun(dataAkun);
+                tampilkanToast('Akun berhasil dibuat! ID: ' + akunBaru.id, 'success');
+                document.getElementById('registerForm').reset();
+                document.getElementById('btnDaftar').setAttribute('disabled', 'disabled');
+                toggleForm('login');
+            });
+
+            document.getElementById('pengajuanBukaAkunForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                var inputNama = document.getElementById('pengajuanNama').value.trim();
+                var inputKontak = document.getElementById('pengajuanKontak').value.trim();
+                var pilihRole = document.getElementById('pengajuanRole').value;
+                var inputAlasan = document.getElementById('pengajuanAlasan').value.trim();
+                var inputLat = document.getElementById('pengajuanLat').value.trim();
+                var inputLng = document.getElementById('pengajuanLng').value.trim();
+                if (!inputLat || !inputLng) { tampilkanToast('Anda wajib mengambil lokasi otomatis terlebih dahulu!', 'error'); return; }
+                if (!inputNama || !inputKontak || !pilihRole || !inputAlasan) { tampilkanToast('Semua data wajib diisi!', 'warning'); return; }
+                var dataPengajuan = JSON.parse(localStorage.getItem('2r_pengajuan_buka_akun') || '[]');
+                dataPengajuan.push({
+                    id: 'PB-' + Date.now(), nama: inputNama, kontak: inputKontak, role: pilihRole,
+                    alasan: inputAlasan, latitude: inputLat, longitude: inputLng,
+                    alamatLokasi: document.getElementById('pengajuanLokasi').value.trim() || '',
+                    status: 'MENUNGGU', waktu: new Date().toISOString()
+                });
+                localStorage.setItem('2r_pengajuan_buka_akun', JSON.stringify(dataPengajuan));
+                document.getElementById('pengajuanBukaAkunForm').reset();
+                document.getElementById('btnAjukan').setAttribute('disabled', 'disabled');
+                tampilkanToast('Pengajuan Anda telah dikirim ke Admin!', 'success');
+                toggleForm('login');
+            });
+
+            document.getElementById('fileInputCover').addEventListener('change', function(e) { handleFileSelect('cover', e.target.files[0]); });
+            document.getElementById('fileInputProfile').addEventListener('change', function(e) { handleFileSelect('profile', e.target.files[0]); });
+            document.getElementById('navProfilePic').addEventListener('click', function() { triggerUpload('profile'); });
+
+            document.getElementById('buttonLogout').addEventListener('click', function() {
+                if (confirm('Yakin keluar?')) {
+                    localStorage.removeItem('2r_user');
+                    localStorage.removeItem('2r_user_role');
+                    location.reload();
+                }
+            });
+
+            var menuToggle = document.getElementById('menuToggle');
+            var sidebar = document.querySelector('.sidebar-simple');
+            var overlay = document.getElementById('sidebarOverlay');
+            if (menuToggle && sidebar && overlay) {
+                menuToggle.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    sidebar.classList.toggle('open');
+                    overlay.classList.toggle('active');
+                });
+                overlay.addEventListener('click', function() {
+                    sidebar.classList.remove('open');
+                    overlay.classList.remove('active');
+                });
             }
         });
 
-        // --- Sidebar Toggle (Hamburger) ---
-        var menuToggle = document.getElementById('menuToggle');
-        var sidebar = document.querySelector('.sidebar-simple');
-        var overlay = document.getElementById('sidebarOverlay');
-        if (menuToggle && sidebar && overlay) {
-            menuToggle.addEventListener('click', function(e) {
-                e.preventDefault();
-                sidebar.classList.toggle('open');
-                overlay.classList.toggle('active');
-            });
-            overlay.addEventListener('click', function() {
-                sidebar.classList.remove('open');
-                overlay.classList.remove('active');
-            });
-        } else {
-            console.warn('Elemen Sidebar/Overlay tidak ditemukan.');
+        // ===== 5.1.6 - Dashboard Generator (Final dengan Fitur Profil) =====
+        function tampilkanDasbor(user) {
+            document.getElementById('pageAuthentication').style.display = 'none';
+            document.getElementById('pageDashboard').style.display = 'block';
+            document.getElementById('userNama').textContent = user.nama;
+            document.getElementById('roleBadge').textContent = user.role || 'User';
+            document.getElementById('displayJamSimple').textContent = new Date().toLocaleTimeString('id-ID') + ' | ' + new Date().toLocaleDateString('id-ID');
+            setInterval(() => {
+                var jamEl = document.getElementById('displayJamSimple');
+                if (jamEl) jamEl.textContent = new Date().toLocaleTimeString('id-ID') + ' | ' + new Date().toLocaleDateString('id-ID');
+            }, 1000);
+
+            var sidebarHtml = `
+                <div class="menu-item active" data-page="home"><i class="fas fa-home"></i> Beranda</div>
+                <div class="menu-item" data-page="profile"><i class="fas fa-user-circle"></i> Profil</div>
+                <div class="menu-item" data-page="katalog"><i class="fas fa-box"></i> Katalog</div>
+                <div class="menu-item" data-page="logout" onclick="document.getElementById('buttonLogout').click();"><i class="fas fa-sign-out-alt"></i> Keluar</div>
+            `;
+            document.getElementById('sidebarContainer').innerHTML = sidebarHtml;
+
+            var items = document.querySelectorAll('.sidebar-simple .menu-item');
+            for (var i=0; i<items.length; i++) {
+                items[i].onclick = function() {
+                    items.forEach(el => el.classList.remove('active'));
+                    this.classList.add('active');
+                    var page = this.getAttribute('data-page');
+                    
+                    if (page === 'home') renderBerandaSederhana(user);
+                    else if (page === 'profile') renderProfilSederhana(user);
+                    else if (page === 'katalog') tampilkanToast('Katalog sedang dibangun', 'info');
+                    
+                    if (window.innerWidth <= 767) {
+                        document.querySelector('.sidebar-simple').classList.remove('open');
+                        document.getElementById('sidebarOverlay').classList.remove('active');
+                    }
+                };
+            }
+            muatGambarUser();
+            renderBerandaSederhana(user);
         }
-    });
-    // ===== AKHIR 5.1.5 =====
 
-        // ===== 5.1.6 - DASHBOARD & SIDEBAR GENERATOR =====
-    function tampilkanDasbor(user) {
-        document.getElementById('pageAuthentication').style.display = 'none';
-        document.getElementById('pageDashboard').style.display = 'block';
-        document.getElementById('userNama').textContent = user.nama;
-        document.getElementById('roleBadge').textContent = user.role || 'User';
-        document.getElementById('displayJamSimple').textContent = new Date().toLocaleTimeString('id-ID') + ' | ' + new Date().toLocaleDateString('id-ID');
-        setInterval(() => {
-            var jamEl = document.getElementById('displayJamSimple');
-            if (jamEl) jamEl.textContent = new Date().toLocaleTimeString('id-ID') + ' | ' + new Date().toLocaleDateString('id-ID');
-        }, 1000);
+        // === RENDER PROFIL (DENGAN TOMBOL DI DALAM KARTU PUTIH) ===
+        function renderProfilSederhana(pengguna) {
+            var areaKonten = document.getElementById('mainContent');
+            if (!areaKonten) return;
+            if (!pengguna) pengguna = JSON.parse(localStorage.getItem('2r_user') || '{}');
 
-        var sidebarHtml = `
-            <div class="menu-item active" data-page="home"><i class="fas fa-home"></i> Beranda</div>
-            <div class="menu-item" data-page="profile"><i class="fas fa-user-circle"></i> Profil</div>
-            <div class="menu-item" data-page="katalog"><i class="fas fa-box"></i> Katalog</div>
-            <div class="menu-item" data-page="logout" onclick="document.getElementById('buttonLogout').click();"><i class="fas fa-sign-out-alt"></i> Keluar</div>
-        `;
-        document.getElementById('sidebarContainer').innerHTML = sidebarHtml;
-
-        var items = document.querySelectorAll('.sidebar-simple .menu-item');
-        for (var i=0; i<items.length; i++) {
-            items[i].onclick = function() {
-                items.forEach(el => el.classList.remove('active'));
-                this.classList.add('active');
-                var page = this.getAttribute('data-page');
-                
-                // --- PERBAIKAN PENTING: PINDAHKAN TOMBOL KE DALAM KARTU PUTIH ---
-                if (page === 'home') renderBerandaSederhana(user);
-                else if (page === 'profile') renderProfilSederhana(user); // Fungsi baru
-                else if (page === 'katalog') tampilkanToast('Katalog sedang dibangun', 'info');
-                
-                if (window.innerWidth <= 767) {
-                    document.querySelector('.sidebar-simple').classList.remove('open');
-                    document.getElementById('sidebarOverlay').classList.remove('active');
-                }
-            };
-        }
-        muatGambarUser();
-        renderBerandaSederhana(user);
-    }
-
-    // ===== FUNGSI BARU: HALAMAN PROFIL (Tombol Ada di Dalam Kartu Putih) =====
-    function renderProfilSederhana(pengguna) {
-        var areaKonten = document.getElementById('mainContent');
-        if (!areaKonten) return;
-        if (!pengguna) pengguna = JSON.parse(localStorage.getItem('2r_user') || '{}');
-
-        var html = `
-            <div class="fb-card">
-                <h3 style="margin-bottom:15px; font-size:20px;">Pengaturan Profil Saya</h3>
-                
-                <!-- Contoh Form Edit Profil -->
-                <div class="grid-2">
-                    <div class="form-group">
-                        <label>Nama Lengkap</label>
-                        <div class="input-group" style="border:1px solid #ddd; padding:0 14px;">
-                            <i class="fas fa-user" style="color:#aaa;"></i>
-                            <input type="text" value="${escapeHtml(pengguna.nama||pengguna.username||'')}" style="padding:12px 0;">
+            var html = `
+                <div class="fb-card">
+                    <h3 style="margin-bottom:15px; font-size:20px;">Pengaturan Profil Saya</h3>
+                    
+                    <div class="grid-2">
+                        <div class="form-group">
+                            <label>Nama Lengkap</label>
+                            <div class="input-group" style="border:1px solid #ddd; padding:0 14px;">
+                                <i class="fas fa-user" style="color:#aaa;"></i>
+                                <input type="text" value="${escapeHtml(pengguna.nama||pengguna.username||'')}" style="padding:12px 0;">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Email / Kontak</label>
+                            <div class="input-group" style="border:1px solid #ddd; padding:0 14px;">
+                                <i class="fas fa-envelope" style="color:#aaa;"></i>
+                                <input type="text" value="${escapeHtml(pengguna.email||'Belum diisi')}" style="padding:12px 0;">
+                            </div>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label>Email / Kontak</label>
-                        <div class="input-group" style="border:1px solid #ddd; padding:0 14px;">
-                            <i class="fas fa-envelope" style="color:#aaa;"></i>
-                            <input type="text" value="${escapeHtml(pengguna.email||'Belum diisi')}" style="padding:12px 0;">
-                        </div>
+
+                    <!-- === INI TOMBOL YANG SUDAH ADA DI DALAM KARTU PUTIH === -->
+                    <div class="action-bar">
+                        <button class="btn-batal" onclick="tampilkanToast('Batal menyimpan perubahan', 'info')">Batal</button>
+                        <button class="btn-simpan" onclick="tampilkanToast('Profil berhasil disimpan!', 'success')"><i class="fas fa-check"></i> Simpan Profil</button>
                     </div>
                 </div>
-
-                <!-- === INI DIA TOMBOL YANG DIPINDAHKAN KE DALAM KARTU PUTIH === -->
-                <div class="action-bar">
-                    <button class="btn-batal" onclick="tampilkanToast('Batal menyimpan perubahan', 'info')">Batal</button>
-                    <button class="btn-simpan" onclick="tampilkanToast('Profil berhasil disimpan!', 'success')"><i class="fas fa-check"></i> Simpan Profil</button>
-                </div>
-                <!-- ============================================================ -->
-            </div>
-        `;
-        areaKonten.innerHTML = html;
-    }
-
-    // (Fungsi renderBerandaSederhana tetap sama seperti kode sebelumnya)
-    function renderBerandaSederhana(pengguna) {
-        var areaKonten = document.getElementById('mainContent');
-        if (!areaKonten) return;
-        if (!pengguna) pengguna = JSON.parse(localStorage.getItem('2r_user') || '{}');
-        var semuaAkun = getDataAkun();
-        var jumlahToko = 0, jumlahOjek = 0, jumlahCustomer = 0;
-        for (var i=0; i<semuaAkun.length; i++) {
-            var akun = semuaAkun[i];
-            if (akun.role === 'toko' || akun.role === 'pedagang' || akun.role === 'codseller') jumlahToko++;
-            else if (akun.role === 'ojek') jumlahOjek++;
-            else if (akun.role === 'customer') jumlahCustomer++;
+            `;
+            areaKonten.innerHTML = html;
         }
-        var html = `
-            <div class="fb-card">
-                <h3 style="margin-bottom:10px; font-size:20px;">Selamat Datang, ${escapeHtml(pengguna.nama||pengguna.username||'User')} 👋</h3>
-                <p style="margin-bottom:15px; color:var(--text-muted); font-size:14px;">Role: ${escapeHtml(pengguna.role||'User')}</p>
-                <div class="stat-grid">
-                    <div class="stat-card"><div class="stat-number" style="color:var(--primary);">${jumlahToko}</div><div class="stat-label">Toko Terdaftar</div></div>
-                    <div class="stat-card"><div class="stat-number" style="color:#3182CE;">${jumlahOjek}</div><div class="stat-label">Ojek Terdaftar</div></div>
-                    <div class="stat-card"><div class="stat-number" style="color:#38A169;">${jumlahCustomer}</div><div class="stat-label">Customer Terdaftar</div></div>
-                </div>
-            </div>
-        `;
-        areaKonten.innerHTML = html;
-    }
-    // ===== AKHIR 5.1.6 =====
-</script>
-<!-- ===== AKHIR BLOK 5.1 ===== -->
 
-<!-- ============================================================ -->
-<!-- PENUTUP HTML                                                 -->
-<!-- ============================================================ -->
+        // === RENDER BERANDA ===
+        function renderBerandaSederhana(pengguna) {
+            var areaKonten = document.getElementById('mainContent');
+            if (!areaKonten) return;
+            if (!pengguna) pengguna = JSON.parse(localStorage.getItem('2r_user') || '{}');
+            var semuaAkun = getDataAkun();
+            var jumlahToko = 0, jumlahOjek = 0, jumlahCustomer = 0;
+            for (var i=0; i<semuaAkun.length; i++) {
+                var akun = semuaAkun[i];
+                if (akun.role === 'toko' || akun.role === 'pedagang' || akun.role === 'codseller') jumlahToko++;
+                else if (akun.role === 'ojek') jumlahOjek++;
+                else if (akun.role === 'customer') jumlahCustomer++;
+            }
+            var html = `
+                <div class="fb-card">
+                    <h3 style="margin-bottom:10px; font-size:20px;">Selamat Datang, ${escapeHtml(pengguna.nama||pengguna.username||'User')} 👋</h3>
+                    <p style="margin-bottom:15px; color:var(--text-muted); font-size:14px;">Role: ${escapeHtml(pengguna.role||'User')}</p>
+                    <div class="stat-grid">
+                        <div class="stat-card"><div class="stat-number" style="color:var(--primary);">${jumlahToko}</div><div class="stat-label">Toko Terdaftar</div></div>
+                        <div class="stat-card"><div class="stat-number" style="color:#3182CE;">${jumlahOjek}</div><div class="stat-label">Ojek Terdaftar</div></div>
+                        <div class="stat-card"><div class="stat-number" style="color:#38A169;">${jumlahCustomer}</div><div class="stat-label">Customer Terdaftar</div></div>
+                    </div>
+                </div>
+            `;
+            areaKonten.innerHTML = html;
+        }
+    </script>
 </body>
 </html>
-<!-- ===== AKHIR PENUTUP HTML ===== -->
