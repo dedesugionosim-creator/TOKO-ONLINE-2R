@@ -600,14 +600,14 @@
                 cropperInstance = null; 
             }
 
-            // Inisialisasi Cropper Baru dengan setting "Otomatis Pas"
+            // Inisialisasi Cropper Baru
             setTimeout(() => {
                 cropperInstance = new Cropper(img, {
-                    viewMode: 1,                 // Membatasi crop box di dalam gambar
-                    dragMode: 'move',            // User tetap bisa geser gambar jika ingin
+                    viewMode: 1,                 // Crop box tidak keluar dari batas gambar
+                    dragMode: 'move',            // === BISA GESER MANUAL === (Klik area gelap untuk geser gambar)
                     aspectRatio: tipe === 'cover' ? 16 / 9 : 1 / 1, // Rasio pas
-                    autoCropArea: 1,             // === FITUR OTOMATIS PAS === (Mengisi 100% gambar)
-                    center: true,                // Memastikan gambar tepat di tengah
+                    autoCropArea: 0.5,           // Sistem otomatis ambil 50% bagian tengah foto
+                    center: true,                // Pastikan posisi awal di tengah
                     background: false,
                     minContainerWidth: 200,
                     minContainerHeight: 200
