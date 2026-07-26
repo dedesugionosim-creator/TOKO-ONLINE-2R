@@ -708,10 +708,86 @@
             tampilkanDasbor(dataUser);
         });
 
-        // REGISTER
+               // ===== REGISTER =====
         document.getElementById('registerForm').addEventListener('submit', async function(e) {
             e.preventDefault();
-            // (Logika register sama seperti sebelumnya, pastikan akunBaru punya coverPhoto & profilePhoto: '')
+            
+            var pilihRole = document.getElementById('registerRole').value;
+            var inputUsername = document.getElementById('registerUsername').value.trim();
+            var inputPassword = document.getElementById('registerPassword').value.trim();
+            var inputNama = document.getElementById('registerNama').value.trim();
+            var inputLat = document.getElementById('registerLat').value.trim();
+            var inputLng = document.getElementById('registerLng').value.trim();
+
+            // 1. Validasi lokasi wajib diambil (mencegah submit tanpa klik tombol ambil lokasi)
+            if (!inputLat || !inputLng) {
+                tampilkanToast('Anda wajib mengambil lokasi otomatis terlebih dahulu!', 'error');
+                return;
+            }
+
+            // 2. Validasi data wajib terisi
+            if (!pilihRole || !inputUsername || !inputPassword || !inputNama) {
+                tampilkanToast('Semua data wajib diisi!', 'warning');
+                return;
+            }
+
+            // 3. Validasi minimal karakter
+            if (inputUsername.length < 4) {
+                tampilkanToast('Username minimal 4 karakter!', 'warning');
+                return;
+            }
+            if (inputPassword.length < 6) {
+                tampilkanToast('Password minimal 6 karakter!', 'warning');
+                return;
+            }
+
+            // 4. Cek duplikasi username
+            var dataAkun = getDataAkun();
+            var usernameExist = false;
+            for (var indeks = 0; indeks < dataAkun.length; indeks++) {
+                if (dataAkun[indeks].username === inputUsername) {
+                    usernameExist = true;
+                    break;
+                }
+            }
+            if (usernameExist) {
+                tampilkanToast('Username sudah dipakai, silakan ganti!', 'error');
+                return;
+            }
+
+            // 5. Set status akun (Toko/Ojek wajib verifikasi)
+            var statusAkun = (pilihRole === 'toko' || pilihRole === 'ojek') ? 'NONAKTIF (Menunggu Verifikasi)' : 'AKTIF';
+
+            // 6. Hash password & buat objek akun
+            var hashPasswordBaru = await hashPassword(inputPassword);
+            var akunBaru = {
+                id: generateId(pilihRole),
+                role: pilihRole,
+                username: inputUsername,
+                password: hashPasswordBaru,
+                nama: inputNama,
+                email: '',
+                nomorHp: '',
+                alamat: '',
+                latitude: inputLat,
+                longitude: inputLng,
+                namaBank: '',
+                nomorRekening: '',
+                pemilikRekening: '',
+                status: statusAkun,
+                // --- FIX: Tambahkan field gambar agar tidak error saat login ---
+                coverPhoto: '',
+                profilePhoto: '',
+                waktuRegistrasi: new Date().toISOString()
+            };
+
+            // 7. Simpan ke database dan reset form
+            dataAkun.push(akunBaru);
+            simpanDataAkun(dataAkun);
+            tampilkanToast('Akun berhasil dibuat! ID: ' + akunBaru.id, 'success');
+            document.getElementById('registerForm').reset();
+            document.getElementById('btnDaftar').setAttribute('disabled', 'disabled');
+            toggleForm('login');
         });
 
         // FILE INPUT HANDLER
@@ -737,7 +813,7 @@
             overlay.addEventListener('click', function() { sidebar.classList.remove('open'); overlay.classList.remove('active'); });
         }
     });
-
+    // ===== 5.1.5 EVENT LISTENERS =====
     // ===== 5.1.6 DASHBOARD & SIDEBAR GENERATOR =====
     function tampilkanDasbor(user) {
         document.getElementById('pageAuthentication').style.display = 'none';
@@ -806,6 +882,7 @@
     }
 </script>
 <!-- ===== AKHIR BLOK 5.1 ===== -->
+
 
 <!-- ============================================================ -->
 <!-- PENUTUP HTML                                                 -->
