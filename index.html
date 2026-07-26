@@ -223,7 +223,24 @@
 <!-- ============================================================ -->
 <div id="pageDashboard" class="page-dashboard" style="display:none;">
     
+    <!-- NAVBAR DENGAN HEADER COVER & PROFIL -->
     <nav class="navbar-simple">
+        <!-- HEADER COVER & PROFIL -->
+        <div class="header-profile">
+            <div class="cover-container" id="coverContainer">
+                <!-- Cover image, default empty -->
+                <img id="coverImage" src="" alt="Cover" class="cover-img" style="display:block; width:100%; height:100%; object-fit:cover; background:#f0f0f0;">
+                <!-- Profile wrapper with overlay -->
+                <div class="profile-wrapper" id="profileWrapper">
+                    <img id="profileImage" src="" alt="Profil" class="profile-img" style="display:block; width:100%; height:100%; object-fit:cover; background:#ddd;">
+                    <div class="profile-overlay">
+                        <i class="fas fa-camera"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- NAVIGASI BAWAH (navbar content) -->
         <div class="navbar-left">
             <button id="menuToggle"><i class="fas fa-bars"></i></button>
             <i class="fas fa-store-alt" style="color:#FF6B00; font-size:24px; margin-left:10px;"></i>
@@ -237,6 +254,11 @@
         </div>
     </nav>
 
+    <!-- INPUT FILE TERSEMBUNYI UNTUK UPLOAD -->
+    <input type="file" id="uploadCover" accept="image/*" style="display:none;">
+    <input type="file" id="uploadProfile" accept="image/*" style="display:none;">
+
+    <!-- LAYOUT CONTAINER -->
     <div class="simple-layout-container">
         <aside class="sidebar-simple" id="sidebarContainer"></aside>
         <div id="sidebarOverlay" class="sidebar-overlay"></div>
@@ -295,21 +317,100 @@
     .authentication-footer { text-align:center; margin-top:18px; font-size:14px; color:var(--text-muted); }
     .authentication-footer a { color:var(--primary); cursor:pointer; font-weight:600; text-decoration:none; }
 
+    /* ===== DASHBOARD & NAVBAR ===== */
     .page-dashboard { display:none; background:var(--bg); }
+    
+    /* Navbar dengan header cover */
     .navbar-simple {
-        display:flex; justify-content:space-between; align-items:center;
-        background:white; padding:0 20px; height:64px;
-        position:fixed; top:0; left:0; right:0; z-index:1000;
-        border-bottom:2px solid var(--primary); box-shadow:var(--shadow);
+        display:flex;
+        flex-direction:column;
+        background:white;
+        box-shadow:var(--shadow);
+        border-bottom:2px solid var(--primary);
+        position:relative;
+        width:100%;
+        z-index:1000;
     }
-    .navbar-left { display:flex; align-items:center; gap:5px; }
+    
+    /* Header cover & profil */
+    .header-profile {
+        position: relative;
+        width: 100%;
+        height: 180px;
+        overflow: hidden;
+        background: #f0f0f0;
+        border-bottom: 2px solid var(--primary);
+    }
+    .cover-container {
+        position: relative;
+        width: 100%;
+        height: 100%;
+    }
+    .cover-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+    .profile-wrapper {
+        position: absolute;
+        bottom: -40px;
+        left: 30px;
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        border: 4px solid white;
+        background: #ddd;
+        overflow: hidden;
+        cursor: pointer;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        z-index: 10;
+    }
+    .profile-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+    .profile-overlay {
+        position: absolute;
+        inset: 0;
+        background: rgba(0,0,0,0.4);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 24px;
+        opacity: 0;
+        transition: opacity 0.3s;
+    }
+    .profile-wrapper:hover .profile-overlay {
+        opacity: 1;
+    }
+
+    /* Bar navigasi bawah (kiri dan kanan) */
+    .navbar-left {
+        display:flex;
+        align-items:center;
+        gap:5px;
+        padding:10px 20px;
+        background:white;
+    }
+    .navbar-right {
+        display:flex;
+        align-items:center;
+        gap:10px;
+        padding:10px 20px;
+        background:white;
+        justify-content:flex-end;
+        flex:1;
+    }
     #menuToggle { background:none; border:none; font-size:22px; color:var(--primary); cursor:pointer; display:none; }
-    .navbar-right { display:flex; align-items:center; gap:10px; }
     .navbar-right .role-badge { background:var(--primary-light); color:var(--primary); padding:4px 12px; border-radius:20px; font-size:12px; font-weight:600; }
     .button-logout { background:#f44336; color:white; border:none; padding:6px 16px; border-radius:20px; cursor:pointer; font-size:13px; font-weight:600; }
     .button-logout:hover { background:#d32f2f; }
 
-    .simple-layout-container { display:flex; max-width:1200px; margin:84px auto 20px auto; padding:0 15px; gap:20px; }
+    .simple-layout-container { display:flex; max-width:1200px; margin:20px auto; padding:0 15px; gap:20px; }
     .sidebar-simple { width:250px; flex-shrink:0; }
     .sidebar-simple .menu-item { padding:12px 15px; cursor:pointer; color:#555; font-weight:500; border-radius:8px; transition:0.2s; display:flex; align-items:center; gap:12px; }
     .sidebar-simple .menu-item:hover { background:#f0f2f5; }
@@ -320,12 +421,16 @@
     .fb-card { background:white; border-radius:var(--radius); box-shadow:var(--shadow); padding:20px; border:1px solid var(--border); margin-bottom:15px; }
 
     @media (max-width:767px) {
+        .header-profile { height: 130px; }
+        .profile-wrapper { width: 70px; height: 70px; bottom: -30px; left: 15px; }
         #menuToggle { display:block; }
         .sidebar-simple { position:fixed; top:64px; left:-100%; width:80%; max-width:300px; background:white; height:calc(100vh - 64px); padding:15px; box-shadow:2px 0 10px rgba(0,0,0,0.1); transition:left 0.3s ease; z-index:999; overflow-y:auto; }
         .sidebar-simple.open { left:0; }
         .sidebar-overlay.active { display:block; }
         .simple-layout-container { padding:0 10px; }
         .authentication-box { max-height:70vh; overflow-y:auto; }
+        .navbar-left, .navbar-right { padding:5px 15px; }
+        .navbar-simple { flex-wrap:wrap; }
     }
 </style>
 <!-- ===== AKHIR BLOK 4.1 ===== -->
@@ -534,7 +639,43 @@
     }
     // ===== AKHIR BLOK 5.1.3 =====
 
-    // ===== BLOK 5.1.4 - Event Listener Login, Register, Pengajuan =====
+    // ===== BLOK 5.1.4 - Fungsi Simpan & Muat Gambar =====
+    // Simpan gambar base64 ke data akun user yang sedang login
+    function simpanGambarUser(field, base64) {
+        var user = JSON.parse(localStorage.getItem('2r_user') || '{}');
+        if (!user.username) return;
+        var dataAkun = getDataAkun();
+        for (var i = 0; i < dataAkun.length; i++) {
+            if (dataAkun[i].username === user.username) {
+                dataAkun[i][field] = base64;
+                break;
+            }
+        }
+        simpanDataAkun(dataAkun);
+        // Update session
+        user[field] = base64;
+        localStorage.setItem('2r_user', JSON.stringify(user));
+    }
+
+    // Tampilkan gambar cover dan profil saat dashboard dimuat
+    function muatGambarUser() {
+        var user = JSON.parse(localStorage.getItem('2r_user') || '{}');
+        var coverImg = document.getElementById('coverImage');
+        var profileImg = document.getElementById('profileImage');
+        if (user.coverPhoto) {
+            coverImg.src = user.coverPhoto;
+        } else {
+            coverImg.src = ''; // atau placeholder
+        }
+        if (user.profilePhoto) {
+            profileImg.src = user.profilePhoto;
+        } else {
+            profileImg.src = ''; // atau placeholder
+        }
+    }
+    // ===== AKHIR BLOK 5.1.4 =====
+
+    // ===== BLOK 5.1.5 - Event Listener Login, Register, Pengajuan, Upload =====
     document.addEventListener('DOMContentLoaded', function() {
         var dataAwalAkun = getDataAkun();
         var superAdminAda = false;
@@ -560,7 +701,9 @@
                     nomorRekening: '1234567890',
                     pemilikRekening: 'SuperAdmin',
                     status: 'AKTIF',
-                    waktuRegistrasi: new Date().toISOString()
+                    waktuRegistrasi: new Date().toISOString(),
+                    coverPhoto: '',
+                    profilePhoto: ''
                 };
                 dataAwalAkun.push(superAdminBaru);
                 simpanDataAkun(dataAwalAkun);
@@ -645,7 +788,9 @@
                 nomorRekening: '',
                 pemilikRekening: '',
                 status: statusAkun,
-                waktuRegistrasi: new Date().toISOString()
+                waktuRegistrasi: new Date().toISOString(),
+                coverPhoto: '',
+                profilePhoto: ''
             };
             dataAkun.push(akunBaru);
             simpanDataAkun(dataAkun);
@@ -693,6 +838,51 @@
             toggleForm('login');
         });
 
+        // ===== UPLOAD COVER & PROFIL =====
+        var coverContainer = document.getElementById('coverContainer');
+        var uploadCover = document.getElementById('uploadCover');
+        if (coverContainer) {
+            coverContainer.addEventListener('click', function() {
+                uploadCover.click();
+            });
+        }
+        if (uploadCover) {
+            uploadCover.addEventListener('change', function(e) {
+                var file = e.target.files[0];
+                if (!file) return;
+                var reader = new FileReader();
+                reader.onload = function(ev) {
+                    var base64 = ev.target.result;
+                    simpanGambarUser('coverPhoto', base64);
+                    document.getElementById('coverImage').src = base64;
+                    tampilkanToast('Cover berhasil diubah!', 'success');
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        var profileWrapper = document.getElementById('profileWrapper');
+        var uploadProfile = document.getElementById('uploadProfile');
+        if (profileWrapper) {
+            profileWrapper.addEventListener('click', function() {
+                uploadProfile.click();
+            });
+        }
+        if (uploadProfile) {
+            uploadProfile.addEventListener('change', function(e) {
+                var file = e.target.files[0];
+                if (!file) return;
+                var reader = new FileReader();
+                reader.onload = function(ev) {
+                    var base64 = ev.target.result;
+                    simpanGambarUser('profilePhoto', base64);
+                    document.getElementById('profileImage').src = base64;
+                    tampilkanToast('Foto profil berhasil diubah!', 'success');
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
         // LOGOUT
         document.getElementById('buttonLogout').addEventListener('click', function() {
             if (confirm('Yakin keluar?')) {
@@ -723,9 +913,9 @@
             });
         }
     });
-    // ===== AKHIR BLOK 5.1.4 =====
+    // ===== AKHIR BLOK 5.1.5 =====
 
-    // ===== BLOK 5.1.5 - Fungsi Dashboard & Sidebar =====
+    // ===== BLOK 5.1.6 - Fungsi Dashboard & Sidebar =====
     function tampilkanDasbor(user) {
         document.getElementById('pageAuthentication').style.display = 'none';
         document.getElementById('pageDashboard').style.display = 'block';
@@ -771,6 +961,8 @@
                 }
             };
         }
+        // Muat gambar cover & profil
+        muatGambarUser();
         renderBerandaSederhana(user);
     }
 
@@ -821,7 +1013,9 @@
 
         areaKonten.innerHTML = html;
     }
-    // ===== AKHIR BLOK 5.1.5 =====
+    // ===== AKHIR BLOK 5.1.6 =====
+</script>
+<!-- ===== AKHIR BLOK 5.1 ===== -->
 </script>
 <!-- ===== AKHIR BLOK 5.1 ===== -->
 
