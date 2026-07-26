@@ -309,14 +309,9 @@
 <!-- ============================================================ -->
 <style>
     :root {
-        /* Warna dasar */
         --primary: #FF6B00; 
         --primary-dark: #e65c00;
-        
-        /* Background GRADASI yang SAMA PERSIS untuk Login & Dashboard */
         --bg-gradient: linear-gradient(135deg, #C05000 0%, #E67E22 100%);
-        
-        /* Elemen Lainnya */
         --bg-card: #FFFFFF;
         --text-dark: #2D3748;
         --text-muted: #718096;
@@ -346,7 +341,7 @@
         align-items:center; 
         width:100%; 
         min-height:100vh; 
-        background: var(--bg-gradient); /* Menggunakan variabel gradasi */
+        background: var(--bg-gradient);
     }
     .authentication-wrapper { width:100%; max-width:450px; padding:20px; }
     .authentication-box { background:white; border-radius:var(--radius); padding:40px; box-shadow:0 4px 20px rgba(0,0,0,0.15); width:100%; }
@@ -372,11 +367,11 @@
     /* ===== DASHBOARD - GRADASI SAMA DENGAN LOGIN ===== */
     .page-dashboard { 
         display:none; 
-        background: var(--bg-gradient); /* Menggunakan variabel gradasi yang SAMA PERSIS */
+        background: var(--bg-gradient);
         min-height: 100vh;
     }
     
-    /* Navbar - Putih bersih */
+    /* Navbar */
     .navbar-simple { 
         background:#FFFFFF; 
         box-shadow:0 2px 10px rgba(0,0,0,0.05); 
@@ -386,14 +381,25 @@
         z-index:1000; 
     }
     
-    /* Cover & Profil */
-    .header-profile { position:relative; width:100%; height:180px; background:#E8E8E8; border-bottom:1px solid #ddd; overflow:hidden; }
+    /* ========================================================== */
+    /* UBAH: Area Cover DIPERBESAR dari 180px menjadi 240px        */
+    /* ========================================================== */
+    .header-profile { 
+        position:relative; 
+        width:100%; 
+        height:240px; /* --- DIPERBESAR --- */
+        background:#E8E8E8; 
+        border-bottom:1px solid #ddd; 
+        overflow:hidden; 
+    }
     .cover-wrapper { position:relative; width:100%; height:100%; }
     .cover-img { width:100%; height:100%; object-fit:cover; display:block; }
     .cover-actions { position:absolute; top:12px; right:15px; display:flex; gap:8px; }
     .btn-icon { background:rgba(255,255,255,0.95); border:none; border-radius:50%; width:36px; height:36px; cursor:pointer; box-shadow:0 2px 5px rgba(0,0,0,0.1); color:#333; font-size:15px; transition:0.2s; }
     .btn-icon:hover { transform:scale(1.1); }
     .btn-icon.btn-delete { color:#E53E3E; }
+
+    /* Posisi Profil tetap di bawah, menyesuaikan dengan tinggi cover baru */
     .profile-wrapper { position:absolute; bottom:-45px; left:30px; width:110px; height:110px; border-radius:50%; border:4px solid #FFFFFF; background:#ddd; box-shadow:0 4px 15px rgba(0,0,0,0.2); z-index:10; overflow:visible; }
     .profile-img { width:100%; height:100%; object-fit:cover; border-radius:50%; display:block; }
     .profile-actions { position:absolute; bottom:-35px; left:50%; transform:translateX(-50%); display:flex; gap:5px; background:rgba(0,0,0,0.7); padding:4px 12px; border-radius:20px; white-space:nowrap; backdrop-filter:blur(5px); }
@@ -401,7 +407,6 @@
     .profile-actions .btn-icon.small:hover { color:var(--primary); }
     .profile-actions .btn-delete { color:#FFB3B3; }
 
-    /* Navbar Bottom */
     .navbar-bottom { display:flex; justify-content:space-between; align-items:center; padding:0 20px; height:70px; background:#FFFFFF; }
     .navbar-left { display:flex; align-items:center; gap:10px; }
     #menuToggle { background:none; border:none; font-size:24px; color:var(--primary); cursor:pointer; display:none; }
@@ -414,11 +419,10 @@
     .user-name { font-weight:600; color:#333; font-size:14px; }
     .button-logout { background:#E53E3E; color:white; border:none; padding:8px 20px; border-radius:20px; cursor:pointer; font-size:13px; font-weight:600; transition:0.3s; }
 
-    /* ===== SIDEBAR GLASSMORPHISM (DI ATAS GRADASI) ===== */
+    /* ===== SIDEBAR GLASSMORPHISM ===== */
     .sidebar-simple {
         width: 260px;
         flex-shrink: 0;
-        /* Background transparan dengan efek blur agar menyatu dengan gradasi */
         background: rgba(255, 255, 255, 0.15); 
         backdrop-filter: blur(12px);
         -webkit-backdrop-filter: blur(12px);
@@ -446,8 +450,8 @@
         transform: translateX(6px);
     }
     .sidebar-simple .menu-item.active {
-        background: #FFFFFF; /* Menu aktif berwarna putih solid */
-        color: var(--primary); /* Teks oranye tua */
+        background: #FFFFFF;
+        color: var(--primary);
         font-weight: 600;
         box-shadow: 0 4px 15px rgba(0,0,0,0.15);
     }
@@ -456,19 +460,27 @@
     
     .sidebar-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.4); z-index:998; }
 
-    /* ===== KONTEN UTAMA (PUTIH DI ATAS GRADASI) ===== */
-    .simple-layout-container { display:flex; max-width:1280px; margin:250px auto 20px auto; padding:0 20px; gap:25px; }
+    /* ===== KONTEN UTAMA ===== */
+    /* ========================================================== */
+    /* UBAH: Margin atas layout karena header lebih tinggi         */
+    /* ========================================================== */
+    .simple-layout-container { 
+        display:flex; 
+        max-width:1280px; 
+        margin:310px auto 20px auto; /* --- DARI 250px JADI 310px --- */
+        padding:0 20px; 
+        gap:25px; 
+    }
     .content-simple { 
         flex:1; 
         min-width:0; 
-        background:var(--bg-card); /* Putih */
+        background:var(--bg-card);
         border-radius:var(--radius); 
         box-shadow:var(--shadow-card); 
         padding:25px; 
     }
     .fb-card { background:var(--bg-card); border-radius:var(--radius); padding:25px; margin-bottom:20px; }
     
-    /* Statistik */
     .stat-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(150px,1fr)); gap:15px; margin-top:15px; }
     .stat-card { text-align:center; padding:20px; background:#FAFBFC; border-radius:var(--radius-sm); border:1px solid #eee; transition:0.3s; }
     .stat-card:hover { transform:translateY(-4px); box-shadow:var(--shadow-card); }
@@ -484,16 +496,25 @@
     .img-container img { max-width:100%; display:block; }
     .crop-actions { display:flex; gap:15px; justify-content:flex-end; }
 
-    /* Responsive */
+    /* ========================================================== */
+    /* UBAH: Responsive Mobile untuk Cover yang lebih besar        */
+    /* ========================================================== */
     @media (max-width:767px) {
-        .header-profile { height:130px; }
+        .header-profile { 
+            height:160px; /* --- DARI 130px JADI 160px --- */
+        }
         .profile-wrapper { width:80px; height:80px; bottom:-35px; left:15px; }
         .profile-actions { bottom:-25px; padding:2px 8px; font-size:11px; }
         #menuToggle { display:block; }
         .sidebar-simple { position:fixed; top:0; left:-100%; width:80%; max-width:300px; background:rgba(0,0,0,0.5); backdrop-filter:blur(12px); border-radius:0; height:100vh; padding:80px 20px 20px; transition:left 0.3s ease; z-index:999; overflow-y:auto; }
         .sidebar-simple.open { left:0; }
         .sidebar-overlay.active { display:block; }
-        .simple-layout-container { margin-top:200px; padding:0 12px; gap:15px; flex-direction:column; }
+        .simple-layout-container { 
+            margin-top:230px; /* --- DARI 200px JADI 230px --- */
+            padding:0 12px; 
+            gap:15px; 
+            flex-direction:column; 
+        }
         .clock-display { display:none; }
         .crop-modal-content { padding:20px; }
         .img-container { height:250px; }
