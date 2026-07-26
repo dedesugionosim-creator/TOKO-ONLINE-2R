@@ -539,12 +539,106 @@
     }
     function escapeHtml(text) { if(!text) return ''; var div = document.createElement('div'); div.textContent = text; return div.innerHTML; }
 
-    // ===== 5.1.2 Ambil Lokasi (Biarkan saja) =====
-    function ambilLokasiRegister() { /* Kode tetap */ }
-    function ambilLokasiPengajuan() { /* Kode tetap */ }
+        // ===== 5.1.2 - AMBIL LOKASI OTOMATIS =====
+    function ambilLokasiRegister() {
+        if (!navigator.geolocation) {
+            tampilkanToast('Browser Anda tidak mendukung geolokasi.', 'error');
+            return;
+        }
+        tampilkanToast('Mengambil lokasi...', 'info');
+        navigator.geolocation.getCurrentPosition(function(pos) {
+            var lat = pos.coords.latitude;
+            var lng = pos.coords.longitude;
+            document.getElementById('registerLat').value = lat;
+            document.getElementById('registerLng').value = lng;
 
-    // ===== 5.1.3 Lupa Password (Biarkan saja) =====
-    async function lupaPassword() { /* Kode tetap */ }
+            fetch('https://nominatim.openstreetmap.org/reverse?format=json&lat=' + lat + '&lon=' + lng, {
+                headers: { 'User-Agent': 'TokoOnline2R-App/1.0' }
+            })
+            .then(function(response) { return response.json(); })
+            .then(function(data) {
+                document.getElementById('registerLokasi').value = data.display_name || 'Lokasi tidak diketahui';
+                tampilkanToast('Lokasi berhasil diambil!', 'success');
+                document.getElementById('btnDaftar').removeAttribute('disabled');
+            })
+            .catch(function() {
+                document.getElementById('registerLokasi').value = 'Lat: ' + lat + ', Lng: ' + lng;
+                tampilkanToast('Lokasi berhasil (tanpa alamat detail).', 'info');
+                document.getElementById('btnDaftar').removeAttribute('disabled');
+            });
+        }, function(err) {
+            tampilkanToast('Gagal mengambil lokasi: ' + err.message, 'error');
+        });
+    }
+
+    function ambilLokasiPengajuan() {
+        if (!navigator.geolocation) {
+            tampilkanToast('Browser Anda tidak mendukung geolokasi.', 'error');
+            return;
+        }
+        tampilkanToast('Mengambil lokasi...', 'info');
+        navigator.geolocation.getCurrentPosition(function(pos) {
+            var lat = pos.coords.latitude;
+            var lng = pos.coords.longitude;
+            document.getElementById('pengajuanLat').value = lat;
+            document.getElementById('pengajuanLng').value = lng;
+
+            fetch('https://nominatim.openstreetmap.org/reverse?format=json&lat=' + lat + '&lon=' + lng, {
+                headers: { 'User-Agent': 'TokoOnline2R-App/1.0' }
+            })
+            .then(function(response) { return response.json(); })
+            .then(function(data) {
+                document.getElementById('pengajuanLokasi').value = data.display_name || 'Lokasi tidak diketahui';
+                tampilkanToast('Lokasi berhasil diambil!', 'success');
+                document.getElementById('btnAjukan').removeAttribute('disabled');
+            })
+            .catch(function() {
+                document.getElementById('pengajuanLokasi').value = 'Lat: ' + lat + ', Lng: ' + lng;
+                tampilkanToast('Lokasi berhasil (tanpa alamat detail).', 'info');
+                document.getElementById('btnAjukan').removeAttribute('disabled');
+            });
+        }, function(err) {
+            tampilkanToast('Gagal mengambil lokasi: ' + err.message, 'error');
+        });
+    }
+    // ===== AKHIR BLOK 5.1.2 =====
+
+        // ===== 5.1.3 - LUPA PASSWORD =====
+    async function lupaPassword() {
+        var username = document.getElementById('loginUsername').value.trim();
+        if (!username) {
+            tampilkanToast('Masukkan username Anda terlebih dahulu!', 'warning');
+            return;
+        }
+        // Keamanan: SuperAdmin tidak bisa di-reset lewat form ini
+        if (username === 'admin') {
+            tampilkanToast('Akun SuperAdmin tidak dapat di-reset melalui form ini!', 'error');
+            return;
+        }
+
+        var dataAkun = getDataAkun();
+        var indexUser = -1;
+        for (var indeks = 0; indeks < dataAkun.length; indeks++) {
+            if (dataAkun[indeks].username === username) {
+                indexUser = indeks;
+                break;
+            }
+        }
+
+        if (indexUser === -1) {
+            tampilkanToast('Username tidak ditemukan!', 'error');
+            return;
+        }
+
+        // Generate password baru 8 karakter acak
+        var newPassword = Math.random().toString(36).slice(-8);
+        var hash = await hashPassword(newPassword);
+        dataAkun[indexUser].password = hash;
+        simpanDataAkun(dataAkun);
+
+        tampilkanToast('Password berhasil di-reset! Password baru Anda: ' + newPassword, 'success');
+    }
+    // ===== AKHIR BLOK 5.1.3 =====
 
         // ===== BLOK 5.1.4 - FUNGSI CROP, SIMPAN, HAPUS GAMBAR =====
     var cropperInstance = null;
@@ -673,147 +767,49 @@
     }
     // ===== AKHIR BLOK 5.1.4 =====
 
-    // ===== 5.1.5 EVENT LISTENERS =====
-    document.addEventListener('DOMContentLoaded', function() {
-        // SuperAdmin Setup
-        var dataAwalAkun = getDataAkun();
-        if (!dataAwalAkun.some(a => a.role === 'superadmin')) {
-            (async function() {
-                var hash = await hashPassword('admin123');
-                dataAwalAkun.push({
-                    id: 'SA-001', role: 'superadmin', username: 'admin', password: hash, nama: 'SuperAdmin',
-                    email: 'admin@2r.com', nomorHp: '081234567890', alamat: 'Kantor Pusat',
-                    namaBank: 'BCA', nomorRekening: '1234567890', pemilikRekening: 'SuperAdmin',
-                    status: 'AKTIF', waktuRegistrasi: new Date().toISOString(),
-                    coverPhoto: '', profilePhoto: ''
-                });
-                simpanDataAkun(dataAwalAkun);
-                console.log('✅ SuperAdmin siap. Username: admin, Password: admin123');
-            })();
-        }
-
-        // LOGIN
-        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            // ===== PENGAJUAN =====
+        document.getElementById('pengajuanBukaAkunForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            var inputUsername = document.getElementById('loginUsername').value.trim();
-            var inputPassword = document.getElementById('loginPassword').value.trim();
-            var dataAkun = getDataAkun();
-            var dataUser = dataAkun.find(a => a.username === inputUsername);
-            if (!dataUser) { tampilkanToast('Username atau password salah!', 'error'); return; }
-            if (await hashPassword(inputPassword) !== dataUser.password) { tampilkanToast('Username atau password salah!', 'error'); return; }
-            if (dataUser.status !== 'AKTIF' && dataUser.role !== 'superadmin') { tampilkanToast('Akun belum aktif!', 'error'); return; }
-            
-            localStorage.setItem('2r_user', JSON.stringify(dataUser));
-            localStorage.setItem('2r_user_role', dataUser.role);
-            tampilkanDasbor(dataUser);
-        });
+            var inputNama = document.getElementById('pengajuanNama').value.trim();
+            var inputKontak = document.getElementById('pengajuanKontak').value.trim();
+            var pilihRole = document.getElementById('pengajuanRole').value;
+            var inputAlasan = document.getElementById('pengajuanAlasan').value.trim();
+            var inputLat = document.getElementById('pengajuanLat').value.trim();
+            var inputLng = document.getElementById('pengajuanLng').value.trim();
 
-               // ===== REGISTER =====
-        document.getElementById('registerForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            var pilihRole = document.getElementById('registerRole').value;
-            var inputUsername = document.getElementById('registerUsername').value.trim();
-            var inputPassword = document.getElementById('registerPassword').value.trim();
-            var inputNama = document.getElementById('registerNama').value.trim();
-            var inputLat = document.getElementById('registerLat').value.trim();
-            var inputLng = document.getElementById('registerLng').value.trim();
-
-            // 1. Validasi lokasi wajib diambil (mencegah submit tanpa klik tombol ambil lokasi)
+            // Validasi wajib lokasi
             if (!inputLat || !inputLng) {
                 tampilkanToast('Anda wajib mengambil lokasi otomatis terlebih dahulu!', 'error');
                 return;
             }
 
-            // 2. Validasi data wajib terisi
-            if (!pilihRole || !inputUsername || !inputPassword || !inputNama) {
+            if (!inputNama || !inputKontak || !pilihRole || !inputAlasan) {
                 tampilkanToast('Semua data wajib diisi!', 'warning');
                 return;
             }
 
-            // 3. Validasi minimal karakter
-            if (inputUsername.length < 4) {
-                tampilkanToast('Username minimal 4 karakter!', 'warning');
-                return;
-            }
-            if (inputPassword.length < 6) {
-                tampilkanToast('Password minimal 6 karakter!', 'warning');
-                return;
-            }
-
-            // 4. Cek duplikasi username
-            var dataAkun = getDataAkun();
-            var usernameExist = false;
-            for (var indeks = 0; indeks < dataAkun.length; indeks++) {
-                if (dataAkun[indeks].username === inputUsername) {
-                    usernameExist = true;
-                    break;
-                }
-            }
-            if (usernameExist) {
-                tampilkanToast('Username sudah dipakai, silakan ganti!', 'error');
-                return;
-            }
-
-            // 5. Set status akun (Toko/Ojek wajib verifikasi)
-            var statusAkun = (pilihRole === 'toko' || pilihRole === 'ojek') ? 'NONAKTIF (Menunggu Verifikasi)' : 'AKTIF';
-
-            // 6. Hash password & buat objek akun
-            var hashPasswordBaru = await hashPassword(inputPassword);
-            var akunBaru = {
-                id: generateId(pilihRole),
-                role: pilihRole,
-                username: inputUsername,
-                password: hashPasswordBaru,
+            var dataPengajuan = JSON.parse(localStorage.getItem('2r_pengajuan_buka_akun') || '[]');
+            var pengajuanBaru = {
+                id: 'PB-' + Date.now(),
                 nama: inputNama,
-                email: '',
-                nomorHp: '',
-                alamat: '',
+                kontak: inputKontak,
+                role: pilihRole,
+                alasan: inputAlasan,
                 latitude: inputLat,
                 longitude: inputLng,
-                namaBank: '',
-                nomorRekening: '',
-                pemilikRekening: '',
-                status: statusAkun,
-                // --- FIX: Tambahkan field gambar agar tidak error saat login ---
-                coverPhoto: '',
-                profilePhoto: '',
-                waktuRegistrasi: new Date().toISOString()
+                alamatLokasi: document.getElementById('pengajuanLokasi').value.trim() || '',
+                status: 'MENUNGGU',
+                waktu: new Date().toISOString()
             };
+            dataPengajuan.push(pengajuanBaru);
+            localStorage.setItem('2r_pengajuan_buka_akun', JSON.stringify(dataPengajuan));
 
-            // 7. Simpan ke database dan reset form
-            dataAkun.push(akunBaru);
-            simpanDataAkun(dataAkun);
-            tampilkanToast('Akun berhasil dibuat! ID: ' + akunBaru.id, 'success');
-            document.getElementById('registerForm').reset();
-            document.getElementById('btnDaftar').setAttribute('disabled', 'disabled');
+            document.getElementById('pengajuanBukaAkunForm').reset();
+            document.getElementById('btnAjukan').setAttribute('disabled', 'disabled');
+            tampilkanToast('Pengajuan Anda telah dikirim ke Admin!', 'success');
             toggleForm('login');
         });
-
-        // FILE INPUT HANDLER
-        document.getElementById('fileInputCover').addEventListener('change', function(e) { handleFileSelect('cover', e.target.files[0]); });
-        document.getElementById('fileInputProfile').addEventListener('change', function(e) { handleFileSelect('profile', e.target.files[0]); });
-        document.getElementById('navProfilePic').addEventListener('click', function() { triggerUpload('profile'); });
-
-        // LOGOUT
-        document.getElementById('buttonLogout').addEventListener('click', function() {
-            if (confirm('Yakin keluar?')) { localStorage.removeItem('2r_user'); localStorage.removeItem('2r_user_role'); location.reload(); }
-        });
-
-        // SIDEBAR TOGGLE
-        var menuToggle = document.getElementById('menuToggle');
-        var sidebar = document.querySelector('.sidebar-simple');
-        var overlay = document.getElementById('sidebarOverlay');
-        if (menuToggle && sidebar && overlay) {
-            menuToggle.addEventListener('click', function(e) {
-                e.preventDefault();
-                sidebar.classList.toggle('open');
-                overlay.classList.toggle('active');
-            });
-            overlay.addEventListener('click', function() { sidebar.classList.remove('open'); overlay.classList.remove('active'); });
-        }
-    });
-    // ===== 5.1.5 EVENT LISTENERS =====
+        // ===== AKHIR PENGAJUAN =====
     // ===== 5.1.6 DASHBOARD & SIDEBAR GENERATOR =====
     function tampilkanDasbor(user) {
         document.getElementById('pageAuthentication').style.display = 'none';
