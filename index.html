@@ -7033,6 +7033,277 @@
 
 </script>
 <!-- ===== AKHIR BLOK 30 ===== -->
+<!-- ============================================================ -->
+<!-- BLOK 31 - MENU DEFAULT AKUN TOKO (BAGIAN 1 - DASBOR TOKO)     -->
+<!-- ============================================================ -->
+<script>
+
+    // ===== SUB BLOK 31.1.1 - HTML & CSS Dasbor Toko =====
+    // ===== SUB BLOK 31.1.2 - Java Script Render Dasbor Toko =====
+    function renderDasborToko() {
+        var areaKonten = document.getElementById('mainContent');
+        if (!areaKonten) {
+            return;
+        }
+
+        // Ambil data pengguna yang sedang login
+        var dataPengguna = JSON.parse(localStorage.getItem('2r_user') || '{}');
+        var identitasPengguna = dataPengguna.id;
+
+        // Ambil data produk gudang milik toko ini untuk menghitung total produk
+        var semuaProdukGudang = JSON.parse(localStorage.getItem('2r_produk_gudang') || '[]');
+        var produkSaya = [];
+        for (var indeks = 0; indeks < semuaProdukGudang.length; indeks++) {
+            if (semuaProdukGudang[indeks].tokoId === identitasPengguna) {
+                produkSaya.push(semuaProdukGudang[indeks]);
+            }
+        }
+        var totalProduk = produkSaya.length;
+
+        // Ambil data transaksi penjualan milik toko ini untuk menghitung pendapatan
+        var semuaTransaksi = JSON.parse(localStorage.getItem('2r_transaksi_penjualan') || '[]');
+        var totalPendapatan = 0;
+        for (var indeks = 0; indeks < semuaTransaksi.length; indeks++) {
+            if (semuaTransaksi[indeks].tokoId === identitasPengguna) {
+                totalPendapatan += semuaTransaksi[indeks].total || 0;
+            }
+        }
+
+        // Bangun Hypertext Markup Language untuk Dasbor Toko
+        var htmlDasbor = '';
+
+        // Header Halaman
+        htmlDasbor += '<div class="page-header">';
+        htmlDasbor += '<h2>Dasbor Toko</h2>';
+        htmlDasbor += '<p>Selamat datang, <strong>' + escapeHtml(dataPengguna.nama || dataPengguna.username || 'Toko') + '</strong>! Berikut ringkasan data toko Anda.</p>';
+        htmlDasbor += '</div>';
+
+        // Tiga Kartu Widget
+        htmlDasbor += '<div class="widget-grid-superadmin">';
+
+        // Widget 1: Total Produk
+        htmlDasbor += '<div class="widget-card-superadmin">';
+        htmlDasbor += '<span class="widget-icon" style="color:var(--primary);"><i class="fas fa-box"></i></span>';
+        htmlDasbor += '<div class="widget-number">' + totalProduk + '</div>';
+        htmlDasbor += '<div class="widget-label">Total Produk</div>';
+        htmlDasbor += '</div>';
+
+        // Widget 2: Pesanan Baru (Untuk saat ini masih dummy, karena fitur pesanan belum dibuat)
+        htmlDasbor += '<div class="widget-card-superadmin">';
+        htmlDasbor += '<span class="widget-icon" style="color:#2196F3;"><i class="fas fa-shopping-cart"></i></span>';
+        htmlDasbor += '<div class="widget-number">0</div>';
+        htmlDasbor += '<div class="widget-label">Pesanan Baru</div>';
+        htmlDasbor += '</div>';
+
+        // Widget 3: Pendapatan
+        htmlDasbor += '<div class="widget-card-superadmin">';
+        htmlDasbor += '<span class="widget-icon" style="color:#4CAF50;"><i class="fas fa-money-bill-wave"></i></span>';
+        htmlDasbor += '<div class="widget-number">Rp ' + totalPendapatan.toLocaleString('id-ID') + '</div>';
+        htmlDasbor += '<div class="widget-label">Pendapatan</div>';
+        htmlDasbor += '</div>';
+
+        htmlDasbor += '</div>';
+
+        // Kartu Info (Placeholder untuk pesanan masuk)
+        htmlDasbor += '<div class="fb-card">';
+        htmlDasbor += '<div class="card-header" style="font-weight:600; font-size:16px; border-bottom:1px solid #eee; padding-bottom:10px; margin-bottom:15px;">Aktivitas Terbaru</div>';
+        htmlDasbor += '<div class="empty-state" style="padding:15px;"><p style="color:#888;">Belum ada aktivitas terkini.</p></div>';
+        htmlDasbor += '</div>';
+
+        // Masukkan ke dalam area konten utama
+        areaKonten.innerHTML = htmlDasbor;
+
+        // --- Refresh otomatis setiap 5 detik untuk memperbarui data ---
+        setTimeout(function() {
+            if (document.getElementById('mainContent')) {
+                renderDasborToko();
+            }
+        }, 5000);
+    }
+    // ===== AKHIR SUB BLOK 31.1.1 & 31.1.2 =====
+
+</script>
+<!-- ===== AKHIR BLOK 31.1 ===== -->
+<!-- ============================================================ -->
+<!-- BLOK 31.2 - MENU PROFIL TOKO (DATA PRIBADI & FOTO PROFIL)     -->
+<!-- ============================================================ -->
+<script>
+
+    // ===== SUB BLOK 31.2.1 - HTML & CSS Form Profil Toko =====
+    // ===== SUB BLOK 31.2.2 - Java Script Render & Simpan Profil =====
+    function renderProfilToko() {
+        var areaKonten = document.getElementById('mainContent');
+        if (!areaKonten) {
+            return;
+        }
+
+        // Ambil data pengguna yang sedang login
+        var dataPengguna = JSON.parse(localStorage.getItem('2r_user') || '{}');
+        var dataAkun = getDataAkun();
+        var dataToko = null;
+        for (var indeks = 0; indeks < dataAkun.length; indeks++) {
+            if (dataAkun[indeks].id === dataPengguna.id) {
+                dataToko = dataAkun[indeks];
+                break;
+            }
+        }
+
+        if (!dataToko) {
+            tampilkanToast('Data akun tidak ditemukan!', 'error');
+            return;
+        }
+
+        // Bangun Hypertext Markup Language untuk halaman Profil Toko
+        var htmlProfil = '';
+
+        // Header Halaman
+        htmlProfil += '<div class="page-header">';
+        htmlProfil += '<h2>Profil Toko</h2>';
+        htmlProfil += '<p>Kelola data pribadi dan foto profil Anda.</p>';
+        htmlProfil += '</div>';
+
+        // --- Kartu Formulir Profil ---
+        htmlProfil += '<div class="fb-card">';
+        htmlProfil += '<div class="card-header" style="font-weight:600; font-size:16px; border-bottom:1px solid #eee; padding-bottom:10px; margin-bottom:15px;">';
+        htmlProfil += '<span><i class="fas fa-user-circle" style="color:var(--primary);"></i> Data Pribadi & Rekening</span>';
+        htmlProfil += '<button class="tombol-setujui" onclick="simpanProfilToko()"><i class="fas fa-save"></i> Simpan Profil</button>';
+        htmlProfil += '</div>';
+
+        htmlProfil += '<div class="grid-2">';
+        htmlProfil += '<div class="form-group"><label for="profilNama">Nama Lengkap</label><div class="input-group"><i class="fas fa-user"></i><input type="text" id="profilNama" class="form-input" value="' + escapeHtml(dataToko.nama || '') + '"></div></div>';
+        htmlProfil += '<div class="form-group"><label for="profilEmail">Email</label><div class="input-group"><i class="fas fa-envelope"></i><input type="email" id="profilEmail" class="form-input" value="' + escapeHtml(dataToko.email || '') + '"></div></div>';
+        htmlProfil += '<div class="form-group"><label for="profilHp">Nomor HP</label><div class="input-group"><i class="fas fa-phone"></i><input type="text" id="profilHp" class="form-input" value="' + escapeHtml(dataToko.nomorHp || '') + '"></div></div>';
+        htmlProfil += '<div class="form-group"><label for="profilAlamat">Alamat</label><div class="input-group"><i class="fas fa-map-pin"></i><input type="text" id="profilAlamat" class="form-input" value="' + escapeHtml(dataToko.alamat || '') + '"></div></div>';
+        htmlProfil += '<div class="form-group"><label for="profilBank">Nama Bank</label><div class="input-group"><i class="fas fa-university"></i><input type="text" id="profilBank" class="form-input" value="' + escapeHtml(dataToko.namaBank || '') + '"></div></div>';
+        htmlProfil += '<div class="form-group"><label for="profilRekening">Nomor Rekening</label><div class="input-group"><i class="fas fa-credit-card"></i><input type="text" id="profilRekening" class="form-input" value="' + escapeHtml(dataToko.nomorRekening || '') + '"></div></div>';
+        htmlProfil += '<div class="form-group"><label for="profilPemilikRek">Nama Pemilik Rekening</label><div class="input-group"><i class="fas fa-id-card"></i><input type="text" id="profilPemilikRek" class="form-input" value="' + escapeHtml(dataToko.pemilikRekening || '') + '"></div></div>';
+        htmlProfil += '</div>';
+        htmlProfil += '</div>';
+
+        // --- Kartu Foto Profil ---
+        htmlProfil += '<div class="fb-card">';
+        htmlProfil += '<div class="card-header" style="font-weight:600; font-size:16px; border-bottom:1px solid #eee; padding-bottom:10px; margin-bottom:15px;">';
+        htmlProfil += '<span><i class="fas fa-camera" style="color:var(--primary);"></i> Foto Profil</span>';
+        htmlProfil += '</div>';
+        htmlProfil += '<div class="upload-area" id="uploadFotoProfilToko" style="padding:20px; border:2px dashed #ddd; border-radius:8px; text-align:center; cursor:pointer; transition:border-color 0.3s;">';
+        htmlProfil += '<div id="fotoProfilPreviewToko">';
+        if (dataPengguna.fotoProfil) {
+            htmlProfil += '<img src="' + dataPengguna.fotoProfil + '" class="preview-image" style="max-width:150px; max-height:150px; border-radius:50%; object-fit:cover;">';
+        } else {
+            htmlProfil += '<i class="fas fa-user-circle" style="font-size:60px; color:#ddd;"></i>';
+            htmlProfil += '<p style="margin-top:10px;">Klik untuk upload foto profil</p>';
+        }
+        htmlProfil += '</div>';
+        htmlProfil += '<input type="file" id="inputFotoProfilToko" accept=".jpg,.jpeg,.png" style="display:none;">';
+        htmlProfil += '</div>';
+        htmlProfil += '<button class="tombol-setujui" onclick="simpanFotoProfilToko()" style="margin-top:10px;"><i class="fas fa-save"></i> Simpan Foto</button>';
+        htmlProfil += '</div>';
+
+        // Masukkan ke dalam area konten utama
+        areaKonten.innerHTML = htmlProfil;
+
+        // --- Setup Event Listener untuk Upload Foto Profil ---
+        var areaUpload = document.getElementById('uploadFotoProfilToko');
+        var inputFoto = document.getElementById('inputFotoProfilToko');
+        if (areaUpload && inputFoto) {
+            areaUpload.onclick = function() {
+                inputFoto.click();
+            };
+            inputFoto.onchange = function(e) {
+                var file = e.target.files[0];
+                if (file) {
+                    var pembaca = new FileReader();
+                    pembaca.onload = function(ev) {
+                        var dataGambar = ev.target.result;
+                        document.getElementById('fotoProfilPreviewToko').innerHTML = '<img src="' + dataGambar + '" class="preview-image" style="max-width:150px; max-height:150px; border-radius:50%; object-fit:cover;">';
+                        localStorage.setItem('2r_foto_profil_toko_temp', dataGambar);
+                        tampilkanToast('Foto berhasil dipilih! Klik "Simpan Foto" untuk menyimpan.', 'info');
+                    };
+                    pembaca.readAsDataURL(file);
+                }
+            };
+        }
+    }
+    // ===== AKHIR SUB BLOK 31.2.1 & 31.2.2 =====
+
+
+    // ===== SUB BLOK 31.2.3 - Fungsi Simpan Profil Toko =====
+    function simpanProfilToko() {
+        var dataPengguna = JSON.parse(localStorage.getItem('2r_user') || '{}');
+        var dataAkun = getDataAkun();
+
+        var nama = document.getElementById('profilNama').value.trim();
+        var email = document.getElementById('profilEmail').value.trim();
+        var hp = document.getElementById('profilHp').value.trim();
+        var alamat = document.getElementById('profilAlamat').value.trim();
+        var bank = document.getElementById('profilBank').value.trim();
+        var rekening = document.getElementById('profilRekening').value.trim();
+        var pemilikRek = document.getElementById('profilPemilikRek').value.trim();
+
+        if (!nama) {
+            tampilkanToast('Nama lengkap tidak boleh kosong!', 'warning');
+            return;
+        }
+
+        dataPengguna.nama = nama;
+        dataPengguna.email = email || '';
+        dataPengguna.nomorHp = hp || '';
+        dataPengguna.alamat = alamat || '';
+        dataPengguna.namaBank = bank || '';
+        dataPengguna.nomorRekening = rekening || '';
+        dataPengguna.pemilikRekening = pemilikRek || '';
+
+        for (var indeks = 0; indeks < dataAkun.length; indeks++) {
+            if (dataAkun[indeks].id === dataPengguna.id) {
+                dataAkun[indeks].nama = nama;
+                dataAkun[indeks].email = email || '';
+                dataAkun[indeks].nomorHp = hp || '';
+                dataAkun[indeks].alamat = alamat || '';
+                dataAkun[indeks].namaBank = bank || '';
+                dataAkun[indeks].nomorRekening = rekening || '';
+                dataAkun[indeks].pemilikRekening = pemilikRek || '';
+                break;
+            }
+        }
+
+        simpanDataAkun(dataAkun);
+        localStorage.setItem('2r_user', JSON.stringify(dataPengguna));
+        tampilkanToast('Data profil berhasil disimpan!', 'success');
+        renderProfilToko();
+    }
+    // ===== AKHIR SUB BLOK 31.2.3 =====
+
+
+    // ===== SUB BLOK 31.2.4 - Fungsi Simpan Foto Profil Toko =====
+    function simpanFotoProfilToko() {
+        var foto = localStorage.getItem('2r_foto_profil_toko_temp');
+        if (!foto) {
+            tampilkanToast('Pilih foto terlebih dahulu!', 'warning');
+            return;
+        }
+
+        var dataPengguna = JSON.parse(localStorage.getItem('2r_user') || '{}');
+        var dataAkun = getDataAkun();
+
+        dataPengguna.fotoProfil = foto;
+        for (var indeks = 0; indeks < dataAkun.length; indeks++) {
+            if (dataAkun[indeks].id === dataPengguna.id) {
+                dataAkun[indeks].fotoProfil = foto;
+                break;
+            }
+        }
+
+        simpanDataAkun(dataAkun);
+        localStorage.setItem('2r_user', JSON.stringify(dataPengguna));
+        localStorage.removeItem('2r_foto_profil_toko_temp');
+        tampilkanToast('Foto profil berhasil disimpan!', 'success');
+        renderProfilToko();
+    }
+    // ===== AKHIR SUB BLOK 31.2.4 =====
+
+</script>
+<!-- ===== AKHIR BLOK 31.2 ===== -->
+
 
 <!-- ============================================================ -->
 <!-- PENUTUP HTML                                                 -->
