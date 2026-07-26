@@ -908,10 +908,12 @@
         renderBerandaSederhana(user);
     }
 
-    function renderBerandaSederhana(pengguna) {
+        function renderBerandaSederhana(pengguna) {
         var areaKonten = document.getElementById('mainContent');
         if (!areaKonten) return;
         if (!pengguna) pengguna = JSON.parse(localStorage.getItem('2r_user') || '{}');
+
+        // --- HITUNG STATISTIK REAL-TIME ---
         var semuaAkun = getDataAkun();
         var jumlahToko = 0, jumlahOjek = 0, jumlahCustomer = 0;
         for (var i=0; i<semuaAkun.length; i++) {
@@ -920,17 +922,134 @@
             else if (akun.role === 'ojek') jumlahOjek++;
             else if (akun.role === 'customer') jumlahCustomer++;
         }
+
+        // --- AMBIL 3 DATA IKLAN PERTAMA ---
+        var dataIklan = JSON.parse(localStorage.getItem('2r_iklan') || '[]');
+        var iklanTampil = dataIklan.slice(0, 3);
+
+        // --- SUSUN HTML HALAMAN UTAMA ---
         var html = `
-            <div class="fb-card">
-                <h3 style="margin-bottom:10px; font-size:20px;">Selamat Datang, ${escapeHtml(pengguna.nama||pengguna.username||'User')} 👋</h3>
-                <p style="margin-bottom:15px; color:var(--text-muted); font-size:14px;">Role: ${escapeHtml(pengguna.role||'User')}</p>
-                <div class="stat-grid">
-                    <div class="stat-card"><div class="stat-number" style="color:var(--primary);">${jumlahToko}</div><div class="stat-label">Toko Terdaftar</div></div>
-                    <div class="stat-card"><div class="stat-number" style="color:#3182CE;">${jumlahOjek}</div><div class="stat-label">Ojek Terdaftar</div></div>
-                    <div class="stat-card"><div class="stat-number" style="color:#38A169;">${jumlahCustomer}</div><div class="stat-label">Customer Terdaftar</div></div>
+        <!-- ===== KARTU SAMBUTAN ===== -->
+        <div class="fb-card" style="margin-bottom:20px;">
+            <h3 style="margin-bottom:5px; font-size:20px;">Selamat Datang, ${escapeHtml(pengguna.nama||pengguna.username||'User')} 👋</h3>
+            <p style="margin-bottom:10px; color:var(--text-muted); font-size:14px;">Role: ${escapeHtml(pengguna.role||'User')}</p>
+        </div>
+
+        <!-- ===== MENU PINTASAN KATEGORI ===== -->
+        <div class="kategori-grid" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:15px; margin-bottom:25px;">
+            <!-- 1. KATEGORI TOKO -->
+            <div class="stat-card" style="cursor:pointer; padding:20px; text-align:center;" onclick="tampilkanToast('Fitur Lihat Toko & Produk sedang dibangun', 'info')">
+                <div style="font-size:50px; color:var(--primary); margin-bottom:10px;"><i class="fas fa-store"></i></div>
+                <h4 style="margin:0 0 5px 0; font-size:18px;">LOGO TOKO</h4>
+                <p style="font-size:12px; color:#888; margin-bottom:10px;">Lokasi Toko Terdekat</p>
+                <button class="button button-primary button-small" onclick="event.stopPropagation(); tampilkanToast('Fitur Toko sedang dibangun', 'info')" style="background:var(--primary); color:white; border:none; padding:6px 14px; border-radius:8px; cursor:pointer;">Lihat Semua Toko & Produk</button>
+            </div>
+
+            <!-- 2. KATEGORI OJEK -->
+            <div class="stat-card" style="cursor:pointer; padding:20px; text-align:center;" onclick="tampilkanToast('Fitur Lihat Ojek sedang dibangun', 'info')">
+                <div style="font-size:50px; color:#2196F3; margin-bottom:10px;"><i class="fas fa-motorcycle"></i></div>
+                <h4 style="margin:0 0 5px 0; font-size:18px;">LOGO OJEK</h4>
+                <p style="font-size:12px; color:#888; margin-bottom:10px;">Lokasi Ojek Terdekat</p>
+                <button class="button button-primary button-small" onclick="event.stopPropagation(); tampilkanToast('Fitur Ojek sedang dibangun', 'info')" style="background:var(--primary); color:white; border:none; padding:6px 14px; border-radius:8px; cursor:pointer;">Lihat Semua Ojek Online</button>
+            </div>
+
+            <!-- 3. KATEGORI PEDAGANG PASAR -->
+            <div class="stat-card" style="cursor:pointer; padding:20px; text-align:center;" onclick="tampilkanToast('Fitur Pedagang Pasar sedang dibangun', 'info')">
+                <div style="font-size:50px; color:#4CAF50; margin-bottom:10px;"><i class="fas fa-shopping-basket"></i></div>
+                <h4 style="margin:0 0 5px 0; font-size:18px;">LOGO PEDAGANG PASAR</h4>
+                <p style="font-size:12px; color:#888; margin-bottom:5px;">Nama Pasar: Pasar Induk</p>
+                <p style="font-size:12px; color:#888; margin-bottom:10px;">Alamat Pasar: Jl. Merdeka No.1</p>
+                <button class="button button-primary button-small" onclick="event.stopPropagation(); tampilkanToast('Fitur Pedagang Pasar sedang dibangun', 'info')" style="background:var(--primary); color:white; border:none; padding:6px 14px; border-radius:8px; cursor:pointer;">Lihat Semua Pedagang Pasar</button>
+            </div>
+
+            <!-- 4. KATEGORI PEDAGANG MAKANAN -->
+            <div class="stat-card" style="cursor:pointer; padding:20px; text-align:center;" onclick="tampilkanToast('Fitur Pedagang Makanan sedang dibangun', 'info')">
+                <div style="font-size:50px; color:#FF9800; margin-bottom:10px;"><i class="fas fa-utensils"></i></div>
+                <h4 style="margin:0 0 5px 0; font-size:18px;">LOGO PEDAGANG MAKANAN</h4>
+                <button class="button button-primary button-small" onclick="event.stopPropagation(); tampilkanToast('Fitur Pedagang Makanan sedang dibangun', 'info')" style="background:var(--primary); color:white; border:none; padding:6px 14px; border-radius:8px; cursor:pointer;">Lihat Pedagang Makanan</button>
+            </div>
+
+            <!-- 5. KATEGORI PEDAGANG MINUMAN -->
+            <div class="stat-card" style="cursor:pointer; padding:20px; text-align:center;" onclick="tampilkanToast('Fitur Pedagang Minuman sedang dibangun', 'info')">
+                <div style="font-size:50px; color:#00BCD4; margin-bottom:10px;"><i class="fas fa-glass-water"></i></div>
+                <h4 style="margin:0 0 5px 0; font-size:18px;">LOGO PEDAGANG MINUMAN</h4>
+                <button class="button button-primary button-small" onclick="event.stopPropagation(); tampilkanToast('Fitur Pedagang Minuman sedang dibangun', 'info')" style="background:var(--primary); color:white; border:none; padding:6px 14px; border-radius:8px; cursor:pointer;">Lihat Pedagang Minuman</button>
+            </div>
+        </div>
+
+        <!-- ===== STATISTIK REAL-TIME (UPDATE OTOMATIS) ===== -->
+        <div class="stat-grid" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(150px,1fr)); gap:15px; margin-bottom:25px;">
+            <div class="stat-card" style="text-align:center; padding:20px; background:#FAFBFC; border-radius:8px; border:1px solid #eee;">
+                <div class="stat-number" style="font-size:28px; font-weight:700; color:var(--primary);">${jumlahToko}</div>
+                <div class="stat-label" style="font-size:14px; color:var(--text-muted);">Toko Terdaftar</div>
+            </div>
+            <div class="stat-card" style="text-align:center; padding:20px; background:#FAFBFC; border-radius:8px; border:1px solid #eee;">
+                <div class="stat-number" style="font-size:28px; font-weight:700; color:#2196F3;">${jumlahOjek}</div>
+                <div class="stat-label" style="font-size:14px; color:var(--text-muted);">Ojek Terdaftar</div>
+            </div>
+            <div class="stat-card" style="text-align:center; padding:20px; background:#FAFBFC; border-radius:8px; border:1px solid #eee;">
+                <div class="stat-number" style="font-size:28px; font-weight:700; color:#4CAF50;">${jumlahCustomer}</div>
+                <div class="stat-label" style="font-size:14px; color:var(--text-muted);">Customer Terdaftar</div>
+            </div>
+        </div>
+
+        <!-- ===== BILAH PENCARIAN (PRODUK, TOKO, OJEK) ===== -->
+        <div class="fb-card">
+            <div class="card-header" style="font-weight:600; font-size:16px; border-bottom:1px solid #eee; padding-bottom:10px; margin-bottom:15px;">Pencarian Cepat</div>
+            <div class="grid-2" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:15px;">
+                <div class="form-group" style="margin-bottom:0;">
+                    <label style="font-size:13px; font-weight:600; color:#555;">Cari Produk (Semua Toko)</label>
+                    <div class="input-group" style="display:flex; align-items:center; background:#f8f9fa; border-radius:8px; padding:0 10px; border:1px solid #ddd;">
+                        <i class="fas fa-box" style="color:#aaa; margin-right:8px;"></i>
+                        <input type="text" id="cariProdukInput" class="form-input" placeholder="Nama produk..." style="border:none; background:transparent; padding:10px 0; width:100%; outline:none;">
+                        <button class="button button-primary button-small" onclick="tampilkanToast('Fitur Cari Produk sedang dibangun', 'info')" style="background:var(--primary); color:white; border:none; padding:6px 12px; border-radius:6px; cursor:pointer;">Cari</button>
+                    </div>
+                </div>
+                <div class="form-group" style="margin-bottom:0;">
+                    <label style="font-size:13px; font-weight:600; color:#555;">Cari Toko (Semua Toko Online)</label>
+                    <div class="input-group" style="display:flex; align-items:center; background:#f8f9fa; border-radius:8px; padding:0 10px; border:1px solid #ddd;">
+                        <i class="fas fa-store" style="color:#aaa; margin-right:8px;"></i>
+                        <input type="text" id="cariTokoInput" class="form-input" placeholder="Nama toko..." style="border:none; background:transparent; padding:10px 0; width:100%; outline:none;">
+                        <button class="button button-primary button-small" onclick="tampilkanToast('Fitur Cari Toko sedang dibangun', 'info')" style="background:var(--primary); color:white; border:none; padding:6px 12px; border-radius:6px; cursor:pointer;">Cari</button>
+                    </div>
+                </div>
+                <div class="form-group" style="margin-bottom:0;">
+                    <label style="font-size:13px; font-weight:600; color:#555;">Cari Ojek (Semua Tukang Ojek Online)</label>
+                    <div class="input-group" style="display:flex; align-items:center; background:#f8f9fa; border-radius:8px; padding:0 10px; border:1px solid #ddd;">
+                        <i class="fas fa-motorcycle" style="color:#aaa; margin-right:8px;"></i>
+                        <input type="text" id="cariOjekInput" class="form-input" placeholder="Nama ojek..." style="border:none; background:transparent; padding:10px 0; width:100%; outline:none;">
+                        <button class="button button-primary button-small" onclick="tampilkanToast('Fitur Cari Ojek sedang dibangun', 'info')" style="background:var(--primary); color:white; border:none; padding:6px 12px; border-radius:6px; cursor:pointer;">Cari</button>
+                    </div>
                 </div>
             </div>
+        </div>
+
+        <!-- ===== IKLAN DARI MENU IKLAN (3 CARD) ===== -->
+        <div class="fb-card">
+            <div class="card-header" style="font-weight:600; font-size:16px; border-bottom:1px solid #eee; padding-bottom:10px; margin-bottom:15px;">Iklan Sponsor</div>
+            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:15px;">
+    `;
+        if (iklanTampil.length === 0) {
+            html += `<div style="text-align:center; padding:30px; color:#888; grid-column:1/-1;"><i class="fas fa-ad" style="font-size:40px; display:block; margin-bottom:10px;"></i>Belum ada iklan.</div>`;
+        } else {
+            for (var i = 0; i < iklanTampil.length; i++) {
+                var iklan = iklanTampil[i];
+                // Ambil gambar pertama jika ada
+                var gambarIklan = (iklan.gambar && Array.isArray(iklan.gambar) && iklan.gambar.length > 0) ? iklan.gambar[0] : '';
+                html += `
+                    <div class="stat-card" style="padding:15px; text-align:center; cursor:pointer;" onclick="tampilkanToast('Detail Iklan: ${escapeHtml(iklan.judul)}', 'info')">
+                        ${gambarIklan ? `<img src="${gambarIklan}" style="width:100%; height:150px; object-fit:cover; border-radius:8px; margin-bottom:10px;">` : `<div style="height:150px; background:#f0f0f0; border-radius:8px; display:flex; align-items:center; justify-content:center; color:#aaa;"><i class="fas fa-image" style="font-size:40px;"></i></div>`}
+                        <h4 style="font-size:16px; margin:5px 0;">${escapeHtml(iklan.judul)}</h4>
+                        <p style="font-size:13px; color:#888;">${escapeHtml(iklan.deskripsi || '')}</p>
+                    </div>
+                `;
+            }
+        }
+        html += `
+            </div>
+        </div>
         `;
+
         areaKonten.innerHTML = html;
     }
     // ===== AKHIR 5.1.6 =====
