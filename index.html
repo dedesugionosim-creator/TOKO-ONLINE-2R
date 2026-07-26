@@ -1013,366 +1013,6 @@ html += `
 // BLOK 9 - HALAMAN DEFAULT (HALAMAN BERANDA) SEMUA PERAN AKUN   //
 // ============================================================ //
 
-// ===== BLOK 9.1 - STRUKTUR HYPER TEXT MARKUP LANGUAGE HALAMAN DEFAULT ===== //
-
-// ===== SUB BLOK 9.1.1 - BAGIAN HEADER & PROFIL PENGGUNA (SAMPUL DAN AVATAR) ===== //
-function renderHalamanBerandaDefault() {
-    var areaKonten = document.getElementById('mainContent');
-    if (!areaKonten) return;
-
-    // Ambil data pengguna yang sedang login
-    var pengguna = JSON.parse(localStorage.getItem('2r_user') || '{}');
-    if (!pengguna.id) {
-        tampilkanToast('Data pengguna tidak ditemukan!', 'error');
-        return;
-    }
-
-    // Ambil data konfigurasi logo aplikasi dari penyimpanan lokal
-    var konfigurasi = JSON.parse(localStorage.getItem('2r_aplikasi_setting') || '{"nama":"Toko Online 2R","deskripsi":"Platform Belanja & Layanan Serba Ada","logo":""}');
-
-    // Bangun Hypertext Markup Language untuk Header & Profil Pengguna
-    var htmlHeader = `
-    <div class="card" style="padding:0; overflow:hidden; border-radius:var(--radius) 12px 12px 12px; margin-bottom:20px; border:none;">
-        
-        <!-- BAGIAN FOTO SAMPUL -->
-        <div class="cover-photo-wrapper" style="position:relative; width:100%; height:220px; background:#f0f0f0; overflow:hidden; cursor:pointer;" onclick="document.getElementById('inputUploadSampul').click();">
-            <img id="fotoSampulPreview" src="" style="width:100%; height:100%; object-fit:cover; display:none;">
-            <div id="fotoSampulPlaceholder" style="position:absolute; top:0; left:0; width:100%; height:100%; display:flex; flex-direction:column; justify-content:center; align-items:center; color:#aaa; background:#f8f9fa;">
-                <i class="fas fa-camera" style="font-size:40px; margin-bottom:10px;"></i>
-                <span style="font-size:14px; font-weight:500;">Klik atau Seret untuk Unggah Foto Sampul</span>
-            </div>
-            <!-- Input tersembunyi untuk mengunggah file -->
-            <input type="file" id="inputUploadSampul" accept="image/jpeg,image/png,image/webp" style="display:none;" onchange="prosesUnggahGambar('sampul', this)">
-        </div>
-
-        <!-- BAGIAN FOTO PROFIL & INFO PENGGUNA -->
-        <div style="position:relative; padding: 20px 30px 30px 30px; display:flex; flex-wrap:wrap; align-items:flex-end; gap:15px; background:white;">
-            
-            <!-- FOTO PROFIL (AVATAR) -->
-            <div style="margin-top:-70px; width:130px; height:130px; border-radius:50%; border:5px solid white; box-shadow:var(--shadow); background:#f0f0f0; overflow:hidden; flex-shrink:0; cursor:pointer;" onclick="document.getElementById('inputUploadAvatar').click();">
-                <img id="fotoProfilPreview" src="" style="width:100%; height:100%; object-fit:cover; display:none;">
-                <div id="fotoProfilPlaceholder" style="width:100%; height:100%; display:flex; justify-content:center; align-items:center; color:#aaa; background:#f8f9fa; font-size:40px;">
-                    <i class="fas fa-user-circle"></i>
-                </div>
-                <!-- Input tersembunyi untuk mengunggah file -->
-                <input type="file" id="inputUploadAvatar" accept="image/jpeg,image/png,image/webp" style="display:none;" onchange="prosesUnggahGambar('profil', this)">
-            </div>
-
-            <!-- INFORMASI PENGGUNA DAN LOGO TOKO -->
-            <div style="flex:1; display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; min-width:200px;">
-                
-                <!-- NAMA & ROLE -->
-                <div>
-                    <h2 id="tampilanNamaPengguna" style="margin:0 0 5px 0; font-size:24px; font-weight:700; color:var(--text);">
-                        ${escapeHtml(pengguna.nama || pengguna.username || 'Pengguna')}
-                    </h2>
-                    <p style="margin:0; font-size:14px; color:var(--text-muted);">
-                        <span class="role-badge" style="background:var(--primary-light); color:var(--primary); padding:4px 12px; border-radius:12px; font-size:12px; font-weight:600;">
-                            ${escapeHtml(pengguna.role || 'User')}
-                        </span>
-                        <span style="margin-left:10px; font-size:13px;">
-                            <i class="fas fa-clock" style="color:#aaa;"></i> 
-                            <span id="displayJamHome" style="font-weight:500;">00:00:00</span>
-                            <span id="displayTanggalHome" style="color:#999;">Senin, 01 Januari 2026</span>
-                        </span>
-                    </p>
-                </div>
-
-                <!-- LOGO TOKO ONLINE 2R -->
-                <div id="appLogoWrapperHome" style="display:flex; align-items:center; gap:10px; margin-top:10px;">
-                    <!-- Ikon Default atau Logo yang sudah diunggah -->
-                    <i class="fas fa-store-alt" id="appLogoIconHome" style="font-size:35px; color:var(--primary); display:block;"></i>
-                    <img id="appLogoImageHome" src="" style="display:none; max-height:50px; object-fit:contain;">
-                    <div style="display:flex; flex-direction:column;">
-                        <span style="font-size:16px; font-weight:700; color:var(--primary);">${escapeHtml(konfigurasi.nama)}</span>
-                        <span style="font-size:11px; color:#888;">${escapeHtml(konfigurasi.deskripsi)}</span>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </div>
-    `;
-
-    // Gabungkan ke dalam area konten (ini bagian awal, nanti kita akan menambahkan Sub Blok 9.1.2 sampai 9.1.5)
-    areaKonten.innerHTML = htmlHeader;
-
-    // --- PERSIAPAN LOGO, JAM, DAN FOTO AWAL ---
-    // Tampilkan logo jika ada data tersimpan
-    var logoHome = document.getElementById('appLogoImageHome');
-    var iconHome = document.getElementById('appLogoIconHome');
-    if (konfigurasi.logo) {
-        if (logoHome) { logoHome.src = konfigurasi.logo; logoHome.style.display = 'block'; }
-        if (iconHome) { iconHome.style.display = 'none'; }
-    }
-
-    // Sinkronisasi Jam dan Tanggal agar sama dengan di Navbar
-    function updateJamTanggalHome() {
-        var jamHome = document.getElementById('displayJamHome');
-        var tanggalHome = document.getElementById('displayTanggalHome');
-        if (!jamHome || !tanggalHome) return;
-        
-        var sekarang = new Date();
-        var jam = String(sekarang.getHours()).padStart(2, '0');
-        var menit = String(sekarang.getMinutes()).padStart(2, '0');
-        var detik = String(sekarang.getSeconds()).padStart(2, '0');
-        jamHome.textContent = jam + ':' + menit + ':' + detik;
-
-        var daftarHari = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
-        var daftarBulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
-        var hari = daftarHari[sekarang.getDay()];
-        var tanggal = String(sekarang.getDate()).padStart(2, '0');
-        var bulan = daftarBulan[sekarang.getMonth()];
-        var tahun = sekarang.getFullYear();
-        tanggalHome.textContent = hari + ', ' + tanggal + ' ' + bulan + ' ' + tahun;
-    }
-    updateJamTanggalHome();
-    setInterval(updateJamTanggalHome, 1000);
-
-    // --- FUNGSI PEMUATAN GAMBAR SAMPUL DAN PROFIL SAAT HALAMAN DIMUAT ---
-    var kunciSampul = '2r_cover_foto_' + pengguna.id;
-    var kunciAvatar = '2r_user_avatar_' + pengguna.id;
-    
-    var dataSampul = localStorage.getItem(kunciSampul);
-    var dataAvatar = localStorage.getItem(kunciAvatar);
-
-    // Tampilkan Sampul jika ada
-    if (dataSampul) {
-        document.getElementById('fotoSampulPreview').src = dataSampul;
-        document.getElementById('fotoSampulPreview').style.display = 'block';
-        document.getElementById('fotoSampulPlaceholder').style.display = 'none';
-    }
-
-    // Tampilkan Avatar jika ada
-    if (dataAvatar) {
-        document.getElementById('fotoProfilPreview').src = dataAvatar;
-        document.getElementById('fotoProfilPreview').style.display = 'block';
-        document.getElementById('fotoProfilPlaceholder').style.display = 'none';
-    }
-}
-// ===== AKHIR SUB BLOK 9.1.1 =====
-// ===== SUB BLOK 9.1.2 - MENU PINTASAN KATEGORI & TOMBOL AKSI =====
-var htmlKategori = `
-<div class="kategori-grid" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:15px; margin-bottom:25px;">
-    <!-- KATEGORI TOKO -->
-    <div class="card" style="text-align:center; padding:20px; transition:transform 0.2s; cursor:pointer;" onclick="navigasiKeHalaman('lihatTokoTerdekat')">
-        <div style="font-size:50px; color:var(--primary); margin-bottom:10px;"><i class="fas fa-store"></i></div>
-        <h4 style="margin:0 0 10px 0; font-size:18px;">Toko</h4>
-        <button class="button button-primary button-small" onclick="event.stopPropagation(); navigasiKeHalaman('lihatTokoTerdekat')">Lihat Semua Toko & Produk</button>
-    </div>
-
-    <!-- KATEGORI OJEK -->
-    <div class="card" style="text-align:center; padding:20px; transition:transform 0.2s; cursor:pointer;" onclick="navigasiKeHalaman('lihatOjekTerdekat')">
-        <div style="font-size:50px; color:#2196F3; margin-bottom:10px;"><i class="fas fa-motorcycle"></i></div>
-        <h4 style="margin:0 0 10px 0; font-size:18px;">Ojek</h4>
-        <button class="button button-primary button-small" onclick="event.stopPropagation(); navigasiKeHalaman('lihatOjekTerdekat')">Lihat Semua Ojek Online</button>
-    </div>
-
-    <!-- KATEGORI PEDAGANG PASAR -->
-    <div class="card" style="text-align:center; padding:20px; transition:transform 0.2s; cursor:pointer;" onclick="navigasiKeHalaman('lihatPedagangPasar')">
-        <div style="font-size:50px; color:#4CAF50; margin-bottom:10px;"><i class="fas fa-shopping-basket"></i></div>
-        <h4 style="margin:0 0 5px 0; font-size:18px;">Pedagang Pasar</h4>
-        <p style="font-size:12px; color:#888; margin:0 0 5px 0;">Temukan berbagai pedagang di pasar</p>
-        <button class="button button-primary button-small" onclick="event.stopPropagation(); navigasiKeHalaman('lihatPedagangPasar')">Lihat Semua Pedagang Pasar</button>
-    </div>
-
-    <!-- KATEGORI PEDAGANG MAKANAN -->
-    <div class="card" style="text-align:center; padding:20px; transition:transform 0.2s; cursor:pointer;" onclick="navigasiKeHalaman('lihatPedagangMakanan')">
-        <div style="font-size:50px; color:#FF9800; margin-bottom:10px;"><i class="fas fa-utensils"></i></div>
-        <h4 style="margin:0 0 10px 0; font-size:18px;">Pedagang Makanan</h4>
-        <button class="button button-primary button-small" onclick="event.stopPropagation(); navigasiKeHalaman('lihatPedagangMakanan')">Lihat Pedagang Makanan</button>
-    </div>
-
-    <!-- KATEGORI PEDAGANG MINUMAN -->
-    <div class="card" style="text-align:center; padding:20px; transition:transform 0.2s; cursor:pointer;" onclick="navigasiKeHalaman('lihatPedagangMinuman')">
-        <div style="font-size:50px; color:#00BCD4; margin-bottom:10px;"><i class="fas fa-glass-water"></i></div>
-        <h4 style="margin:0 0 10px 0; font-size:18px;">Pedagang Minuman</h4>
-        <button class="button button-primary button-small" onclick="event.stopPropagation(); navigasiKeHalaman('lihatPedagangMinuman')">Lihat Pedagang Minuman</button>
-    </div>
-</div>
-`;
-// ===== AKHIR SUB BLOK 9.1.2 =====
-// ===== BLOK 9.1 - STRUKTUR HYPER TEXT MARKUP LANGUAGE HALAMAN DEFAULT ===== //
-
-// ===== SUB BLOK 9.1.1 & 9.1.2 - HEADER PROFIL & MENU KATEGORI ===== //
-function renderHalamanBerandaDefault() {
-    var areaKonten = document.getElementById('mainContent');
-    if (!areaKonten) return;
-
-    // Ambil data pengguna yang sedang login
-    var pengguna = JSON.parse(localStorage.getItem('2r_user') || '{}');
-    if (!pengguna.id) {
-        tampilkanToast('Data pengguna tidak ditemukan!', 'error');
-        return;
-    }
-
-    // Ambil data konfigurasi logo aplikasi dari penyimpanan lokal
-    var konfigurasi = JSON.parse(localStorage.getItem('2r_aplikasi_setting') || '{"nama":"Toko Online 2R","deskripsi":"Platform Belanja & Layanan Serba Ada","logo":""}');
-
-    // --- BAGIAN 1: HEADER & PROFIL PENGGUNA (SUB BLOK 9.1.1) ---
-    var htmlHeader = `
-    <div class="card" style="padding:0; overflow:hidden; border-radius:var(--radius) 12px 12px 12px; margin-bottom:20px; border:none;">
-        
-        <!-- BAGIAN FOTO SAMPUL -->
-        <div class="cover-photo-wrapper" style="position:relative; width:100%; height:220px; background:#f0f0f0; overflow:hidden; cursor:pointer;" onclick="document.getElementById('inputUploadSampul').click();">
-            <img id="fotoSampulPreview" src="" style="width:100%; height:100%; object-fit:cover; display:none;">
-            <div id="fotoSampulPlaceholder" style="position:absolute; top:0; left:0; width:100%; height:100%; display:flex; flex-direction:column; justify-content:center; align-items:center; color:#aaa; background:#f8f9fa;">
-                <i class="fas fa-camera" style="font-size:40px; margin-bottom:10px;"></i>
-                <span style="font-size:14px; font-weight:500;">Klik atau Seret untuk Unggah Foto Sampul</span>
-            </div>
-            <!-- Input tersembunyi untuk mengunggah file -->
-            <input type="file" id="inputUploadSampul" accept="image/jpeg,image/png,image/webp" style="display:none;" onchange="prosesUnggahGambar('sampul', this)">
-        </div>
-
-        <!-- BAGIAN FOTO PROFIL & INFO PENGGUNA -->
-        <div style="position:relative; padding: 20px 30px 30px 30px; display:flex; flex-wrap:wrap; align-items:flex-end; gap:15px; background:white;">
-            
-            <!-- FOTO PROFIL (AVATAR) -->
-            <div style="margin-top:-70px; width:130px; height:130px; border-radius:50%; border:5px solid white; box-shadow:var(--shadow); background:#f0f0f0; overflow:hidden; flex-shrink:0; cursor:pointer;" onclick="document.getElementById('inputUploadAvatar').click();">
-                <img id="fotoProfilPreview" src="" style="width:100%; height:100%; object-fit:cover; display:none;">
-                <div id="fotoProfilPlaceholder" style="width:100%; height:100%; display:flex; justify-content:center; align-items:center; color:#aaa; background:#f8f9fa; font-size:40px;">
-                    <i class="fas fa-user-circle"></i>
-                </div>
-                <!-- Input tersembunyi untuk mengunggah file -->
-                <input type="file" id="inputUploadAvatar" accept="image/jpeg,image/png,image/webp" style="display:none;" onchange="prosesUnggahGambar('profil', this)">
-            </div>
-
-            <!-- INFORMASI PENGGUNA DAN LOGO TOKO -->
-            <div style="flex:1; display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; min-width:200px;">
-                
-                <!-- NAMA & ROLE -->
-                <div>
-                    <h2 id="tampilanNamaPengguna" style="margin:0 0 5px 0; font-size:24px; font-weight:700; color:var(--text);">
-                        ${escapeHtml(pengguna.nama || pengguna.username || 'Pengguna')}
-                    </h2>
-                    <p style="margin:0; font-size:14px; color:var(--text-muted);">
-                        <span class="role-badge" style="background:var(--primary-light); color:var(--primary); padding:4px 12px; border-radius:12px; font-size:12px; font-weight:600;">
-                            ${escapeHtml(pengguna.role || 'User')}
-                        </span>
-                        <span style="margin-left:10px; font-size:13px;">
-                            <i class="fas fa-clock" style="color:#aaa;"></i> 
-                            <span id="displayJamHome" style="font-weight:500;">00:00:00</span>
-                            <span id="displayTanggalHome" style="color:#999;">Senin, 01 Januari 2026</span>
-                        </span>
-                    </p>
-                </div>
-
-                <!-- LOGO TOKO ONLINE 2R -->
-                <div id="appLogoWrapperHome" style="display:flex; align-items:center; gap:10px; margin-top:10px;">
-                    <i class="fas fa-store-alt" id="appLogoIconHome" style="font-size:35px; color:var(--primary); display:block;"></i>
-                    <img id="appLogoImageHome" src="" style="display:none; max-height:50px; object-fit:contain;">
-                    <div style="display:flex; flex-direction:column;">
-                        <span style="font-size:16px; font-weight:700; color:var(--primary);">${escapeHtml(konfigurasi.nama)}</span>
-                        <span style="font-size:11px; color:#888;">${escapeHtml(konfigurasi.deskripsi)}</span>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </div>
-    `;
-
-    // --- BAGIAN 2: MENU PINTASAN KATEGORI (SUB BLOK 9.1.2) ---
-    var htmlKategori = `
-    <div class="kategori-grid" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:15px; margin-bottom:25px;">
-        
-        <!-- KATEGORI TOKO -->
-        <div class="card" style="text-align:center; padding:20px; transition:transform 0.2s; cursor:pointer;" onclick="navigasiKeHalaman('lihatTokoTerdekat')">
-            <div style="font-size:50px; color:var(--primary); margin-bottom:10px;"><i class="fas fa-store"></i></div>
-            <h4 style="margin:0 0 10px 0; font-size:18px;">LOGO TOKO</h4>
-            <button class="button button-primary button-small" onclick="event.stopPropagation(); navigasiKeHalaman('lihatTokoTerdekat')">Lihat Semua Toko & Produk</button>
-        </div>
-
-        <!-- KATEGORI OJEK -->
-        <div class="card" style="text-align:center; padding:20px; transition:transform 0.2s; cursor:pointer;" onclick="navigasiKeHalaman('lihatOjekTerdekat')">
-            <div style="font-size:50px; color:#2196F3; margin-bottom:10px;"><i class="fas fa-motorcycle"></i></div>
-            <h4 style="margin:0 0 10px 0; font-size:18px;">LOGO OJEK</h4>
-            <button class="button button-primary button-small" onclick="event.stopPropagation(); navigasiKeHalaman('lihatOjekTerdekat')">Lihat Semua Ojek Online</button>
-        </div>
-
-        <!-- KATEGORI PEDAGANG PASAR -->
-        <div class="card" style="text-align:center; padding:20px; transition:transform 0.2s; cursor:pointer;" onclick="navigasiKeHalaman('katalogProduk')">
-            <div style="font-size:50px; color:#4CAF50; margin-bottom:10px;"><i class="fas fa-shopping-basket"></i></div>
-            <h4 style="margin:0 0 5px 0; font-size:18px;">LOGO PEDAGANG PASAR</h4>
-            <p style="font-size:12px; color:#888; margin:0 0 5px 0;">Nama Pasar: Pasar Induk | Alamat Pasar: Jl. Merdeka No.1</p>
-            <button class="button button-primary button-small" onclick="event.stopPropagation(); navigasiKeHalaman('katalogProduk')">Lihat Semua Pedagang Pasar</button>
-        </div>
-
-        <!-- KATEGORI PEDAGANG MAKANAN -->
-        <div class="card" style="text-align:center; padding:20px; transition:transform 0.2s; cursor:pointer;" onclick="navigasiKeHalaman('katalogProduk')">
-            <div style="font-size:50px; color:#FF9800; margin-bottom:10px;"><i class="fas fa-utensils"></i></div>
-            <h4 style="margin:0 0 10px 0; font-size:18px;">LOGO PEDAGANG MAKANAN</h4>
-            <button class="button button-primary button-small" onclick="event.stopPropagation(); navigasiKeHalaman('katalogProduk')">Lihat Pedagang Makanan</button>
-        </div>
-
-        <!-- KATEGORI PEDAGANG MINUMAN -->
-        <div class="card" style="text-align:center; padding:20px; transition:transform 0.2s; cursor:pointer;" onclick="navigasiKeHalaman('katalogProduk')">
-            <div style="font-size:50px; color:#00BCD4; margin-bottom:10px;"><i class="fas fa-glass-water"></i></div>
-            <h4 style="margin:0 0 10px 0; font-size:18px;">LOGO PEDAGANG MINUMAN</h4>
-            <button class="button button-primary button-small" onclick="event.stopPropagation(); navigasiKeHalaman('katalogProduk')">Lihat Pedagang Minuman</button>
-        </div>
-
-    </div>
-    `;
-
-    // Gabungkan semua bagian Hypertext Markup Language menjadi satu
-    var htmlLengkap = htmlHeader + htmlKategori;
-    
-    // Masukkan ke dalam area konten utama
-    areaKonten.innerHTML = htmlLengkap;
-
-    // --- PERSIAPAN LOGO, JAM, DAN FOTO AWAL ---
-    var logoHome = document.getElementById('appLogoImageHome');
-    var iconHome = document.getElementById('appLogoIconHome');
-    if (konfigurasi.logo) {
-        if (logoHome) { logoHome.src = konfigurasi.logo; logoHome.style.display = 'block'; }
-        if (iconHome) { iconHome.style.display = 'none'; }
-    }
-
-    function updateJamTanggalHome() {
-        var jamHome = document.getElementById('displayJamHome');
-        var tanggalHome = document.getElementById('displayTanggalHome');
-        if (!jamHome || !tanggalHome) return;
-        
-        var sekarang = new Date();
-        var jam = String(sekarang.getHours()).padStart(2, '0');
-        var menit = String(sekarang.getMinutes()).padStart(2, '0');
-        var detik = String(sekarang.getSeconds()).padStart(2, '0');
-        jamHome.textContent = jam + ':' + menit + ':' + detik;
-
-        var daftarHari = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
-        var daftarBulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
-        var hari = daftarHari[sekarang.getDay()];
-        var tanggal = String(sekarang.getDate()).padStart(2, '0');
-        var bulan = daftarBulan[sekarang.getMonth()];
-        var tahun = sekarang.getFullYear();
-        tanggalHome.textContent = hari + ', ' + tanggal + ' ' + bulan + ' ' + tahun;
-    }
-    updateJamTanggalHome();
-    setInterval(updateJamTanggalHome, 1000);
-
-    // --- FUNGSI PEMUATAN GAMBAR SAMPUL DAN PROFIL SAAT HALAMAN DIMUAT ---
-    var kunciSampul = '2r_cover_foto_' + pengguna.id;
-    var kunciAvatar = '2r_user_avatar_' + pengguna.id;
-    
-    var dataSampul = localStorage.getItem(kunciSampul);
-    var dataAvatar = localStorage.getItem(kunciAvatar);
-
-    if (dataSampul) {
-        document.getElementById('fotoSampulPreview').src = dataSampul;
-        document.getElementById('fotoSampulPreview').style.display = 'block';
-        document.getElementById('fotoSampulPlaceholder').style.display = 'none';
-    }
-
-    if (dataAvatar) {
-        document.getElementById('fotoProfilPreview').src = dataAvatar;
-        document.getElementById('fotoProfilPreview').style.display = 'block';
-        document.getElementById('fotoProfilPlaceholder').style.display = 'none';
-    }
-}
-// ===== AKHIR SUB BLOK 9.1.1 & 9.1.2 =====
-// ===== BLOK 9.1 - STRUKTUR HYPER TEXT MARKUP LANGUAGE HALAMAN DEFAULT ===== //
-
 // ===== SUB BLOK 9.1.1 - 9.1.5 - HALAMAN BERANDA LENGKAP ===== //
 function renderHalamanBerandaDefault() {
     var areaKonten = document.getElementById('mainContent');
@@ -1402,65 +1042,46 @@ function renderHalamanBerandaDefault() {
 
     // --- AMBIL DATA IKLAN (SUB BLOK 9.1.5) ---
     var dataIklan = JSON.parse(localStorage.getItem('2r_iklan') || '[]');
-    // Ambil maksimal 3 iklan pertama
     var iklanTampil = dataIklan.slice(0, 3);
 
     // --- BAGIAN 1: HEADER & PROFIL PENGGUNA (SUB BLOK 9.1.1) ---
     var htmlHeader = `
-    <div class="card" style="padding:0; overflow:hidden; border-radius:var(--radius) 12px 12px 12px; margin-bottom:20px; border:none;">
-        
-        <!-- BAGIAN FOTO SAMPUL -->
-        <div class="cover-photo-wrapper" style="position:relative; width:100%; height:220px; background:#f0f0f0; overflow:hidden; cursor:pointer;" onclick="document.getElementById('inputUploadSampul').click();">
+    <div class="homepage-header-card">
+        <!-- FOTO SAMPUL -->
+        <div class="cover-photo-wrapper" onclick="document.getElementById('inputUploadSampul').click();">
             <img id="fotoSampulPreview" src="" style="width:100%; height:100%; object-fit:cover; display:none;">
-            <div id="fotoSampulPlaceholder" style="position:absolute; top:0; left:0; width:100%; height:100%; display:flex; flex-direction:column; justify-content:center; align-items:center; color:#aaa; background:#f8f9fa;">
-                <i class="fas fa-camera" style="font-size:40px; margin-bottom:10px;"></i>
-                <span style="font-size:14px; font-weight:500;">Klik atau Seret untuk Unggah Foto Sampul</span>
+            <div id="fotoSampulPlaceholder" class="cover-photo-placeholder">
+                <i class="fas fa-camera"></i>
+                <span>Klik atau Seret untuk Unggah Foto Sampul</span>
             </div>
             <input type="file" id="inputUploadSampul" accept="image/jpeg,image/png,image/webp" style="display:none;" onchange="prosesUnggahGambar('sampul', this)">
         </div>
 
-        <!-- BAGIAN FOTO PROFIL & INFO PENGGUNA -->
-        <div style="position:relative; padding: 20px 30px 30px 30px; display:flex; flex-wrap:wrap; align-items:flex-end; gap:15px; background:white;">
-            
-            <!-- FOTO PROFIL (AVATAR) -->
-            <div style="margin-top:-70px; width:130px; height:130px; border-radius:50%; border:5px solid white; box-shadow:var(--shadow); background:#f0f0f0; overflow:hidden; flex-shrink:0; cursor:pointer;" onclick="document.getElementById('inputUploadAvatar').click();">
+        <!-- FOTO PROFIL & INFO PENGGUNA -->
+        <div class="profile-info-wrapper">
+            <div class="profile-avatar-wrapper" onclick="document.getElementById('inputUploadAvatar').click();">
                 <img id="fotoProfilPreview" src="" style="width:100%; height:100%; object-fit:cover; display:none;">
-                <div id="fotoProfilPlaceholder" style="width:100%; height:100%; display:flex; justify-content:center; align-items:center; color:#aaa; background:#f8f9fa; font-size:40px;">
+                <div id="fotoProfilPlaceholder" class="profile-avatar-placeholder">
                     <i class="fas fa-user-circle"></i>
                 </div>
                 <input type="file" id="inputUploadAvatar" accept="image/jpeg,image/png,image/webp" style="display:none;" onchange="prosesUnggahGambar('profil', this)">
             </div>
 
-            <!-- INFORMASI PENGGUNA DAN LOGO TOKO -->
-            <div style="flex:1; display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; min-width:200px;">
-                
-                <!-- NAMA & ROLE -->
-                <div>
-                    <h2 id="tampilanNamaPengguna" style="margin:0 0 5px 0; font-size:24px; font-weight:700; color:var(--text);">
-                        ${escapeHtml(pengguna.nama || pengguna.username || 'Pengguna')}
-                    </h2>
-                    <p style="margin:0; font-size:14px; color:var(--text-muted);">
-                        <span class="role-badge" style="background:var(--primary-light); color:var(--primary); padding:4px 12px; border-radius:12px; font-size:12px; font-weight:600;">
-                            ${escapeHtml(pengguna.role || 'User')}
-                        </span>
-                        <span style="margin-left:10px; font-size:13px;">
-                            <i class="fas fa-clock" style="color:#aaa;"></i> 
-                            <span id="displayJamHome" style="font-weight:500;">00:00:00</span>
-                            <span id="displayTanggalHome" style="color:#999;">Senin, 01 Januari 2026</span>
-                        </span>
-                    </p>
-                </div>
+            <div class="profile-info-text">
+                <h2 id="tampilanNamaPengguna">${escapeHtml(pengguna.nama || pengguna.username || 'Pengguna')}</h2>
+                <p>
+                    <span class="role-badge">${escapeHtml(pengguna.role || 'User')}</span>
+                    <span style="margin-left:10px;"><i class="fas fa-clock"></i> <span id="displayJamHome">00:00:00</span> <span id="displayTanggalHome">Senin, 01 Jan 2026</span></span>
+                </p>
+            </div>
 
-                <!-- LOGO TOKO ONLINE 2R -->
-                <div id="appLogoWrapperHome" style="display:flex; align-items:center; gap:10px; margin-top:10px;">
-                    <i class="fas fa-store-alt" id="appLogoIconHome" style="font-size:35px; color:var(--primary); display:block;"></i>
-                    <img id="appLogoImageHome" src="" style="display:none; max-height:50px; object-fit:contain;">
-                    <div style="display:flex; flex-direction:column;">
-                        <span style="font-size:16px; font-weight:700; color:var(--primary);">${escapeHtml(konfigurasi.nama)}</span>
-                        <span style="font-size:11px; color:#888;">${escapeHtml(konfigurasi.deskripsi)}</span>
-                    </div>
+            <div class="app-logo-wrapper-home">
+                <i class="fas fa-store-alt" id="appLogoIconHome" style="font-size:35px; color:var(--primary);"></i>
+                <img id="appLogoImageHome" src="" style="display:none; max-height:45px; object-fit:contain;">
+                <div class="app-logo-text">
+                    <span>${escapeHtml(konfigurasi.nama)}</span>
+                    <span>${escapeHtml(konfigurasi.deskripsi)}</span>
                 </div>
-
             </div>
         </div>
     </div>
@@ -1468,113 +1089,64 @@ function renderHalamanBerandaDefault() {
 
     // --- BAGIAN 2: MENU PINTASAN KATEGORI (SUB BLOK 9.1.2) ---
     var htmlKategori = `
-    <div class="kategori-grid" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:15px; margin-bottom:25px;">
-        
-        <!-- KATEGORI TOKO -->
-        <div class="card" style="text-align:center; padding:20px; transition:transform 0.2s; cursor:pointer;" onclick="navigasiKeHalaman('lihatTokoTerdekat')">
-            <div style="font-size:50px; color:var(--primary); margin-bottom:10px;"><i class="fas fa-store"></i></div>
-            <h4 style="margin:0 0 10px 0; font-size:18px;">LOGO TOKO</h4>
+    <div class="kategori-grid">
+        <div class="card" onclick="navigasiKeHalaman('lihatTokoTerdekat')">
+            <i class="icon-kategori fas fa-store" style="color:var(--primary);"></i>
+            <h4>Toko</h4>
             <button class="button button-primary button-small" onclick="event.stopPropagation(); navigasiKeHalaman('lihatTokoTerdekat')">Lihat Semua Toko & Produk</button>
         </div>
-
-        <!-- KATEGORI OJEK -->
-        <div class="card" style="text-align:center; padding:20px; transition:transform 0.2s; cursor:pointer;" onclick="navigasiKeHalaman('lihatOjekTerdekat')">
-            <div style="font-size:50px; color:#2196F3; margin-bottom:10px;"><i class="fas fa-motorcycle"></i></div>
-            <h4 style="margin:0 0 10px 0; font-size:18px;">LOGO OJEK</h4>
+        <div class="card" onclick="navigasiKeHalaman('lihatOjekTerdekat')">
+            <i class="icon-kategori fas fa-motorcycle" style="color:#2196F3;"></i>
+            <h4>Ojek</h4>
             <button class="button button-primary button-small" onclick="event.stopPropagation(); navigasiKeHalaman('lihatOjekTerdekat')">Lihat Semua Ojek Online</button>
         </div>
-
-        <!-- KATEGORI PEDAGANG PASAR -->
-        <div class="card" style="text-align:center; padding:20px; transition:transform 0.2s; cursor:pointer;" onclick="navigasiKeHalaman('katalogProduk')">
-            <div style="font-size:50px; color:#4CAF50; margin-bottom:10px;"><i class="fas fa-shopping-basket"></i></div>
-            <h4 style="margin:0 0 5px 0; font-size:18px;">LOGO PEDAGANG PASAR</h4>
-            <p style="font-size:12px; color:#888; margin:0 0 5px 0;">Nama Pasar: Pasar Induk | Alamat Pasar: Jl. Merdeka No.1</p>
-            <button class="button button-primary button-small" onclick="event.stopPropagation(); navigasiKeHalaman('katalogProduk')">Lihat Semua Pedagang Pasar</button>
+        <div class="card" onclick="navigasiKeHalaman('lihatPedagangPasar')">
+            <i class="icon-kategori fas fa-shopping-basket" style="color:#4CAF50;"></i>
+            <h4>Pedagang Pasar</h4>
+            <p>Nama Pasar: Pasar Induk | Jl. Merdeka No.1</p>
+            <button class="button button-primary button-small" onclick="event.stopPropagation(); navigasiKeHalaman('lihatPedagangPasar')">Lihat Semua Pedagang Pasar</button>
         </div>
-
-        <!-- KATEGORI PEDAGANG MAKANAN -->
-        <div class="card" style="text-align:center; padding:20px; transition:transform 0.2s; cursor:pointer;" onclick="navigasiKeHalaman('katalogProduk')">
-            <div style="font-size:50px; color:#FF9800; margin-bottom:10px;"><i class="fas fa-utensils"></i></div>
-            <h4 style="margin:0 0 10px 0; font-size:18px;">LOGO PEDAGANG MAKANAN</h4>
-            <button class="button button-primary button-small" onclick="event.stopPropagation(); navigasiKeHalaman('katalogProduk')">Lihat Pedagang Makanan</button>
+        <div class="card" onclick="navigasiKeHalaman('lihatPedagangMakanan')">
+            <i class="icon-kategori fas fa-utensils" style="color:#FF9800;"></i>
+            <h4>Pedagang Makanan</h4>
+            <button class="button button-primary button-small" onclick="event.stopPropagation(); navigasiKeHalaman('lihatPedagangMakanan')">Lihat Pedagang Makanan</button>
         </div>
-
-        <!-- KATEGORI PEDAGANG MINUMAN -->
-        <div class="card" style="text-align:center; padding:20px; transition:transform 0.2s; cursor:pointer;" onclick="navigasiKeHalaman('katalogProduk')">
-            <div style="font-size:50px; color:#00BCD4; margin-bottom:10px;"><i class="fas fa-glass-water"></i></div>
-            <h4 style="margin:0 0 10px 0; font-size:18px;">LOGO PEDAGANG MINUMAN</h4>
-            <button class="button button-primary button-small" onclick="event.stopPropagation(); navigasiKeHalaman('katalogProduk')">Lihat Pedagang Minuman</button>
+        <div class="card" onclick="navigasiKeHalaman('lihatPedagangMinuman')">
+            <i class="icon-kategori fas fa-glass-water" style="color:#00BCD4;"></i>
+            <h4>Pedagang Minuman</h4>
+            <button class="button button-primary button-small" onclick="event.stopPropagation(); navigasiKeHalaman('lihatPedagangMinuman')">Lihat Pedagang Minuman</button>
         </div>
-
     </div>
     `;
 
     // --- BAGIAN 3: STATISTIK REAL-TIME (SUB BLOK 9.1.3) ---
     var htmlStatistik = `
-    <div class="widget-grid" style="margin-bottom:25px;">
-        <div class="widget-card">
-            <div class="widget-icon" style="color:var(--primary);"><i class="fas fa-store"></i></div>
-            <div class="widget-number">${jumlahToko}</div>
-            <div class="widget-label">Toko Terdaftar</div>
-        </div>
-        <div class="widget-card">
-            <div class="widget-icon" style="color:#2196F3;"><i class="fas fa-motorcycle"></i></div>
-            <div class="widget-number">${jumlahOjek}</div>
-            <div class="widget-label">Ojek Terdaftar</div>
-        </div>
-        <div class="widget-card">
-            <div class="widget-icon" style="color:#4CAF50;"><i class="fas fa-user"></i></div>
-            <div class="widget-number">${jumlahCustomer}</div>
-            <div class="widget-label">Customer Terdaftar</div>
-        </div>
+    <div class="widget-grid">
+        <div class="widget-card"><div class="widget-icon" style="color:var(--primary);"><i class="fas fa-store"></i></div><div class="widget-number">${jumlahToko}</div><div class="widget-label">Toko Terdaftar</div></div>
+        <div class="widget-card"><div class="widget-icon" style="color:#2196F3;"><i class="fas fa-motorcycle"></i></div><div class="widget-number">${jumlahOjek}</div><div class="widget-label">Ojek Terdaftar</div></div>
+        <div class="widget-card"><div class="widget-icon" style="color:#4CAF50;"><i class="fas fa-user"></i></div><div class="widget-number">${jumlahCustomer}</div><div class="widget-label">Customer Terdaftar</div></div>
     </div>
     `;
 
     // --- BAGIAN 4: BILAH PENCARIAN (SUB BLOK 9.1.4) ---
     var htmlPencarian = `
-    <div class="card" style="margin-bottom:25px;">
+    <div class="card">
         <div class="card-header">Pencarian Cepat</div>
         <div class="grid-2">
-            <div class="form-group">
-                <label>Cari Produk (Semua Toko)</label>
-                <div class="input-group">
-                    <i class="fas fa-box"></i>
-                    <input type="text" id="inputCariProduk" class="form-input" placeholder="Nama produk...">
-                    <button class="button button-primary button-small" onclick="cariProduk()">Cari</button>
-                </div>
-            </div>
-            <div class="form-group">
-                <label>Cari Toko (Semua Toko Online)</label>
-                <div class="input-group">
-                    <i class="fas fa-store"></i>
-                    <input type="text" id="inputCariToko" class="form-input" placeholder="Nama toko...">
-                    <button class="button button-primary button-small" onclick="cariToko()">Cari</button>
-                </div>
-            </div>
-            <div class="form-group">
-                <label>Cari Ojek (Semua Akun Tukang Ojek Online)</label>
-                <div class="input-group">
-                    <i class="fas fa-motorcycle"></i>
-                    <input type="text" id="inputCariOjek" class="form-input" placeholder="Nama ojek...">
-                    <button class="button button-primary button-small" onclick="cariOjek()">Cari</button>
-                </div>
-            </div>
+            <div class="form-group"><label>Cari Produk (Semua Toko)</label><div class="input-group"><i class="fas fa-box"></i><input type="text" id="inputCariProduk" class="form-input" placeholder="Nama produk..."><button class="button button-primary button-small" onclick="cariProduk()">Cari</button></div></div>
+            <div class="form-group"><label>Cari Toko (Semua Toko Online)</label><div class="input-group"><i class="fas fa-store"></i><input type="text" id="inputCariToko" class="form-input" placeholder="Nama toko..."><button class="button button-primary button-small" onclick="cariToko()">Cari</button></div></div>
+            <div class="form-group"><label>Cari Ojek (Semua Akun Tukang Ojek Online)</label><div class="input-group"><i class="fas fa-motorcycle"></i><input type="text" id="inputCariOjek" class="form-input" placeholder="Nama ojek..."><button class="button button-primary button-small" onclick="cariOjek()">Cari</button></div></div>
         </div>
     </div>
     `;
 
     // --- BAGIAN 5: IKLAN (SUB BLOK 9.1.5) ---
-    var htmlIklan = `
-    <div class="card">
-        <div class="card-header">Iklan</div>
-        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:15px;">
-    `;
+    var htmlIklan = `<div class="card"><div class="card-header">Iklan</div><div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:15px;">`;
     if (iklanTampil.length === 0) {
         htmlIklan += `<div class="empty-state"><i class="fas fa-ad"></i><h3>Belum ada iklan</h3></div>`;
     } else {
         for (var i = 0; i < iklanTampil.length; i++) {
             var iklan = iklanTampil[i];
-            // Ambil gambar pertama jika ada
             var gambarIklan = (iklan.gambar && Array.isArray(iklan.gambar) && iklan.gambar.length > 0) ? iklan.gambar[0] : '';
             htmlIklan += `
             <div class="card" style="padding:10px; text-align:center; cursor:pointer;" onclick="previewGambar('${gambarIklan}', '${escapeHtml(iklan.judul)}')">
@@ -1591,7 +1163,7 @@ function renderHalamanBerandaDefault() {
     var htmlLengkap = htmlHeader + htmlKategori + htmlStatistik + htmlPencarian + htmlIklan;
     areaKonten.innerHTML = htmlLengkap;
 
-    // --- PERSIAPAN LOGO, JAM, DAN FOTO AWAL ---
+    // --- PERSIAPAN LOGO & JAM ---
     var logoHome = document.getElementById('appLogoImageHome');
     var iconHome = document.getElementById('appLogoIconHome');
     if (konfigurasi.logo) {
@@ -1604,18 +1176,10 @@ function renderHalamanBerandaDefault() {
         var tanggalHome = document.getElementById('displayTanggalHome');
         if (!jamHome || !tanggalHome) return;
         var sekarang = new Date();
-        var jam = String(sekarang.getHours()).padStart(2, '0');
-        var menit = String(sekarang.getMinutes()).padStart(2, '0');
-        var detik = String(sekarang.getSeconds()).padStart(2, '0');
-        jamHome.textContent = jam + ':' + menit + ':' + detik;
-
-        var daftarHari = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
-        var daftarBulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
-        var hari = daftarHari[sekarang.getDay()];
-        var tanggal = String(sekarang.getDate()).padStart(2, '0');
-        var bulan = daftarBulan[sekarang.getMonth()];
-        var tahun = sekarang.getFullYear();
-        tanggalHome.textContent = hari + ', ' + tanggal + ' ' + bulan + ' ' + tahun;
+        jamHome.textContent = String(sekarang.getHours()).padStart(2,'0')+':'+String(sekarang.getMinutes()).padStart(2,'0')+':'+String(sekarang.getSeconds()).padStart(2,'0');
+        var daftarHari = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
+        var daftarBulan = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+        tanggalHome.textContent = daftarHari[sekarang.getDay()] + ', ' + String(sekarang.getDate()).padStart(2,'0') + ' ' + daftarBulan[sekarang.getMonth()] + ' ' + sekarang.getFullYear();
     }
     updateJamTanggalHome();
     setInterval(updateJamTanggalHome, 1000);
@@ -1638,240 +1202,56 @@ function renderHalamanBerandaDefault() {
     }
 }
 // ===== AKHIR SUB BLOK 9.1.1 - 9.1.5 =====
-    /* ============================================================ */
-    /* BLOK 9.2 - CASCADING STYLE SHEET STYLING HALAMAN DEFAULT     */
-    /* ============================================================ */
 
-    /* ===== SUB BLOK 9.2.1 - TATA LETAK & WADAH HALAMAN BERANDA ===== */
+// ===== SUB BLOK 9.3.4 - FUNGSI NAVIGASI & PENCARIAN =====
+function cariProduk() {
+    var kata = document.getElementById('inputCariProduk').value.trim();
+    if (!kata) { tampilkanToast('Masukkan nama produk!', 'warning'); return; }
+    // Fungsi pencarian produk (bisa diarahkan ke halaman katalog dengan filter)
+    tampilkanToast('Mencari produk: ' + kata, 'info');
+    // Contoh logika: navigasiKeHalaman('katalogProduk');
+}
 
-    /* --- WADAH UTAMA KARTU HEADER PROFIL --- */
-    .homepage-header-card {
-        padding: 0;
-        overflow: visible !important; /* Mengizinkan foto profil melayang keluar dari batas atas kartu */
-        border-radius: var(--radius);
-        border: none;
-        margin-bottom: 25px;
-        background: transparent;
-        box-shadow: none;
-    }
+function cariToko() {
+    var kata = document.getElementById('inputCariToko').value.trim();
+    if (!kata) { tampilkanToast('Masukkan nama toko!', 'warning'); return; }
+    tampilkanToast('Mencari toko: ' + kata, 'info');
+}
 
-    /* --- FOTO SAMPUL (COVER) --- */
-    .cover-photo-wrapper {
-        position: relative;
-        width: 100%;
-        height: 240px;
-        background: var(--bg);
-        overflow: hidden;
-        cursor: pointer;
-        border-radius: var(--radius) var(--radius) 0 0;
-        border: 1px solid var(--border);
-        border-bottom: none;
-    }
-    .cover-photo-wrapper img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        transition: transform 0.3s ease;
-    }
-    .cover-photo-wrapper:hover img {
-        transform: scale(1.02);
-    }
-    .cover-photo-placeholder {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        color: #aaa;
-        background: #f8f9fa;
-        transition: background 0.3s;
-    }
-    .cover-photo-wrapper:hover .cover-photo-placeholder {
-        background: #e9ecef;
-    }
-    .cover-photo-placeholder i {
-        font-size: 45px;
-        margin-bottom: 10px;
-    }
-    .cover-photo-placeholder span {
-        font-size: 14px;
-        font-weight: 500;
-    }
+function cariOjek() {
+    var kata = document.getElementById('inputCariOjek').value.trim();
+    if (!kata) { tampilkanToast('Masukkan nama ojek!', 'warning'); return; }
+    tampilkanToast('Mencari ojek: ' + kata, 'info');
+}
 
-    /* --- FOTO PROFIL & INFORMASI PENGGUNA --- */
-    .profile-info-wrapper {
-        position: relative;
-        padding: 20px 30px 25px 30px;
-        display: flex;
-        flex-wrap: wrap;
-        align-items: flex-end;
-        gap: 20px;
-        background: white;
-        border: 1px solid var(--border);
-        border-top: none;
-        border-radius: 0 0 var(--radius) var(--radius);
-        box-shadow: var(--shadow);
-    }
+// Fungsi placeholder untuk halaman yang belum dibuat
+function navigasiKeHalaman(halaman) {
+    if (halaman === 'lihatTokoTerdekat') { tampilkanToast('Fitur Lihat Toko Terdekat sedang dikembangkan.', 'info'); }
+    else if (halaman === 'lihatOjekTerdekat') { tampilkanToast('Fitur Lihat Ojek Terdekat sedang dikembangkan.', 'info'); }
+    else if (halaman === 'lihatPedagangPasar') { tampilkanToast('Fitur Lihat Pedagang Pasar sedang dikembangkan.', 'info'); }
+    else if (halaman === 'lihatPedagangMakanan') { tampilkanToast('Fitur Lihat Pedagang Makanan sedang dikembangkan.', 'info'); }
+    else if (halaman === 'lihatPedagangMinuman') { tampilkanToast('Fitur Lihat Pedagang Minuman sedang dikembangkan.', 'info'); }
+    else if (halaman === 'katalogProduk') { tampilkanToast('Fitur Katalog Produk sedang dikembangkan.', 'info'); }
+}
+// ===== AKHIR SUB BLOK 9.3.4 =====
 
-    .profile-avatar-wrapper {
-        margin-top: -75px; /* Membuat foto profil naik ke atas batas kartu */
-        width: 140px;
-        height: 140px;
-        border-radius: 50%;
-        border: 5px solid white;
-        box-shadow: var(--shadow);
-        background: #f0f0f0;
-        overflow: hidden;
-        flex-shrink: 0;
-        cursor: pointer;
-        position: relative;
-        z-index: 10; /* Agar berada di atas gambar sampul */
-        transition: transform 0.2s;
-    }
-    .profile-avatar-wrapper:hover {
-        transform: scale(1.05);
-    }
-    .profile-avatar-wrapper img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-    .profile-avatar-placeholder {
-        width: 100%;
-        height: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        color: #aaa;
-        background: #f8f9fa;
-        font-size: 60px;
-    }
+// ===== SUB BLOK 9.3.3 - FUNGSI UNGGAH GAMBAR (SAMPUL & PROFIL) =====
+function prosesUnggahGambar(tipe, elemenInput) {
+    var file = elemenInput.files[0];
+    if (!file) return;
 
-    .profile-info-text {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        min-width: 200px;
-    }
-    .profile-info-text h2 {
-        margin: 0 0 5px 0;
-        font-size: 24px;
-        font-weight: 700;
-        color: var(--text);
-    }
-    .profile-info-text p {
-        margin: 0;
-        font-size: 14px;
-        color: var(--text-muted);
-    }
-
-    .app-logo-wrapper-home {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        margin-top: 10px;
-    }
-    .app-logo-wrapper-home i {
-        font-size: 35px;
-        color: var(--primary);
-    }
-    .app-logo-wrapper-home img {
-        max-height: 45px;
-        object-fit: contain;
-    }
-    .app-logo-text {
-        display: flex;
-        flex-direction: column;
-    }
-    .app-logo-text span:first-child {
-        font-size: 16px;
-        font-weight: 700;
-        color: var(--primary);
-    }
-    .app-logo-text span:last-child {
-        font-size: 11px;
-        color: #888;
-    }
-
-    /* --- KISI KATEGORI & TOMBOL AKSI --- */
-    .kategori-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-        gap: 15px;
-        margin-bottom: 25px;
-    }
-    .kategori-grid .card {
-        text-align: center;
-        padding: 20px 15px;
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
-        cursor: pointer;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-    }
-    .kategori-grid .card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-    }
-    .kategori-grid .card .icon-kategori {
-        font-size: 45px;
-        margin-bottom: 10px;
-        display: block;
-    }
-    .kategori-grid .card h4 {
-        margin: 0 0 5px 0;
-        font-size: 17px;
-        font-weight: 700;
-        color: var(--text);
-    }
-    .kategori-grid .card p {
-        font-size: 12px;
-        color: #888;
-        margin: 0 0 10px 0;
-    }
-    .kategori-grid .card .button {
-        margin-top: auto;
-    }
-
-    /* --- GRID STATISTIK --- */
-    .widget-grid {
-        margin-bottom: 25px;
-    }
-
-    /* --- BILAH PENCARIAN --- */
-    .search-section .input-group {
-        margin-bottom: 5px;
-    }
-    .search-section .input-group input {
-        padding: 10px 0;
-    }
-    .search-section .input-group button {
-        margin-left: 5px;
-        flex-shrink: 0;
-    }
-
-    /* --- RESPONSIVE MOBILE UNTUK SUB BLOK 9.2.1 --- */
-    @media (max-width: 767px) {
-        .cover-photo-wrapper { height: 160px; }
-        .profile-avatar-wrapper {
-            width: 100px;
-            height: 100px;
-            margin-top: -55px;
-        }
-        .profile-info-wrapper { padding: 15px 20px; }
-        .profile-info-text h2 { font-size: 20px; }
-        .kategori-grid { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
-        .kategori-grid .card { padding: 15px; }
-        .kategori-grid .card .icon-kategori { font-size: 35px; }
-        .kategori-grid .card h4 { font-size: 15px; }
-    }
-    /* ===== AKHIR SUB BLOK 9.2.1 ===== */
+    var pengguna = JSON.parse(localStorage.getItem('2r_user') || '{}');
+    var pembaca = new FileReader();
+    pembaca.onload = function(e) {
+        var dataGambar = e.target.result;
+        var kunci = (tipe === 'sampul') ? '2r_cover_foto_' + pengguna.id : '2r_user_avatar_' + pengguna.id;
+        localStorage.setItem(kunci, dataGambar);
+        tampilkanToast('Foto ' + tipe + ' berhasil diunggah!', 'success');
+        renderHalamanBerandaDefault();
+    };
+    pembaca.readAsDataURL(file);
+}
+// ===== AKHIR SUB BLOK 9.3.3 =====
 <!-- ============================================================ -->
 <!-- PENUTUP HTML                                                 -->
 <!-- ============================================================ -->
