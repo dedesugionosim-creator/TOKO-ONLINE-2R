@@ -44,13 +44,19 @@
             <div class="authentication-box">
 <!-- ===== AKHIR BLOK 2.1 ===== -->
 
-<!-- ============================================================ -->
-<!-- BLOK 2.2 - LOGO & JUDUL APLIKASI                              -->
-<!-- ============================================================ -->
-                <div class="authentication-logo">
-                    <i class="fas fa-store-alt"></i>
-                    <h1>Toko Online <span style="color:#FF6B00;">2R</span></h1>
-                    <p>Platform Belanja & Layanan Serba Ada</p>
+<!-- ===== BLOK 2.2 - LOGO & JUDUL APLIKASI (DINAMIS) ===== -->
+                <div class="authentication-logo" id="authLogoContainer">
+                    <!-- Tempat Logo: Default icon, bisa diganti gambar -->
+                    <div id="appLogoWrapper" style="display:flex; justify-content:center; align-items:center; flex-direction:column; margin-bottom:10px;">
+                        <i class="fas fa-store-alt" id="appLogoIcon" style="font-size:60px; color:var(--primary);"></i>
+                        <img id="appLogoImage" src="" style="display:none; max-width:120px; max-height:120px; object-fit:contain; border-radius:10px;">
+                    </div>
+                    
+                    <!-- Judul Aplikasi Dinamis -->
+                    <h1 id="appNamaDisplay">Toko Online <span style="color:#FF6B00;">2R</span></h1>
+                    
+                    <!-- Deskripsi Aplikasi Dinamis -->
+                    <p id="appDeskripsiDisplay">Platform Belanja & Layanan Serba Ada</p>
                 </div>
 <!-- ===== AKHIR BLOK 2.2 ===== -->
 
@@ -647,7 +653,105 @@
         return prefix + '-' + String(nomorUrut).padStart(3, '0');
     }
     // ===== AKHIR BLOK 7.1 =====
+        // ===== BLOK 7.1.2 - LOAD KONFIGURASI APLIKASI (LOGO, NAMA, DESKRIPSI) =====
+    function loadAppConfig() {
+        // Ambil data dari localStorage, jika kosong gunakan default
+        var config = JSON.parse(localStorage.getItem('2r_aplikasi_setting') || '{"nama":"Toko Online 2R","deskripsi":"Platform Belanja & Layanan Serba Ada","logo":""}');
+        
+        // Update judul
+        var namaEl = document.getElementById('appNamaDisplay');
+        if (namaEl) namaEl.innerHTML = config.nama + ' <span style="color:#FF6B00;">2R</span>';
 
+        // Update deskripsi
+        var deskEl = document.getElementById('appDeskripsiDisplay');
+        if (deskEl) deskEl.textContent = config.deskripsi;
+
+        // Update logo
+        var iconEl = document.getElementById('appLogoIcon');
+        var imgEl = document.getElementById('appLogoImage');
+        if (config.logo) {
+            if (iconEl) iconEl.style.display = 'none';
+            if (imgEl) {
+                imgEl.src = config.logo;
+                imgEl.style.display = 'block';
+            }
+        } else {
+            if (iconEl) iconEl.style.display = 'block';
+            if (imgEl) imgEl.style.display = 'none';
+        }
+    }
+    // ===== AKHIR BLOK 7.1.2 =====
+    // ===== BLOK 7.2.1 - TAMBAHAN BAGIAN PENGATURAN APLIKASI =====
+html += `
+<!-- === PENGATURAN APLIKASI === -->
+<div class="card" style="margin-top:20px; border:2px solid var(--primary);">
+    <div class="card-header" style="color:var(--primary); font-weight:700;">
+        <i class="fas fa-cog"></i> Pengaturan Aplikasi (Login Page)
+        <button class="button button-success button-small" onclick="simpanPengaturanApp()"><i class="fas fa-save"></i> Simpan Perubahan</button>
+    </div>
+    <div class="grid-2">
+        <div class="form-group">
+            <label>Nama Aplikasi</label>
+            <input type="text" id="editAppNama" class="form-input" placeholder="Toko Online 2R">
+        </div>
+        <div class="form-group">
+            <label>Deskripsi / Tagline</label>
+            <input type="text" id="editAppDeskripsi" class="form-input" placeholder="Platform Belanja & Layanan Serba Ada">
+        </div>
+    </div>
+    <div class="form-group">
+        <label>Upload Logo Baru (Kosongkan jika tetap pakai default)</label>
+        <input type="file" id="editAppLogo" accept=".jpg,.jpeg,.png,.svg" style="display:none;">
+        <button class="button button-primary button-small" onclick="document.getElementById('editAppLogo').click();">Pilih Gambar Logo</button>
+        <span id="editAppLogoName" style="font-size:12px; color:#888; margin-left:10px;">Belum ada file dipilih</span>
+        <div id="editAppLogoPreview" style="margin-top:10px; max-width:100px;"></div>
+    </div>
+</div>
+`;
+// ===== AKHIR BLOK 7.2.1 =====
+    // ===== BLOK 7.2.2 - SIMPAN PENGATURAN APLIKASI & EVENT LOGO =====
+    function simpanPengaturanApp() {
+        var nama = document.getElementById('editAppNama').value.trim();
+        var deskripsi = document.getElementById('editAppDeskripsi').value.trim();
+        var logo = localStorage.getItem('2r_app_logo_temp') || '';
+
+        if (!nama) { tampilkanToast('Nama aplikasi tidak boleh kosong!', 'warning'); return; }
+
+        var config = {
+            nama: nama,
+            deskripsi: deskripsi || 'Platform Belanja & Layanan Serba Ada',
+            logo: logo
+        };
+
+        localStorage.setItem('2r_aplikasi_setting', JSON.stringify(config));
+        localStorage.removeItem('2r_app_logo_temp');
+
+        tampilkanToast('Pengaturan Aplikasi berhasil disimpan!', 'success');
+        
+        // Refresh tampilan login atau profil
+        loadAppConfig(); 
+        if (typeof renderProfilSuperAdmin === 'function') renderProfilSuperAdmin();
+    }
+
+    // Event listener untuk preview gambar logo di form edit
+    document.addEventListener('DOMContentLoaded', function() {
+        var logoInput = document.getElementById('editAppLogo');
+        if (logoInput) {
+            logoInput.addEventListener('change', function(e) {
+                var file = e.target.files[0];
+                if (file) {
+                    document.getElementById('editAppLogoName').textContent = file.name;
+                    var reader = new FileReader();
+                    reader.onload = function(ev) {
+                        document.getElementById('editAppLogoPreview').innerHTML = '<img src="' + ev.target.result + '" style="max-width:100px; max-height:100px; object-fit:contain; border-radius:8px;">';
+                        localStorage.setItem('2r_app_logo_temp', ev.target.result);
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        }
+    });
+    // ===== AKHIR BLOK 7.2.2 =====
     // ===== BLOK 7.3 - TOAST =====
     function tampilkanToast(pesan, tipe) {
         if (!tipe) tipe = 'success';
